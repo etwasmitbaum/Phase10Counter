@@ -1,0 +1,2 @@
+rootProject.name = "Phase10Counter"
+include ':app'
