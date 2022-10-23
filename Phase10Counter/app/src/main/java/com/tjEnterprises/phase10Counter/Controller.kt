@@ -12,25 +12,28 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentContainerView
 import android.view.WindowManager
+import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 
 
 class Controller {
 
     private val players: MutableList<Player> = ArrayList()
 
+    private lateinit var playerDataDao: PlayerDataDao
     private lateinit var sharedPref: SharedPreferences
     private lateinit var edit: SharedPreferences.Editor
     private lateinit var con: Context
     private lateinit var mainActivity: MainActivity
 
     @SuppressLint("CommitPrefEdits")
-    fun setContexts(con: Context, mainActivity: MainActivity) {
+    fun setContexts(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao) {
         this.con = con
         this.mainActivity = mainActivity
         this.sharedPref =
             con.getSharedPreferences(("controller_sharedPrefs"), Context.MODE_PRIVATE)
         this.edit = sharedPref.edit()
         this.edit.apply()
+        this.playerDataDao = playerDataDao
     }
 
     fun getPlayersSize(): Int {
@@ -54,7 +57,7 @@ class Controller {
                 Player(
                     sharedPref.getInt(i.toString() + "_playerNR", -1),
                     sharedPref.getString(i.toString() + "_playerName", "404").toString(),
-                    con
+                    con, playerDataDao
                 )
             )
             players[i].loadPlayerData()
@@ -69,9 +72,9 @@ class Controller {
 
     private fun setPhase(playerNr: Int, phasenNR: Int, phaseBestanden: Boolean) {
         if (phaseBestanden) {
-            players[playerNr].phaseAbgeschlossen(phasenNR)
+            players[playerNr].phaseDone(phasenNR)
         } else {
-            players[playerNr].phaseDochNichtAbgeschlossen(phasenNR)
+            players[playerNr].phaseUndoDone(phasenNR)
         }
     }
 
@@ -100,7 +103,7 @@ class Controller {
     }
 
     fun addPlayer(name: String) {
-        players.add(Player(players.size, name, con))
+        players.add(Player(players.size, name, con, playerDataDao))
     }
 
     fun placePlayerFragments() {
@@ -252,20 +255,20 @@ class Controller {
 
     private fun updateAllPlayerFragments() {
         for (i in 0 until players.size) {
-            if (players[i].getPhasenAsString() == "") {
-                players[i].phaseAbgeschlossen(0)
+            if (players[i].getPhasenAsString() == con.getString(R.string.none)) {
+                players[i].phaseDone(0)
                 players[i].getFragment().updateViews(
                     players[i].getPlayerName(),
-                    players[i].getGesamtPunktzahl(),
+                    players[i].getPunktzahl(),
                     con.getString(R.string.none)
                 )
             } else {
                 players[i].getFragment().updateViews(
                     players[i].getPlayerName(),
-                    players[i].getGesamtPunktzahl(),
+                    players[i].getPunktzahl(),
                     players[i].getPhasenAsString()
                 )
-                players[i].phaseDochNichtAbgeschlossen(0)
+                players[i].phaseUndoDone(0)
             }
         }
     }

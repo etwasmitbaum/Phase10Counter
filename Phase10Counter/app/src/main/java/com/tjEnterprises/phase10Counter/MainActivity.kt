@@ -11,11 +11,16 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import com.tjEnterprises.phase10Counter.data.AppDatabase
+import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
 
+
+    private lateinit var playerDataDao: PlayerDataDao
     private val controller: Controller = Controller()
 
     private lateinit var etPlayerName: EditText
@@ -31,7 +36,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        controller.setContexts(applicationContext, this)
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "Database"
+        ).allowMainThreadQueries().build()
+        playerDataDao = db.PlayerDataDao()
+        controller.setContexts(applicationContext, this, playerDataDao)
         controller.loadAllData()
         currentLayout = controller.setCorrectView()
         initViews()
@@ -41,13 +51,13 @@ class MainActivity : AppCompatActivity() {
     private fun initViews() {
         if (currentLayout == "main") {
             controller.placePlayerFragments()
-            btnReset = findViewById(R.id.btnReset)
-            btnShowPhasenInfo = findViewById(R.id.btnPhasenInfo)
 
+            btnReset = findViewById(R.id.btnReset)
             btnReset.setOnClickListener {
                 btnReset()
             }
 
+            btnShowPhasenInfo = findViewById(R.id.btnPhasenInfo)
             btnShowPhasenInfo.setOnClickListener {
                 showPhasenInfo()
             }
@@ -132,6 +142,7 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
             controller.removeAllData()
 
+            /*  NO MORE NEEDED
             // manually deleting all shredprefs files if there are too many to not fully trash the device
             val shPreFile = File("data/data/com.tjEnterprises.phase10Counter/shared_prefs/")
             if (shPreFile.isDirectory) {
@@ -142,7 +153,7 @@ class MainActivity : AppCompatActivity() {
                         File(shPreFile, children[i]).delete()
                     }
                 }
-            }
+            } */
             // restarting the app
             val intent = Intent(applicationContext, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

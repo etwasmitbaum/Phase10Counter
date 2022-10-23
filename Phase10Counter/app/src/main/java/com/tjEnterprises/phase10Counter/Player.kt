@@ -2,10 +2,13 @@ package com.tjEnterprises.phase10Counter
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.tjEnterprises.phase10Counter.data.player.PlayerData
+import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 
-class Player(private val playerNR: Int, private val name: String, con: Context) {
+class Player(private val playerNR: Int, private val name: String, private val con: Context, private val playerDataDao: PlayerDataDao) {
 
-    private var punkte: MutableList<Int> = ArrayList()
+    private var pData: PlayerData = PlayerData(playerNR, name, 0, "0")
+    private var punkte: Int = 0
     private var phasen: BooleanArray = BooleanArray(11) { false }     // index 0 = game won
     // value false = phase not complete
     // value true = phase complete
@@ -35,7 +38,12 @@ class Player(private val playerNR: Int, private val name: String, con: Context) 
                 s = "$s$i, "
             }
         }
-        return s.dropLast(2)
+        if(s == ""){
+            s = this.con.getString(R.string.none)
+        } else {
+            s = s.dropLast(2)
+        }
+        return s
     }
 
     fun getPlayerNR(): Int {
@@ -47,32 +55,18 @@ class Player(private val playerNR: Int, private val name: String, con: Context) 
     }
 
     fun addPunkte(punkte: Int) {
-        this.punkte.add(punkte)
+        this.punkte = this.punkte + punkte
     }
 
-    /* comment out unused code
-    fun replacePunkte(idx: Int, punkte: Int) {
-        this.punkte[idx] = punkte
+    fun getPunktzahl(): Int {
+        return this.punkte
     }
 
-    fun removePunkte(idx: Int) {
-        this.punkte.removeAt(idx)
-    }
-    */
-
-    fun getGesamtPunktzahl(): Int {
-        var gesamtPunkte = 0
-        for (i in 0 until punkte.size) {
-            gesamtPunkte += punkte[i]
-        }
-        return gesamtPunkte
-    }
-
-    fun phaseAbgeschlossen(phasenNR: Int) {
+    fun phaseDone(phasenNR: Int) {
         this.phasen[phasenNR] = true
     }
 
-    fun phaseDochNichtAbgeschlossen(phasenNR: Int) {
+    fun phaseUndoDone(phasenNR: Int) {
         this.phasen[phasenNR] = false
     }
 
@@ -81,33 +75,40 @@ class Player(private val playerNR: Int, private val name: String, con: Context) 
     }
 
     fun savePlayerData() {
+        pData.punkte = getPunktzahl()
+        pData.phasen = getPhasenAsString()
 
-        edit.putInt("punkte_size", punkte.size)
-
-        for (i in 0 until punkte.size) {
-            edit.putInt(i.toString() + "_punkte", punkte[i])
-        }
-
-        for (i in phasen.indices) {
-            edit.putBoolean(i.toString() + "_phase", phasen[i])
-        }
-
-        edit.commit()
+        playerDataDao.insertPlayerData(pData)
     }
 
     fun loadPlayerData() {
-        for (i in 0 until sharedPref.getInt("punkte_size", 0)) {
-            punkte.add(sharedPref.getInt(i.toString() + "_punkte", 0))
-        }
+        // load from database
+        pData = playerDataDao.getSinglePlayer(playerNR)
+        this.punkte = pData.punkte
 
-        for (i in 0 until 11) {
-            phasen[i] = sharedPref.getBoolean(i.toString() + "_phase", false)
+        // get phasen and convert string to bool array of phasen
+        val phasen = pData.phasen.filter { it.isDigit() }
+        val hasPhase10 = phasen.contains("10")
+
+        for(i in this.phasen.indices){
+            phaseDone(i)
+        }
+        phaseUndoDone(0)
+
+        // only apply minus 2 in the below loop, if phase 10 is still in the list
+        // this is done to not unCheck phase "1" and "0", since "10" contains those digits
+        var minus2forPhase10 = 0
+        if(hasPhase10){
+            phaseUndoDone(10)
+            minus2forPhase10 = -2
+        }
+        for(i: Int in 0 until (phasen.length - minus2forPhase10)){
+            phaseUndoDone(phasen[i].digitToInt())
         }
     }
 
     fun removePlayerData() {
-        edit.clear()
-        edit.commit()
+        playerDataDao.deletePlayer(pData)
     }
 
 }

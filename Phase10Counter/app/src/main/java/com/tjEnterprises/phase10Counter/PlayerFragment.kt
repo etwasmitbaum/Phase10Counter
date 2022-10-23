@@ -1,5 +1,6 @@
 package com.tjEnterprises.phase10Counter
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +40,7 @@ class PlayerFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         //set correct values
-        updateViews(player.getPlayerName(), player.getGesamtPunktzahl(), player.getPhasenAsString())
+        updateViews(player.getPlayerName(), player.getPunktzahl(), player.getPhasenAsString())
 
         //set player tag to identify the pressed button
         btnPhasen.tag = player.getPlayerNR()
