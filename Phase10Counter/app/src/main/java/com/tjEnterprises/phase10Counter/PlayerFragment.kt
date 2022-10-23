@@ -62,28 +62,6 @@ class PlayerFragment : Fragment() {
             }
 
         }
-
-        // stupid but works, keeping this as backup
-        /*editText.setOnEditorActionListener { v, actionId, event ->
-            if ((actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE)
-                && (editText.text.toString() != "")
-            ) {
-                controller.addPunkteToPlayer(player.getPlayerNR(), editText.text.toString().toInt())
-                editText.setText("")
-
-                Thread {
-                    try {
-                        val inst = Instrumentation()
-                        inst.sendKeyDownUpSync(KeyEvent.KEYCODE_ENTER)
-                    } catch (e: InterruptedException) {
-                    }
-                }.start()
-
-                true
-            } else {
-                false
-            }
-        }*/
     }
 
     fun updateViews(playerName: String, playerPunkte: Int, playerPhasenAsString: String) {
