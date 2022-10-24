@@ -9,16 +9,11 @@ class Player(private val playerNR: Int, private val name: String, private val co
 
     private var pData: PlayerData = PlayerData(playerNR, name, 0, "0")
     private var punkte: Int = 0
-    private var phasen: BooleanArray = BooleanArray(11) { false }     // index 0 = game won
+
+    private var phasen: BooleanArray = BooleanArray(11) { false }
+    // index 0 = game won
     // value false = phase not complete
     // value true = phase complete
-
-    // sharedPrefs name is playerNR name and "sharedPrefs" so every player has its own
-    private val sharedPref = con.applicationContext.getSharedPreferences(
-        (playerNR.toString() + "_" + name + "_sharedPrefs"),
-        Context.MODE_PRIVATE
-    )
-    private val edit: SharedPreferences.Editor = sharedPref.edit()
 
     private lateinit var fragment: PlayerFragment
 
@@ -33,16 +28,21 @@ class Player(private val playerNR: Int, private val name: String, private val co
 
     fun getPhasenAsString(): String {
         var s = ""
+
+        // loop from 1 to 10, to write all phasen numbers if they are not done
         for (i in 1 until phasen.size) {
             if (!phasen[i]) {
                 s = "$s$i, "
             }
         }
-        if(s == ""){
-            s = this.con.getString(R.string.none)
+
+        // set "none" string, if all phases are complete. Else on first startup fragment will only show "" as phasen
+        s = if(s == ""){
+            this.con.getString(R.string.none)
         } else {
-            s = s.dropLast(2)
+            s.dropLast(2)
         }
+
         return s
     }
 
@@ -102,7 +102,7 @@ class Player(private val playerNR: Int, private val name: String, private val co
             phaseUndoDone(10)
             minus2forPhase10 = -2
         }
-        for(i: Int in 0 until (phasen.length - minus2forPhase10)){
+        for(i: Int in 0 until (phasen.length + minus2forPhase10)){
             phaseUndoDone(phasen[i].digitToInt())
         }
     }

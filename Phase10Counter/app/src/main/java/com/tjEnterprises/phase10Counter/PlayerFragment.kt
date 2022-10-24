@@ -1,6 +1,5 @@
 package com.tjEnterprises.phase10Counter
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -70,9 +69,9 @@ class PlayerFragment : Fragment() {
         requireView().findViewById<TextView>(R.id.tvPhasen).text = playerPhasenAsString
     }
 
-    fun setController(con: Controller, play: Player) {
+    fun setController(con: Controller, player: Player) {
         this.controller = con
-        this.player = play
+        this.player = player
     }
 
     companion object {

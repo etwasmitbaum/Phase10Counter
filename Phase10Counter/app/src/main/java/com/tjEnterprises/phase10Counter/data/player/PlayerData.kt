@@ -10,4 +10,5 @@ data class PlayerData(
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "punkte") var punkte: Int,
     @ColumnInfo(name = "phasen") var phasen: String
+
 )
