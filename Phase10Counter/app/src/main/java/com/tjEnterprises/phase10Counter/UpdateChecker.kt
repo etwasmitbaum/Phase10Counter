@@ -15,10 +15,10 @@ class UpdateChecker (val con: Context) {
         val queue = Volley.newRequestQueue(this.con)
         val URL = "https://api.github.com/repos/etwasmitbaum/Phase10Counter/releases/latest"
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, URL, null,
-            Response.Listener { response ->
+            { response ->
                 v.text = "Response: %s".format(response.toString())
             },
-            Response.ErrorListener { error ->
+            { error ->
                 v.text = error.toString()
             }
         )

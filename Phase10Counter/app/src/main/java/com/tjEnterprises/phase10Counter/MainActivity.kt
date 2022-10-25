@@ -13,14 +13,16 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.AppDatabase
+import com.tjEnterprises.phase10Counter.data.highscores.Highscores
+import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
-import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
 
 
     private lateinit var playerDataDao: PlayerDataDao
+    private lateinit var highscoresDao: HighscoresDao
     private val controller: Controller = Controller()
 
     private lateinit var etPlayerName: EditText
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvMessage: TextView
     private lateinit var btnWeiter: Button
     private lateinit var btnAddPlayer: Button
-    private lateinit var btnReset: Button
+    private lateinit var btnEndMatch: Button
     private lateinit var btnShowPhasenInfo: Button
     private lateinit var currentLayout: String
 
@@ -41,12 +43,13 @@ class MainActivity : AppCompatActivity() {
             AppDatabase::class.java, "Database"
         ).allowMainThreadQueries().build()
         playerDataDao = db.PlayerDataDao()
-        controller.setContexts(applicationContext, this, playerDataDao)
+        highscoresDao = db.HighscoresDao()
+        controller.setContexts(applicationContext, this, playerDataDao, highscoresDao)
         controller.loadAllData()
         currentLayout = controller.setCorrectView()
         initViews()
 
-        UpdateChecker(applicationContext).checkForUpdate(findViewById(R.id.tvUpdate))
+        //UpdateChecker(applicationContext).checkForUpdate(findViewById(R.id.tvUpdate))
 
     }
 
@@ -54,9 +57,9 @@ class MainActivity : AppCompatActivity() {
         if (currentLayout == "main") {
             controller.placePlayerFragments()
 
-            btnReset = findViewById(R.id.btnReset)
-            btnReset.setOnClickListener {
-                btnReset()
+            btnEndMatch = findViewById(R.id.btnEndMatch)
+            btnEndMatch.setOnClickListener {
+                btnEndMatch()
             }
 
             btnShowPhasenInfo = findViewById(R.id.btnPhasenInfo)
@@ -136,14 +139,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun btnReset() {
+    private fun btnEndMatch() {
 
         val alertDialog = AlertDialog.Builder(this@MainActivity).create()
         alertDialog.setTitle(getString(R.string.all_data_will_be_deleted))
-        alertDialog.setMessage(getString(R.string.are_you_sure))
+        alertDialog.setMessage(getString(R.string.are_you_sure_data_loss))
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes)) { dialog, _ ->
             dialog.dismiss()
+            controller.addNewHighscore()
             controller.removeAllData()
 
             // restarting the app

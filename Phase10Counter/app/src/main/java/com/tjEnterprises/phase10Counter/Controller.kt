@@ -12,7 +12,11 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentContainerView
 import android.view.WindowManager
+import com.tjEnterprises.phase10Counter.data.highscores.Highscores
+import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class Controller {
@@ -24,9 +28,10 @@ class Controller {
     private lateinit var edit: SharedPreferences.Editor
     private lateinit var con: Context
     private lateinit var mainActivity: MainActivity
+    private lateinit var highscoresDao: HighscoresDao
 
     @SuppressLint("CommitPrefEdits")
-    fun setContexts(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao) {
+    fun setContexts(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao, highscoresDao: HighscoresDao) {
         this.con = con
         this.mainActivity = mainActivity
         this.sharedPref =
@@ -34,6 +39,7 @@ class Controller {
         this.edit = sharedPref.edit()
         this.edit.apply()
         this.playerDataDao = playerDataDao
+        this.highscoresDao = highscoresDao
     }
 
     fun getPlayersSize(): Int {
@@ -285,6 +291,15 @@ class Controller {
         }
         savePlayerData(playerNr)
         updateAllPlayerFragments()
+    }
+
+    fun addNewHighscore(){
+        for (i in 0 until players.size) {
+            if(players[i].getPhase(0)){
+                val high = Highscores(0, players[i].getPlayerName(), players[i].getPunktzahl(), Calendar.getInstance().time)
+                highscoresDao.insertHighscore(high)
+            }
+        }
     }
 
 }

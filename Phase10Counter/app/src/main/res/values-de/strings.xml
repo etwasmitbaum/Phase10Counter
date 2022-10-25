@@ -20,10 +20,10 @@
     <string name="ok">Ok</string>
     <string name="player_needs_a_name">Der Spieler muss einen Namen haben</string>
     <string name="all_data_will_be_deleted">ALLE Daten werden gelöscht</string>
-    <string name="are_you_sure">Bist du dir sicher?</string>
+    <string name="are_you_sure_data_loss">Bist du dir sicher? Alle Daten dieser Runde werde gelöscht.</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="reset_all_data_btn">Daten löschen</string>
+    <string name="reset_all_data_btn">Runde beenden</string>
     <string name="show_phases_sets_btn">Runden</string>
     <string name="name">Name</string>
     <string name="none">keine</string>
