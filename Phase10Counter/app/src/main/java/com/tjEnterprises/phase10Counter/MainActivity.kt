@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 showPhasenInfo()
             }
 
-        } else {
+        } else if (currentLayout == "auswahl"){
             etPlayerName = findViewById(R.id.etPlayerName)
             tvPlayers = findViewById(R.id.tvAllPlayers)
             btnWeiter = findViewById(R.id.btnSpielerAuswahlWeiter)
@@ -103,9 +103,11 @@ class MainActivity : AppCompatActivity() {
             controller.addPlayer(etPlayerName.text.toString())
             val textToBeSet = (etPlayerName.text.toString() + "\n") + tvPlayers.text.toString()
             tvPlayers.text = textToBeSet
+
             //resetting all texts
             etPlayerName.text = null
             tvMessage.text = null
+
             //activating the next button
             btnWeiter.visibility = View.VISIBLE
         } else {
@@ -142,18 +144,6 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
             controller.removeAllData()
 
-            /*  NO MORE NEEDED
-            // manually deleting all shredprefs files if there are too many to not fully trash the device
-            val shPreFile = File("data/data/com.tjEnterprises.phase10Counter/shared_prefs/")
-            if (shPreFile.isDirectory) {
-                val children: Array<String> = shPreFile.list() as Array<String>
-                val filecount = children.size
-                if (filecount >= 24) {
-                    for (i in 0 until filecount) {
-                        File(shPreFile, children[i]).delete()
-                    }
-                }
-            } */
             // restarting the app
             val intent = Intent(applicationContext, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

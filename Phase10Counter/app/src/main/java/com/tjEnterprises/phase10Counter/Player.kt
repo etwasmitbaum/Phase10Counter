@@ -7,7 +7,7 @@ import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 
 class Player(private val playerNR: Int, private val name: String, private val con: Context, private val playerDataDao: PlayerDataDao) {
 
-    private var pData: PlayerData = PlayerData(playerNR, name, 0, "0")
+    private var pData: PlayerData = PlayerData(playerNR, name, 0, "")
     private var punkte: Int = 0
 
     private var phasen: BooleanArray = BooleanArray(11) { false }

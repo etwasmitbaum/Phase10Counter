@@ -64,10 +64,14 @@ class Controller {
         }
     }
 
+    private fun savePlayerData(playerNR: Int){
+        players[playerNR].savePlayerData()
+    }
+
     fun addPunkteToPlayer(playerNR: Int, punkte: Int) {
         players[playerNR].addPunkte(punkte)
-        updateAllPlayerFragments()
-        saveAllData()
+        updatePlayerFragment(playerNR)
+        savePlayerData(playerNR)
     }
 
     private fun setPhase(playerNr: Int, phasenNR: Int, phaseBestanden: Boolean) {
@@ -163,21 +167,25 @@ class Controller {
 
     private fun updateAllPlayerFragments() {
         for (i in 0 until players.size) {
-            if (players[i].getPhasenAsString() == con.getString(R.string.none)) {
-                players[i].phaseDone(0)
-                players[i].getFragment().updateViews(
-                    players[i].getPlayerName(),
-                    players[i].getPunktzahl(),
-                    con.getString(R.string.none)
-                )
-            } else {
-                players[i].getFragment().updateViews(
-                    players[i].getPlayerName(),
-                    players[i].getPunktzahl(),
-                    players[i].getPhasenAsString()
-                )
-                players[i].phaseUndoDone(0)
-            }
+            updatePlayerFragment(i)
+        }
+    }
+
+    private fun updatePlayerFragment(playerNR: Int){
+        if (players[playerNR].getPhasenAsString() == con.getString(R.string.none)) {
+            players[playerNR].phaseDone(0)
+            players[playerNR].getFragment().updateViews(
+                players[playerNR].getPlayerName(),
+                players[playerNR].getPunktzahl(),
+                con.getString(R.string.none)
+            )
+        } else {
+            players[playerNR].getFragment().updateViews(
+                players[playerNR].getPlayerName(),
+                players[playerNR].getPunktzahl(),
+                players[playerNR].getPhasenAsString()
+            )
+            players[playerNR].phaseUndoDone(0)
         }
     }
 
@@ -259,13 +267,14 @@ class Controller {
         isLandScape: Boolean
     ) {
         //save checkboxes
+        var playerNr = 0
         for (i in 0 until 10) {
             val cb: CheckBox = if (isLandScape && i > 4) {
                 secondLayout?.getChildAt(i.rem(5)) as CheckBox
             } else {
                 layout.getChildAt(i) as CheckBox
             }
-            var playerNr = 0
+
             if (v.tag != null) {
                 playerNr = v.tag as Int
             }
@@ -274,7 +283,7 @@ class Controller {
             //i+1 because the Phases start with 1 but array here with 0.
             //and place 0 in the array of an player object shows if the player has won
         }
-        saveAllData()
+        savePlayerData(playerNr)
         updateAllPlayerFragments()
     }
 
