@@ -1,4 +1,27 @@
 package com.tjEnterprises.phase10Counter
 
-class UpdateChecker {
+import android.content.Context
+import android.widget.TextView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+
+class UpdateChecker (val con: Context) {
+
+    fun checkForUpdate(v: TextView) {
+        //TODO help
+        val queue = Volley.newRequestQueue(this.con)
+        val URL = "https://api.github.com/repos/etwasmitbaum/Phase10Counter/releases/latest"
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, URL, null,
+            Response.Listener { response ->
+                v.text = "Response: %s".format(response.toString())
+            },
+            Response.ErrorListener { error ->
+                v.text = error.toString()
+            }
+        )
+        queue.add(jsonObjectRequest)
+    }
 }

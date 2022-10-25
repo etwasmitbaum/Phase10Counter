@@ -7,7 +7,7 @@ import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerData
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 
-@Database(entities = [PlayerData::class], version = 1)
+@Database(entities = [PlayerData::class, Highscores::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun PlayerDataDao(): PlayerDataDao
     abstract fun HighscoresDao(): HighscoresDao

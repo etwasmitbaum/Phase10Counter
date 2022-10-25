@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         currentLayout = controller.setCorrectView()
         initViews()
 
+        UpdateChecker(applicationContext).checkForUpdate(findViewById(R.id.tvUpdate))
+
     }
 
     private fun initViews() {
