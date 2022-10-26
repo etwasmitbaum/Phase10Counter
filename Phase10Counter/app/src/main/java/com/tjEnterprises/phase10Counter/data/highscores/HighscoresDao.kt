@@ -1,5 +1,6 @@
 package com.tjEnterprises.phase10Counter.data.highscores
 
+import android.os.Parcelable
 import androidx.room.*
 import com.tjEnterprises.phase10Counter.data.player.PlayerData
 

@@ -31,4 +31,7 @@
     <string name="dialog_rounds_of">"Runden von "</string>
     <string name="invalid_punkte_number">Zahl ungültig (zu groß)!</string>
     <string name="one_empty_line">\n</string>
+    <string name="date">Datum</string>
+    <string name="back">Zurück</string>
+    <string name="highscores">Highscores</string>
 </resources>

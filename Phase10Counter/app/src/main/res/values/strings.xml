@@ -30,4 +30,7 @@
     <string name="dialog_rounds_of">"Rounds of "</string>
     <string name="invalid_punkte_number">Number is invalid (too big)!</string>
     <string name="one_empty_line">\n</string>
+    <string name="date">Date</string>
+    <string name="back">Back</string>
+    <string name="highscores">Highscores</string>
 </resources>

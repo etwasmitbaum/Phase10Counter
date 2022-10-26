@@ -13,7 +13,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.AppDatabase
-import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 
@@ -32,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnAddPlayer: Button
     private lateinit var btnEndMatch: Button
     private lateinit var btnShowPhasenInfo: Button
+    private lateinit var btnHighscores: Button
+
     private lateinit var currentLayout: String
 
     @SuppressLint("CommitPrefEdits")
@@ -41,13 +42,15 @@ class MainActivity : AppCompatActivity() {
         val db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "Database"
-        ).allowMainThreadQueries().build()
+        ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
         playerDataDao = db.PlayerDataDao()
         highscoresDao = db.HighscoresDao()
         controller.setContexts(applicationContext, this, playerDataDao, highscoresDao)
         controller.loadAllData()
         currentLayout = controller.setCorrectView()
         initViews()
+
+
 
         //UpdateChecker(applicationContext).checkForUpdate(findViewById(R.id.tvUpdate))
 
@@ -73,6 +76,7 @@ class MainActivity : AppCompatActivity() {
             btnWeiter = findViewById(R.id.btnSpielerAuswahlWeiter)
             btnAddPlayer = findViewById(R.id.btnAddPlayer)
             tvMessage = findViewById(R.id.tvMessage)
+            btnHighscores = findViewById(R.id.btnToHighscore)
 
 
             btnWeiter.visibility = View.INVISIBLE
@@ -83,6 +87,10 @@ class MainActivity : AppCompatActivity() {
 
             btnAddPlayer.setOnClickListener { v ->
                 btnOnClickAddPlayer(v)
+            }
+
+            btnHighscores.setOnClickListener{
+                startActivity(Intent(this, HighscoreActivity::class.java))
             }
 
             etPlayerName.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
