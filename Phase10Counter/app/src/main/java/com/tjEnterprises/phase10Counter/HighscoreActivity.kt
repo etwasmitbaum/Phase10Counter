@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.AppDatabase
-import com.tjEnterprises.phase10Counter.data.adapters.HighscoreRecyclerAdapter
+import com.tjEnterprises.phase10Counter.adapters.HighscoreRecyclerAdapter
 import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 

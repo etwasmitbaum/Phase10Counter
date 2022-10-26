@@ -1,4 +1,4 @@
-package com.tjEnterprises.phase10Counter.data.adapters
+package com.tjEnterprises.phase10Counter.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +24,6 @@ class HighscoreRecyclerAdapter(private val highscores: List<Highscores>) : Recyc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.tvNameHighscore.text = highscores[position].playerName
         holder.tvPunkteHighscore.text = highscores[position].punkte.toString()
-        //holder.tvDatumHighscore.text = highscores[position].date.format()
         val time = highscores[position].date.toString()
         var t = time.drop(8).dropLast(24)        //day
         t = t + " " + time.drop(4).dropLast(27)  //month

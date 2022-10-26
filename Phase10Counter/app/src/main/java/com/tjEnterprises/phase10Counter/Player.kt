@@ -15,17 +15,6 @@ class Player(private val playerNR: Int, private val name: String, private val co
     // value false = phase not complete
     // value true = phase complete
 
-    private lateinit var fragment: PlayerFragment
-
-    fun getFragment(): PlayerFragment {
-        return fragment
-    }
-
-    fun setFragment(frag: PlayerFragment, con: Controller) {
-        this.fragment = frag
-        this.fragment.setController(con, this)
-    }
-
     fun getPhasenAsString(): String {
         var s = ""
 

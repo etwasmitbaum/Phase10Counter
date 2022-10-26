@@ -12,6 +12,10 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentContainerView
 import android.view.WindowManager
+import android.widget.EditText
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.tjEnterprises.phase10Counter.adapters.PlayerRecyclerAdapter
 import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
@@ -30,8 +34,12 @@ class Controller {
     private lateinit var mainActivity: MainActivity
     private lateinit var highscoresDao: HighscoresDao
 
+    private lateinit var playerRecyclerAdapter: PlayerRecyclerAdapter
+    private lateinit var recyclerView: RecyclerView
+
+
     @SuppressLint("CommitPrefEdits")
-    fun setContexts(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao, highscoresDao: HighscoresDao) {
+    fun setContextsAndInit(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao, highscoresDao: HighscoresDao) {
         this.con = con
         this.mainActivity = mainActivity
         this.sharedPref =
@@ -40,6 +48,8 @@ class Controller {
         this.edit.apply()
         this.playerDataDao = playerDataDao
         this.highscoresDao = highscoresDao
+
+        playerRecyclerAdapter = PlayerRecyclerAdapter(players, this)
     }
 
     fun getPlayersSize(): Int {
@@ -76,8 +86,9 @@ class Controller {
 
     fun addPunkteToPlayer(playerNR: Int, punkte: Int) {
         players[playerNR].addPunkte(punkte)
-        updatePlayerFragment(playerNR)
+        //updatePlayerFragment(playerNR)
         savePlayerData(playerNR)
+        playerRecyclerAdapter.notifyItemChanged(playerNR)
     }
 
     private fun setPhase(playerNr: Int, phasenNR: Int, phaseBestanden: Boolean) {
@@ -114,85 +125,6 @@ class Controller {
 
     fun addPlayer(name: String) {
         players.add(Player(players.size, name, con, playerDataDao))
-    }
-
-    fun placePlayerFragments() {
-        val llFragments: LinearLayout = mainActivity.findViewById(R.id.llFragmentHolder)
-        llFragments.removeAllViews()
-
-        var landscape = false
-        var secondLLFragmentsForLandscape: LinearLayout? = null
-
-        if (mainActivity.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            secondLLFragmentsForLandscape = mainActivity.findViewById(R.id.secondLLFragmentHolderForLandscape)
-            secondLLFragmentsForLandscape.removeAllViews()
-            landscape = true
-        }
-
-        var firstLoopPart = 0
-
-        // split the player fragments in to parts for the two LinearLayouts
-        if (landscape){
-            var firstHalf: Double = players.size / 2.toDouble()
-            if (((firstHalf.rem(2).toInt()) != 0) || (firstHalf == 0.5)) {
-                firstHalf += 0.5
-            }
-            firstLoopPart = firstHalf.toInt()
-        } else {
-            firstLoopPart = players.size
-        }
-
-        for (i in 0 until players.size) {
-            val container = FragmentContainerView(mainActivity)
-            container.id =
-                1000 + players[i].getPlayerNR()  // id+1000 cuz else id would be 0 once, causes error
-            container.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-
-            //using the second LinearLayout if the first one should be filled with half of the players
-            //else using only the first one (in portrait mode)
-            if (i >= firstLoopPart && secondLLFragmentsForLandscape != null){
-                secondLLFragmentsForLandscape.addView(container)
-            } else {
-                llFragments.addView(container)
-            }
-
-
-            players[i].setFragment(
-                PlayerFragment.newInstance(), this
-            )
-            val fragment = players[i].getFragment()
-            mainActivity.supportFragmentManager.beginTransaction().apply {
-                replace(container.id, fragment)
-                commit()
-            }
-        }
-    }
-
-    private fun updateAllPlayerFragments() {
-        for (i in 0 until players.size) {
-            updatePlayerFragment(i)
-        }
-    }
-
-    private fun updatePlayerFragment(playerNR: Int){
-        if (players[playerNR].getPhasenAsString() == con.getString(R.string.none)) {
-            players[playerNR].phaseDone(0)
-            players[playerNR].getFragment().updateViews(
-                players[playerNR].getPlayerName(),
-                players[playerNR].getPunktzahl(),
-                con.getString(R.string.none)
-            )
-        } else {
-            players[playerNR].getFragment().updateViews(
-                players[playerNR].getPlayerName(),
-                players[playerNR].getPunktzahl(),
-                players[playerNR].getPhasenAsString()
-            )
-            players[playerNR].phaseUndoDone(0)
-        }
     }
 
     fun phasenOnClick(v: View) {
@@ -290,7 +222,7 @@ class Controller {
             //and place 0 in the array of an player object shows if the player has won
         }
         savePlayerData(playerNr)
-        updateAllPlayerFragments()
+        playerRecyclerAdapter.notifyItemChanged(playerNr)
     }
 
     fun addNewHighscore(){
@@ -302,4 +234,10 @@ class Controller {
         }
     }
 
+    fun makePlayerRecycler(){
+        val llMngr = LinearLayoutManager(con)
+        recyclerView = mainActivity.findViewById(R.id.recyclerViewPlayers)
+        recyclerView.layoutManager = llMngr
+        recyclerView.adapter = playerRecyclerAdapter
+    }
 }

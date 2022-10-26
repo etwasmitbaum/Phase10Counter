@@ -45,12 +45,10 @@ class MainActivity : AppCompatActivity() {
         ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
         playerDataDao = db.PlayerDataDao()
         highscoresDao = db.HighscoresDao()
-        controller.setContexts(applicationContext, this, playerDataDao, highscoresDao)
+        controller.setContextsAndInit(applicationContext, this, playerDataDao, highscoresDao)
         controller.loadAllData()
         currentLayout = controller.setCorrectView()
         initViews()
-
-
 
         //UpdateChecker(applicationContext).checkForUpdate(findViewById(R.id.tvUpdate))
 
@@ -58,7 +56,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         if (currentLayout == "main") {
-            controller.placePlayerFragments()
+            //controller.placePlayerFragments()
+
+            controller.makePlayerRecycler()
 
             btnEndMatch = findViewById(R.id.btnEndMatch)
             btnEndMatch.setOnClickListener {
@@ -69,6 +69,10 @@ class MainActivity : AppCompatActivity() {
             btnShowPhasenInfo.setOnClickListener {
                 showPhasenInfo()
             }
+
+
+
+
 
         } else if (currentLayout == "auswahl"){
             etPlayerName = findViewById(R.id.etPlayerName)
