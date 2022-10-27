@@ -12,16 +12,14 @@ class UpdateChecker (val con: Context,  val mainActivity: MainActivity) {
 
     private val CURRENT_VERSION = 3
 
-    private lateinit var downloadURL: String
-
     fun checkForUpdate(v: TextView) {
         val queue = Volley.newRequestQueue(this.con)
         val URL = "https://api.github.com/repos/etwasmitbaum/Phase10Counter/releases/latest"
+        val downloadURL = "https://github.com/etwasmitbaum/Phase10Counter/releases/latest/download/Phase10Counter.apk "
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, URL, null,
             { response ->
                 val releaseNumber = response.getString("tag_name").filter { it.isDigit() }
                 if(releaseNumber.toInt() > CURRENT_VERSION){
-                    downloadURL = response.getString("html_url")
                     v.text = con.getString(R.string.new_version_click_to_download)
                     v.setOnClickListener {
                         val uri = Uri.parse(downloadURL)

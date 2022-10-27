@@ -49,9 +49,13 @@ class MainActivity : AppCompatActivity() {
         controller.loadAllData()
         currentLayout = controller.setCorrectView()
         initViews()
+
+        UpdateChecker(applicationContext, this).checkForUpdate(tvUpdate)
     }
 
     private fun initViews() {
+        tvUpdate = findViewById(R.id.tvUpdate)
+        tvUpdate.text = ""
         if (currentLayout == "main") {
             controller.makePlayerRecycler()
 
@@ -72,10 +76,6 @@ class MainActivity : AppCompatActivity() {
             btnAddPlayer = findViewById(R.id.btnAddPlayer)
             tvMessage = findViewById(R.id.tvMessage)
             btnHighscores = findViewById(R.id.btnToHighscore)
-
-            tvUpdate = findViewById(R.id.tvUpdate)
-            tvUpdate.text = ""
-            UpdateChecker(applicationContext, this).checkForUpdate(tvUpdate)
 
             btnWeiter.visibility = View.INVISIBLE
 
