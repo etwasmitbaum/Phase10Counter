@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.CheckBox
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.*
 import com.tjEnterprises.phase10Counter.adapters.PlayerRecyclerAdapter
@@ -83,21 +81,24 @@ class Controller {
     fun addPunkteToPlayer(playerNR: Int, punkte: Int) {
         players[playerNR].addPunkte(punkte)
         savePlayerData(playerNR)
-        playerRecyclerAdapter.notifyItemChanged(playerNR)
-        // first update, then scroll futher down
+
+        // need to run this on the UI thread, else app will crash
+        recyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
+
+        // then scroll futher down after updating UI
         recyclerView.smoothScrollToPosition(playerNR + 2)
     }
 
-    private fun setPhase(playerNr: Int, phasenNR: Int, phaseBestanden: Boolean) {
+    private fun setPhase(playerNR: Int, phasenNR: Int, phaseBestanden: Boolean) {
         if (phaseBestanden) {
-            players[playerNr].phaseDone(phasenNR)
+            players[playerNR].phaseDone(phasenNR)
         } else {
-            players[playerNr].phaseUndoDone(phasenNR)
+            players[playerNR].phaseUndoDone(phasenNR)
         }
     }
 
-    private fun getPhase(playerNr: Int, phasenNR: Int): Boolean {
-        return players[playerNr].getPhase(phasenNR)
+    private fun getPhase(playerNR: Int, phasenNR: Int): Boolean {
+        return players[playerNR].getPhase(phasenNR)
     }
 
     // return as string what contentView is used to init the correct views
@@ -202,7 +203,7 @@ class Controller {
         isLandScape: Boolean
     ) {
         //save checkboxes
-        var playerNr = 0
+        var playerNR = 0
         for (i in 0 until 10) {
             val cb: CheckBox = if (isLandScape && i > 4) {
                 secondLayout?.getChildAt(i.rem(5)) as CheckBox
@@ -211,15 +212,17 @@ class Controller {
             }
 
             if (v.tag != null) {
-                playerNr = v.tag as Int
+                playerNR = v.tag as Int
             }
 
-            setPhase(playerNr, i + 1, cb.isChecked)
+            setPhase(playerNR, i + 1, cb.isChecked)
             //i+1 because the Phases start with 1 but array here with 0.
             //and place 0 in the array of an player object shows if the player has won
         }
-        savePlayerData(playerNr)
-        playerRecyclerAdapter.notifyItemChanged(playerNr)
+        savePlayerData(playerNR)
+
+        // need to run this on the UI thread, else app will crash
+        recyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
     }
 
     fun addNewHighscore(){
