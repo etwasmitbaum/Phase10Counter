@@ -1,17 +1,16 @@
 package com.tjEnterprises.phase10Counter
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.tjEnterprises.phase10Counter.data.AppDatabase
 import com.tjEnterprises.phase10Counter.adapters.HighscoreRecyclerAdapter
-import com.tjEnterprises.phase10Counter.data.highscores.Highscores
+import com.tjEnterprises.phase10Counter.data.AppDatabase
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 
-class HighscoreActivity() : AppCompatActivity() {
+class HighscoreActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var btnBack: Button

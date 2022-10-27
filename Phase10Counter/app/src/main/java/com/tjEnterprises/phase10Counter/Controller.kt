@@ -1,26 +1,23 @@
 package com.tjEnterprises.phase10Counter
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.FragmentContainerView
 import android.view.WindowManager
-import android.widget.EditText
+import android.widget.CheckBox
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.*
 import com.tjEnterprises.phase10Counter.adapters.PlayerRecyclerAdapter
 import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class Controller {
@@ -38,7 +35,6 @@ class Controller {
     private lateinit var recyclerView: RecyclerView
 
 
-    @SuppressLint("CommitPrefEdits")
     fun setContextsAndInit(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao, highscoresDao: HighscoresDao) {
         this.con = con
         this.mainActivity = mainActivity
@@ -86,9 +82,10 @@ class Controller {
 
     fun addPunkteToPlayer(playerNR: Int, punkte: Int) {
         players[playerNR].addPunkte(punkte)
-        //updatePlayerFragment(playerNR)
         savePlayerData(playerNR)
         playerRecyclerAdapter.notifyItemChanged(playerNR)
+        // first update, then scroll futher down
+        recyclerView.smoothScrollToPosition(playerNR + 2)
     }
 
     private fun setPhase(playerNr: Int, phasenNR: Int, phaseBestanden: Boolean) {
@@ -235,7 +232,13 @@ class Controller {
     }
 
     fun makePlayerRecycler(){
-        val llMngr = LinearLayoutManager(con)
+        val llMngr = FlexboxLayoutManager(con).apply {
+            justifyContent = JustifyContent.SPACE_EVENLY
+            flexDirection = FlexDirection.ROW
+            flexWrap = FlexWrap.WRAP
+        }
+        llMngr.isItemPrefetchEnabled = true
+
         recyclerView = mainActivity.findViewById(R.id.recyclerViewPlayers)
         recyclerView.layoutManager = llMngr
         recyclerView.adapter = playerRecyclerAdapter

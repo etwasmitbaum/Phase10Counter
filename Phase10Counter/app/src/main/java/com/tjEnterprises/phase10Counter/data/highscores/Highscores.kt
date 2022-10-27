@@ -3,9 +3,6 @@ package com.tjEnterprises.phase10Counter.data.highscores
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
 @Entity

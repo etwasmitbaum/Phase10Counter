@@ -1,7 +1,6 @@
 package com.tjEnterprises.phase10Counter.data.player
 
 import androidx.room.*
-import com.tjEnterprises.phase10Counter.Player
 
 @Dao
 interface PlayerDataDao {

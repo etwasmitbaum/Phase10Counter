@@ -19,7 +19,6 @@ import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 
 class MainActivity : AppCompatActivity() {
 
-
     private lateinit var playerDataDao: PlayerDataDao
     private lateinit var highscoresDao: HighscoresDao
     private val controller: Controller = Controller()
@@ -56,8 +55,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         if (currentLayout == "main") {
-            //controller.placePlayerFragments()
-
             controller.makePlayerRecycler()
 
             btnEndMatch = findViewById(R.id.btnEndMatch)
@@ -69,10 +66,6 @@ class MainActivity : AppCompatActivity() {
             btnShowPhasenInfo.setOnClickListener {
                 showPhasenInfo()
             }
-
-
-
-
 
         } else if (currentLayout == "auswahl"){
             etPlayerName = findViewById(R.id.etPlayerName)
@@ -127,6 +120,11 @@ class MainActivity : AppCompatActivity() {
 
             //activating the next button
             btnWeiter.visibility = View.VISIBLE
+
+            for (i in 2 until 100){
+                controller.addPlayer(i.toString())
+            }
+
         } else {
             if (controller.getPlayersSize() > 1) {
                 //closing keyboard to signaling the user to continue
