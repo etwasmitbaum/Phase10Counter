@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnEndMatch: Button
     private lateinit var btnShowPhasenInfo: Button
     private lateinit var btnHighscores: Button
+    private lateinit var tvUpdate: TextView
 
     private lateinit var currentLayout: String
 
@@ -48,9 +49,6 @@ class MainActivity : AppCompatActivity() {
         controller.loadAllData()
         currentLayout = controller.setCorrectView()
         initViews()
-
-        //UpdateChecker(applicationContext).checkForUpdate(findViewById(R.id.tvUpdate))
-
     }
 
     private fun initViews() {
@@ -75,6 +73,9 @@ class MainActivity : AppCompatActivity() {
             tvMessage = findViewById(R.id.tvMessage)
             btnHighscores = findViewById(R.id.btnToHighscore)
 
+            tvUpdate = findViewById(R.id.tvUpdate)
+            tvUpdate.text = ""
+            UpdateChecker(applicationContext, this).checkForUpdate(tvUpdate)
 
             btnWeiter.visibility = View.INVISIBLE
 

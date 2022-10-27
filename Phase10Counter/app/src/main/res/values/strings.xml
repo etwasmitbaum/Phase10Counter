@@ -33,4 +33,6 @@
     <string name="date">Date</string>
     <string name="back">Back</string>
     <string name="highscores">Highscores</string>
+    <string name="new_version_click_to_download">New Version available. Click here to Download</string>
+    <string name="error_while_checking_for_update">Error while checking for updates</string>
 </resources>

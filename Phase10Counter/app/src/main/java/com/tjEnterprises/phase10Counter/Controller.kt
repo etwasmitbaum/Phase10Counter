@@ -241,7 +241,6 @@ class Controller {
             flexWrap = FlexWrap.WRAP
         }
         llMngr.isItemPrefetchEnabled = true
-
         recyclerView = mainActivity.findViewById(R.id.recyclerViewPlayers)
         recyclerView.layoutManager = llMngr
         recyclerView.adapter = playerRecyclerAdapter
