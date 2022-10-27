@@ -121,9 +121,9 @@ class MainActivity : AppCompatActivity() {
             //activating the next button
             btnWeiter.visibility = View.VISIBLE
 
-            for (i in 2 until 100){
-                controller.addPlayer(i.toString())
-            }
+            //for (i in 2 until 100){
+            //    controller.addPlayer(i.toString())
+            //}
 
         } else {
             if (controller.getPlayersSize() > 1) {
