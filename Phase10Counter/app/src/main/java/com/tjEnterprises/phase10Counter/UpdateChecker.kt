@@ -10,7 +10,7 @@ import com.android.volley.toolbox.Volley
 
 class UpdateChecker (val con: Context,  val mainActivity: MainActivity) {
 
-    private val CURRENT_VERSION = 3
+    private val CURRENT_VERSION = 4
 
     fun checkForUpdate(v: TextView) {
         val queue = Volley.newRequestQueue(this.con)
