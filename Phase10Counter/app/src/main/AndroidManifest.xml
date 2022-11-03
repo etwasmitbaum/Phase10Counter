@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.tjEnterprises.phase10Counter"
-        tools:targetApi="s">
+        android:localeConfig="@xml/locales_config"
+        tools:targetApi="tiramisu">
         <activity
             android:name=".HighscoreActivity"
             android:exported="false">
