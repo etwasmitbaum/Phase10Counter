@@ -1,0 +1,1 @@
+Small App to keep track of your Phase10 game! Optimised for Phones and Tablets.
