@@ -57,7 +57,9 @@ class MainActivity : AppCompatActivity() {
         currentLayout = controller.setCorrectView()
         initViews()
 
-        UpdateChecker(applicationContext, this).checkForUpdate(tvUpdate)
+        if (BuildConfig.BUILD_TYPE != "release") {
+            UpdateChecker(applicationContext, this).checkForUpdate(tvUpdate)
+        }
     }
 
     private fun initViews() {
