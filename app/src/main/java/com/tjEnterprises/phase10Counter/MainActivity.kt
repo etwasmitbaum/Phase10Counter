@@ -131,9 +131,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLicence(context: Context) {
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("GPLv3-Lizenz")
+        builder.setTitle(getString(R.string.GPLv3License))
         builder.setMessage(readGPLv3LicenseText())
-        builder.setPositiveButton("OK") { dialog, which ->
+        builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->
             dialog.dismiss()
         }
         val dialog: AlertDialog = builder.create()
@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
 
         val link = "https://github.com/etwasmitbaum/Phase10Counter/"
 
-        val message = "Version: " + BuildConfig.VERSION_NAME + "\nLink Github: " + link
+        val message = getString(R.string.version) + BuildConfig.VERSION_NAME + "\n" + getString(R.string.githubLink) + link
         val spannableMessage = SpannableString(message)
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
@@ -173,9 +173,9 @@ class MainActivity : AppCompatActivity() {
         spannableMessage.setSpan(clickableSpan, linkStartIndex, linkStartIndex + link.length, 0)
 
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Über")
+        builder.setTitle(getString(R.string.about))
         builder.setMessage(spannableMessage)
-        builder.setPositiveButton("OK") { dialog, which ->
+        builder.setPositiveButton(getString((R.string.ok))) { dialog, which ->
             dialog.dismiss()
         }
         val dialog: AlertDialog = builder.create()

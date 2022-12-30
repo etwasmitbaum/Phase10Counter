@@ -35,4 +35,9 @@
     <string name="highscores">Highscores</string>
     <string name="new_version_click_to_download">New Version available. Click here to Download</string>
     <string name="error_while_checking_for_update">Error while checking for updates</string>
+    <string name="license">License</string>
+    <string name="about">About</string>
+    <string name="GPLv3License">GPLv3-License</string>
+    <string name="version">"Version: "</string>
+    <string name="githubLink">"Link to Github: "</string>
 </resources>
