@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.View
+import android.util.AttributeSet
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,12 @@ import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.AppDatabase
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.net.Uri
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 
 
 class MainActivity : AppCompatActivity() {
@@ -98,7 +105,83 @@ class MainActivity : AppCompatActivity() {
                 }
                 false
             })
+
+            setSupportActionBar(findViewById(R.id.toolbar2))
+
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId) {
+            R.id.menu_license -> showLicence(this)
+
+            R.id.menu_about -> showAbout(this)
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showLicence(context: Context) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("GPLv3-Lizenz")
+        builder.setMessage(readGPLv3LicenseText())
+        builder.setPositiveButton("OK") { dialog, which ->
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    fun readGPLv3LicenseText(): String {
+        // Lese den Lizenztext aus einer raw-Ressource
+        val inputStream = resources.openRawResource(R.raw.license)
+        val reader = InputStreamReader(inputStream)
+        val bufferedReader = BufferedReader(reader)
+        val stringBuilder = StringBuilder()
+        var line: String? = bufferedReader.readLine()
+        while (line != null) {
+            stringBuilder.append(line)
+            stringBuilder.append("\n")
+            line = bufferedReader.readLine()
+        }
+        return stringBuilder.toString()
+    }
+
+    private fun showAbout(context: Context) {
+
+        val link = "https://github.com/etwasmitbaum/Phase10Counter/"
+
+        val message = "Version: " + BuildConfig.VERSION_NAME + "\nLink Github: " + link
+        val spannableMessage = SpannableString(message)
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                // Hier kannst du den Code einfügen, der ausgeführt werden soll, wenn der Link angeklickt wird
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(link)
+                startActivity(intent)
+            }
+        }
+        val linkStartIndex = message.indexOf(link)
+        spannableMessage.setSpan(clickableSpan, linkStartIndex, linkStartIndex + link.length, 0)
+
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Über")
+        builder.setMessage(spannableMessage)
+        builder.setPositiveButton("OK") { dialog, which ->
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+        val messageView = dialog.findViewById<TextView>(android.R.id.message)
+        messageView?.movementMethod = LinkMovementMethod.getInstance()
+
+
     }
 
     private fun showPhasenInfo() {
