@@ -77,8 +77,8 @@ class PlayerRecyclerAdapter(private val player: MutableList<Player> = ArrayList(
         holder.btnPhasen.tag = player[position].getPlayerNR()
         holder.pl = player[position]
 
-        val adpater = ArrayAdapter<Int>(controller.appContext, android.R.layout.simple_spinner_dropdown_item, player[position].getPunkteList())
-        adpater.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adpater = ArrayAdapter<Int>(controller.appContext, R.layout.point_history_spinner, player[position].getPunkteList())
+        adpater.setDropDownViewResource(R.layout.point_history_spinner)
         holder.tvPunkte.adapter = adpater
         holder.tvPunkte.setSelection(0)
 
