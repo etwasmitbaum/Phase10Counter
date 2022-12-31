@@ -20,6 +20,7 @@ import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.net.Uri
+import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var playerDataDao: PlayerDataDao
     private lateinit var highscoresDao: HighscoresDao
+    private lateinit var pointHistoryDao: PointHistoryDao
     private val controller: Controller = Controller()
 
     private lateinit var etPlayerName: EditText
@@ -52,7 +54,8 @@ class MainActivity : AppCompatActivity() {
         ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
         playerDataDao = db.PlayerDataDao()
         highscoresDao = db.HighscoresDao()
-        controller.setContextsAndInit(applicationContext, this, playerDataDao, highscoresDao)
+        pointHistoryDao = db.PointHistoryDao()
+        controller.setContextsAndInit(applicationContext, this, playerDataDao, highscoresDao, pointHistoryDao)
         controller.loadAllData()
         currentLayout = controller.setCorrectView()
         initViews()

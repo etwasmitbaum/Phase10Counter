@@ -3,16 +3,25 @@ package com.tjEnterprises.phase10Counter
 import android.content.Context
 import com.tjEnterprises.phase10Counter.data.player.PlayerData
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
+import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistory
+import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
+import java.util.*
+import kotlin.collections.ArrayList
 
-class Player(private val playerNR: Int, private val name: String, private val con: Context, private val playerDataDao: PlayerDataDao) {
+class Player(private val playerNR: Int, private val name: String, private val con: Context, private val playerDataDao: PlayerDataDao, private val pointHistoryDao: PointHistoryDao) {
 
     private var pData: PlayerData = PlayerData(playerNR, name, 0, "", false)
-    private var punkte: Int = 0
+    private var punkteGesamt: Int = 0
+    private val punkteList = ArrayList<Int>(listOf(0))   // init the arrayList with 0, so the spinner object will show "0"
 
     private var phasen: BooleanArray = BooleanArray(11) { false }
     // index 0 = game won
     // value false = phase not complete
     // value true = phase complete
+
+    fun getPunkteList(): ArrayList<Int>{
+        return punkteList
+    }
 
     fun getPhasenAsString(): String {
         var s = ""
@@ -43,11 +52,14 @@ class Player(private val playerNR: Int, private val name: String, private val co
     }
 
     fun addPunkte(punkte: Int) {
-        this.punkte = this.punkte + punkte
+        this.punkteGesamt = this.punkteGesamt + punkte
+        pointHistoryDao.insertPoint(PointHistory(0, punkte, playerNR))
+        punkteList[0] = this.punkteGesamt
+        punkteList.add(1, punkte)
     }
 
     fun getPunktzahl(): Int {
-        return this.punkte
+        return this.punkteGesamt
     }
 
     fun phaseDone(phasenNR: Int) {
@@ -73,7 +85,6 @@ class Player(private val playerNR: Int, private val name: String, private val co
             phasen[0] = false
             pData.gameWon = false
         }
-
         playerDataDao.insertPlayerData(pData)
 
     }
@@ -81,7 +92,9 @@ class Player(private val playerNR: Int, private val name: String, private val co
     fun loadPlayerData() {
         // load from database
         pData = playerDataDao.getSinglePlayer(playerNR)
-        this.punkte = pData.punkte
+        this.punkteGesamt = pData.punkte
+        this.punkteList[0] = punkteGesamt
+        this.punkteList.addAll(pointHistoryDao.getPointHistoryFromNewToOld(playerNR))
 
         // get phasen and convert string to bool array of phasen
         val phasen = pData.phasen.filter { it.isDigit() }

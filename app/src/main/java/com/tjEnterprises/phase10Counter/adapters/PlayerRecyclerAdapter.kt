@@ -5,24 +5,24 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tjEnterprises.phase10Counter.Controller
 import com.tjEnterprises.phase10Counter.Player
 import com.tjEnterprises.phase10Counter.R
 
-class PlayerRecyclerAdapter(private val player: MutableList<Player> = ArrayList(), private val con: Controller) : RecyclerView.Adapter<PlayerRecyclerAdapter.ViewHolder>() {
-
+class PlayerRecyclerAdapter(private val player: MutableList<Player> = ArrayList(), private val controller: Controller) : RecyclerView.Adapter<PlayerRecyclerAdapter.ViewHolder>() {
     class ViewHolder(itemView: View, private val con: Controller) : RecyclerView.ViewHolder(itemView), OnClickListener {
         val tvName = itemView.findViewById<TextView>(R.id.tvName)
-        val tvPunkte = itemView.findViewById<TextView>(R.id.tvPunkte)
+        val tvPunkte = itemView.findViewById<Spinner>(R.id.spinPunkte)
         val tvPhasen = itemView.findViewById<TextView>(R.id.tvPhasen)
 
         var btnPhasen: Button
         var etPunkte: EditText
-
         lateinit var pl: Player
 
         init {
@@ -67,15 +67,20 @@ class PlayerRecyclerAdapter(private val player: MutableList<Player> = ArrayList(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_player, parent, false)
-        return ViewHolder(view, con)
+        return ViewHolder(view, controller)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.tvName.text = player[position].getPlayerName()
-        holder.tvPunkte.text = player[position].getPunktzahl().toString()
+        //holder.tvPunkte.text = player[position].getPunktzahl().toString()
         holder.tvPhasen.text = player[position].getPhasenAsString()
         holder.btnPhasen.tag = player[position].getPlayerNR()
         holder.pl = player[position]
+
+        val adpater = ArrayAdapter<Int>(controller.appContext, android.R.layout.simple_spinner_dropdown_item, player[position].getPunkteList())
+        adpater.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        holder.tvPunkte.adapter = adpater
+        holder.tvPunkte.setSelection(0)
 
         if(position == player.size - 1){
             holder.etPunkte.imeOptions = EditorInfo.IME_ACTION_DONE

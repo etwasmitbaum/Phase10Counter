@@ -15,6 +15,7 @@ import com.tjEnterprises.phase10Counter.adapters.PlayerRecyclerAdapter
 import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
+import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
 import java.util.*
 
 
@@ -25,16 +26,17 @@ class Controller {
     private lateinit var playerDataDao: PlayerDataDao
     private lateinit var sharedPref: SharedPreferences
     private lateinit var edit: SharedPreferences.Editor
-    private lateinit var con: Context
+    lateinit var appContext: Context
     private lateinit var mainActivity: MainActivity
     private lateinit var highscoresDao: HighscoresDao
+    private lateinit var pointHistoryDao: PointHistoryDao
 
     private lateinit var playerRecyclerAdapter: PlayerRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
 
 
-    fun setContextsAndInit(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao, highscoresDao: HighscoresDao) {
-        this.con = con
+    fun setContextsAndInit(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao, highscoresDao: HighscoresDao, pointHistoryDao: PointHistoryDao) {
+        this.appContext = con
         this.mainActivity = mainActivity
         this.sharedPref =
             con.getSharedPreferences(("controller_sharedPrefs"), Context.MODE_PRIVATE)
@@ -42,6 +44,7 @@ class Controller {
         this.edit.apply()
         this.playerDataDao = playerDataDao
         this.highscoresDao = highscoresDao
+        this.pointHistoryDao = pointHistoryDao
 
         playerRecyclerAdapter = PlayerRecyclerAdapter(players, this)
     }
@@ -67,8 +70,7 @@ class Controller {
                 Player(
                     sharedPref.getInt(i.toString() + "_playerNR", -1),
                     sharedPref.getString(i.toString() + "_playerName", "404").toString(),
-                    con, playerDataDao
-                )
+                    appContext, playerDataDao, pointHistoryDao)
             )
             players[i].loadPlayerData()
         }
@@ -86,7 +88,8 @@ class Controller {
         recyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
 
         // then scroll futher down after updating UI
-        recyclerView.smoothScrollToPosition(playerNR + 2)
+        // removed this line, because it may be irritating for the user
+        // recyclerView.smoothScrollToPosition(playerNR + 2)
     }
 
     private fun setPhase(playerNR: Int, phasenNR: Int, phaseBestanden: Boolean) {
@@ -117,12 +120,13 @@ class Controller {
             players[i].removePlayerData()
             players.removeAt(i)
         }
+        pointHistoryDao.deletePointHistory()
         edit.clear()
         edit.commit()
     }
 
     fun addPlayer(name: String) {
-        players.add(Player(players.size, name, con, playerDataDao))
+        players.add(Player(players.size, name, appContext, playerDataDao, pointHistoryDao))
     }
 
     fun phasenOnClick(v: View) {
@@ -235,7 +239,7 @@ class Controller {
     }
 
     fun makePlayerRecycler(){
-        val llMngr = FlexboxLayoutManager(con).apply {
+        val llMngr = FlexboxLayoutManager(appContext).apply {
             justifyContent = JustifyContent.SPACE_EVENLY
             flexDirection = FlexDirection.ROW
             flexWrap = FlexWrap.WRAP
