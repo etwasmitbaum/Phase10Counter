@@ -3,7 +3,7 @@
     style="@style/Theme.tjEnterprises.phase10Counter"
     android:singleLine="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:padding="8dp"
     android:paddingBottom="16dp"
     android:textSize="16sp"
