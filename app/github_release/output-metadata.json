@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.tjEnterprises.phase10Counter",
+  "variantName": "github_release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 8,
+      "versionName": "1.4.1",
+      "outputFile": "app-github_release.apk"
+    }
+  ],
+  "elementType": "File"
+}
