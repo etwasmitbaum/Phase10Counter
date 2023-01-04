@@ -17,6 +17,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.AppDatabase
+import com.tjEnterprises.phase10Counter.data.MigrationHelper
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
@@ -46,11 +47,12 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "Database"
-        ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
+        ).fallbackToDestructiveMigration().allowMainThreadQueries().addMigrations(
+            MigrationHelper.MIGRATION_1_2, MigrationHelper.MIGRATION_2_3
+        ).build()
         playerDataDao = db.PlayerDataDao()
         highscoresDao = db.HighscoresDao()
         pointHistoryDao = db.PointHistoryDao()
