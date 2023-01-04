@@ -6,8 +6,11 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.AttributeSet
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -16,13 +19,9 @@ import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.AppDatabase
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
-import android.text.SpannableString
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.net.Uri
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 
 class MainActivity : AppCompatActivity() {

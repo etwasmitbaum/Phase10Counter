@@ -5,8 +5,6 @@ import com.tjEnterprises.phase10Counter.data.player.PlayerData
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistory
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
-import java.util.*
-import kotlin.collections.ArrayList
 
 class Player(private val playerNR: Int, private val name: String, private val con: Context, private val playerDataDao: PlayerDataDao, private val pointHistoryDao: PointHistoryDao) {
 

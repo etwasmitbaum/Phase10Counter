@@ -10,7 +10,10 @@ import android.view.WindowManager
 import android.widget.CheckBox
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.*
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.tjEnterprises.phase10Counter.adapters.PlayerRecyclerAdapter
 import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao

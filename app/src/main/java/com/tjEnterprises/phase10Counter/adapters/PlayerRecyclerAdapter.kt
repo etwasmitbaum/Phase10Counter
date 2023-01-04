@@ -5,11 +5,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.tjEnterprises.phase10Counter.Controller
 import com.tjEnterprises.phase10Counter.Player
@@ -93,5 +89,4 @@ class PlayerRecyclerAdapter(private val player: MutableList<Player> = ArrayList(
     override fun getItemCount(): Int {
         return player.size
     }
-
 }
