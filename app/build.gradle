@@ -15,8 +15,8 @@ android {
         applicationId "com.tjEnterprises.phase10Counter"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 9
-        versionName "1.4.2"
+        versionCode 10
+        versionName "1.4.3"
         resConfigs "en", "de"
 
         javaCompileOptions {
