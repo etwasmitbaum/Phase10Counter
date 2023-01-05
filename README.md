@@ -1,6 +1,9 @@
 # Phase10Counter
 Small App to keep track of your Phase10 game! Optimised for Phones and Tablets.
 
+# Phase10Counter_Fdroid.apk vs Phase10Counter.apk
+The only difference is, the Fdroid version does not have an integrated update checker and there does not have internet permission. The not Fdroid version requires internet only for the update checking.
+
 # Important
 This was programmed as a side project. I am not any kind of professional developer or IT guy. This was just fun for me.
 The Source Code is half english half german and probably cotains several war crimes since I did not put more effort into that, than it needed to fullfill the porpuse of tracking a Phase10 game.
