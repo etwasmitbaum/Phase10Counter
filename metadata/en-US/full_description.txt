@@ -1,0 +1,4 @@
+Anyone who likes to play Phase 10 probably knows the problem of counting.
+This simple app will help you keep track of your game.
+Add a few players and you are ready to go.
+When a round is over, it can be checked off. The rounds do not have to be checked off in the correct order.
