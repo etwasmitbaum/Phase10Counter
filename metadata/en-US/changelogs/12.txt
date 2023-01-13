@@ -1,1 +1,2 @@
-Add F-Droid Support
+- Add F-Droid Support
+- More consistent High scores UI

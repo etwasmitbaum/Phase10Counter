@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="100"
-    android:gravity="center_vertical">
+    android:weightSum="100">
 
     <TextView
         android:id="@+id/tvNameHighscore"
@@ -17,9 +16,8 @@
         android:padding="4dp"/>
 
     <View
-        android:layout_width="0dp"
+        android:layout_width="3dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.5"
         android:background="@color/light_grey" />
 
     <TextView
@@ -30,14 +28,12 @@
         android:text="@string/punkteHint"
         android:textSize="18sp"
         android:textAlignment="center"
-        android:padding="4dp"/>
+        android:padding="4dp" />
 
     <View
-        android:layout_width="0dp"
+        android:layout_width="3dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.5"
-        android:background="@color/light_grey"
-        />
+        android:background="@color/light_grey" />
 
     <TextView
         android:id="@+id/tvDatumHighscore"
@@ -47,5 +43,5 @@
         android:text="@string/date"
         android:textSize="18sp"
         android:textAlignment="center"
-        android:padding="4dp"/>
+        android:padding="4dp" />
 </LinearLayout>
