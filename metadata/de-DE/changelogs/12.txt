@@ -1,0 +1,3 @@
+- F-Droid Support hinzugefügt
+- Highscores Design ist konsistenter
+- Schreibfehler im englischen "High scores" behoben
