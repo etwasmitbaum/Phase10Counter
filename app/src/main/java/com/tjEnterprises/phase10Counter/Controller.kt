@@ -14,6 +14,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.tjEnterprises.phase10Counter.adapters.AddPlayerAdapter
 import com.tjEnterprises.phase10Counter.adapters.PlayerRecyclerAdapter
 import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
@@ -35,7 +36,9 @@ class Controller {
     private lateinit var pointHistoryDao: PointHistoryDao
 
     private lateinit var playerRecyclerAdapter: PlayerRecyclerAdapter
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var playersRecyclerView: RecyclerView
+    private lateinit var addPlayerRecyclerAdapter: AddPlayerAdapter
+    private lateinit var addPlayersRecyclerView: RecyclerView
 
 
     fun setContextsAndInit(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao, highscoresDao: HighscoresDao, pointHistoryDao: PointHistoryDao) {
@@ -50,6 +53,7 @@ class Controller {
         this.pointHistoryDao = pointHistoryDao
 
         playerRecyclerAdapter = PlayerRecyclerAdapter(players, this)
+        addPlayerRecyclerAdapter = AddPlayerAdapter(players, this)
     }
 
     fun getPlayersSize(): Int {
@@ -88,7 +92,7 @@ class Controller {
         savePlayerData(playerNR)
 
         // need to run this on the UI thread, else app will crash
-        recyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
+        playersRecyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
 
         // then scroll futher down after updating UI
         // removed this line, because it may be irritating for the user
@@ -118,6 +122,18 @@ class Controller {
         }
     }
 
+    fun removePlayer(playerId: Int){
+        players[playerId].removePlayerData()
+        players.removeAt(playerId)
+        addPlayerRecyclerAdapter.notifyItemRemoved(playerId)
+
+        // change all IDs after the one removed, so no id duplicates will be created
+        for (i in playerId until players.size){
+            players[i].changePlayerNR(players[i].getPlayerNR() - 1)
+        }
+        print("test")
+    }
+
     fun removeAllData() {
         for (i in players.size - 1 downTo 0) {
             players[i].removePlayerData()
@@ -130,6 +146,8 @@ class Controller {
 
     fun addPlayer(name: String) {
         players.add(Player(players.size, name, appContext, playerDataDao, pointHistoryDao))
+        addPlayerRecyclerAdapter.notifyItemInserted(players.size - 1)
+        addPlayersRecyclerView.smoothScrollToPosition(players.size)
     }
 
     fun phasenOnClick(v: View) {
@@ -229,7 +247,7 @@ class Controller {
         savePlayerData(playerNR)
 
         // need to run this on the UI thread, else app will crash
-        recyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
+        playersRecyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
     }
 
     fun addNewHighscore(){
@@ -248,8 +266,24 @@ class Controller {
             flexWrap = FlexWrap.WRAP
         }
         llMngr.isItemPrefetchEnabled = true
-        recyclerView = mainActivity.findViewById(R.id.recyclerViewPlayers)
-        recyclerView.layoutManager = llMngr
-        recyclerView.adapter = playerRecyclerAdapter
+        playersRecyclerView = mainActivity.findViewById(R.id.recyclerViewPlayers)
+        playersRecyclerView.layoutManager = llMngr
+        playersRecyclerView.adapter = playerRecyclerAdapter
+    }
+
+    fun makeAddPlayerRecycler(){
+        val llMngr = FlexboxLayoutManager(appContext).apply {
+            justifyContent = JustifyContent.SPACE_EVENLY
+            flexDirection = FlexDirection.ROW
+            flexWrap = FlexWrap.WRAP
+        }
+        llMngr.isItemPrefetchEnabled = true
+        addPlayersRecyclerView = mainActivity.findViewById(R.id.recyclerViewAddPlayer)
+        addPlayersRecyclerView.layoutManager = llMngr
+        addPlayersRecyclerView.adapter = addPlayerRecyclerAdapter
+    }
+
+    fun changePlayerName(newName: String, playerId: Int){
+        players.get(playerId).changePlayerName(newName)
     }
 }

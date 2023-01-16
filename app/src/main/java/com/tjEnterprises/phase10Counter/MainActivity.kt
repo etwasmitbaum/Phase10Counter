@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     private val controller: Controller = Controller()
 
     private lateinit var etPlayerName: EditText
-    private lateinit var tvPlayers: TextView
     private lateinit var tvMessage: TextView
     private lateinit var btnWeiter: Button
     private lateinit var btnAddPlayer: Button
@@ -84,7 +83,6 @@ class MainActivity : AppCompatActivity() {
 
         } else if (currentLayout == "auswahl"){
             etPlayerName = findViewById(R.id.etPlayerName)
-            tvPlayers = findViewById(R.id.tvAllPlayers)
             btnWeiter = findViewById(R.id.btnSpielerAuswahlWeiter)
             btnAddPlayer = findViewById(R.id.btnAddPlayer)
             tvMessage = findViewById(R.id.tvMessage)
@@ -113,6 +111,8 @@ class MainActivity : AppCompatActivity() {
             })
 
             setSupportActionBar(findViewById(R.id.toolbar2))
+
+            controller.makeAddPlayerRecycler()
 
         }
     }
@@ -201,8 +201,6 @@ class MainActivity : AppCompatActivity() {
         if (etPlayerName.text.toString().isNotEmpty() && etPlayerName.text.toString().isNotBlank()) {
             //saving the player
             controller.addPlayer(etPlayerName.text.toString())
-            val textToBeSet = (etPlayerName.text.toString() + "\n") + tvPlayers.text.toString()
-            tvPlayers.text = textToBeSet
 
             //resetting all texts
             etPlayerName.text = null

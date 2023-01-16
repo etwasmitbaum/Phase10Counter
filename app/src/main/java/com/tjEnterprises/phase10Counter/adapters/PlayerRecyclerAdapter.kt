@@ -32,7 +32,7 @@ class PlayerRecyclerAdapter(private val player: MutableList<Player> = ArrayList(
 
             // we need to listeners on the editText, to also save on last editText in list.
             // else the "done" action would not change the focus and data would not be saved
-            // also if we net the action for the last editText to "next" it only goes to the top most visible editText
+            // also if we set the action for the last editText to "next" it only goes to the top most visible editText
             etPunkte.setOnEditorActionListener  { _, actionID, _ ->
                 if(actionID == EditorInfo.IME_ACTION_DONE){
                     editorAction()

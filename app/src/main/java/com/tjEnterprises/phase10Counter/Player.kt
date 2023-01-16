@@ -6,7 +6,7 @@ import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistory
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
 
-class Player(private val playerNR: Int, private val name: String, private val con: Context, private val playerDataDao: PlayerDataDao, private val pointHistoryDao: PointHistoryDao) {
+class Player(private var playerNR: Int, private var name: String, private val con: Context, private val playerDataDao: PlayerDataDao, private val pointHistoryDao: PointHistoryDao) {
 
     private var pData: PlayerData = PlayerData(playerNR, name, 0, "", false)
     private var punkteGesamt: Int = 0
@@ -47,6 +47,13 @@ class Player(private val playerNR: Int, private val name: String, private val co
 
     fun getPlayerName(): String {
         return this.name
+    }
+
+    fun changePlayerNR(newNR: Int){
+        this.playerNR = newNR
+    }
+    fun changePlayerName(newName: String){
+        this.name = newName
     }
 
     fun addPunkte(punkte: Int) {
