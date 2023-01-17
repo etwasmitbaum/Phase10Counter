@@ -138,6 +138,7 @@ class Controller {
         // change all IDs after the one removed, so no id duplicates will be created
         for (i in playerId until players.size) {
             players[i].changePlayerNR(players[i].getPlayerNR() - 1)
+            addPlayerRecyclerAdapter.notifyItemChanged(i)
         }
     }
 
@@ -306,7 +307,6 @@ class Controller {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val removedPlayer: Player = players[viewHolder.adapterPosition]
                 removePlayer(removedPlayer.getPlayerNR())
-                addPlayerRecyclerAdapter.notifyItemRemoved(viewHolder.adapterPosition)
             }
         }).attachToRecyclerView(addPlayersRecyclerView)
     }
