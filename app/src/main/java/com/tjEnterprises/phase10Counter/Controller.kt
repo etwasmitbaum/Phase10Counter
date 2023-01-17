@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.CheckBox
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -41,7 +42,13 @@ class Controller {
     private lateinit var addPlayersRecyclerView: RecyclerView
 
 
-    fun setContextsAndInit(con: Context, mainActivity: MainActivity, playerDataDao: PlayerDataDao, highscoresDao: HighscoresDao, pointHistoryDao: PointHistoryDao) {
+    fun setContextsAndInit(
+        con: Context,
+        mainActivity: MainActivity,
+        playerDataDao: PlayerDataDao,
+        highscoresDao: HighscoresDao,
+        pointHistoryDao: PointHistoryDao
+    ) {
         this.appContext = con
         this.mainActivity = mainActivity
         this.sharedPref =
@@ -77,13 +84,14 @@ class Controller {
                 Player(
                     sharedPref.getInt(i.toString() + "_playerNR", -1),
                     sharedPref.getString(i.toString() + "_playerName", "404").toString(),
-                    appContext, playerDataDao, pointHistoryDao)
+                    appContext, playerDataDao, pointHistoryDao
+                )
             )
             players[i].loadPlayerData()
         }
     }
 
-    private fun savePlayerData(playerNR: Int){
+    private fun savePlayerData(playerNR: Int) {
         players[playerNR].savePlayerData()
     }
 
@@ -122,16 +130,15 @@ class Controller {
         }
     }
 
-    fun removePlayer(playerId: Int){
+    fun removePlayer(playerId: Int) {
         players[playerId].removePlayerData()
         players.removeAt(playerId)
         addPlayerRecyclerAdapter.notifyItemRemoved(playerId)
 
         // change all IDs after the one removed, so no id duplicates will be created
-        for (i in playerId until players.size){
+        for (i in playerId until players.size) {
             players[i].changePlayerNR(players[i].getPlayerNR() - 1)
         }
-        print("test")
     }
 
     fun removeAllData() {
@@ -250,16 +257,21 @@ class Controller {
         playersRecyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
     }
 
-    fun addNewHighscore(){
+    fun addNewHighscore() {
         for (i in 0 until players.size) {
-            if(players[i].getPhase(0)){
-                val high = Highscores(0, players[i].getPlayerName(), players[i].getPunktzahl(), Calendar.getInstance().time)
+            if (players[i].getPhase(0)) {
+                val high = Highscores(
+                    0,
+                    players[i].getPlayerName(),
+                    players[i].getPunktzahl(),
+                    Calendar.getInstance().time
+                )
                 highscoresDao.insertHighscore(high)
             }
         }
     }
 
-    fun makePlayerRecycler(){
+    fun makePlayerRecycler() {
         val llMngr = FlexboxLayoutManager(appContext).apply {
             justifyContent = JustifyContent.SPACE_EVENLY
             flexDirection = FlexDirection.ROW
@@ -271,7 +283,7 @@ class Controller {
         playersRecyclerView.adapter = playerRecyclerAdapter
     }
 
-    fun makeAddPlayerRecycler(){
+    fun makeAddPlayerRecycler() {
         val llMngr = FlexboxLayoutManager(appContext).apply {
             justifyContent = JustifyContent.SPACE_EVENLY
             flexDirection = FlexDirection.ROW
@@ -281,9 +293,25 @@ class Controller {
         addPlayersRecyclerView = mainActivity.findViewById(R.id.recyclerViewAddPlayer)
         addPlayersRecyclerView.layoutManager = llMngr
         addPlayersRecyclerView.adapter = addPlayerRecyclerAdapter
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val removedPlayer: Player = players[viewHolder.adapterPosition]
+                removePlayer(removedPlayer.getPlayerNR())
+                addPlayerRecyclerAdapter.notifyItemRemoved(viewHolder.adapterPosition)
+            }
+        }).attachToRecyclerView(addPlayersRecyclerView)
     }
 
-    fun changePlayerName(newName: String, playerId: Int){
-        players.get(playerId).changePlayerName(newName)
+    fun changePlayerName(newName: String, playerId: Int) {
+        players[playerId].changePlayerName(newName)
     }
 }
