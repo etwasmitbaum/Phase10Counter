@@ -65,6 +65,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     private fun initViews() {
         tvUpdate = findViewById(R.id.tvUpdate)
         tvUpdate.text = ""
@@ -117,17 +122,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId) {
             R.id.menu_license -> showLicence(this)
-
             R.id.menu_about -> showAbout(this)
+            R.id.menu_release_notes -> {
+                val uri = Uri.parse("https://github.com/etwasmitbaum/Phase10Counter/releases")
+                startActivity(Intent(Intent.ACTION_VIEW, uri))
+            }
+
         }
 
         return super.onOptionsItemSelected(item)

@@ -8,4 +8,8 @@
         android:id="@+id/menu_about"
         android:title="@string/about" />
 
+    <item
+        android:id="@+id/menu_release_notes"
+        android:title="@string/release_notes" />
+
 </menu>

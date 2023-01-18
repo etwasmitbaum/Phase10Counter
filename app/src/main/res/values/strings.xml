@@ -40,4 +40,5 @@
     <string name="GPLv3License">GPLv3-License</string>
     <string name="version">"Version: "</string>
     <string name="githubLink">"Link to Github: "</string>
+    <string name="release_notes">Release notes</string>
 </resources>
