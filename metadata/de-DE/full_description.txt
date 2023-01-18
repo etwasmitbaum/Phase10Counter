@@ -1,0 +1,4 @@
+Jeder, der gerne Phase 10 spielt, kennt wahrscheinlich das Problem des Zählens der Punkte.
+Diese einfache App hilft Ihnen, den Überblick über Ihr Spiel zu behalten.
+Fügen Sie ein paar Spieler hinzu und schon kann es losgehen.
+Wenn eine Phase abgeschlossen ist, kann sie abgehakt werden. Die Phasen müssen nicht in der richtigen Reihenfolge abgehakt werden.
