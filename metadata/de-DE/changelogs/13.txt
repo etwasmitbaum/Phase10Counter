@@ -1,0 +1,4 @@
+- Neues Design zum Hinzufügen von Spielern
+- Beim erstellen eines Spiels kann ein Spieler durch Wischen oder der Schaltfläche entfernt werden
+- Spielernamen können geändert werde, bevor ein Spiel beginnt
+- Schaltfläche "Versionshinweise" in der Symbolleiste hinzugefügt

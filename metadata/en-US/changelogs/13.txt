@@ -1,0 +1,4 @@
+- New design to add players
+- While setting up a game, swipe or click the button remove a player
+- Player names can be changed, before a game is started
+- Added "Release notes" Button in the toolbar
