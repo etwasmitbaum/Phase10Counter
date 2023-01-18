@@ -7,4 +7,4 @@
     android:padding="8dp"
     android:paddingBottom="16dp"
     android:textSize="16sp"
-    android:ellipsize="marquee"/>
+    android:ellipsize="marquee" />

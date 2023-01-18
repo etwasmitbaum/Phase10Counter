@@ -10,7 +10,11 @@ import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistory
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
 
-@Database(entities = [PlayerData::class, Highscores::class, PointHistory::class], version = 3, exportSchema = true)
+@Database(
+    entities = [PlayerData::class, Highscores::class, PointHistory::class],
+    version = 3,
+    exportSchema = true
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun PlayerDataDao(): PlayerDataDao

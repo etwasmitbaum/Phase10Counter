@@ -55,7 +55,13 @@ class MainActivity : AppCompatActivity() {
         playerDataDao = db.PlayerDataDao()
         highscoresDao = db.HighscoresDao()
         pointHistoryDao = db.PointHistoryDao()
-        controller.setContextsAndInit(applicationContext, this, playerDataDao, highscoresDao, pointHistoryDao)
+        controller.setContextsAndInit(
+            applicationContext,
+            this,
+            playerDataDao,
+            highscoresDao,
+            pointHistoryDao
+        )
         controller.loadAllData()
         currentLayout = controller.setCorrectView()
         initViews()
@@ -86,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 showPhasenInfo()
             }
 
-        } else if (currentLayout == "auswahl"){
+        } else if (currentLayout == "auswahl") {
             etPlayerName = findViewById(R.id.etPlayerName)
             btnWeiter = findViewById(R.id.btnSpielerAuswahlWeiter)
             btnAddPlayer = findViewById(R.id.btnAddPlayer)
@@ -103,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                 btnOnClickAddPlayer(v)
             }
 
-            btnHighscores.setOnClickListener{
+            btnHighscores.setOnClickListener {
                 startActivity(Intent(this, HighscoreActivity::class.java))
             }
 
@@ -124,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.menu_license -> showLicence(this)
             R.id.menu_about -> showAbout(this)
             R.id.menu_release_notes -> {
@@ -167,7 +173,8 @@ class MainActivity : AppCompatActivity() {
 
         val link = "https://github.com/etwasmitbaum/Phase10Counter/"
 
-        val message = getString(R.string.version) + BuildConfig.VERSION_NAME + "\n" + getString(R.string.githubLink) + link
+        val message =
+            getString(R.string.version) + BuildConfig.VERSION_NAME + "\n" + getString(R.string.githubLink) + link
         val spannableMessage = SpannableString(message)
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
@@ -202,7 +209,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun btnOnClickAddPlayer(v: View) {
         //make sure text was entered
-        if (etPlayerName.text.toString().isNotEmpty() && etPlayerName.text.toString().isNotBlank()) {
+        if (etPlayerName.text.toString().isNotEmpty() && etPlayerName.text.toString()
+                .isNotBlank()
+        ) {
             //saving the player
             controller.addPlayer(etPlayerName.text.toString())
 
@@ -230,7 +239,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun btnWeiter() {
-        if (controller.getPlayersSize() > 1){
+        if (controller.getPlayersSize() > 1) {
             controller.saveAllData()
             currentLayout = controller.setCorrectView()
             initViews()

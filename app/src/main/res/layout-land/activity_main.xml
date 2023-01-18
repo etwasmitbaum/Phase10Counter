@@ -27,7 +27,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/btnPhasenInfo"
                 app:layout_constraintStart_toEndOf="@+id/btnEndMatch"
                 app:layout_constraintTop_toTopOf="@+id/btnEndMatch"
-                android:textAlignment="center"/>
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/btnEndMatch"

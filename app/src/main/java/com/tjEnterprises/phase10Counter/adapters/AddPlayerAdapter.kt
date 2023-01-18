@@ -11,9 +11,11 @@ import com.tjEnterprises.phase10Counter.Controller
 import com.tjEnterprises.phase10Counter.Player
 import com.tjEnterprises.phase10Counter.R
 
-class AddPlayerAdapter(private val players: List<Player>, private val controller: Controller) : RecyclerView.Adapter<AddPlayerAdapter.ViewHolder>() {
+class AddPlayerAdapter(private val players: List<Player>, private val controller: Controller) :
+    RecyclerView.Adapter<AddPlayerAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View, private val controller: Controller) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val controller: Controller) :
+        RecyclerView.ViewHolder(itemView) {
 
         val etChangePlayerName = itemView.findViewById<EditText>(R.id.etChangePlayerName)
         val btnDeletePlayer = itemView.findViewById<ImageButton>(R.id.btnDeletePlayer)
@@ -21,30 +23,31 @@ class AddPlayerAdapter(private val players: List<Player>, private val controller
         lateinit var pl: Player
 
         init {
-            btnDeletePlayer.setOnClickListener{
+            btnDeletePlayer.setOnClickListener {
                 controller.removePlayer(pl.getPlayerNR())
             }
 
-            etChangePlayerName.setOnEditorActionListener  { _, actionID, _ ->
-                if(actionID == EditorInfo.IME_ACTION_DONE){
+            etChangePlayerName.setOnEditorActionListener { _, actionID, _ ->
+                if (actionID == EditorInfo.IME_ACTION_DONE) {
                     changeNameAction()
                     true
                 } else {
                     false
                 }
             }
-            etChangePlayerName.setOnFocusChangeListener {_, _ ->
+            etChangePlayerName.setOnFocusChangeListener { _, _ ->
                 changeNameAction()
             }
         }
 
-        fun changeNameAction(){
+        fun changeNameAction() {
             controller.changePlayerName(etChangePlayerName.text.toString(), pl.getPlayerNR())
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddPlayerAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.add_player_list_element, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.add_player_list_element, parent, false)
         return AddPlayerAdapter.ViewHolder(view, controller)
     }
 

@@ -32,7 +32,7 @@ class HighscoreActivity : AppCompatActivity() {
         initRecyclerView()
     }
 
-    private fun initViews(){
+    private fun initViews() {
         recyclerView = findViewById(R.id.recyclerView)
         btnBack = findViewById(R.id.btnBackFromHighscore)
 
@@ -41,7 +41,7 @@ class HighscoreActivity : AppCompatActivity() {
         }
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         val llMngr = LinearLayoutManager(this)
         recyclerView.layoutManager = llMngr
         highscoreRecyclerAdapter = HighscoreRecyclerAdapter(highscoresDao.getHighscoreList())

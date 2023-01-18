@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-data class Highscores (
+data class Highscores(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "playerName") val playerName: String,
     @ColumnInfo(name = "punkte") val punkte: Int,

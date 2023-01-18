@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 
-class HighscoreRecyclerAdapter(private val highscores: List<Highscores>) : RecyclerView.Adapter<HighscoreRecyclerAdapter.ViewHolder>() {
+class HighscoreRecyclerAdapter(private val highscores: List<Highscores>) :
+    RecyclerView.Adapter<HighscoreRecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvNameHighscore = itemView.findViewById<TextView>(R.id.tvNameHighscore)
@@ -17,7 +18,8 @@ class HighscoreRecyclerAdapter(private val highscores: List<Highscores>) : Recyc
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.highscore_list_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.highscore_list_item, parent, false)
         return ViewHolder(view)
     }
 

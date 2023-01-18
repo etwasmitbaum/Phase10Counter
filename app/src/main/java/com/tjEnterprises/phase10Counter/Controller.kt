@@ -101,10 +101,6 @@ class Controller {
 
         // need to run this on the UI thread, else app will crash
         playersRecyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
-
-        // then scroll futher down after updating UI
-        // removed this line, because it may be irritating for the user
-        // recyclerView.smoothScrollToPosition(playerNR + 2)
     }
 
     private fun setPhase(playerNR: Int, phasenNR: Int, phaseBestanden: Boolean) {
@@ -295,7 +291,8 @@ class Controller {
         addPlayersRecyclerView.layoutManager = llMngr
         addPlayersRecyclerView.adapter = addPlayerRecyclerAdapter
 
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+        ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,

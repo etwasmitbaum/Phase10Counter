@@ -6,18 +6,25 @@ import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistory
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
 
-class Player(private var playerNR: Int, private var name: String, private val con: Context, private val playerDataDao: PlayerDataDao, private val pointHistoryDao: PointHistoryDao) {
+class Player(
+    private var playerNR: Int,
+    private var name: String,
+    private val con: Context,
+    private val playerDataDao: PlayerDataDao,
+    private val pointHistoryDao: PointHistoryDao
+) {
 
     private var pData: PlayerData = PlayerData(playerNR, name, 0, "", false)
     private var punkteGesamt: Int = 0
-    private val punkteList = ArrayList<Int>(listOf(0))   // init the arrayList with 0, so the spinner object will show "0"
+    private val punkteList =
+        ArrayList<Int>(listOf(0))   // init the arrayList with 0, so the spinner object will show "0"
 
     private var phasen: BooleanArray = BooleanArray(11) { false }
     // index 0 = game won
     // value false = phase not complete
     // value true = phase complete
 
-    fun getPunkteList(): ArrayList<Int>{
+    fun getPunkteList(): ArrayList<Int> {
         return punkteList
     }
 
@@ -32,7 +39,7 @@ class Player(private var playerNR: Int, private var name: String, private val co
         }
 
         // set "none" string, if all phases are complete. Else on first startup fragment will only show "" as phasen
-        s = if(s == ""){
+        s = if (s == "") {
             this.con.getString(R.string.none)
         } else {
             s.dropLast(2)
@@ -49,10 +56,11 @@ class Player(private var playerNR: Int, private var name: String, private val co
         return this.name
     }
 
-    fun changePlayerNR(newNR: Int){
+    fun changePlayerNR(newNR: Int) {
         this.playerNR = newNR
     }
-    fun changePlayerName(newName: String){
+
+    fun changePlayerName(newName: String) {
         this.name = newName
     }
 
@@ -83,7 +91,7 @@ class Player(private var playerNR: Int, private var name: String, private val co
         pData.punkte = getPunktzahl()
         pData.phasen = getPhasenAsString()
         //check if all phases are complete after saving and set game won flag
-        if(pData.phasen == this.con.getString(R.string.none)) {
+        if (pData.phasen == this.con.getString(R.string.none)) {
             phasen[0] = true
             pData.gameWon = true
         } else {
@@ -105,12 +113,12 @@ class Player(private var playerNR: Int, private var name: String, private val co
         val phasen = pData.phasen.filter { it.isDigit() }
         val hasPhase10 = phasen.contains("10")
 
-        for(i in this.phasen.indices){
+        for (i in this.phasen.indices) {
             phaseDone(i)
         }
 
         //load if game was won
-        if(pData.gameWon){
+        if (pData.gameWon) {
             phaseDone(0)
         } else {
             phaseUndoDone(0)
@@ -119,11 +127,11 @@ class Player(private var playerNR: Int, private var name: String, private val co
         // only apply minus 2 in the below loop, if phase 10 is still in the list
         // this is done to not unCheck phase "1" and "0", since "10" contains those digits
         var minus2forPhase10 = 0
-        if(hasPhase10){
+        if (hasPhase10) {
             phaseUndoDone(10)
             minus2forPhase10 = -2
         }
-        for(i: Int in 0 until (phasen.length + minus2forPhase10)){
+        for (i: Int in 0 until (phasen.length + minus2forPhase10)) {
             phaseUndoDone(phasen[i].digitToInt())
         }
     }
