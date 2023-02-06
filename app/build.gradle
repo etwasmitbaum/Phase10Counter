@@ -17,7 +17,7 @@ android {
         targetSdkVersion 33
         versionCode 14
         versionName "1.4.7"
-        resConfigs 'en', 'de'
+        resConfigs 'en', 'de', 'pl'
 
         javaCompileOptions {
             annotationProcessorOptions {
