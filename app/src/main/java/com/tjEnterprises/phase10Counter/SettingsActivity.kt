@@ -65,8 +65,17 @@ class SettingsActivity() : AppCompatActivity() {
                 for (i in 0 until playerDao.getPlayerCount()) {
                     name += (playerDao.getSinglePlayer(i).name) + "-"
                 }
-                // remove all non numerical chars, to avoid crashes with illegal file names
-                name.replace("[^A-Za-z0-9]", "_")
+                // remove dangerous chars of path. I don't know hot to use regex, and this works
+                name = name.replace("/", "_")
+                name = name.replace("<", "_")
+                name = name.replace(">", "_")
+                name = name.replace(":", "_")
+                name = name.replace("\"", "_")
+                name = name.replace("/", "_")
+                name = name.replace("\\", "_")
+                name = name.replace("|", "_")
+                name = name.replace("?", "_")
+                name = name.replace("*", "_")
                 // add current time
                 name += "_" + RoomBackup.getTime()
 
