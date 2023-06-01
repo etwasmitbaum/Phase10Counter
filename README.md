@@ -14,6 +14,10 @@ Or get the latest APK from the [Releases Section](https://github.com/etwasmitbau
 This was programmed as a side project. I am not any kind of professional developer or IT guy. This was just fun for me.
 The Source Code is half english half german and probably contains several war crimes since I did not put more effort into that, than it needed to fulfill the purpose of tracking a Phase10 game.
 
+# Big thanks
+Big thanks to [@rafi0101](https://github.com/rafi0101) for his [Android-Room-Database-Backup](https://github.com/rafi0101/Android-Room-Database-Backup) project. I used and slightly modfied his code for this app.
+
+
 # Pictures
 
 
