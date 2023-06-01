@@ -59,7 +59,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
-                android:backgroundTint="@color/dark_blue"
+                android:theme="@style/settingsButtonStyle"
                 android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="@+id/btnPhasenInfo"
                 app:layout_constraintEnd_toStartOf="@+id/btnPhasenInfo"

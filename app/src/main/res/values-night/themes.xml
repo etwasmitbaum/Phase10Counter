@@ -15,4 +15,8 @@
         <item name="android:statusBarColor">@color/light_blue</item>
     </style>
 
+    <style name="settingsButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:backgroundTint">@color/light_blue</item>
+    </style>
+
 </resources>
