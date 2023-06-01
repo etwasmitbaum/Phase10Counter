@@ -6,29 +6,30 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.AppDatabase
-import com.tjEnterprises.phase10Counter.data.MigrationHelper
+import com.tjEnterprises.phase10Counter.data.GlobalDataDatabase
+import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscores
+import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscoresDao
+import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
-import java.io.BufferedReader
-import java.io.InputStreamReader
-
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var db: AppDatabase
+    private lateinit var globalDB: GlobalDataDatabase
     private lateinit var playerDataDao: PlayerDataDao
     private lateinit var highscoresDao: HighscoresDao
+    private lateinit var globalHighscoresDao: GlobalHighscoresDao
     private lateinit var pointHistoryDao: PointHistoryDao
     private val controller: Controller = Controller()
 
@@ -40,34 +41,99 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnShowPhasenInfo: Button
     private lateinit var btnHighscores: Button
     private lateinit var tvUpdate: TextView
+    private lateinit var btnSettings: ImageButton
 
     private lateinit var currentLayout: String
+
+    private lateinit var sharedPref: SharedPreferences
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "Database"
-        ).fallbackToDestructiveMigration().allowMainThreadQueries().addMigrations(
-            MigrationHelper.MIGRATION_1_2, MigrationHelper.MIGRATION_2_3
-        ).build()
-        playerDataDao = db.PlayerDataDao()
-        highscoresDao = db.HighscoresDao()
-        pointHistoryDao = db.PointHistoryDao()
+
+        sharedPref = this.getSharedPreferences(Controller.GLOBAL_FLAGS_SHARED_PREF_KEY, Context.MODE_PRIVATE)
+
+        makeDataBases()
+
         controller.setContextsAndInit(
             applicationContext,
             this,
             playerDataDao,
-            highscoresDao,
-            pointHistoryDao
+            globalHighscoresDao,
+            pointHistoryDao,
         )
         controller.loadAllData()
         currentLayout = controller.setCorrectView()
         initViews()
 
+        // only sync if a file was restored
+        if(sharedPref.getBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, false)){
+            syncHighscoreDB()
+            sharedPref.edit().putBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, false).apply()
+        }
+
+        //addDummyData()
+
+        // Only Check for updates, if github release is installed
         if (BuildConfig.BUILD_TYPE != "release") {
             UpdateChecker(applicationContext, this).checkForUpdate(tvUpdate)
+        }
+    }
+
+    private fun addDummyData(){
+        for (i in 0 until (10)){
+            val high = Highscores(
+                0,
+                i.toString() + "player",
+                i*i,
+                Date(i.toLong())
+            )
+            highscoresDao.insertHighscore(high)
+        }
+
+    }
+    private fun makeDataBases() {
+        db = AppDatabase.getInstance(this)
+        playerDataDao = db.PlayerDataDao()
+        highscoresDao = db.HighscoresDao()
+        pointHistoryDao = db.PointHistoryDao()
+
+        globalDB = GlobalDataDatabase.getInstance(this)
+        globalHighscoresDao = globalDB.GlobalHighscoresDao()
+    }
+
+    /**
+     * This will copy all new Highscores from the deprecated Database table to the new one,
+     * to ensure the after restoring a backup, the Highscores are also transferred to the new GlobalHighscores
+     *
+     */
+    private fun syncHighscoreDB() {
+        val oldHighscores = highscoresDao.getHighscoreList()
+        val newHighscores = globalHighscoresDao.getHighscoreList()
+        var copy: Boolean
+
+        // compare all old to all new Highscores, and copy only Highscores from old to new,
+        // if they do not exist in the new one
+        for (i in oldHighscores.indices) {
+            copy = true
+            for (j in newHighscores.indices) {
+                if (oldHighscores[i].date == newHighscores[j].date
+                    && oldHighscores[i].playerName == newHighscores[j].playerName
+                    && oldHighscores[i].punkte == newHighscores[j].punkte
+                ) {
+                    copy = false
+                    break
+                }
+            }
+            if (copy) {
+                val high = GlobalHighscores(
+                    0,
+                    oldHighscores[i].playerName,
+                    oldHighscores[i].punkte,
+                    oldHighscores[i].date
+                )
+                globalHighscoresDao.insertHighscore(high)
+            }
         }
     }
 
@@ -91,6 +157,14 @@ class MainActivity : AppCompatActivity() {
             btnShowPhasenInfo.setOnClickListener {
                 showPhasenInfo()
             }
+
+            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                btnSettings = findViewById(R.id.imgBtnSettings)
+                btnSettings.setOnClickListener {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                }
+            }
+
 
         } else if (currentLayout == "auswahl") {
             etPlayerName = findViewById(R.id.etPlayerName)
@@ -120,85 +194,18 @@ class MainActivity : AppCompatActivity() {
                 }
                 false
             })
-
-            setSupportActionBar(findViewById(R.id.toolbar2))
-
             controller.makeAddPlayerRecycler()
-
         }
+        setSupportActionBar(findViewById(R.id.toolbar_menu))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.menu_license -> showLicence(this)
-            R.id.menu_about -> showAbout(this)
-            R.id.menu_release_notes -> {
-                val uri = Uri.parse("https://github.com/etwasmitbaum/Phase10Counter/releases")
-                startActivity(Intent(Intent.ACTION_VIEW, uri))
-            }
-
+            R.id.open_settings -> startActivity(Intent(this, SettingsActivity::class.java))
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun showLicence(context: Context) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle(getString(R.string.GPLv3License))
-        builder.setMessage(readGPLv3LicenseText())
-        builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->
-            dialog.dismiss()
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-    }
-
-    fun readGPLv3LicenseText(): String {
-        // Lese den Lizenztext aus einer raw-Ressource
-        val inputStream = resources.openRawResource(R.raw.license)
-        val reader = InputStreamReader(inputStream)
-        val bufferedReader = BufferedReader(reader)
-        val stringBuilder = StringBuilder()
-        var line: String? = bufferedReader.readLine()
-        while (line != null) {
-            stringBuilder.append(line)
-            stringBuilder.append("\n")
-            line = bufferedReader.readLine()
-        }
-        return stringBuilder.toString()
-    }
-
-    private fun showAbout(context: Context) {
-
-        val link = "https://github.com/etwasmitbaum/Phase10Counter/"
-
-        val message =
-            getString(R.string.version) + BuildConfig.VERSION_NAME + "\n" + getString(R.string.githubLink) + link
-        val spannableMessage = SpannableString(message)
-        val clickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                // Hier kannst du den Code einfügen, der ausgeführt werden soll, wenn der Link angeklickt wird
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(link)
-                startActivity(intent)
-            }
-        }
-        val linkStartIndex = message.indexOf(link)
-        spannableMessage.setSpan(clickableSpan, linkStartIndex, linkStartIndex + link.length, 0)
-
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle(getString(R.string.about))
-        builder.setMessage(spannableMessage)
-        builder.setPositiveButton(getString((R.string.ok))) { dialog, which ->
-            dialog.dismiss()
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-        val messageView = dialog.findViewById<TextView>(android.R.id.message)
-        messageView?.movementMethod = LinkMovementMethod.getInstance()
-
-
     }
 
     private fun showPhasenInfo() {

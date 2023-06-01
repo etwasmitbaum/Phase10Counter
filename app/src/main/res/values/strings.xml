@@ -35,10 +35,19 @@
     <string name="highscores">High scores</string>
     <string name="new_version_click_to_download">New Version available. Click here to Download</string>
     <string name="error_while_checking_for_update">Error while checking for updates</string>
-    <string name="license">License</string>
+    <string name="app_license">App License</string>
     <string name="about">About</string>
     <string name="GPLv3License">GPLv3-License</string>
-    <string name="version">"Version: "</string>
-    <string name="githubLink">"Link to Github: "</string>
+    <string name="version">Version</string>
+    <string name="githubLink">GitHub Repository</string>
     <string name="release_notes">Release notes</string>
+    <string name="settings">Settings</string>
+    <string name="backup_path">Backup path</string>
+    <string name="restore">Restore</string>
+    <string name="backup">Backup</string>
+    <string name="backup_summary">Backup your current game</string>
+    <string name="restore_summary">Restore a game</string>
+    <string name="will_be_deleted">will be deleted!</string>
+    <string name="are_u_sure">Are you sure?</string>
+    <string name="all_opensource_license">All open source licenses</string>
 </resources>

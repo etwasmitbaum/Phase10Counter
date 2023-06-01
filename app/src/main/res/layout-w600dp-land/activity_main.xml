@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:orientation="vertical"
-    android:padding="4dp">
+    android:padding="0dp"
+    tools:context=".MainActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,22 +25,23 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="TextView"
-                app:layout_constraintEnd_toStartOf="@+id/btnPhasenInfo"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/imgBtnSettings"
                 app:layout_constraintStart_toEndOf="@+id/btnEndMatch"
-                app:layout_constraintTop_toTopOf="@+id/btnEndMatch"
-                android:textAlignment="center" />
+                app:layout_constraintTop_toTopOf="@+id/btnEndMatch" />
 
             <Button
                 android:id="@+id/btnEndMatch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:focusable="false"
                 android:text="@string/reset_all_data_btn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
             <Button
                 android:id="@+id/btnPhasenInfo"
@@ -52,6 +54,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/imgBtnSettings"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:scaleType="fitCenter"
+                android:backgroundTint="@color/dark_blue"
+                app:layout_constraintBottom_toBottomOf="@+id/btnPhasenInfo"
+                app:layout_constraintEnd_toStartOf="@+id/btnPhasenInfo"
+                app:layout_constraintTop_toTopOf="@+id/btnPhasenInfo"
+                app:srcCompat="@drawable/white_settings_48" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

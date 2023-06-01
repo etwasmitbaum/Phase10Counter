@@ -36,10 +36,19 @@
     <string name="highscores">Highscores</string>
     <string name="new_version_click_to_download">Neue Version verfügbar. Klicke zum Herunterladen</string>
     <string name="error_while_checking_for_update">Fehler beim suchen nach Updates</string>
-    <string name="license">Lizenz</string>
+    <string name="app_license">App Lizenz</string>
     <string name="about">Über</string>
     <string name="GPLv3License">GPLv3-Lizenz</string>
-    <string name="version">"Version: "</string>
-    <string name="githubLink">"Link zu Github: "</string>
+    <string name="version">Version</string>
+    <string name="githubLink">GitHub Repository</string>
     <string name="release_notes">Versionshinweise</string>
+    <string name="settings">Einstellungen</string>
+    <string name="backup_path">Sicherungspfad</string>
+    <string name="restore">Wiederherstellen</string>
+    <string name="backup">Sichern</string>
+    <string name="backup_summary">Sichere den aktuellen Spielstand</string>
+    <string name="restore_summary">Lade einen Spielstand</string>
+    <string name="will_be_deleted">wird gelöscht!</string>
+    <string name="are_u_sure">Bist du dir sicher?</string>
+    <string name="all_opensource_license">Alle Lizen</string>
 </resources>

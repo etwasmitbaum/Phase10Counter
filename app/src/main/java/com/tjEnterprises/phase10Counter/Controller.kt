@@ -2,7 +2,6 @@ package com.tjEnterprises.phase10Counter
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.view.View
 import android.view.ViewGroup
@@ -17,11 +16,11 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.tjEnterprises.phase10Counter.adapters.AddPlayerAdapter
 import com.tjEnterprises.phase10Counter.adapters.PlayerRecyclerAdapter
-import com.tjEnterprises.phase10Counter.data.highscores.Highscores
-import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
+import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscores
+import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
-import java.util.*
+import java.util.Calendar
 
 
 class Controller {
@@ -29,11 +28,9 @@ class Controller {
     private val players: MutableList<Player> = ArrayList()
 
     private lateinit var playerDataDao: PlayerDataDao
-    private lateinit var sharedPref: SharedPreferences
-    private lateinit var edit: SharedPreferences.Editor
     lateinit var appContext: Context
     private lateinit var mainActivity: MainActivity
-    private lateinit var highscoresDao: HighscoresDao
+    private lateinit var globalHighscoresDao: GlobalHighscoresDao
     private lateinit var pointHistoryDao: PointHistoryDao
 
     private lateinit var playerRecyclerAdapter: PlayerRecyclerAdapter
@@ -41,22 +38,22 @@ class Controller {
     private lateinit var addPlayerRecyclerAdapter: AddPlayerAdapter
     private lateinit var addPlayersRecyclerView: RecyclerView
 
+    companion object{
+        val GLOBAL_FLAGS_SHARED_PREF_KEY = "GlobalFlags"
+        val GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY = "restoreOccurred"
+    }
 
     fun setContextsAndInit(
         con: Context,
         mainActivity: MainActivity,
         playerDataDao: PlayerDataDao,
-        highscoresDao: HighscoresDao,
-        pointHistoryDao: PointHistoryDao
+        highscoresDao: GlobalHighscoresDao,
+        pointHistoryDao: PointHistoryDao,
     ) {
         this.appContext = con
         this.mainActivity = mainActivity
-        this.sharedPref =
-            con.getSharedPreferences(("controller_sharedPrefs"), Context.MODE_PRIVATE)
-        this.edit = sharedPref.edit()
-        this.edit.apply()
         this.playerDataDao = playerDataDao
-        this.highscoresDao = highscoresDao
+        this.globalHighscoresDao = highscoresDao
         this.pointHistoryDao = pointHistoryDao
 
         playerRecyclerAdapter = PlayerRecyclerAdapter(players, this)
@@ -68,22 +65,17 @@ class Controller {
     }
 
     fun saveAllData() {
-        edit.putInt("player_count", players.size)
-
         for (i in 0 until players.size) {
             players[i].savePlayerData()
-            edit.putInt(i.toString() + "_playerNR", players[i].getPlayerNR())
-            edit.putString(i.toString() + "_playerName", players[i].getPlayerName())
         }
-        edit.apply()
     }
 
     fun loadAllData() {
-        for (i in 0 until sharedPref.getInt("player_count", 0)) {
+        for (i in 0 until playerDataDao.getPlayerCount()) {
             players.add(
                 Player(
-                    sharedPref.getInt(i.toString() + "_playerNR", -1),
-                    sharedPref.getString(i.toString() + "_playerName", "404").toString(),
+                    playerDataDao.getSinglePlayer(i).id,
+                    playerDataDao.getSinglePlayer(i).name,
                     appContext, playerDataDao, pointHistoryDao
                 )
             )
@@ -144,8 +136,6 @@ class Controller {
             players.removeAt(i)
         }
         pointHistoryDao.deletePointHistory()
-        edit.clear()
-        edit.commit()
     }
 
     fun addPlayer(name: String) {
@@ -257,13 +247,13 @@ class Controller {
     fun addNewHighscore() {
         for (i in 0 until players.size) {
             if (players[i].getPhase(0)) {
-                val high = Highscores(
+                val high = GlobalHighscores(
                     0,
                     players[i].getPlayerName(),
                     players[i].getPunktzahl(),
                     Calendar.getInstance().time
                 )
-                highscoresDao.insertHighscore(high)
+                globalHighscoresDao.insertHighscore(high)
             }
         }
     }

@@ -35,9 +35,8 @@
     <string name="highscores">Wysokie wyniki</string>
     <string name="new_version_click_to_download">Nowa wersja dostępna. Kliknij tutaj, aby pobrać</string>
     <string name="error_while_checking_for_update">Błąd podczas sprawdzania dostępności aktualizacji</string>
-    <string name="license">Licencja</string>
     <string name="about">O aplikacji</string>
     <string name="GPLv3License">GPLv3-License</string>
-    <string name="version">"Wersja: "</string>
-    <string name="githubLink">"Link to Github: "</string>
+    <string name="version">Wersja</string>
+    <string name="githubLink">Link to Github: </string>
 </resources>

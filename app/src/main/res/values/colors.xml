@@ -9,6 +9,7 @@
     <color name="bright_light_grey">#bebebe</color>
     <color name="light_blue">#0277bd</color>
     <color name="dark_blue">#0B67CD</color>
+    <color name="delete_red">#eb4034</color>
 
     <!-- Button Color for alertDialog (the three button at the bottom) -->
     <color name="mtrl_text_btn_text_color_selector">#FF03DAC5</color>

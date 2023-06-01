@@ -1,0 +1,46 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/settings">
+        <Preference
+            app:key="backup"
+            app:title="@string/backup"
+            app:summary="@string/backup_summary"/>
+        <Preference
+            app:key="restore"
+            app:title="@string/restore"
+            app:summary="@string/restore_summary"/>
+        <Preference
+            app:key="save_path"
+            app:title="@string/backup_path"
+            app:summary="-"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/about">
+
+        <Preference
+            app:key="link_to_github"
+            app:title="@string/githubLink"
+            app:summary="https://github.com/etwasmitbaum/Phase10Counter" />
+
+        <Preference
+            app:key="release_notes"
+            app:title="@string/release_notes"
+            app:summary="https://github.com/etwasmitbaum/Phase10Counter/releases" />
+
+        <Preference
+            app:key="app_license"
+            app:title="@string/app_license"
+            app:summary="@string/GPLv3License" />
+
+        <Preference
+            app:key="all_opensource_license"
+            app:title="@string/all_opensource_license" />
+
+        <Preference
+            app:key="app_version"
+            app:title="@string/version"
+            app:summary="-" />
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

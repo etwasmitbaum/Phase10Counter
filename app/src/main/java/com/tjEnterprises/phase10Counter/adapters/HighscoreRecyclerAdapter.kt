@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.data.highscores.Highscores
+import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscores
 
-class HighscoreRecyclerAdapter(private val highscores: List<Highscores>) :
+class HighscoreRecyclerAdapter(private val globalHighscores: List<GlobalHighscores>) :
     RecyclerView.Adapter<HighscoreRecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,9 +24,9 @@ class HighscoreRecyclerAdapter(private val highscores: List<Highscores>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvNameHighscore.text = highscores[position].playerName
-        holder.tvPunkteHighscore.text = highscores[position].punkte.toString()
-        val time = highscores[position].date.toString()
+        holder.tvNameHighscore.text = globalHighscores[position].playerName
+        holder.tvPunkteHighscore.text = globalHighscores[position].punkte.toString()
+        val time = globalHighscores[position].date.toString()
         var t = time.drop(8).dropLast(24)        //day
         t = t + " " + time.drop(4).dropLast(27)  //month
         t = t + ". " + time.drop(30)                // year
@@ -34,7 +34,7 @@ class HighscoreRecyclerAdapter(private val highscores: List<Highscores>) :
     }
 
     override fun getItemCount(): Int {
-        return highscores.size
+        return globalHighscores.size
     }
 
 }

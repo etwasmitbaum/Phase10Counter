@@ -2,9 +2,11 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.android'
 }
 
 apply from: 'signing.gradle'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 android {
 
@@ -49,11 +51,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     namespace 'com.tjEnterprises.phase10Counter'
 }
@@ -70,6 +72,9 @@ dependencies {
 
     // flexbox for easy recyclerView UI handling
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -80,4 +85,13 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    // backup room database
+    // using the first implementation for license generation. Modified code is used in this project
+    implementation 'de.raphaelebner:roomdatabasebackup:1.0.0-beta12'
+    implementation "androidx.security:security-crypto:1.1.0-alpha06"
+    implementation 'commons-io:commons-io:2.12.0'
+    implementation 'com.google.guava:guava:32.0.0-jre'
+
+    // generate licenses
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.1'
 }

@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_license"
-        android:title="@string/license" />
-
-    <item
-        android:id="@+id/menu_about"
-        android:title="@string/about" />
-
-    <item
-        android:id="@+id/menu_release_notes"
-        android:title="@string/release_notes" />
+        android:id="@+id/open_settings"
+        android:title="@string/settings" />
 
 </menu>
