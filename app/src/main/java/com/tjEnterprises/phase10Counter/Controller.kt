@@ -145,7 +145,7 @@ class Controller {
     }
 
     fun phasenOnClick(v: View) {
-        val alertDialog = AlertDialog.Builder(mainActivity).create()
+        val alertDialog = AlertDialog.Builder(mainActivity, R.style.AlertDialog_AppCompat_phase10Counter).create()
         val inflater = mainActivity.layoutInflater
         val dialogView: ConstraintLayout =
             inflater.inflate(R.layout.dialog_phasen_auswahl, null) as ConstraintLayout

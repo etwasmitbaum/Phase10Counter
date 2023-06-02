@@ -85,7 +85,7 @@ class SettingsActivity() : AppCompatActivity() {
 
             restorePref?.setOnPreferenceClickListener {
                 val sharedPref = context?.getSharedPreferences(Controller.GLOBAL_FLAGS_SHARED_PREF_KEY, Context.MODE_PRIVATE)
-                // must use .commit() here, because the restore action well restart the and probably cancel the write process of .apply()
+                // must use .commit() here, because the restore action will restart the app and probably cancel the write process of .apply()
                 sharedPref?.edit()
                     ?.putBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, true)?.commit()
                 roomBackup?.restore()
@@ -111,7 +111,7 @@ class SettingsActivity() : AppCompatActivity() {
 
 
             appLicensePref?.setOnPreferenceClickListener {
-                val builder = AlertDialog.Builder(context)
+                val builder = AlertDialog.Builder(context, R.style.AlertDialog_AppCompat_phase10Counter)
                 builder.setTitle(getString(R.string.GPLv3License))
                 builder.setMessage(readGPLv3LicenseText())
                 builder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->

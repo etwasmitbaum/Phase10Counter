@@ -209,7 +209,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showPhasenInfo() {
-        val d = Dialog(this@MainActivity)
+        val d = Dialog(this@MainActivity, R.style.AlertDialog_AppCompat_phase10Counter)
         d.setContentView(R.layout.dialog_phasen_info)
         d.show()
     }
@@ -259,7 +259,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun btnEndMatch() {
 
-        val alertDialog = AlertDialog.Builder(this@MainActivity).create()
+        val alertDialog = AlertDialog.Builder(this, R.style.AlertDialog_AppCompat_phase10Counter).create()
         alertDialog.setTitle(getString(R.string.all_data_will_be_deleted))
         alertDialog.setMessage(getString(R.string.are_you_sure_data_loss))
 

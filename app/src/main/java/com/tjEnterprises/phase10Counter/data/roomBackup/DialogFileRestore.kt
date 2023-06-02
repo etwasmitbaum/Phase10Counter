@@ -13,7 +13,7 @@ import com.google.android.flexbox.JustifyContent
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.adapters.RoomBackupRestoreRecyclerAdapter
 
-class DialogFileRestore(context: Context, private var fileNameList: MutableList<String>, private val roomBackup: RoomBackup) : AlertDialog(context) {
+class DialogFileRestore(context: Context, private var fileNameList: MutableList<String>, private val roomBackup: RoomBackup) : AlertDialog(context, R.style.AlertDialog_AppCompat_phase10Counter) {
     private lateinit var adapter: RoomBackupRestoreRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

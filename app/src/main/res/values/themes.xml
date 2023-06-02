@@ -19,4 +19,18 @@
         <item name="android:backgroundTint">@color/dark_blue</item>
     </style>
 
+    <style name="AlertDialog.AppCompat.phase10Counter" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:background">#f5f5f5</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:windowElevation">0dp</item>
+    </style>
+
+    <style name="Widget.Material3.CompoundButton.CheckBox.phase10Counter" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="colorControlActivated">@color/dark_blue</item>
+        <item name="colorControlNormal">@color/dark_blue</item>
+        <item name="colorOnSurfaceVariant">@color/dark_blue</item>
+    </style>
+
+
 </resources>
