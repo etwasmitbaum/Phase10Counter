@@ -17,11 +17,9 @@ import com.tjEnterprises.phase10Counter.data.AppDatabase
 import com.tjEnterprises.phase10Counter.data.GlobalDataDatabase
 import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscores
 import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscoresDao
-import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.highscores.HighscoresDao
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
-import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
@@ -71,27 +69,13 @@ class MainActivity : AppCompatActivity() {
             syncHighscoreDB()
             sharedPref.edit().putBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, false).apply()
         }
-
-        //addDummyData()
-
+        
         // Only Check for updates, if github release is installed
         if (BuildConfig.BUILD_TYPE != "release") {
             UpdateChecker(applicationContext, this).checkForUpdate(tvUpdate)
         }
     }
 
-    private fun addDummyData(){
-        for (i in 0 until (10)){
-            val high = Highscores(
-                0,
-                i.toString() + "player",
-                i*i,
-                Date(i.toLong())
-            )
-            highscoresDao.insertHighscore(high)
-        }
-
-    }
     private fun makeDataBases() {
         db = AppDatabase.getInstance(this)
         playerDataDao = db.PlayerDataDao()
