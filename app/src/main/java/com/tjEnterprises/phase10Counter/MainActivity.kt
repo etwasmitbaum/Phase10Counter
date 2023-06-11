@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             syncHighscoreDB()
             sharedPref.edit().putBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, false).apply()
         }
-        
+
         // Only Check for updates, if github release is installed
         if (BuildConfig.BUILD_TYPE != "release") {
             UpdateChecker(applicationContext, this).checkForUpdate(tvUpdate)

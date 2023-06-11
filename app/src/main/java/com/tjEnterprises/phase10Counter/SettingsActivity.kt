@@ -30,9 +30,9 @@ class SettingsActivity() : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
-            //TODO implement somehow to access the RoomBackup object from MainActivity
 
             val db = context?.let { AppDatabase.getInstance(it) }
             val roomBackup = context?.let { RoomBackup(it) }
@@ -42,7 +42,6 @@ class SettingsActivity() : AppCompatActivity() {
                     ?.enableLogDebug(true)
                     ?.backupIsEncrypted(false)
                     ?.backupLocation(RoomBackup.BACKUP_FILE_LOCATION_EXTERNAL)
-                //?.customBackupFileName("")
             }
 
             val backupPref: Preference? = findPreference("backup")
@@ -57,6 +56,8 @@ class SettingsActivity() : AppCompatActivity() {
 
             backupPref?.isVisible = db?.PlayerDataDao()?.getPlayerCount()!! >= 1
 
+            // create backup filename consisting of the player name, but considering potentially dangerous characters
+            // then creating the backup
             backupPref?.setOnPreferenceClickListener {
                 var name = ""
                 val playerDao = db.PlayerDataDao()
@@ -67,15 +68,16 @@ class SettingsActivity() : AppCompatActivity() {
                 }
                 // remove dangerous chars of path. I don't know hot to use regex, and this works
                 name = name.replace("/", "_")
-                name = name.replace("<", "_")
-                name = name.replace(">", "_")
-                name = name.replace(":", "_")
-                name = name.replace("\"", "_")
-                name = name.replace("/", "_")
-                name = name.replace("\\", "_")
-                name = name.replace("|", "_")
-                name = name.replace("?", "_")
-                name = name.replace("*", "_")
+                    .replace("<", "_")
+                    .replace(">", "_")
+                    .replace(":", "_")
+                    .replace("\"", "_")
+                    .replace("/", "_")
+                    .replace("\\", "_")
+                    .replace("|", "_")
+                    .replace("?", "_")
+                    .replace("*", "_")
+
                 // add current time
                 name += "_" + RoomBackup.getTime()
 
@@ -83,6 +85,7 @@ class SettingsActivity() : AppCompatActivity() {
                 true
             }
 
+            // restore backup and setting flag, to resync the highscore databases
             restorePref?.setOnPreferenceClickListener {
                 val sharedPref = context?.getSharedPreferences(Controller.GLOBAL_FLAGS_SHARED_PREF_KEY, Context.MODE_PRIVATE)
                 // must use .commit() here, because the restore action will restart the app and probably cancel the write process of .apply()
@@ -92,9 +95,9 @@ class SettingsActivity() : AppCompatActivity() {
                 true
             }
 
-            savePathPref?.summary = context?.getExternalFilesDir("backup").toString()
-                .removePrefix("/storage/emulated/0")
+            savePathPref?.summary = context?.getExternalFilesDir("backup").toString().removePrefix("/storage/emulated/0")
 
+            // open repo on click
             if (githubPref != null) {
                 githubPref.intent = Intent(
                     Intent.ACTION_VIEW,
@@ -102,6 +105,7 @@ class SettingsActivity() : AppCompatActivity() {
                 )
             }
 
+            // open releases page for release notes on clock
             if (releaseNotesPref != null) {
                 releaseNotesPref.intent = Intent(
                     Intent.ACTION_VIEW,
@@ -109,7 +113,7 @@ class SettingsActivity() : AppCompatActivity() {
                 )
             }
 
-
+            // open dialog with GPLv3 license
             appLicensePref?.setOnPreferenceClickListener {
                 val builder = AlertDialog.Builder(context, R.style.AlertDialog_AppCompat_phase10Counter)
                 builder.setTitle(getString(R.string.GPLv3License))
@@ -122,12 +126,14 @@ class SettingsActivity() : AppCompatActivity() {
                 true
             }
 
+            // open all the licenses for the dependencies used
             allOpenSourceLicenses?.setOnPreferenceClickListener {
                 context?.let { it1 -> OssLicensesMenuActivity.setActivityTitle(it1.getString(R.string.app_license)) }
                 startActivity(Intent(context, OssLicensesMenuActivity::class.java))
                 true
             }
 
+            // show version number
             versionPres?.summary = BuildConfig.VERSION_NAME
         }
 
