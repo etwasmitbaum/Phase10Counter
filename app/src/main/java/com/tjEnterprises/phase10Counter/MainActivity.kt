@@ -179,6 +179,14 @@ class MainActivity : AppCompatActivity() {
                 false
             })
             controller.makeAddPlayerRecycler()
+
+            // restore player names from previously finished game
+            // see https://github.com/etwasmitbaum/Phase10Counter/issues/9
+            if (controller.restorePlayerNames()){
+                btnWeiter.visibility = View.VISIBLE
+            } else {
+                btnWeiter.visibility = View.INVISIBLE
+            }
         }
         setSupportActionBar(findViewById(R.id.toolbar_menu))
     }
@@ -198,7 +206,7 @@ class MainActivity : AppCompatActivity() {
         d.show()
     }
 
-    private fun btnOnClickAddPlayer(v: View) {
+    fun btnOnClickAddPlayer(v: View) {
         //make sure text was entered
         if (etPlayerName.text.toString().isNotEmpty() && etPlayerName.text.toString()
                 .isNotBlank()
@@ -213,6 +221,7 @@ class MainActivity : AppCompatActivity() {
             //activating the next button
             btnWeiter.visibility = View.VISIBLE
 
+            // this is only for testing
             //for (i in 2 until 100){
             //    controller.addPlayer(i.toString())
             //}
@@ -238,7 +247,6 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.tvMessage).text =
                 getString(R.string.at_leat_2_players)
         }
-
     }
 
     private fun btnEndMatch() {
@@ -248,6 +256,7 @@ class MainActivity : AppCompatActivity() {
         alertDialog.setMessage(getString(R.string.are_you_sure_data_loss))
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes)) { dialog, _ ->
+            controller.storePlayerNames()
             dialog.dismiss()
             controller.addNewHighscore()
             controller.removeAllData()
@@ -269,4 +278,6 @@ class MainActivity : AppCompatActivity() {
 
         alertDialog.show()
     }
+
+
 }

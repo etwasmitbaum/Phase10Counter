@@ -95,6 +95,7 @@ class SettingsActivity() : AppCompatActivity() {
                 true
             }
 
+            // TODO add warning, that backups will be lost on uninstall
             savePathPref?.summary = context?.getExternalFilesDir("backup").toString().removePrefix("/storage/emulated/0")
 
             // open repo on click

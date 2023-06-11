@@ -2,6 +2,7 @@ package com.tjEnterprises.phase10Counter
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.view.View
 import android.view.ViewGroup
@@ -38,9 +39,13 @@ class Controller {
     private lateinit var addPlayerRecyclerAdapter: AddPlayerAdapter
     private lateinit var addPlayersRecyclerView: RecyclerView
 
+    private lateinit var sharedPref: SharedPreferences
+
     companion object{
         val GLOBAL_FLAGS_SHARED_PREF_KEY = "GlobalFlags"
         val GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY = "restoreOccurred"
+        val GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_COUNT = "prevPlayerCount"
+        val GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_NAME_I = "prevPlayerName_"
     }
 
     fun setContextsAndInit(
@@ -55,6 +60,8 @@ class Controller {
         this.playerDataDao = playerDataDao
         this.globalHighscoresDao = highscoresDao
         this.pointHistoryDao = pointHistoryDao
+
+        this.sharedPref = con.getSharedPreferences(GLOBAL_FLAGS_SHARED_PREF_KEY, Context.MODE_PRIVATE)
 
         playerRecyclerAdapter = PlayerRecyclerAdapter(players, this)
         addPlayerRecyclerAdapter = AddPlayerAdapter(players, this)
@@ -121,13 +128,13 @@ class Controller {
     fun removePlayer(playerId: Int) {
         players[playerId].removePlayerData()
         players.removeAt(playerId)
-        addPlayerRecyclerAdapter.notifyItemRemoved(playerId)
 
         // change all IDs after the one removed, so no id duplicates will be created
         for (i in playerId until players.size) {
             players[i].changePlayerNR(players[i].getPlayerNR() - 1)
-            addPlayerRecyclerAdapter.notifyItemChanged(i)
         }
+        // all player data was changed, so this is the fastest way
+        addPlayerRecyclerAdapter.notifyDataSetChanged()
     }
 
     fun removeAllData() {
@@ -300,5 +307,23 @@ class Controller {
 
     fun changePlayerName(newName: String, playerId: Int) {
         players[playerId].changePlayerName(newName)
+    }
+
+    fun storePlayerNames(){
+        val playerCount = getPlayersSize()
+        sharedPref.edit().putInt(GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_COUNT, playerCount).commit()
+        for (i in 0 until playerCount){
+            sharedPref.edit().putString(GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_NAME_I + i, players[i].getPlayerName()).commit()
+        }
+    }
+    fun restorePlayerNames(): Boolean{
+        val playerCount = sharedPref.getInt(GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_COUNT, 0)
+        var didRestore = false
+        for (i in 0 until playerCount){
+            addPlayer(sharedPref.getString(GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_NAME_I + i, "error player not found")
+                .toString())
+            didRestore = true
+        }
+        return didRestore
     }
 }
