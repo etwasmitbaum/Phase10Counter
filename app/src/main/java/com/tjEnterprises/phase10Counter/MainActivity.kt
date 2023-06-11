@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         initViews()
 
         // only sync if a file was restored
-        if(sharedPref.getBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, false)){
+        if(sharedPref.getBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, true)){
             syncHighscoreDB()
             sharedPref.edit().putBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, false).apply()
         }
