@@ -94,9 +94,8 @@ class SettingsActivity() : AppCompatActivity() {
                 roomBackup?.restore()
                 true
             }
-
-            // TODO add warning, that backups will be lost on uninstall
-            savePathPref?.summary = context?.getExternalFilesDir("backup").toString().removePrefix("/storage/emulated/0")
+            val path = context?.getExternalFilesDir("backup").toString().split("/Android")
+            savePathPref?.summary = "/Android" + path[1] + "\n\n" + getString(R.string.back_deletion_on_uninstall_disclaimer)
 
             // open repo on click
             if (githubPref != null) {

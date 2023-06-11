@@ -50,4 +50,5 @@
     <string name="will_be_deleted">will be deleted!</string>
     <string name="are_u_sure">Are you sure?</string>
     <string name="all_opensource_license">All open source licenses</string>
+    <string name="back_deletion_on_uninstall_disclaimer">ALL Backups will be removed if you uninstall the app</string>
 </resources>
