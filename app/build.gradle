@@ -3,10 +3,10 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'org.jetbrains.kotlin.android'
+    id("com.mikepenz.aboutlibraries.plugin") version "8.9.4"
 }
 
 apply from: 'signing.gradle'
-apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 android {
 
@@ -93,5 +93,6 @@ dependencies {
     implementation 'com.google.guava:guava:32.0.0-jre'
 
     // generate licenses
-    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.1'
+    implementation "com.mikepenz:aboutlibraries-core:8.9.4"
+    implementation "com.mikepenz:aboutlibraries:8.9.4"
 }

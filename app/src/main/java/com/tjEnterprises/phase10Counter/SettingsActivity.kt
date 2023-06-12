@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.mikepenz.aboutlibraries.LibsBuilder
 import com.tjEnterprises.phase10Counter.data.AppDatabase
 import com.tjEnterprises.phase10Counter.data.roomBackup.RoomBackup
 import java.io.BufferedReader
@@ -139,8 +139,7 @@ class SettingsActivity() : AppCompatActivity() {
 
             // open all the licenses for the dependencies used
             allOpenSourceLicenses?.setOnPreferenceClickListener {
-                context?.let { it1 -> OssLicensesMenuActivity.setActivityTitle(it1.getString(R.string.app_license)) }
-                startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                LibsBuilder().start(requireContext())
                 true
             }
 
