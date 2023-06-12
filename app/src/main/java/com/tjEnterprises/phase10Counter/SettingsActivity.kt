@@ -3,11 +3,13 @@ package com.tjEnterprises.phase10Counter
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.tjEnterprises.phase10Counter.data.AppDatabase
 import com.tjEnterprises.phase10Counter.data.roomBackup.RoomBackup
@@ -31,8 +33,12 @@ class SettingsActivity() : AppCompatActivity() {
 
     class SettingsFragment : PreferenceFragmentCompat() {
 
+        private lateinit var sharedPref: SharedPreferences
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+            this.sharedPref = context?.getSharedPreferences(Controller.GLOBAL_FLAGS_SHARED_PREF_KEY, Context.MODE_PRIVATE)!!
 
             val db = context?.let { AppDatabase.getInstance(it) }
             val roomBackup = context?.let { RoomBackup(it) }
@@ -47,6 +53,7 @@ class SettingsActivity() : AppCompatActivity() {
             val backupPref: Preference? = findPreference("backup")
             val restorePref: Preference? = findPreference("restore")
             val savePathPref: Preference? = findPreference("save_path")
+            val checkUpdatesPref: SwitchPreference? = findPreference("sw_check_for_updates")
 
             val githubPref: Preference? = findPreference("link_to_github")
             val releaseNotesPref: Preference? = findPreference("release_notes")
@@ -90,12 +97,16 @@ class SettingsActivity() : AppCompatActivity() {
                 val sharedPref = context?.getSharedPreferences(Controller.GLOBAL_FLAGS_SHARED_PREF_KEY, Context.MODE_PRIVATE)
                 // must use .commit() here, because the restore action will restart the app and probably cancel the write process of .apply()
                 sharedPref?.edit()
-                    ?.putBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, true)?.commit()
+                    ?.putBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESTORE_OCCURRED_KEY, true)?.commit()
                 roomBackup?.restore()
                 true
             }
             val path = context?.getExternalFilesDir("backup").toString().split("/Android")
             savePathPref?.summary = "/Android" + path[1] + "\n\n" + getString(R.string.back_deletion_on_uninstall_disclaimer)
+
+            if (BuildConfig.BUILD_TYPE == "release"){
+                checkUpdatesPref?.isVisible = false
+            }
 
             // open repo on click
             if (githubPref != null) {

@@ -13,6 +13,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.tjEnterprises.phase10Counter.data.AppDatabase
 import com.tjEnterprises.phase10Counter.data.GlobalDataDatabase
 import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscores
@@ -65,13 +66,13 @@ class MainActivity : AppCompatActivity() {
         initViews()
 
         // only sync if a file was restored
-        if(sharedPref.getBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, true)){
+        if(sharedPref.getBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESTORE_OCCURRED_KEY, true)){
             syncHighscoreDB()
-            sharedPref.edit().putBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY, false).apply()
+            sharedPref.edit().putBoolean(Controller.GLOBAL_FLAGS_SHARED_PREF_RESTORE_OCCURRED_KEY, false).apply()
         }
 
-        // Only Check for updates, if github release is installed
-        if (BuildConfig.BUILD_TYPE != "release") {
+        // Only Check for updates, if github release is installed AND setting is set
+        if (BuildConfig.BUILD_TYPE != "release" && PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("sw_check_for_updates", true)) {
             UpdateChecker(applicationContext, this).checkForUpdate(tvUpdate)
         }
     }

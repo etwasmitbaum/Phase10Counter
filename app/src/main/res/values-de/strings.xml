@@ -52,4 +52,5 @@
     <string name="are_u_sure">Bist du dir sicher?</string>
     <string name="all_opensource_license">Alle Lizen</string>
     <string name="back_deletion_on_uninstall_disclaimer">ALLE Backups gehen verloren, wenn die App deinstalliert wird</string>
+    <string name="check_for_updates_switch">Überpüfe automatisch auf Updates</string>
 </resources>

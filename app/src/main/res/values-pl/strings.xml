@@ -51,4 +51,5 @@
     <string name="are_u_sure">Jesteś pewien?</string>
     <string name="all_opensource_license">Wszystkie licencje open source</string>
     <string name="back_deletion_on_uninstall_disclaimer">WSZYSTKIE kopie zapasowe zostaną usunięte po odinstalowaniu aplikacji</string>
+    <string name="check_for_updates_switch">Automatycznie sprawdzaj dostępność aktualizacji</string>
 </resources>

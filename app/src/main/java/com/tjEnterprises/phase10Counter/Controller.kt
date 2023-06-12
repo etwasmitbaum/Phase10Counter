@@ -42,10 +42,10 @@ class Controller {
     private lateinit var sharedPref: SharedPreferences
 
     companion object{
-        val GLOBAL_FLAGS_SHARED_PREF_KEY = "GlobalFlags"
-        val GLOBAL_FLAGS_SHARED_PREF_RESOTORE_OCCURRED_KEY = "restoreOccurred"
-        val GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_COUNT = "prevPlayerCount"
-        val GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_NAME_I = "prevPlayerName_"
+        const val GLOBAL_FLAGS_SHARED_PREF_KEY = "GlobalFlags"
+        const val GLOBAL_FLAGS_SHARED_PREF_RESTORE_OCCURRED_KEY = "restoreOccurred"
+        const val GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_COUNT = "prevPlayerCount"
+        const val GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_NAME_I = "prevPlayerName_"
     }
 
     fun setContextsAndInit(
