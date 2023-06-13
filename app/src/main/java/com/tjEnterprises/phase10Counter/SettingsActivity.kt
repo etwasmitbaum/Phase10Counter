@@ -13,7 +13,6 @@ import androidx.preference.SwitchPreference
 import com.mikepenz.aboutlibraries.LibsBuilder
 import com.tjEnterprises.phase10Counter.data.AppDatabase
 import com.tjEnterprises.phase10Counter.data.GlobalDataDatabase
-import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscores
 import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.roomBackup.RoomBackup
 import java.io.BufferedReader
@@ -176,8 +175,8 @@ class SettingsActivity() : AppCompatActivity() {
                 val newHighscores = GlobalDataDatabase.getInstance(requireContext()).GlobalHighscoresDao().getHighscoreList()
                 var copy: Boolean
 
-                // compare all old to all new Highscores, and copy only Highscores from old to new,
-                // if they do not exist in the new one
+                // compare all old to all new Highscores, and copy only Highscores from new to old,
+                // if they do not exist in the old one
                 for (i in newHighscores.indices) {
                     copy = true
                     for (j in oldHighscores.indices) {
