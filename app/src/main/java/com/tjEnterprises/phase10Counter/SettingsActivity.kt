@@ -79,6 +79,10 @@ class SettingsActivity() : AppCompatActivity() {
                 for (i in 0 until playerDao.getPlayerCount()) {
                     name += (playerDao.getSinglePlayer(i).name) + "-"
                 }
+
+                // add current time
+                name += "_" + RoomBackup.getTime()
+
                 // remove dangerous chars of path. I don't know hot to use regex, and this works
                 name = name.replace("/", "_")
                     .replace("<", "_")
@@ -91,9 +95,7 @@ class SettingsActivity() : AppCompatActivity() {
                     .replace("?", "_")
                     .replace("*", "_")
 
-                // add current time
-                name += "_" + RoomBackup.getTime()
-
+                //TODO Copy global highscores to old highscores
                 roomBackup?.customBackupFileName(name)?.backup()
                 true
             }
