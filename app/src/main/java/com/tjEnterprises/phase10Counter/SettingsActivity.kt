@@ -108,6 +108,7 @@ class SettingsActivity() : AppCompatActivity() {
                 roomBackup?.restore()
                 true
             }
+            
             val path = context?.getExternalFilesDir("backup").toString().split("/Android")
             savePathPref?.summary = "/Android" + path[1] + "\n\n" + getString(R.string.back_deletion_on_uninstall_disclaimer)
 
