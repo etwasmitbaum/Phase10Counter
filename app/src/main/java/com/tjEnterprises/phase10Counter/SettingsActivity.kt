@@ -94,7 +94,6 @@ class SettingsActivity() : AppCompatActivity() {
                     .replace("?", "_")
                     .replace("*", "_")
 
-                //TODO Copy global highscores to old highscores
                 roomBackup?.customBackupFileName(name)?.backup()
                 true
             }
