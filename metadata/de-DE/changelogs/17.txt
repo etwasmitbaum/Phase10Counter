@@ -1,0 +1,7 @@
+- NEU Es ist nun möglich, Spiele zu sichern und wiederherzustellen
+- NEU Es wurde eine separate Einstellungsaktivität hinzugefügt, um Backups durchzuführen, wiederherzustellen und Lizenzen anzuzeigen.
+- NEU Nach Ende eines Spiels werden die Spieler aus dem Spiel automatisch neu hinzugefügt
+- Einheitlicheres UI
+- Schalter zum Deaktivieren der Update-Prüfung hinzugefügt (nur GitHub-Version)
+- Allgemeine Verbesserungen
+- Aktualisierte Abhängigkeiten

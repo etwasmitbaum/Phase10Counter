@@ -1,0 +1,7 @@
+- NEW It is now possible to backup and restore games
+- NEW Added separate settings activity, to perform backup, restore and view licenses
+- NEW After ending a game, the players from the game will be automatically added to the player selection menu
+- More consistent UI
+- Add switch, to disable update checking (GitHub release only)
+- Overall improvements
+- Upgraded dependencies 
