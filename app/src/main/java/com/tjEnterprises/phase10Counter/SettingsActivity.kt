@@ -12,6 +12,9 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.mikepenz.aboutlibraries.LibsBuilder
 import com.tjEnterprises.phase10Counter.data.AppDatabase
+import com.tjEnterprises.phase10Counter.data.GlobalDataDatabase
+import com.tjEnterprises.phase10Counter.data.globalHighscores.GlobalHighscores
+import com.tjEnterprises.phase10Counter.data.highscores.Highscores
 import com.tjEnterprises.phase10Counter.data.roomBackup.RoomBackup
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -34,17 +37,17 @@ class SettingsActivity() : AppCompatActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
 
         private lateinit var sharedPref: SharedPreferences
-
+        private var db: AppDatabase? = null
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
             this.sharedPref = context?.getSharedPreferences(Controller.GLOBAL_FLAGS_SHARED_PREF_KEY, Context.MODE_PRIVATE)!!
 
-            val db = context?.let { AppDatabase.getInstance(it) }
+            db = context?.let { AppDatabase.getInstance(it) }
             val roomBackup = context?.let { RoomBackup(it) }
             if (db != null) {
                 roomBackup
-                    ?.database(db)
+                    ?.database(db!!)
                     ?.enableLogDebug(true)
                     ?.backupIsEncrypted(false)
                     ?.backupLocation(RoomBackup.BACKUP_FILE_LOCATION_EXTERNAL)
@@ -66,8 +69,11 @@ class SettingsActivity() : AppCompatActivity() {
             // create backup filename consisting of the player name, but considering potentially dangerous characters
             // then creating the backup
             backupPref?.setOnPreferenceClickListener {
+                // copy highscore data, to keep it after uninstall und restore of old backup
+                copyGlobalHighscoresForBackup()
+
                 var name = ""
-                val playerDao = db.PlayerDataDao()
+                val playerDao = db!!.PlayerDataDao()
 
                 // add all player names
                 for (i in 0 until playerDao.getPlayerCount()) {
@@ -160,6 +166,38 @@ class SettingsActivity() : AppCompatActivity() {
                 line = bufferedReader.readLine()
             }
             return stringBuilder.toString()
+        }
+        private fun copyGlobalHighscoresForBackup() {
+            if (db != null) {
+                val oldHighscoreDao = db!!.HighscoresDao()
+                val oldHighscores = oldHighscoreDao.getHighscoreList()
+                val newHighscores = GlobalDataDatabase.getInstance(requireContext()).GlobalHighscoresDao().getHighscoreList()
+                var copy: Boolean
+
+                // compare all old to all new Highscores, and copy only Highscores from old to new,
+                // if they do not exist in the new one
+                for (i in newHighscores.indices) {
+                    copy = true
+                    for (j in oldHighscores.indices) {
+                        if (newHighscores[i].date == oldHighscores[j].date
+                            && newHighscores[i].playerName == oldHighscores[j].playerName
+                            && newHighscores[i].punkte == oldHighscores[j].punkte
+                        ) {
+                            copy = false
+                            break
+                        }
+                    }
+                    if (copy) {
+                        val high = Highscores(
+                            0,
+                            newHighscores[i].playerName,
+                            newHighscores[i].punkte,
+                            newHighscores[i].date
+                        )
+                        oldHighscoreDao.insertHighscore(high)
+                    }
+                }
+            }
         }
     }
 }

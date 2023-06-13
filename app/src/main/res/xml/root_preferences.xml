@@ -16,7 +16,8 @@
 
         <SwitchPreference
             app:key="sw_check_for_updates"
-            app:title="@string/check_for_updates_switch"/>
+            app:title="@string/check_for_updates_switch"
+            app:defaultValue="true"/>
 
     </PreferenceCategory>
     <PreferenceCategory app:title="@string/about">
