@@ -34,10 +34,15 @@ abstract class AppDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(
                 context,
-                AppDatabase::class.java, "Database"
+                AppDatabase::class.java, getName()
             ).fallbackToDestructiveMigration().allowMainThreadQueries().addMigrations(
                 MigrationHelper.MIGRATION_1_2, MigrationHelper.MIGRATION_2_3
-            ).build()
+            ).setJournalMode(JournalMode.TRUNCATE).build()
+            // set to TRUNCATE, so all is always stored in a single file to easier make backups
+        }
+
+        fun getName(): String{
+            return "Database"
         }
     }
 }

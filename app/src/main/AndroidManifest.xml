@@ -17,7 +17,8 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:label="test" />
+            android:label="test"
+            />
         <activity
             android:name=".HighscoreActivity"
             android:exported="false">

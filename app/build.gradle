@@ -10,13 +10,12 @@ apply from: 'signing.gradle'
 
 android {
 
-    compileSdkVersion 33
-    buildToolsVersion "33.0.0"
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.tjEnterprises.phase10Counter"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdk 33
         versionCode 18
         versionName "2.0.1"
         resourceConfigurations += ['en', 'de', 'pl']
@@ -62,7 +61,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -72,16 +71,16 @@ dependencies {
 
     // flexbox for easy recyclerView UI handling
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // room Database
-    def room_version = "2.5.1"
+    def room_version = "2.5.2"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
@@ -95,4 +94,6 @@ dependencies {
     // generate licenses
     implementation "com.mikepenz:aboutlibraries-core:8.9.4"
     implementation "com.mikepenz:aboutlibraries:8.9.4"
+
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
 }

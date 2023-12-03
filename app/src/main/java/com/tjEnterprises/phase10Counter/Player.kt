@@ -5,6 +5,9 @@ import com.tjEnterprises.phase10Counter.data.player.PlayerData
 import com.tjEnterprises.phase10Counter.data.player.PlayerDataDao
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistory
 import com.tjEnterprises.phase10Counter.data.pointHistory.PointHistoryDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class Player(
     private var playerNR: Int,
@@ -98,41 +101,44 @@ class Player(
             phasen[0] = false
             pData.gameWon = false
         }
-        playerDataDao.insertPlayerData(pData)
-
+        CoroutineScope(Dispatchers.IO).launch {
+            playerDataDao.insertPlayerData(pData)
+        }
     }
 
     fun loadPlayerData() {
-        // load from database
-        pData = playerDataDao.getSinglePlayer(playerNR)
-        this.punkteGesamt = pData.punkte
-        this.punkteList[0] = punkteGesamt
-        this.punkteList.addAll(pointHistoryDao.getPointHistoryFromNewToOld(playerNR))
+        CoroutineScope(Dispatchers.IO).launch {
+            // load from database
+            pData = playerDataDao.getSinglePlayer(playerNR)
+            punkteGesamt = pData.punkte
+            punkteList[0] = punkteGesamt
+            punkteList.addAll(pointHistoryDao.getPointHistoryFromNewToOld(playerNR))
 
-        // get phasen and convert string to bool array of phasen
-        val phasen = pData.phasen.filter { it.isDigit() }
-        val hasPhase10 = phasen.contains("10")
+            // get phasen and convert string to bool array of phasen
+            val phasen = pData.phasen.filter { it.isDigit() }
+            val hasPhase10 = phasen.contains("10")
 
-        for (i in this.phasen.indices) {
-            phaseDone(i)
-        }
+            for (i in phasen.indices) {
+                phaseDone(i)
+            }
 
-        //load if game was won
-        if (pData.gameWon) {
-            phaseDone(0)
-        } else {
-            phaseUndoDone(0)
-        }
+            //load if game was won
+            if (pData.gameWon) {
+                phaseDone(0)
+            } else {
+                phaseUndoDone(0)
+            }
 
-        // only apply minus 2 in the below loop, if phase 10 is still in the list
-        // this is done to not unCheck phase "1" and "0", since "10" contains those digits
-        var minus2forPhase10 = 0
-        if (hasPhase10) {
-            phaseUndoDone(10)
-            minus2forPhase10 = -2
-        }
-        for (i: Int in 0 until (phasen.length + minus2forPhase10)) {
-            phaseUndoDone(phasen[i].digitToInt())
+            // only apply minus 2 in the below loop, if phase 10 is still in the list
+            // this is done to not unCheck phase "1" and "0", since "10" contains those digits
+            var minus2forPhase10 = 0
+            if (hasPhase10) {
+                phaseUndoDone(10)
+                minus2forPhase10 = -2
+            }
+            for (i: Int in 0 until (phasen.length + minus2forPhase10)) {
+                phaseUndoDone(phasen[i].digitToInt())
+            }
         }
     }
 

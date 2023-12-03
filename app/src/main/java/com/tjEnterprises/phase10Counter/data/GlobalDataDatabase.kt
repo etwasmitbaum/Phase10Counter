@@ -30,8 +30,12 @@ abstract class GlobalDataDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context): GlobalDataDatabase {
             return Room.databaseBuilder(
                 context,
-                GlobalDataDatabase::class.java, "GlobalDataDatabase"
+                GlobalDataDatabase::class.java, getName()
             ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
+        }
+
+        fun getName():String{
+            return "GlobalDataDatabase"
         }
     }
 }

@@ -41,7 +41,7 @@ class Controller {
 
     private lateinit var sharedPref: SharedPreferences
 
-    companion object{
+    companion object {
         const val GLOBAL_FLAGS_SHARED_PREF_KEY = "GlobalFlags"
         const val GLOBAL_FLAGS_SHARED_PREF_RESTORE_OCCURRED_KEY = "restoreOccurred"
         const val GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_COUNT = "prevPlayerCount"
@@ -61,7 +61,8 @@ class Controller {
         this.globalHighscoresDao = highscoresDao
         this.pointHistoryDao = pointHistoryDao
 
-        this.sharedPref = con.getSharedPreferences(GLOBAL_FLAGS_SHARED_PREF_KEY, Context.MODE_PRIVATE)
+        this.sharedPref =
+            con.getSharedPreferences(GLOBAL_FLAGS_SHARED_PREF_KEY, Context.MODE_PRIVATE)
 
         playerRecyclerAdapter = PlayerRecyclerAdapter(players, this)
         addPlayerRecyclerAdapter = AddPlayerAdapter(players, this)
@@ -90,13 +91,9 @@ class Controller {
         }
     }
 
-    private fun savePlayerData(playerNR: Int) {
-        players[playerNR].savePlayerData()
-    }
-
     fun addPunkteToPlayer(playerNR: Int, punkte: Int) {
         players[playerNR].addPunkte(punkte)
-        savePlayerData(playerNR)
+        players[playerNR].savePlayerData()
 
         // need to run this on the UI thread, else app will crash
         playersRecyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
@@ -152,11 +149,13 @@ class Controller {
     }
 
     fun phasenOnClick(v: View) {
-        val alertDialog = AlertDialog.Builder(mainActivity, R.style.AlertDialog_AppCompat_phase10Counter).create()
+        val alertDialog =
+            AlertDialog.Builder(mainActivity, R.style.AlertDialog_AppCompat_phase10Counter).create()
         val inflater = mainActivity.layoutInflater
         val dialogView: ConstraintLayout =
             inflater.inflate(R.layout.dialog_phasen_auswahl, null) as ConstraintLayout
         alertDialog.setView(dialogView)
+        alertDialog.setTitle("Creating Backup...")
 
         // using polymorphism to use getChildAt(0) on either ConstraintLayout or LinearLayout
         var isLandScape = false
@@ -245,7 +244,7 @@ class Controller {
             //i+1 because the Phases start with 1 but array here with 0.
             //and place 0 in the array of an player object shows if the player has won
         }
-        savePlayerData(playerNR)
+        players[playerNR].savePlayerData()
 
         // need to run this on the UI thread, else app will crash
         playersRecyclerView.post { playerRecyclerAdapter.notifyItemChanged(playerNR) }
@@ -299,7 +298,7 @@ class Controller {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val removedPlayer: Player = players[viewHolder.adapterPosition]
+                val removedPlayer: Player = players[viewHolder.absoluteAdapterPosition]
                 removePlayer(removedPlayer.getPlayerNR())
             }
         }).attachToRecyclerView(addPlayersRecyclerView)
@@ -309,19 +308,29 @@ class Controller {
         players[playerId].changePlayerName(newName)
     }
 
-    fun storePlayerNames(){
+    fun storePlayerNames() {
         val playerCount = getPlayersSize()
-        sharedPref.edit().putInt(GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_COUNT, playerCount).commit()
-        for (i in 0 until playerCount){
-            sharedPref.edit().putString(GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_NAME_I + i, players[i].getPlayerName()).commit()
+        sharedPref.edit().putInt(GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_COUNT, playerCount)
+            .commit()
+        for (i in 0 until playerCount) {
+            sharedPref.edit().putString(
+                GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_NAME_I + i,
+                players[i].getPlayerName()
+            ).commit()
         }
     }
-    fun restorePlayerNames(): Boolean{
+
+    fun restorePlayerNames(): Boolean {
         val playerCount = sharedPref.getInt(GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_COUNT, 0)
         var didRestore = false
-        for (i in 0 until playerCount){
-            addPlayer(sharedPref.getString(GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_NAME_I + i, "error player not found")
-                .toString())
+        for (i in 0 until playerCount) {
+            addPlayer(
+                sharedPref.getString(
+                    GLOBAL_FLAGS_SHARED_PREF_PREVIOUS_PLAYER_NAME_I + i,
+                    "error player not found"
+                )
+                    .toString()
+            )
             didRestore = true
         }
         return didRestore
