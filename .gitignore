@@ -83,6 +83,9 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-Phase10Counter/.idea/deploymentTargetDropDown.xml
-app/release/output-metadata.json
-app/github_release/output-metadata.json
+Phase10Counter/.idea/
+app/build/
+app/release/
+app/github_release/
+app/production.jks
+app/production.properties
