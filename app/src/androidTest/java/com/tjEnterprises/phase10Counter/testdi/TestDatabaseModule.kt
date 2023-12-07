@@ -16,13 +16,13 @@
 
 package com.tjEnterprises.phase10Counter.testdi
 
+import com.tjEnterprises.phase10Counter.data.DatabaseRepository
+import com.tjEnterprises.phase10Counter.data.di.DataModule
+import com.tjEnterprises.phase10Counter.data.di.FakeDatabaseRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
-import com.tjEnterprises.phase10Counter.data.DatabaseRepository
-import com.tjEnterprises.phase10Counter.data.di.DataModule
-import com.tjEnterprises.phase10Counter.data.di.FakeDatabaseRepository
 
 @Module
 @TestInstallIn(

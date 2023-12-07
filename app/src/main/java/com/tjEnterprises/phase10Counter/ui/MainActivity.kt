@@ -16,22 +16,16 @@
 
 package com.tjEnterprises.phase10Counter.ui
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.ui.base.AppBaseScreen
-import com.tjEnterprises.phase10Counter.ui.navigation.MainNavigation
-import dagger.hilt.android.AndroidEntryPoint
 import com.tjEnterprises.phase10Counter.ui.theme.MyApplicationTheme
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

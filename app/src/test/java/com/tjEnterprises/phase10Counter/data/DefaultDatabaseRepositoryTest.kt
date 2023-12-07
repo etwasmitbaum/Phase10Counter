@@ -16,6 +16,8 @@
 
 package com.tjEnterprises.phase10Counter.data
 
+import com.tjEnterprises.phase10Counter.data.local.database.Database
+import com.tjEnterprises.phase10Counter.data.local.database.DatabaseDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -23,8 +25,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import com.tjEnterprises.phase10Counter.data.local.database.Database
-import com.tjEnterprises.phase10Counter.data.local.database.DatabaseDao
 
 /**
  * Unit tests for [DefaultDatabaseRepository].
