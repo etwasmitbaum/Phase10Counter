@@ -1,9 +1,11 @@
 package com.tjEnterprises.phase10Counter.ui.base
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,8 +42,13 @@ fun AppBaseScreen(
     val drawerState = rememberDrawerState(initialValue = initialDrawerValue)
 
     // TODO on landscape hide top bar
-    // TODO close navigation drawer on back button
     ModalNavigationDrawer(modifier = modifier, drawerState = drawerState, drawerContent = {
+        if( drawerState.isOpen ) {
+            BackHandler {
+                scope.launch { drawerState.close() }
+            }
+        }
+
         ModalDrawerSheet {
             IconButton(onClick = { scope.launch { drawerState.close() } }) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Close Drawer")
