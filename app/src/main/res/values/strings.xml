@@ -1,11 +1,5 @@
 <resources>
     <string name="app_name">Phase 10 Counter</string>
-    <string name="punkteHint">Points</string>
-    <string name="add_player">Add Player</string>
-    <string name="start">Start</string>
-    <string name="player_message_tv">Player:</string>
-    <string name="offene_phasen">Open Rounds:</string>
-    <string name="phasenPlayerFragment">Rounds</string>
     <string name="phase1"><b>Round 1: </b>2 sets of 3</string>
     <string name="phase2"><b>Round 2: </b>1 set of 3 + 1 run of 4</string>
     <string name="phase3"><b>Round 3: </b>1 set of 4 + 1 run of 4</string>
@@ -16,6 +10,12 @@
     <string name="phase8"><b>Round 8: </b>7 cards of one color</string>
     <string name="phase9"><b>Round 9: </b>1 set of 5 + 1 set of 2</string>
     <string name="phase10"><b>Round 10: </b>1 set of 5 + 1 set of 3</string>
+    <string name="punkteHint">Points</string>
+    <string name="add_player">Add Player</string>
+    <string name="start">Start</string>
+    <string name="player_message_tv">Player:</string>
+    <string name="offene_phasen">Open Rounds:</string>
+    <string name="phasenPlayerFragment">Rounds</string>
     <string name="ok">OK</string>
     <string name="player_needs_a_name">Player must have a name</string>
     <string name="all_data_will_be_deleted">ALL Data will be deleted</string>

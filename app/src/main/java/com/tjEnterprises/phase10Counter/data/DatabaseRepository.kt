@@ -69,7 +69,7 @@ interface DatabaseRepository {
 
         override suspend fun updatePlayer(player: Player) {
             playerDao.updatePlayer(player)
-            updateGameModifiedTimestamp(playerDao.getGameFromPlayerID(player.id))
+            updateGameModifiedTimestamp(playerDao.getGameFromPlayerID(player.gameID))
         }
 
         override suspend fun changePlayerName(player: Player) {

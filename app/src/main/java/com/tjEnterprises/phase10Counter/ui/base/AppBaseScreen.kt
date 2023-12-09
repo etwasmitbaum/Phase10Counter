@@ -41,7 +41,6 @@ fun AppBaseScreen(
 
     val drawerState = rememberDrawerState(initialValue = initialDrawerValue)
 
-    // TODO on landscape hide top bar
     ModalNavigationDrawer(modifier = modifier, drawerState = drawerState, drawerContent = {
         if( drawerState.isOpen ) {
             BackHandler {

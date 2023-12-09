@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="phases">
+        <item>@string/phase1</item>
+        <item>@string/phase2</item>
+        <item>@string/phase3</item>
+        <item>@string/phase4</item>
+        <item>@string/phase5</item>
+        <item>@string/phase6</item>
+        <item>@string/phase7</item>
+        <item>@string/phase8</item>
+        <item>@string/phase9</item>
+        <item>@string/phase10</item>
+    </string-array>
+</resources>
