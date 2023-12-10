@@ -64,7 +64,7 @@ fun AppBaseScreen(
             NavigationDrawerItem(label = { Text(text = "Select Game") },
                 selected = currentRoute == NavigationDestination.SELECT_GAME,
                 onClick = {
-                    navigationActions.navigateToGameSelect(NavigationDestination.SELECT_GAME)
+                    navigationActions.navigateToGameSelect()
                     scope.launch { drawerState.close() }
                 })
             Divider()

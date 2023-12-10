@@ -16,6 +16,7 @@
 
 package com.tjEnterprises.phase10Counter.ui.game
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,12 +49,17 @@ fun GameScreen(
     modifier: Modifier = Modifier,
     gameId: Long,
     viewModel: GameViewModel = hiltViewModel(),
+    navigateToGameSelect: () -> Unit,
     openDrawer: () -> Unit,
 ) {
     val playersUiState by viewModel.playerUiState.collectAsState()
     val gamesUiState by viewModel.gamesUiState.collectAsState()
     val pointHistoryUiState by viewModel.pointHistoryUiState.collectAsState()
     viewModel.setGameId(gameId)
+
+    BackHandler {
+        navigateToGameSelect()
+    }
 
     when (gamesUiState) {
         is GamesUiState.GamesSuccess -> {

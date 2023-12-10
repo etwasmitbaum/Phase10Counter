@@ -4,8 +4,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
 class NavigationActions(navController: NavHostController) {
-    val navigateToGameSelect: (String) -> Unit = {route ->
-        navController.navigate(route) {
+    val navigateToGameSelect: () -> Unit = {
+        navController.navigate(NavigationDestination.SELECT_GAME) {
             popUpTo(navController.graph.findStartDestination().id) {
                 inclusive = false
             }
