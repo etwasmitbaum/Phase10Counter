@@ -37,9 +37,11 @@ interface DatabaseRepository {
     suspend fun changePlayerName(player: Player)
     suspend fun changePlayerPhases(player: Player)
     suspend fun insertGame(game: Game): Long
+    suspend fun getGameFromId(gameID: Long): Game
     suspend fun removeGame(game: Game)
     suspend fun updateGameModifiedTimestamp(game: Game)
     suspend fun getPointHistory(): Flow<List<PointHistory>>
+    suspend fun getPointHistoryFromPlayerId(playerId: Long): List<PointHistory>
     suspend fun insertPointHistory(pointHistory: PointHistory)
     suspend fun removePointHistory(pointHistory: PointHistory)
 
@@ -84,6 +86,10 @@ interface DatabaseRepository {
             return gameDao.insertGame(game)
         }
 
+        override suspend fun getGameFromId(gameID: Long): Game {
+            return gameDao.getGameFromId(gameID)
+        }
+
         override suspend fun removeGame(game: Game) {
             gameDao.deleteGame(game)
         }
@@ -95,6 +101,10 @@ interface DatabaseRepository {
 
         override suspend fun getPointHistory(): Flow<List<PointHistory>> {
             return pointHistoryDao.getPointHistory()
+        }
+
+        override suspend fun getPointHistoryFromPlayerId(playerId: Long): List<PointHistory> {
+            return pointHistoryDao.getAllPointsFromPlayer(playerId)
         }
 
         override suspend fun insertPointHistory(pointHistory: PointHistory) {

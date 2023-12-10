@@ -74,6 +74,10 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun getGameFromId(gameID: Long): Game {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun removeGame(game: Game) {
         TODO("Not yet implemented")
     }
@@ -83,6 +87,10 @@ class FakeDatabaseRepository @Inject constructor(
     }
 
     override suspend fun getPointHistory(): Flow<List<PointHistory>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPointHistoryFromPlayerId(playerId: Long): List<PointHistory> {
         TODO("Not yet implemented")
     }
 

@@ -1,14 +1,19 @@
 package com.tjEnterprises.phase10Counter.ui.selectGame
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.Player
@@ -36,6 +41,7 @@ fun SelectGame(
                         players = (playersUiState as PlayerUiState.PlayersSuccess).data,
                         openDrawer = openDrawer,
                         navigateToGame = navigateToGame,
+                        deleteGame = {viewModel.deleteGameWithData(it)},
                         modifier = modifier
                     )
                 }
@@ -51,16 +57,18 @@ fun SelectGame(
 
 @Composable
 internal fun SelectGame(
+    modifier: Modifier = Modifier,
     games: List<Game>,
     players: List<Player>,
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
-    modifier: Modifier = Modifier
+    deleteGame: (Game) -> Unit
 ) {
     // TODO Expand card to show all players with their points
     // TODO Delete Games
     // TODO reset games -> delete the point history and phases
     // TODO make gridLayout
+    // TODO add "Reset Game" Button
     DefaultScaffold(title = "Select Game", openDrawer = openDrawer) { scaffoldModifier ->
         LazyColumn(modifier = scaffoldModifier
             .then(modifier)
@@ -73,6 +81,9 @@ internal fun SelectGame(
                         players = players.filter { it.gameID == game.id },
                         navigateToGame = navigateToGame
                     )
+                    Button(onClick = { deleteGame(game) }, modifier = Modifier.padding(bottom = 16.dp)) {
+                        Text(text = "Delete")
+                    }
                 }
             })
     }
@@ -95,6 +106,7 @@ fun SelectGamePreview() {
             Player(0L, "Player3", 3L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10")
         ),
         openDrawer = {  },
+        deleteGame = {},
         navigateToGame = {}
     )
 }

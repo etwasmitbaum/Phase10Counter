@@ -94,8 +94,7 @@ fun OnePlayerView(
                 modifier = Modifier
                     .widthIn(1.dp, 150.dp)
                     .onFocusChanged {
-                        if (!it.isFocused && text != "") {
-                            // TODO Catch bad input with "," or "."
+                        if (!it.isFocused && text != "" && !(text.contains('.') || text.contains(','))) {
                             addPointHistoryEntry(PointHistory(text.toLong(), player.id))
                             text = ""
                         }
@@ -143,9 +142,11 @@ fun PointHistoryDropDown(
 
         // drop down menu
         DropdownMenu(
-            expanded = expanded, onDismissRequest = {
+            expanded = expanded,
+            onDismissRequest = {
                 expanded = false
-            }, modifier = Modifier
+            },
+            modifier = Modifier
                 .widthIn(min = 1.dp, max = 128.dp)
                 .wrapContentSize(),
             properties = PopupProperties(usePlatformDefaultWidth = false)
@@ -161,7 +162,7 @@ fun PointHistoryDropDown(
                     textAlign = TextAlign.Center
                 )
                 // don't place a divider at the bottom
-                if (idx != lastElement){
+                if (idx != lastElement) {
                     Divider()
                 }
             }

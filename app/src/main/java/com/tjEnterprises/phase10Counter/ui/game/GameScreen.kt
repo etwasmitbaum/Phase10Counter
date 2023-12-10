@@ -121,7 +121,7 @@ internal fun GameScreen(
             modifier = scaffoldModifier
                 .then(modifier)
                 .padding(top = 8.dp, bottom = 4.dp),
-            columns = GridCells.Adaptive(380.dp)
+            columns = GridCells.Adaptive(370.dp)
         ) {
             items(players) { player ->
                 OnePlayerView(
