@@ -29,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -120,14 +121,14 @@ internal fun GameScreen(
             modifier = scaffoldModifier
                 .then(modifier)
                 .padding(top = 8.dp, bottom = 4.dp),
-            columns = GridCells.Adaptive(400.dp)
+            columns = GridCells.Adaptive(380.dp)
         ) {
             items(players) { player ->
                 OnePlayerView(
                     player = player,
                     modifier = Modifier
                         .padding(8.dp)
-                        .padding(top = 8.dp)
+                        .padding(bottom = 8.dp)
                         .fillMaxWidth(),
                     listOfPoints = pointHistory.filter { it.playerID == player.id },
                     addPointHistoryEntry = addPointHistoryEntry,
@@ -151,6 +152,8 @@ internal fun GameScreen(
 
 // Previews
 @Preview(showBackground = true, widthDp = 500)
+@Preview(showBackground = true, widthDp = 800, heightDp = 350)
+@Preview(device = Devices.TABLET)
 @Composable
 fun GameScreenPreview() {
     GameScreen(players = listOf(
