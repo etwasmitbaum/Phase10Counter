@@ -1,5 +1,6 @@
 package com.tjEnterprises.phase10Counter.ui.selectGame
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -41,6 +42,7 @@ fun SelectGame(
                         players = (playersUiState as PlayerUiState.PlayersSuccess).data,
                         openDrawer = openDrawer,
                         navigateToGame = navigateToGame,
+                        resetGame = {viewModel.resetGameWithData(it)},
                         deleteGame = {viewModel.deleteGameWithData(it)},
                         modifier = modifier
                     )
@@ -62,6 +64,7 @@ internal fun SelectGame(
     players: List<Player>,
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
+    resetGame: (Game) -> Unit,
     deleteGame: (Game) -> Unit
 ) {
     // TODO Expand card to show all players with their points
@@ -73,17 +76,17 @@ internal fun SelectGame(
         LazyColumn(modifier = scaffoldModifier
             .then(modifier)
             .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.End,
             content = {
                 items(games) { game ->
                     GamePreviewComponent(
                         game = game,
                         players = players.filter { it.gameID == game.id },
-                        navigateToGame = navigateToGame
+                        navigateToGame = navigateToGame,
+                        deleteGame = deleteGame,
+                        resetGame = resetGame
                     )
-                    Button(onClick = { deleteGame(game) }, modifier = Modifier.padding(bottom = 16.dp)) {
-                        Text(text = "Delete")
-                    }
+
                 }
             })
     }
@@ -107,6 +110,7 @@ fun SelectGamePreview() {
         ),
         openDrawer = {  },
         deleteGame = {},
+        resetGame = {},
         navigateToGame = {}
     )
 }

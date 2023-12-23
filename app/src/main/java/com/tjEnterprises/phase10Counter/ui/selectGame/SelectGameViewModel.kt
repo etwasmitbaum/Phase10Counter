@@ -66,4 +66,23 @@ class SelectGameViewModel @Inject constructor(
             databaseRepository.removeGame(game)
         }
     }
+
+    fun resetGameWithData(game: Game) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val playersToReset = databaseRepository.getPlayerFromGame(game.id)
+                .map { players -> players.filter { it.gameID == game.id } }
+
+            viewModelScope.launch(Dispatchers.IO) {
+                playersToReset.collect { listOfPlayer ->
+                    listOfPlayer.forEach { player ->
+                        databaseRepository.getPointHistoryFromPlayerId(player.id).forEach { pointHistory ->
+                            databaseRepository.removePointHistory(pointHistory)
+                        }
+                        player.phases = ""
+                        databaseRepository.changePlayerPhases(player)
+                    }
+                }
+            }
+        }
+    }
 }
