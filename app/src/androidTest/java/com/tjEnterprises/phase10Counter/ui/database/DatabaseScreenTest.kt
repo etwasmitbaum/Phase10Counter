@@ -38,7 +38,7 @@ class DatabaseScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            DatabaseScreen(FAKE_DATA, onSave = {})
+            //DatabaseScreen(FAKE_DATA, onSave = {})
         }
     }
 

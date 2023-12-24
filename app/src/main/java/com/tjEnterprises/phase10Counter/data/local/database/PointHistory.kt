@@ -23,9 +23,9 @@ data class PointHistory(
 }
 
 @Dao
-interface PoinHistoryDao {
+interface PointHistoryDao {
     @Query("SELECT * FROM PointHistory WHERE player_id IS (:playerID) ORDER BY id DESC")
-    suspend fun getAllPointsFromPlayer(playerID: Long): List<PointHistory>
+    fun getAllPointsFromPlayer(playerID: Long): Flow<List<PointHistory>>
 
     @Query("SELECT * FROM PointHistory ORDER BY id DESC")
     fun getPointHistory(): Flow<List<PointHistory>>

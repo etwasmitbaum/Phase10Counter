@@ -21,17 +21,15 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tjEnterprises.phase10Counter.data.local.database.Game
-import com.tjEnterprises.phase10Counter.data.local.database.Player
+import com.tjEnterprises.phase10Counter.data.GameModel
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 
 @Composable
 fun GamePreviewComponent(
-    game: Game,
-    players: List<Player>,
+    game: GameModel,
     navigateToGame: (String) -> Unit,
-    deleteGame: (Game) -> Unit,
-    resetGame: (Game) -> Unit,
+    deleteGame: (GameModel) -> Unit,
+    resetGame: (GameModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var bExpanded by remember { mutableStateOf(false) }
@@ -48,7 +46,7 @@ fun GamePreviewComponent(
                         .fillMaxWidth()
                 )
                 var iExpandCount = 0
-                players.forEach {
+                game.players.forEach {
                     // show max 3 players, when not expanded
                     if (bExpanded or (iExpandCount < 2 )) {
                         Row( modifier = Modifier.clickable {
@@ -106,14 +104,16 @@ fun GamePreviewComponent(
     }
 }
 
+
+
 @Preview(showBackground = true)
 @Composable
 fun GamePreviewComponentPreview() {
-    GamePreviewComponent(game = Game(1L, "Game 1"), players = listOf(
+    GamePreviewComponent(game = GameModel(1L, "Game 1", 1, 1, players = emptyList() ), /*players = listOf(
         Player(0L, "Player1", 1L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
         Player(0L, "Player2", 1L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
         Player(0L, "Player3", 1L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10")
-    ), navigateToGame = {}
+    )*/navigateToGame = {}
     , deleteGame = {}
     , resetGame = {})
 }

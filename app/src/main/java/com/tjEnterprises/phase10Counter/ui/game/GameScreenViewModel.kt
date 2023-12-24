@@ -19,29 +19,14 @@ package com.tjEnterprises.phase10Counter.ui.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tjEnterprises.phase10Counter.data.DatabaseRepository
-import com.tjEnterprises.phase10Counter.data.local.database.Game
+import com.tjEnterprises.phase10Counter.data.PhasesModel
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
-import com.tjEnterprises.phase10Counter.ui.GamesUiState
-import com.tjEnterprises.phase10Counter.ui.GamesUiState.GamesError
-import com.tjEnterprises.phase10Counter.ui.GamesUiState.GamesLoading
-import com.tjEnterprises.phase10Counter.ui.GamesUiState.GamesSuccess
-import com.tjEnterprises.phase10Counter.ui.PlayerUiState
-import com.tjEnterprises.phase10Counter.ui.PlayerUiState.PlayersError
-import com.tjEnterprises.phase10Counter.ui.PlayerUiState.PlayersLoading
-import com.tjEnterprises.phase10Counter.ui.PlayerUiState.PlayersSuccess
-import com.tjEnterprises.phase10Counter.ui.PointHistoryUiState
-import com.tjEnterprises.phase10Counter.ui.PointHistoryUiState.PointHistoryError
-import com.tjEnterprises.phase10Counter.ui.PointHistoryUiState.PointHistorySuccess
+import com.tjEnterprises.phase10Counter.ui.GameUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -53,48 +38,64 @@ class GameViewModel @Inject constructor(
     private val gameID = MutableStateFlow(1L)
 
     // TODO check if it makes a new db request when changing gameID
-    val playerUiState: StateFlow<PlayerUiState> =
-        databaseRepository.players.combine(gameID) { list, gameID ->
-                list.filter { item -> item.gameID == gameID }
-            }.map<List<Player>, PlayerUiState>(::PlayersSuccess).catch { emit(PlayersError(it)) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = PlayersLoading
-            )
 
     // TODO sort out the games in here instead of "GameScreen.kt" to retrieve only one single game
     // TODO Combine all states into one
 
-    val gamesUiState: StateFlow<GamesUiState> =
-        databaseRepository.games.map<List<Game>, GamesUiState>(::GamesSuccess)
-            .catch { emit(GamesError(it)) }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = GamesLoading
-            )
+    private val _gameUiState = MutableStateFlow<GameUiState>(GameUiState.GameLoading)
+    val gameUiState: StateFlow<GameUiState> get() = _gameUiState
 
-    val pointHistoryUiState: StateFlow<PointHistoryUiState> =
-        databaseRepository.pointHistory.map<List<PointHistory>, PointHistoryUiState>(::PointHistorySuccess)
-            .catch { emit ( PointHistoryError(it) ) }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = PointHistoryUiState.PointHistoryLoading
-            )
+    init {
+
+        loadGame()
+
+    }
+
+    private fun loadGame() {
+
+
+        val gameId = this.gameID.value
+
+        viewModelScope.launch {
+
+            try {
+                // Call suspend function within coroutine
+                val game = databaseRepository.getGameFromId(gameId)
+
+                // Emit GamesSuccess state with the list of games
+                _gameUiState.value = GameUiState.GameSuccess(game)
+            } catch (e: Exception) {
+                // Emit GamesError state on exception
+                _gameUiState.value = GameUiState.GameError(e)
+            }
+
+        }
+    }
+
 
     fun setGameId(gameId: Long) {
         gameID.value = gameId
+
+        loadGame()
+
     }
 
     fun addPointHistoryEntry(pointHistory: PointHistory) {
         viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.insertPointHistory(pointHistory = pointHistory)
+
+            loadGame()
+
         }
     }
 
-    fun savePlayerPhases(player: Player){
+    fun changePlayerPhases(phases: List<PhasesModel>){
         viewModelScope.launch (Dispatchers.IO) {
-            databaseRepository.changePlayerPhases(player)
+            for (phase in phases) {
+                databaseRepository.changePlayerPhase(phase = phase.phase, state = phase.state, playerId = phase.playerId)
+            }
+            loadGame()
+
         }
     }
 }

@@ -20,9 +20,12 @@ import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PlayerDao
-import com.tjEnterprises.phase10Counter.data.local.database.PoinHistoryDao
+import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface DatabaseRepository {
@@ -31,24 +34,27 @@ interface DatabaseRepository {
     val pointHistory: Flow<List<PointHistory>>
 
     suspend fun insertPlayer(player: Player)
-    suspend fun getPlayerFromGame(gameID: Long): Flow<List<Player>>
+    suspend fun getPlayer(playerId: Long) : Player
+    suspend fun getPlayerFromGame(gameID: Long): Flow<List<PlayerModel>>
     suspend fun deletePlayer(player: Player)
     suspend fun updatePlayer(player: Player)
     suspend fun changePlayerName(player: Player)
-    suspend fun changePlayerPhases(player: Player)
+    suspend fun changePlayerPhase(playerId: Long, phase: Long, state: Boolean)
     suspend fun insertGame(game: Game): Long
-    suspend fun getGameFromId(gameID: Long): Game
+    suspend fun getGameFromId(gameID: Long): GameModel
+    suspend fun getAllGames(): Flow<List<GameModel>>
     suspend fun removeGame(game: Game)
     suspend fun updateGameModifiedTimestamp(game: Game)
     suspend fun getPointHistory(): Flow<List<PointHistory>>
-    suspend fun getPointHistoryFromPlayerId(playerId: Long): List<PointHistory>
+    suspend fun getPointHistoryFromPlayerId(playerId: Long): Flow<List<PointHistoryModel>>
     suspend fun insertPointHistory(pointHistory: PointHistory)
+    suspend fun addPointHistory(playerId: Long, point: Long)
     suspend fun removePointHistory(pointHistory: PointHistory)
 
     class DefaultDatabaseRepository @Inject constructor(
         private val gameDao: GameDao,
         private val playerDao: PlayerDao,
-        private val pointHistoryDao: PoinHistoryDao
+        private val pointHistoryDao: PointHistoryDao
     ) : DatabaseRepository {
 
         override var games: Flow<List<Game>> = gameDao.getAllGames()
@@ -61,8 +67,44 @@ interface DatabaseRepository {
             playerDao.insertPlayer(player)
         }
 
-        override suspend fun getPlayerFromGame(gameID: Long): Flow<List<Player>> {
-            return playerDao.getAllPlayersFromGame(gameID)
+        override suspend fun getPlayer(playerId: Long) : Player {
+            return playerDao.getPlayer(playerId)
+        }
+
+        override suspend fun getPlayerFromGame(gameID: Long): Flow<List<PlayerModel>> {
+            val players =  playerDao.getAllPlayersFromGame(gameID).map { players ->
+                players.map { player ->
+                    val pointHistory = getPointHistoryFromPlayerId(player.id).first()
+                    //val totalPoints = pointHistory.sumBy { it.points }
+
+                    var totalPoints = 0L
+                    pointHistory.forEach {
+                        totalPoints += it.point
+                    }
+
+                    PlayerModel(
+                        id = player.id,
+                        name =  player.name,
+                        points = totalPoints,
+                        phases = loadPhases(player.id, player.phases).first(),
+                        pointHistory = pointHistory
+                    )
+                }
+            }
+
+            return players
+        }
+
+        private suspend fun loadPhases(playerId: Long, sPhases: String): Flow<List<PhasesModel>> {
+            val phasesList = mutableListOf<PhasesModel>()
+            for (i in 0..9) {
+                val isChecked = sPhases.contains((i + 1).toString())
+                phasesList.add(PhasesModel(i.toLong(), isChecked, playerId))
+            }
+            return flow {
+                emit(phasesList)
+            }
+
         }
 
         override suspend fun deletePlayer(player: Player) {
@@ -78,16 +120,50 @@ interface DatabaseRepository {
             updatePlayer(player)
         }
 
-        override suspend fun changePlayerPhases(player: Player) {
-            updatePlayer(player)
+        override suspend fun changePlayerPhase(playerId: Long, phase: Long, state: Boolean) {
+            val player = getPlayer(playerId)
+
+            if (!state && player.phases.contains(phase.toString())) {
+                // remove phase from string
+                player.phases.replace(phase.toString(),"")
+
+                updatePlayer(player)
+            }
+            else if (state && !player.phases.contains(phase.toString())) {
+                // add to string
+                player.phases += ", $phase"
+
+                updatePlayer(player)
+            }
         }
 
         override suspend fun insertGame(game: Game) : Long {
             return gameDao.insertGame(game)
         }
 
-        override suspend fun getGameFromId(gameID: Long): Game {
-            return gameDao.getGameFromId(gameID)
+        override suspend fun getGameFromId(gameID: Long): GameModel {
+            val game = gameDao.getGameFromId(gameID)
+            return GameModel(
+                id = game.id,
+                created = game.timestampCreated,
+                modified = game.timestampModified,
+                name =  game.name,
+                players = getPlayerFromGame(game.id).first()
+            )
+        }
+
+        override suspend fun getAllGames() : Flow<List<GameModel>> {
+            return gameDao.getAllGames().map { games ->
+                games.map { game ->
+                    GameModel(
+                        id = game.id,
+                        created = game.timestampCreated,
+                        modified = game.timestampModified,
+                        name =  game.name,
+                        players = getPlayerFromGame(game.id).first()
+                    )
+                }
+            }
         }
 
         override suspend fun removeGame(game: Game) {
@@ -103,13 +179,30 @@ interface DatabaseRepository {
             return pointHistoryDao.getPointHistory()
         }
 
-        override suspend fun getPointHistoryFromPlayerId(playerId: Long): List<PointHistory> {
-            return pointHistoryDao.getAllPointsFromPlayer(playerId)
+        override suspend fun getPointHistoryFromPlayerId(playerId: Long): Flow<List<PointHistoryModel>> {
+            return pointHistoryDao.getAllPointsFromPlayer(playerId).map { pointHistory ->
+                pointHistory.map { point ->
+                    PointHistoryModel(
+                        id = point.id,
+                        playerId = point.playerID,
+                        point = point.point,
+                        created = point.timestampCreated
+                    )
+                }
+            }
         }
 
         override suspend fun insertPointHistory(pointHistory: PointHistory) {
             pointHistoryDao.insertPoint(pointHistory)
             updateGameModifiedTimestamp(pointHistoryDao.getGameByPlayerId(pointHistory.playerID))
+        }
+
+        override suspend fun addPointHistory(playerId: Long, point: Long) {
+            val pointHistory = PointHistory(
+                point = point,
+                playerID = playerId
+            )
+            insertPointHistory(pointHistory)
         }
 
         override suspend fun removePointHistory(pointHistory: PointHistory) {

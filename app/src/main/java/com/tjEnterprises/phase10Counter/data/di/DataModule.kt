@@ -17,6 +17,9 @@
 package com.tjEnterprises.phase10Counter.data.di
 
 import com.tjEnterprises.phase10Counter.data.DatabaseRepository
+import com.tjEnterprises.phase10Counter.data.GameModel
+import com.tjEnterprises.phase10Counter.data.PlayerModel
+import com.tjEnterprises.phase10Counter.data.PointHistoryModel
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
@@ -40,9 +43,8 @@ interface DataModule {
     ): DatabaseRepository
 }
 
+/*
 class FakeDatabaseRepository @Inject constructor(
-    override val players: Flow<List<Player>>,
-    override val pointHistory: Flow<List<PointHistory>>,
 ) : DatabaseRepository {
     override val games: Flow<List<Game>> = flowOf(fakeDatabases)
 
@@ -50,7 +52,7 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPlayerFromGame(gameID: Long): Flow<List<Player>> {
+    override suspend fun getPlayerFromGame(gameID: Long): Flow<List<PlayerModel>> {
         TODO("Not yet implemented")
     }
 
@@ -74,7 +76,7 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getGameFromId(gameID: Long): Game {
+    override suspend fun getGameFromId(gameID: Long): GameModel {
         TODO("Not yet implemented")
     }
 
@@ -90,7 +92,7 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPointHistoryFromPlayerId(playerId: Long): List<PointHistory> {
+    override suspend fun getPointHistoryFromPlayerId(playerId: Long): Flow<List<PointHistoryModel>> {
         TODO("Not yet implemented")
     }
 
@@ -104,3 +106,4 @@ class FakeDatabaseRepository @Inject constructor(
 }
 
 val fakeDatabases = listOf(Game(name = "One"), Game(name = "Two"), Game(name = "Three"))
+*/
