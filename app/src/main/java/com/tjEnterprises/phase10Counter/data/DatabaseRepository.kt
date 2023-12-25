@@ -98,8 +98,13 @@ interface DatabaseRepository {
         private suspend fun loadPhases(playerId: Long, sPhases: String): Flow<List<PhasesModel>> {
             val phasesList = mutableListOf<PhasesModel>()
             for (i in 0..9) {
-                val isChecked = sPhases.contains((i + 1).toString())
-                phasesList.add(PhasesModel(i.toLong(), isChecked, playerId))
+                val phase : Long = (i + 1).toLong()
+                var sPhase = phase.toString()
+                if (phase.toInt() == 1) {
+                    sPhase = "$sPhase,"
+                }
+                val isChecked = sPhases.contains(sPhase)
+                phasesList.add(PhasesModel(phase, isChecked, playerId))
             }
             return flow {
                 emit(phasesList)
@@ -122,16 +127,25 @@ interface DatabaseRepository {
 
         override suspend fun changePlayerPhase(playerId: Long, phase: Long, state: Boolean) {
             val player = getPlayer(playerId)
+            var sPhase: String = phase.toString()
+            var sReplace: String = ""
 
-            if (!state && player.phases.contains(phase.toString())) {
+            if (phase.toInt() == 1) {
+                sPhase = "$sPhase,"
+                sReplace = ","
+            }
+
+            if (!state && player.phases.contains(sPhase)) {
                 // remove phase from string
-                player.phases.replace(phase.toString(),"")
+                player.phases = player.phases.replace(sPhase,sReplace)
+
+                // ToDo: Remove duplicate ","
 
                 updatePlayer(player)
             }
-            else if (state && !player.phases.contains(phase.toString())) {
+            else if (state && !player.phases.contains(sPhase)) {
                 // add to string
-                player.phases += ", $phase"
+                player.phases += ", $sPhase"
 
                 updatePlayer(player)
             }

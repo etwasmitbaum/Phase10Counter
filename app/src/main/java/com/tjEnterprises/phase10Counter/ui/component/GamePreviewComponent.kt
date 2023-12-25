@@ -53,12 +53,13 @@ fun GamePreviewComponent(
                             if (!bExpanded) bExpanded = true }
                             .fillMaxWidth()
                         ) {
-                            Text(text = it.name,)
-                            // ToDo: Aktuelle Punktzahl ausgeben
-                            /*if (bExpanded) {
-                                Text(text = it.id.toString(),
+                            Text(text = it.name)
+                            if (bExpanded) {
+                                Text(text = it.points.toString(),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    textAlign = TextAlign.Right
                                 )
-                            }*/
+                            }
                         }
                     }
                     iExpandCount++
