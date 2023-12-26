@@ -23,29 +23,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.data.local.database.Player
+import com.tjEnterprises.phase10Counter.data.PhasesModel
+import com.tjEnterprises.phase10Counter.data.PlayerModel
 
 @Composable
 // well i know this is no mvvm here, but for this ONE fixed function it seems a bit overkill
 // to create a view-model
 fun PhasesComponent(
     modifier: Modifier = Modifier,
-    player: Player,
+    player: PlayerModel,
     closeDialog: () -> Unit,
-    savePhasesOfPlayer: (Player) -> Unit
+    changePhasesOfPlayer: (List<PhasesModel>) -> Unit
 ) {
     val checkedList = remember { mutableStateListOf<Boolean>() }
 
-    // extract all open phases
-    val openPhasesOfPlayer = "\\d+".toRegex().findAll(player.phases).map { it.value.toInt() }
-
-    for (i in 0..9) {
-        // if phase found from string, do not check box
-        if (openPhasesOfPlayer.find { it == (i + 1) } != null) {
-            checkedList.add(i, false)
-        } else {
-            checkedList.add(i, true)
-        }
+    for(phase in player.phases) {
+        checkedList.add(!phase.state)
     }
 
     AlertDialog(modifier = modifier
@@ -58,7 +51,7 @@ fun PhasesComponent(
             dismiss(
                 checkedList = checkedList,
                 player = player,
-                savePhasesOfPlayer = savePhasesOfPlayer,
+                changePhasesOfPlayer = changePhasesOfPlayer,
                 closeDialog = closeDialog
             )
 
@@ -68,7 +61,7 @@ fun PhasesComponent(
                 dismiss(
                     checkedList = checkedList,
                     player = player,
-                    savePhasesOfPlayer = savePhasesOfPlayer,
+                    changePhasesOfPlayer = changePhasesOfPlayer,
                     closeDialog = closeDialog
                 )
             }) {
@@ -109,22 +102,26 @@ fun PhasesComponent(
 
 fun dismiss(
     checkedList: List<Boolean>,
-    player: Player,
-    savePhasesOfPlayer: (Player) -> Unit,
+    player: PlayerModel,
+    changePhasesOfPlayer: (List<PhasesModel>) -> Unit,
     closeDialog: () -> Unit
 ) {
+    val phaseList = mutableListOf<PhasesModel>()
+
     // for every NON checked box, add the phase to the string
-    var phasesString = ""
     checkedList.forEachIndexed { idx, checked ->
-        if (!checked) {
-            val phase = idx + 1;
-            phasesString = phasesString.plus("$phase, ")
+        if (player.phases[idx].state == checked) {
+            val phase = PhasesModel(
+                phase = player.phases[idx].phase,
+                state = !checked,
+                playerId = player.id
+            )
+            phaseList.add(phase)
         }
     }
-    // remove last ", " and assign + save new phases
-    phasesString = phasesString.dropLast(2)
-    player.phases = phasesString
-    savePhasesOfPlayer(player)
+    if (phaseList.isNotEmpty()) {
+        changePhasesOfPlayer(phaseList)
+    }
 
     closeDialog()
 }
@@ -135,5 +132,5 @@ fun dismiss(
 @Preview(device = Devices.NEXUS_5)
 @Composable
 fun PhasesComponentPreview() {
-    PhasesComponent(player = Player(0L, "Player 1", 0L), closeDialog = {}, savePhasesOfPlayer = {})
+    PhasesComponent(player = PlayerModel(0L, "Player 1", 0L, emptyList(), emptyList()), closeDialog = {}, changePhasesOfPlayer = {})
 }

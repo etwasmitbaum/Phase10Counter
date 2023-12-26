@@ -35,6 +35,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import com.tjEnterprises.phase10Counter.data.PhasesModel
+import com.tjEnterprises.phase10Counter.data.PlayerModel
+import com.tjEnterprises.phase10Counter.data.PointHistoryModel
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 
@@ -42,9 +45,8 @@ import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 // Max width of 400dp expected
 fun OnePlayerView(
     modifier: Modifier = Modifier,
-    player: Player,
-    listOfPoints: List<PointHistory>,
-    savePhasesOfPlayer: (Player) -> Unit,
+    player: PlayerModel,
+    changePhasesOfPlayer: (List<PhasesModel>) -> Unit,
     addPointHistoryEntry: (PointHistory) -> Unit
 ) {
     var text by remember {
@@ -55,16 +57,11 @@ fun OnePlayerView(
         mutableStateOf(false)
     }
 
-    var sumOfPoints = 0L
-    listOfPoints.forEach { point ->
-        sumOfPoints += point.point
-    }
-
     if (openDialog.value) {
         PhasesComponent(
             player = player,
             closeDialog = { openDialog.value = false },
-            savePhasesOfPlayer = savePhasesOfPlayer
+            changePhasesOfPlayer = changePhasesOfPlayer
         )
     }
 
@@ -99,16 +96,24 @@ fun OnePlayerView(
                             text = ""
                         }
                     })
-            PointHistoryDropDown(listOfPoints, sumOfPoints)
+            PointHistoryDropDown(player.pointHistory, player.points)
         }
-        Text("Offene Phasen: " + player.phases, modifier = Modifier.padding(top = 4.dp))
+
+        var sOpenPhases = ""
+        for(phase in player.phases) {
+            if (phase.state) {
+                sOpenPhases += phase.phase.toString() + " "
+            }
+        }
+
+        Text("Offene Phasen: $sOpenPhases", modifier = Modifier.padding(top = 4.dp))
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PointHistoryDropDown(
-    pointHistory: List<PointHistory>, sumOfPoints: Long, modifier: Modifier = Modifier
+    pointHistory: List<PointHistoryModel>, sumOfPoints: Long, modifier: Modifier = Modifier
 ) {
 
     // state of the menu
@@ -175,16 +180,13 @@ fun PointHistoryDropDown(
 @Preview(showBackground = true, heightDp = 500)
 @Composable
 fun OnePlayerPreview() {
-    OnePlayerView(player = Player(0L, "Player1", 0L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-        listOfPoints = listOf(
-            PointHistory(70L, 0L), PointHistory(180L, 0L)
-        ),
+    OnePlayerView(player = PlayerModel(0L, "Player1", 0L, pointHistory = emptyList(), emptyList()),
         addPointHistoryEntry = {},
-        savePhasesOfPlayer = {})
+        changePhasesOfPlayer = {})
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PointHistoryDropDownPreview() {
-    PointHistoryDropDown(listOf(PointHistory(10L, 0L), PointHistory(780L, 0L)), 790L)
+    PointHistoryDropDown(emptyList(), 0)
 }

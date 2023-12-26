@@ -34,11 +34,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tjEnterprises.phase10Counter.data.local.database.Player
+import com.tjEnterprises.phase10Counter.data.GameModel
+import com.tjEnterprises.phase10Counter.data.PhasesModel
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
-import com.tjEnterprises.phase10Counter.ui.GamesUiState
-import com.tjEnterprises.phase10Counter.ui.PlayerUiState
-import com.tjEnterprises.phase10Counter.ui.PointHistoryUiState
+import com.tjEnterprises.phase10Counter.ui.GameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.component.OnePlayerView
 import javax.inject.Singleton
@@ -52,59 +51,37 @@ fun GameScreen(
     navigateToGameSelect: () -> Unit,
     openDrawer: () -> Unit,
 ) {
-    val playersUiState by viewModel.playerUiState.collectAsState()
-    val gamesUiState by viewModel.gamesUiState.collectAsState()
-    val pointHistoryUiState by viewModel.pointHistoryUiState.collectAsState()
+    val gameUiState by viewModel.gameUiState.collectAsState()
     viewModel.setGameId(gameId)
 
     BackHandler {
         navigateToGameSelect()
     }
 
-    when (gamesUiState) {
-        is GamesUiState.GamesSuccess -> {
-            val games = (gamesUiState as GamesUiState.GamesSuccess).data
-            when (playersUiState) {
-                is PlayerUiState.PlayersSuccess -> {
-                    when (pointHistoryUiState) {
-                        is PointHistoryUiState.PointHistorySuccess -> {
-                            GameScreen(
-                                players = (playersUiState as PlayerUiState.PlayersSuccess).data,
-                                gameTitle = games.find { it.id == gameId }?.name ?: "Error 123",
-                                openDrawer = openDrawer,
-                                pointHistory = (pointHistoryUiState as PointHistoryUiState.PointHistorySuccess).data,
-                                addPointHistoryEntry = { viewModel.addPointHistoryEntry(it) },
-                                savePhasesOfPlayer = { viewModel.savePlayerPhases(it) },
-                                modifier = modifier
-                            )
-                        }
+    when (gameUiState) {
+        is GameUiState.GameSuccess -> {
+            var gameTitle = "Error 123"
+            val game = (gameUiState as GameUiState.GameSuccess).data
 
-                        is PointHistoryUiState.PointHistoryLoading -> {
+            if (game.name != "")
+                gameTitle = game.name
 
-                        }
-
-                        is PointHistoryUiState.PointHistoryError -> {
-                            Text(text = "Error Point History")
-                        }
-
-                    }
-
-                }
-
-                is PlayerUiState.PlayersLoading -> {
-                }
-
-                is PlayerUiState.PlayersError -> {
-                    Text(text = "Error Players")
-                }
-            }
-        }
-
-        is GamesUiState.GamesLoading -> {
+            GameScreen(
+                game = game,
+                gameTitle = gameTitle,
+                openDrawer = openDrawer,
+                addPointHistoryEntry = { viewModel.addPointHistoryEntry(it) },
+                changePhasesOfPlayer = { viewModel.changePlayerPhases(it) },
+                modifier = modifier
+            )
 
         }
 
-        is GamesUiState.GamesError -> {
+        is GameUiState.GameLoading -> {
+
+        }
+
+        is GameUiState.GameError -> {
             Text(text = "Error Games")
         }
     }
@@ -113,12 +90,11 @@ fun GameScreen(
 
 @Composable
 internal fun GameScreen(
-    players: List<Player>,
+    game: GameModel,
     gameTitle: String,
     openDrawer: () -> Unit,
-    pointHistory: List<PointHistory>,
     addPointHistoryEntry: (PointHistory) -> Unit,
-    savePhasesOfPlayer: (Player) -> Unit,
+    changePhasesOfPlayer: (List<PhasesModel>) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -129,16 +105,15 @@ internal fun GameScreen(
                 .padding(top = 8.dp, bottom = 4.dp),
             columns = GridCells.Adaptive(370.dp)
         ) {
-            items(players) { player ->
+            items(game.players) { player ->
                 OnePlayerView(
                     player = player,
                     modifier = Modifier
                         .padding(8.dp)
                         .padding(bottom = 8.dp)
                         .fillMaxWidth(),
-                    listOfPoints = pointHistory.filter { it.playerID == player.id },
                     addPointHistoryEntry = addPointHistoryEntry,
-                    savePhasesOfPlayer = savePhasesOfPlayer
+                    changePhasesOfPlayer = changePhasesOfPlayer
                 )
             }
 
@@ -162,11 +137,5 @@ internal fun GameScreen(
 @Preview(device = Devices.TABLET)
 @Composable
 fun GameScreenPreview() {
-    GameScreen(players = listOf(
-        Player(0L, "Player1", 0L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-        Player(0L, "Player2", 0L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-        Player(0L, "Player3", 0L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10")
-    ), openDrawer = {}, gameTitle = "Game 1", pointHistory = listOf(
-        PointHistory(70L, 0L), PointHistory(180L, 0L)
-    ), addPointHistoryEntry = {}, savePhasesOfPlayer = {})
+    GameScreen(game = GameModel( players = emptyList(), created = 0, id = 0, modified = 0, name = "test"), openDrawer = {}, gameTitle = "Game 1", addPointHistoryEntry = {}, changePhasesOfPlayer = {})
 }

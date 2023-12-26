@@ -155,8 +155,10 @@ internal fun AddGameScreen(
                                 .padding(bottom = 4.dp)
                         )
                         Button(onClick = {
-                            tempPlayerNames.add(0, textPlayer)
-                            textPlayer = ""
+                            if (textPlayer != "") {
+                                tempPlayerNames.add(0, textPlayer)
+                                textPlayer = ""
+                            }
                         }) {
                             Text(text = "Add Player")
                         }
