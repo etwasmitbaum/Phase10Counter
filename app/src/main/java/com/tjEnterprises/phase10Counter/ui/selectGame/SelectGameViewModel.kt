@@ -3,13 +3,17 @@ package com.tjEnterprises.phase10Counter.ui.selectGame
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tjEnterprises.phase10Counter.data.DatabaseRepository
-import com.tjEnterprises.phase10Counter.data.GameModel
+import com.tjEnterprises.phase10Counter.data.local.database.Game
+import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.ui.GamesUiState
-import com.tjEnterprises.phase10Counter.ui.GamesUiState.*
+import com.tjEnterprises.phase10Counter.ui.PlayerUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,28 +22,34 @@ class SelectGameViewModel @Inject constructor(
     private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
 
-    private val _gamesUiState = MutableStateFlow<GamesUiState>(GamesLoading)
-    val gamesUiState: StateFlow<GamesUiState> get() = _gamesUiState
+    val playerUiState: StateFlow<PlayerUiState> = databaseRepository.players
+        .map<List<Player>, PlayerUiState>(PlayerUiState::PlayersSuccess).catch { emit(
+            PlayerUiState.PlayersError(
+                it
+            )
+        ) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = PlayerUiState.PlayersLoading
+        )
 
-    init {
-        viewModelScope.launch {
-            try {
-                // Call suspend function within coroutine
-                val games = databaseRepository.getAllGames().first()
+    val gamesUiState: StateFlow<GamesUiState> =
+        databaseRepository.games
+            .map<List<Game>, GamesUiState>(GamesUiState::GamesSuccess).catch { emit(
+                GamesUiState.GamesError(
+                    it
+                )
+            ) }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = GamesUiState.GamesLoading
+            )
 
-                // Emit GamesSuccess state with the list of games
-                _gamesUiState.value = GamesSuccess(games)
-            } catch (e: Exception) {
-                // Emit GamesError state on exception
-                _gamesUiState.value = GamesError(e)
-            }
-        }
-    }
-
-    fun deleteGameWithData(game: GameModel) {
-        /*viewModelScope.launch(Dispatchers.IO) {
+    fun deleteGameWithData(game: Game) {
+        viewModelScope.launch(Dispatchers.IO) {
             val playersToDelete = databaseRepository.getPlayerFromGame(game.id)
-                .map { players -> players.filter { it.id == game.id } }
+                .map { players -> players.filter { it.gameID == game.id } }
 
             // collect is a suspend function, so it need its own coroutine
             // else removeGame(game) will not be called
@@ -54,11 +64,11 @@ class SelectGameViewModel @Inject constructor(
                 }
             }
             databaseRepository.removeGame(game)
-        }*/
+        }
     }
 
-    fun resetGameWithData(game: GameModel) {
-        /*viewModelScope.launch(Dispatchers.IO) {
+    fun resetGameWithData(game: Game) {
+        viewModelScope.launch(Dispatchers.IO) {
             val playersToReset = databaseRepository.getPlayerFromGame(game.id)
                 .map { players -> players.filter { it.gameID == game.id } }
 
@@ -73,7 +83,6 @@ class SelectGameViewModel @Inject constructor(
                     }
                 }
             }
-        }*/
+        }
     }
 }
-

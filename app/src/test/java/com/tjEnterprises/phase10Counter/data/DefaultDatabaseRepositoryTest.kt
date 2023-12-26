@@ -16,6 +16,8 @@
 
 package com.tjEnterprises.phase10Counter.data
 
+import com.tjEnterprises.phase10Counter.data.local.database.Database
+import com.tjEnterprises.phase10Counter.data.local.database.DatabaseDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -32,16 +34,16 @@ class DefaultDatabaseRepositoryTest {
 
     @Test
     fun databases_newItemSaved_itemIsReturned() = runTest {
-        /*val repository = DatabaseRepository.DefaultDatabaseRepository(FakeDatabaseDao())
+        val repository = DefaultDatabaseRepository(FakeDatabaseDao())
 
         repository.add("Repository")
 
-        assertEquals(repository.databases.first().size, 1)*/
+        assertEquals(repository.databases.first().size, 1)
     }
 
 }
 
-/*private class FakeDatabaseDao : DatabaseDao {
+private class FakeDatabaseDao : DatabaseDao {
 
     private val data = mutableListOf<Database>()
 
@@ -52,4 +54,4 @@ class DefaultDatabaseRepositoryTest {
     override suspend fun insertDatabase(item: Database) {
         data.add(0, item)
     }
-}*/
+}

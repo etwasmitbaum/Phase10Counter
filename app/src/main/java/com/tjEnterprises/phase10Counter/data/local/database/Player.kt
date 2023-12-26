@@ -26,9 +26,6 @@ interface PlayerDao {
     @Query("SELECT * FROM Player WHERE game_id IS (:gameID) ORDER BY id ASC")
     fun getAllPlayersFromGame(gameID: Long): Flow<List<Player>>
 
-    @Query("SELECT * FROM Player WHERE id IS (:playerId) ORDER BY id ASC")
-    fun getPlayer(playerId: Long): Player
-
     @Query("SELECT * FROM Game WHERE id IS (:gameIDofPlayer)")
     suspend fun getGameFromPlayerID(gameIDofPlayer: Long): Game
 
