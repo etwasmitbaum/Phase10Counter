@@ -28,25 +28,29 @@ import kotlinx.coroutines.flow.Flow
 
 @Entity
 data class Game(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo("id") var id: Long = 0,
     @ColumnInfo("name") val name: String
 ) {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo("game_id")
+    var gameId: Long = 0
+
     @ColumnInfo("timestampCreated")
     var timestampCreated: Long = System.currentTimeMillis()
+
     @ColumnInfo("timestampModified")
     var timestampModified: Long = System.currentTimeMillis()
 }
 
 @Dao
 interface GameDao {
-    @Query("SELECT * FROM Game ORDER BY id ASC")
+    @Query("SELECT * FROM Game ORDER BY game_id ASC")
     fun getAllGames(): Flow<List<Game>>
 
-    @Query("SELECT * FROM Game WHERE id IS :gameId")
+    @Query("SELECT * FROM Game WHERE game_id IS :gameId")
     suspend fun getGameFromId(gameId: Long): Game
 
     @Insert
-    suspend fun insertGame(game: Game) : Long
+    suspend fun insertGame(game: Game): Long
 
     @Update
     suspend fun updateGame(game: Game)

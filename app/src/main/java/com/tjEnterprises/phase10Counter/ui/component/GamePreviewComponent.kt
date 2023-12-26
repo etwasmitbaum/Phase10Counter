@@ -44,7 +44,7 @@ fun GamePreviewComponent(
                 Text( text = game.name,
                     fontSize = 30.sp,
                     modifier = Modifier.clickable {
-                        navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.id) }
+                        navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) }
                         .fillMaxWidth()
                 )
                 var iExpandCount = 0
@@ -109,10 +109,10 @@ fun GamePreviewComponent(
 @Preview(showBackground = true)
 @Composable
 fun GamePreviewComponentPreview() {
-    GamePreviewComponent(game = Game(1L, "Game 1"), players = listOf(
-        Player(0L, "Player1", 1L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-        Player(0L, "Player2", 1L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-        Player(0L, "Player3", 1L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10")
+    GamePreviewComponent(game = Game("Game 1"), players = listOf(
+        Player(0L, "Player1", 1L),
+        Player(0L, "Player2", 1L),
+        Player(0L, "Player3", 1L)
     ), navigateToGame = {}
     , deleteGame = {}
     , resetGame = {})

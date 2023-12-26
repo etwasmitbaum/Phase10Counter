@@ -95,13 +95,13 @@ fun OnePlayerView(
                     .widthIn(1.dp, 150.dp)
                     .onFocusChanged {
                         if (!it.isFocused && text != "" && !(text.contains('.') || text.contains(','))) {
-                            addPointHistoryEntry(PointHistory(text.toLong(), player.id))
+                            addPointHistoryEntry(PointHistory(text.toLong(), player.playerId, gameId = player.gameID))
                             text = ""
                         }
                     })
             PointHistoryDropDown(listOfPoints, sumOfPoints)
         }
-        Text("Offene Phasen: " + player.phases, modifier = Modifier.padding(top = 4.dp))
+        Text("Offene Phasen: " + player.name, modifier = Modifier.padding(top = 4.dp))
     }
 }
 
@@ -175,9 +175,9 @@ fun PointHistoryDropDown(
 @Preview(showBackground = true, heightDp = 500)
 @Composable
 fun OnePlayerPreview() {
-    OnePlayerView(player = Player(0L, "Player1", 0L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
+    OnePlayerView(player = Player(0L, "Player1", 0L),
         listOfPoints = listOf(
-            PointHistory(70L, 0L), PointHistory(180L, 0L)
+            PointHistory(70L, 0L, 0L), PointHistory(180L, 0L, 0L)
         ),
         addPointHistoryEntry = {},
         savePhasesOfPlayer = {})
@@ -186,5 +186,5 @@ fun OnePlayerPreview() {
 @Preview(showBackground = true)
 @Composable
 fun PointHistoryDropDownPreview() {
-    PointHistoryDropDown(listOf(PointHistory(10L, 0L), PointHistory(780L, 0L)), 790L)
+    PointHistoryDropDown(listOf(PointHistory(10L, 0L, 0L), PointHistory(780L, 0L, 0L)), 790L)
 }

@@ -2,22 +2,22 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bbd49f85baa3329e2a883e3dd52fca21",
+    "identityHash": "deb601c2cf1366aa0198465d88b1759b",
     "entities": [
       {
         "tableName": "Game",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `timestampCreated` INTEGER NOT NULL, `timestampModified` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestampCreated` INTEGER NOT NULL, `timestampModified` INTEGER NOT NULL)",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -36,7 +36,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "game_id"
           ]
         },
         "indices": [],
@@ -44,11 +44,11 @@
       },
       {
         "tableName": "Player",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `game_id` INTEGER NOT NULL, `phases` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `player_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`game_id`) REFERENCES `Game`(`game_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "gameID",
+            "columnName": "game_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -59,30 +59,36 @@
             "notNull": true
           },
           {
-            "fieldPath": "gameID",
-            "columnName": "game_id",
+            "fieldPath": "playerId",
+            "columnName": "player_id",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "phases",
-            "columnName": "phases",
-            "affinity": "TEXT",
             "notNull": true
           }
         ],
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "player_id"
           ]
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "Game",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "game_id"
+            ],
+            "referencedColumns": [
+              "game_id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "PointHistory",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`point` INTEGER NOT NULL, `player_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestampCreated` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`point` INTEGER NOT NULL, `player_id` INTEGER NOT NULL, `game_id` INTEGER NOT NULL, `pointId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestampCreated` INTEGER NOT NULL, FOREIGN KEY(`game_id`) REFERENCES `Game`(`game_id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`player_id`) REFERENCES `Player`(`player_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "point",
@@ -91,14 +97,20 @@
             "notNull": true
           },
           {
-            "fieldPath": "playerID",
+            "fieldPath": "playerId",
             "columnName": "player_id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pointId",
+            "columnName": "pointId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -112,11 +124,34 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "pointId"
           ]
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "Game",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "game_id"
+            ],
+            "referencedColumns": [
+              "game_id"
+            ]
+          },
+          {
+            "table": "Player",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "player_id"
+            ],
+            "referencedColumns": [
+              "player_id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "Highscrore",
@@ -160,7 +195,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bbd49f85baa3329e2a883e3dd52fca21')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'deb601c2cf1366aa0198465d88b1759b')"
     ]
   }
 }

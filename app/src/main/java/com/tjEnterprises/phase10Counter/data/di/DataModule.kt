@@ -42,7 +42,6 @@ interface DataModule {
 
 class FakeDatabaseRepository @Inject constructor(
     override val players: Flow<List<Player>>,
-    override val pointHistory: Flow<List<PointHistory>>,
 ) : DatabaseRepository {
     override val games: Flow<List<Game>> = flowOf(fakeDatabases)
 
@@ -86,11 +85,7 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPointHistory(): Flow<List<PointHistory>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getPointHistoryFromPlayerId(playerId: Long): List<PointHistory> {
+    override suspend fun getPointHistoryOfGame(gameId: Long): Flow<List<PointHistory>> {
         TODO("Not yet implemented")
     }
 

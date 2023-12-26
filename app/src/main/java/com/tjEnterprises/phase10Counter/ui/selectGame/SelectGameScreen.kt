@@ -13,7 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.ui.GamesUiState
-import com.tjEnterprises.phase10Counter.ui.PlayerUiState
+import com.tjEnterprises.phase10Counter.ui.PlayersUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.component.GamePreviewComponent
 
@@ -28,12 +28,12 @@ fun SelectGame(
     val gamesUiState by viewModel.gamesUiState.collectAsState()
 
     when (playersUiState) {
-        is PlayerUiState.PlayersSuccess -> {
+        is PlayersUiState.PlayersSuccess -> {
             when (gamesUiState) {
                 is GamesUiState.GamesSuccess -> {
                     SelectGame(
                         games = (gamesUiState as GamesUiState.GamesSuccess).data,
-                        players = (playersUiState as PlayerUiState.PlayersSuccess).data,
+                        players = (playersUiState as PlayersUiState.PlayersSuccess).data,
                         openDrawer = openDrawer,
                         navigateToGame = navigateToGame,
                         resetGame = {viewModel.resetGameWithData(it)},
@@ -75,7 +75,7 @@ internal fun SelectGame(
                 items(games) { game ->
                     GamePreviewComponent(
                         game = game,
-                        players = players.filter { it.gameID == game.id },
+                        players = players.filter { it.gameID == game.gameId },
                         navigateToGame = navigateToGame,
                         deleteGame = deleteGame,
                         resetGame = resetGame
@@ -90,17 +90,17 @@ internal fun SelectGame(
 @Composable
 fun SelectGamePreview() {
     SelectGame(
-        games = listOf(Game(1L, "Game 1"), Game(2L, "Game 2"), Game(3L, "Game 3")),
+        games = listOf(Game("Game 1"), Game("Game 2"), Game("Game 3")),
         players = listOf(
-            Player(0L, "Player1", 1L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-            Player(0L, "Player2", 1L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-            Player(0L, "Player3", 1L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-            Player(0L, "Player1", 2L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-            Player(0L, "Player2", 2L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-            Player(0L, "Player3", 2L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-            Player(0L, "Player1", 3L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-            Player(0L, "Player2", 3L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"),
-            Player(0L, "Player3", 3L, "1, 2, 3, 4, 5, 6, 7, 8, 9, 10")
+            Player(0L, "Player1", 1L),
+            Player(0L, "Player2", 1L),
+            Player(0L, "Player3", 1L),
+            Player(0L, "Player1", 2L),
+            Player(0L, "Player2", 2L),
+            Player(0L, "Player3", 2L),
+            Player(0L, "Player1", 3L),
+            Player(0L, "Player2", 3L),
+            Player(0L, "Player3", 3L)
         ),
         openDrawer = {  },
         deleteGame = {},

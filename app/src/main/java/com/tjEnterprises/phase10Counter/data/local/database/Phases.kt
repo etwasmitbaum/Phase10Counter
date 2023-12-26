@@ -6,8 +6,8 @@ import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Insert
-import androidx.room.PrimaryKey
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Entity(
@@ -23,29 +23,31 @@ import kotlinx.coroutines.flow.Flow
         childColumns = ["player_id"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
-    )]
+    )], primaryKeys = ["game_id", "player_id", "phase"]
 )
-data class PointHistory(
-    @ColumnInfo(name = "point") var point: Long,
+data class Phases(
     @ColumnInfo(name = "player_id") var playerId: Long,
-    @ColumnInfo(name = "game_id") var gameId: Long
+    @ColumnInfo(name = "game_id") var gameId: Long,
+    @ColumnInfo(name = "phase") var phaseNr: Byte
 ) {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo("pointId")
-    var pointId: Long = 0
+    @ColumnInfo("open")
+    var open: Boolean = true
 
-    @ColumnInfo("timestampCreated")
-    var timestampCreated: Long = System.currentTimeMillis()
+    @ColumnInfo("timestampModified")
+    var timestampModified: Long = System.currentTimeMillis()
 }
 
 @Dao
-interface PoinHistoryDao {
-    @Query("SELECT * FROM PointHistory WHERE game_id IS :gameId ORDER BY timestampCreated DESC")
-    fun getPointHistoryOfGame(gameId: Long): Flow<List<PointHistory>>
+interface PhasesDao {
+    @Query("SELECT * FROM Phases WHERE player_id IS :playerId ORDER BY phase ASC")
+    fun getPhasesOfPlayer(playerId: Long): Flow<List<Phases>>
+
+    @Update
+    suspend fun updatePhase(phases: Phases)
 
     @Insert
-    suspend fun insertPoint(pointHistory: PointHistory)
+    suspend fun insertPhase(phases: Phases)
 
     @Delete
-    suspend fun deletePoint(pointHistory: PointHistory)
+    suspend fun deletePhase(phases: Phases)
 }

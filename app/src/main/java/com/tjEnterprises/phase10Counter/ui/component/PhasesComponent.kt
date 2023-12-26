@@ -37,7 +37,7 @@ fun PhasesComponent(
     val checkedList = remember { mutableStateListOf<Boolean>() }
 
     // extract all open phases
-    val openPhasesOfPlayer = "\\d+".toRegex().findAll(player.phases).map { it.value.toInt() }
+    val openPhasesOfPlayer = "\\d+".toRegex().findAll(player.name).map { it.value.toInt() }
 
     for (i in 0..9) {
         // if phase found from string, do not check box
@@ -123,7 +123,7 @@ fun dismiss(
     }
     // remove last ", " and assign + save new phases
     phasesString = phasesString.dropLast(2)
-    player.phases = phasesString
+    //player.phases = phasesString
     savePhasesOfPlayer(player)
 
     closeDialog()

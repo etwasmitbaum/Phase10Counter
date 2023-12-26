@@ -167,7 +167,7 @@ internal fun AddGameScreen(
             }
 
             Button(onClick = {
-                addGame(Game(0L, textGame), tempPlayerNames)
+                addGame(Game(textGame), tempPlayerNames)
             }, modifier = Modifier.align(Alignment.End)) {
                 Text(text = "Start")
             }

@@ -4,29 +4,39 @@ import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
-@Entity
+@Entity(
+    foreignKeys = [ForeignKey(
+        entity = Game::class,
+        parentColumns = ["game_id"],
+        childColumns = ["game_id"],
+        onDelete = ForeignKey.CASCADE,
+        onUpdate = ForeignKey.CASCADE
+    )]
+)
 data class Player(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo("id") val id: Long = 0,
-    @ColumnInfo("name") val name: String,
     @ColumnInfo("game_id") val gameID: Long,
-    @ColumnInfo(name = "phases") var phases: String = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+    @ColumnInfo("name") val name: String,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo("player_id")
+    val playerId: Long = 0
 ) {}
 
 @Dao
 interface PlayerDao {
-    @Query("SELECT * FROM Player ORDER BY id ASC")
+    @Query("SELECT * FROM Player ORDER BY player_id ASC")
     fun getAllPlayers(): Flow<List<Player>>
 
-    @Query("SELECT * FROM Player WHERE game_id IS (:gameID) ORDER BY id ASC")
+    @Query("SELECT * FROM Player WHERE game_id IS (:gameID) ORDER BY player_id ASC")
     fun getAllPlayersFromGame(gameID: Long): Flow<List<Player>>
 
-    @Query("SELECT * FROM Game WHERE id IS (:gameIDofPlayer)")
+    @Query("SELECT * FROM Game WHERE game_id IS (:gameIDofPlayer)")
     suspend fun getGameFromPlayerID(gameIDofPlayer: Long): Game
 
     @Update

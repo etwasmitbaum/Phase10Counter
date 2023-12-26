@@ -28,7 +28,6 @@ import javax.inject.Inject
 interface DatabaseRepository {
     val games: Flow<List<Game>>
     val players: Flow<List<Player>>
-    val pointHistory: Flow<List<PointHistory>>
 
     suspend fun insertPlayer(player: Player)
     suspend fun getPlayerFromGame(gameID: Long): Flow<List<Player>>
@@ -40,8 +39,7 @@ interface DatabaseRepository {
     suspend fun getGameFromId(gameID: Long): Game
     suspend fun removeGame(game: Game)
     suspend fun updateGameModifiedTimestamp(game: Game)
-    suspend fun getPointHistory(): Flow<List<PointHistory>>
-    suspend fun getPointHistoryFromPlayerId(playerId: Long): List<PointHistory>
+    suspend fun getPointHistoryOfGame(gameId: Long): Flow<List<PointHistory>>
     suspend fun insertPointHistory(pointHistory: PointHistory)
     suspend fun removePointHistory(pointHistory: PointHistory)
 
@@ -53,8 +51,6 @@ interface DatabaseRepository {
 
         override var games: Flow<List<Game>> = gameDao.getAllGames()
         override var players: Flow<List<Player>> = playerDao.getAllPlayers()
-        override val pointHistory: Flow<List<PointHistory>> =
-            pointHistoryDao.getPointHistory()
 
 
         override suspend fun insertPlayer(player: Player) {
@@ -99,17 +95,13 @@ interface DatabaseRepository {
             gameDao.updateGame(game)
         }
 
-        override suspend fun getPointHistory(): Flow<List<PointHistory>> {
-            return pointHistoryDao.getPointHistory()
-        }
-
-        override suspend fun getPointHistoryFromPlayerId(playerId: Long): List<PointHistory> {
-            return pointHistoryDao.getAllPointsFromPlayer(playerId)
+        override suspend fun getPointHistoryOfGame(gameId: Long): Flow<List<PointHistory>> {
+            return pointHistoryDao.getPointHistoryOfGame(gameId)
         }
 
         override suspend fun insertPointHistory(pointHistory: PointHistory) {
             pointHistoryDao.insertPoint(pointHistory)
-            updateGameModifiedTimestamp(pointHistoryDao.getGameByPlayerId(pointHistory.playerID))
+            updateGameModifiedTimestamp(gameDao.getGameFromId(pointHistory.gameId))
         }
 
         override suspend fun removePointHistory(pointHistory: PointHistory) {
