@@ -38,7 +38,7 @@ fun PhasesComponent(
     val checkedList = remember { mutableStateListOf<Boolean>() }
 
     for(phase in player.phases) {
-        checkedList.add(!phase.state)
+        checkedList.add(phase.phase.toInt(), phase.state)
     }
 
     AlertDialog(modifier = modifier
@@ -110,13 +110,13 @@ fun dismiss(
 
     // for every NON checked box, add the phase to the string
     checkedList.forEachIndexed { idx, checked ->
-        if (player.phases[idx].state == checked) {
-            val phase = PhasesModel(
-                phase = player.phases[idx].phase,
-                state = !checked,
+        if (player.phases[idx].state != checked) {
+            val pointHistory = PhasesModel(
+                phase = idx.toLong(),
+                state = checked,
                 playerId = player.id
             )
-            phaseList.add(phase)
+            phaseList.add(pointHistory)
         }
     }
     if (phaseList.isNotEmpty()) {
