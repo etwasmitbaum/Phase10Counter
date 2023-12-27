@@ -28,13 +28,7 @@ import com.tjEnterprises.phase10Counter.ui.PointHistoryUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectIndexed
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -49,20 +43,24 @@ class GameViewModel @Inject constructor(
     private val _playersUiState = MutableStateFlow<PlayersUiState>(PlayersUiState.PlayersLoading)
     val playersUiState: StateFlow<PlayersUiState> = _playersUiState
 
-    private val _pointHistoryUiState = MutableStateFlow<PointHistoryUiState>(PointHistoryUiState.PointHistoryLoading)
+    private val _pointHistoryUiState =
+        MutableStateFlow<PointHistoryUiState>(PointHistoryUiState.PointHistoryLoading)
     val pointHistoryUiState: StateFlow<PointHistoryUiState> = _pointHistoryUiState
 
     fun setGameId(gameId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _gameUiState.value = GameUiState.GameSuccess(databaseRepository.getGameFromId(gameId))
+        }
+        viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.getPlayerFromGame(gameId).collect {
                 _playersUiState.value = PlayersSuccess(it)
             }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.getPointHistoryOfGame(gameId).collect {
                 _pointHistoryUiState.value = PointHistoryUiState.PointHistorySuccess(it)
             }
         }
-
     }
 
     fun addPointHistoryEntry(pointHistory: PointHistory) {
@@ -71,8 +69,8 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    fun savePlayerPhases(player: Player){
-        viewModelScope.launch (Dispatchers.IO) {
+    fun savePlayerPhases(player: Player) {
+        viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.changePlayerPhases(player)
         }
     }

@@ -81,7 +81,7 @@ fun GameScreen(
                         }
 
                         is PointHistoryUiState.PointHistoryLoading -> {
-
+                            Text(text = "Loading Point History")
                         }
 
                         is PointHistoryUiState.PointHistoryError -> {
