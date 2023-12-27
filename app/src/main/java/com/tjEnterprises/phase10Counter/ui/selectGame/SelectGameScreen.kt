@@ -10,10 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tjEnterprises.phase10Counter.data.local.database.Game
-import com.tjEnterprises.phase10Counter.data.local.database.Player
+import com.tjEnterprises.phase10Counter.data.local.GameModel
+import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.GamesUiState
-import com.tjEnterprises.phase10Counter.ui.PlayersUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.component.GamePreviewComponent
 
@@ -24,42 +23,34 @@ fun SelectGame(
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit
 ) {
-    val playersUiState by viewModel.playerUiState.collectAsState()
     val gamesUiState by viewModel.gamesUiState.collectAsState()
 
-    when (playersUiState) {
-        is PlayersUiState.PlayersSuccess -> {
-            when (gamesUiState) {
-                is GamesUiState.GamesSuccess -> {
-                    SelectGame(
-                        games = (gamesUiState as GamesUiState.GamesSuccess).data,
-                        players = (playersUiState as PlayersUiState.PlayersSuccess).data,
-                        openDrawer = openDrawer,
-                        navigateToGame = navigateToGame,
-                        resetGame = {viewModel.resetGameWithData(it)},
-                        deleteGame = {viewModel.deleteGameWithData(it)},
-                        modifier = modifier
-                    )
-                }
 
-                else -> {}
-            }
-
+    when (gamesUiState) {
+        is GamesUiState.GamesSuccess -> {
+            SelectGame(
+                games = (gamesUiState as GamesUiState.GamesSuccess).data,
+                openDrawer = openDrawer,
+                navigateToGame = navigateToGame,
+                resetGame = { viewModel.resetGameWithData(it) },
+                deleteGame = { viewModel.deleteGameWithData(it) },
+                modifier = modifier
+            )
         }
 
         else -> {}
     }
+
 }
 
 @Composable
 internal fun SelectGame(
     modifier: Modifier = Modifier,
-    games: List<Game>,
-    players: List<Player>,
+    games: List<GameModel>,
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
-    resetGame: (Game) -> Unit,
-    deleteGame: (Game) -> Unit
+    resetGame: (Long) -> Unit,
+    deleteGame: (Long) -> Unit
 ) {
     // TODO Expand card to show all players with their points
     // TODO Delete Games
@@ -75,7 +66,6 @@ internal fun SelectGame(
                 items(games) { game ->
                     GamePreviewComponent(
                         game = game,
-                        players = players.filter { it.gameID == game.gameId },
                         navigateToGame = navigateToGame,
                         deleteGame = deleteGame,
                         resetGame = resetGame
@@ -88,23 +78,87 @@ internal fun SelectGame(
 
 @Preview(showBackground = true)
 @Composable
+
 fun SelectGamePreview() {
-    SelectGame(
-        games = listOf(Game("Game 1"), Game("Game 2"), Game("Game 3")),
-        players = listOf(
-            Player(0L, "Player1", 1L),
-            Player(0L, "Player2", 1L),
-            Player(0L, "Player3", 1L),
-            Player(0L, "Player1", 2L),
-            Player(0L, "Player2", 2L),
-            Player(0L, "Player3", 2L),
-            Player(0L, "Player1", 3L),
-            Player(0L, "Player2", 3L),
-            Player(0L, "Player3", 3L)
-        ),
-        openDrawer = {  },
-        deleteGame = {},
-        resetGame = {},
-        navigateToGame = {}
-    )
+    SelectGame(games = listOf(
+        GameModel(
+            1L, "Game 1", 0L, 0L,
+            listOf(
+                PlayerModel(
+                    1L,
+                    1L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                ), PlayerModel(
+                    1L,
+                    1L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                ), PlayerModel(
+                    1L,
+                    1L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                )
+            ),
+        ), GameModel(
+            2L, "Game 2", 0L, 0L,
+            listOf(
+                PlayerModel(
+                    1L,
+                    2L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                ), PlayerModel(
+                    1L,
+                    2L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                ), PlayerModel(
+                    1L,
+                    2L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                )
+            ),
+        ), GameModel(
+            1L, "Game 3", 0L, 0L,
+            listOf(
+                PlayerModel(
+                    1L,
+                    3L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                ), PlayerModel(
+                    1L,
+                    3L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                ), PlayerModel(
+                    1L,
+                    3L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                )
+            ),
+        )
+    ), openDrawer = {}, navigateToGame = {}, resetGame = {}, deleteGame = {})
 }

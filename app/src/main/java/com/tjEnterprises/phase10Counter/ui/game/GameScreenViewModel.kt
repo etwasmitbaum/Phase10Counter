@@ -19,6 +19,7 @@ package com.tjEnterprises.phase10Counter.ui.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tjEnterprises.phase10Counter.data.DatabaseRepository
+import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import com.tjEnterprises.phase10Counter.ui.GameUiState
@@ -43,10 +44,6 @@ class GameViewModel @Inject constructor(
     private val _playersUiState = MutableStateFlow<PlayersUiState>(PlayersUiState.PlayersLoading)
     val playersUiState: StateFlow<PlayersUiState> = _playersUiState
 
-    private val _pointHistoryUiState =
-        MutableStateFlow<PointHistoryUiState>(PointHistoryUiState.PointHistoryLoading)
-    val pointHistoryUiState: StateFlow<PointHistoryUiState> = _pointHistoryUiState
-
     fun setGameId(gameId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _gameUiState.value = GameUiState.GameSuccess(databaseRepository.getGameFromId(gameId))
@@ -54,11 +51,6 @@ class GameViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.getPlayerFromGame(gameId).collect {
                 _playersUiState.value = PlayersSuccess(it)
-            }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            databaseRepository.getPointHistoryOfGame(gameId).collect {
-                _pointHistoryUiState.value = PointHistoryUiState.PointHistorySuccess(it)
             }
         }
     }
@@ -69,9 +61,9 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    fun savePlayerPhases(player: Player) {
+    fun savePlayerPhases(playerId: Long, gameId: Long, openPhases: List<Boolean>) {
         viewModelScope.launch(Dispatchers.IO) {
-            databaseRepository.changePlayerPhases(player)
+            databaseRepository.updatePlayerPhases(playerId, gameId, openPhases)
         }
     }
 }

@@ -23,29 +23,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.data.local.database.Player
+import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 
 @Composable
 // well i know this is no mvvm here, but for this ONE fixed function it seems a bit overkill
 // to create a view-model
 fun PhasesComponent(
     modifier: Modifier = Modifier,
-    player: Player,
+    player: PlayerModel,
     closeDialog: () -> Unit,
-    savePhasesOfPlayer: (Player) -> Unit
+    savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit
 ) {
-    val checkedList = remember { mutableStateListOf<Boolean>() }
+    val openPhases = remember { mutableStateListOf<Boolean>() }
 
-    // extract all open phases
-    val openPhasesOfPlayer = "\\d+".toRegex().findAll(player.name).map { it.value.toInt() }
-
-    for (i in 0..9) {
-        // if phase found from string, do not check box
-        if (openPhasesOfPlayer.find { it == (i + 1) } != null) {
-            checkedList.add(i, false)
-        } else {
-            checkedList.add(i, true)
-        }
+    player.phasesOpen.forEach {
+        openPhases.add(it)
     }
 
     AlertDialog(modifier = modifier
@@ -56,7 +48,7 @@ fun PhasesComponent(
         ),
         onDismissRequest = {
             dismiss(
-                checkedList = checkedList,
+                checkedList = openPhases,
                 player = player,
                 savePhasesOfPlayer = savePhasesOfPlayer,
                 closeDialog = closeDialog
@@ -66,7 +58,7 @@ fun PhasesComponent(
         confirmButton = {
             TextButton(onClick = {
                 dismiss(
-                    checkedList = checkedList,
+                    checkedList = openPhases,
                     player = player,
                     savePhasesOfPlayer = savePhasesOfPlayer,
                     closeDialog = closeDialog
@@ -81,7 +73,7 @@ fun PhasesComponent(
             LazyVerticalGrid(modifier = Modifier.wrapContentSize(),
                 columns = GridCells.Adaptive(200.dp),
                 content = {
-                    /*
+                /*
                 * This LazyVerticalGrid contains only two items, the first 5 phases and the last 5.
                 * This way the LazyVerticalGrid will split the phases in either one consecutive block
                 * or two block next to each other.
@@ -93,10 +85,10 @@ fun PhasesComponent(
                                 val j = i + 5 * (partIdx)
                                 Row(verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.clickable {
-                                        checkedList[j] = !checkedList[j]
+                                        openPhases[j] = !openPhases[j]
                                     }) {
-                                    Checkbox(checked = checkedList[j],
-                                        onCheckedChange = { checkedList[j] = it })
+                                    Checkbox(checked = openPhases[j],
+                                        onCheckedChange = { openPhases[j] = it })
                                     Text(text = stringArrayResource(id = R.array.phases)[j])
                                 }
                             }
@@ -109,23 +101,12 @@ fun PhasesComponent(
 
 fun dismiss(
     checkedList: List<Boolean>,
-    player: Player,
-    savePhasesOfPlayer: (Player) -> Unit,
+    player: PlayerModel,
+    savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
     closeDialog: () -> Unit
 ) {
-    // for every NON checked box, add the phase to the string
-    var phasesString = ""
-    checkedList.forEachIndexed { idx, checked ->
-        if (!checked) {
-            val phase = idx + 1;
-            phasesString = phasesString.plus("$phase, ")
-        }
-    }
-    // remove last ", " and assign + save new phases
-    phasesString = phasesString.dropLast(2)
-    //player.phases = phasesString
-    savePhasesOfPlayer(player)
 
+    savePhasesOfPlayer(player.playerId, player.gameId, checkedList)
     closeDialog()
 }
 
@@ -135,5 +116,5 @@ fun dismiss(
 @Preview(device = Devices.NEXUS_5)
 @Composable
 fun PhasesComponentPreview() {
-    PhasesComponent(player = Player(0L, "Player 1", 0L), closeDialog = {}, savePhasesOfPlayer = {})
+    PhasesComponent(player = PlayerModel(1L, 1L, "Player1", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)), closeDialog = {}, savePhasesOfPlayer = {playerId, gameId, openPhases ->})
 }

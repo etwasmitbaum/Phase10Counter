@@ -1,14 +1,17 @@
 package com.tjEnterprises.phase10Counter.ui.selectGame
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tjEnterprises.phase10Counter.data.DatabaseRepository
+import com.tjEnterprises.phase10Counter.data.local.GameModel
+import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.database.Game
-import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.ui.GamesUiState
 import com.tjEnterprises.phase10Counter.ui.PlayersUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -22,21 +25,9 @@ class SelectGameViewModel @Inject constructor(
     private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
 
-    val playerUiState: StateFlow<PlayersUiState> = databaseRepository.players
-        .map<List<Player>, PlayersUiState>(PlayersUiState::PlayersSuccess).catch { emit(
-            PlayersUiState.PlayersError(
-                it
-            )
-        ) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = PlayersUiState.PlayersLoading
-        )
-
     val gamesUiState: StateFlow<GamesUiState> =
         databaseRepository.games
-            .map<List<Game>, GamesUiState>(GamesUiState::GamesSuccess).catch { emit(
+            .map<List<GameModel>, GamesUiState>(GamesUiState::GamesSuccess).catch { emit(
                 GamesUiState.GamesError(
                     it
                 )
@@ -46,7 +37,7 @@ class SelectGameViewModel @Inject constructor(
                 initialValue = GamesUiState.GamesLoading
             )
 
-    fun deleteGameWithData(game: Game) {
+    fun deleteGameWithData(gameId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
         //    val playersToDelete = databaseRepository.getPlayerFromGame(game.id)
         //        .map { players -> players.filter { it.gameID == game.id } }
@@ -67,7 +58,7 @@ class SelectGameViewModel @Inject constructor(
         }
     }
 
-    fun resetGameWithData(game: Game) {
+    fun resetGameWithData(gameId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
         //    val playersToReset = databaseRepository.getPlayerFromGame(game.id)
         //        .map { players -> players.filter { it.gameID == game.id } }

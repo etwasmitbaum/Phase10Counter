@@ -11,7 +11,7 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Entity(
-    foreignKeys = [ForeignKey(
+    tableName = "Phases", foreignKeys = [ForeignKey(
         entity = Game::class,
         parentColumns = ["game_id"],
         childColumns = ["game_id"],
@@ -28,11 +28,9 @@ import kotlinx.coroutines.flow.Flow
 data class Phases(
     @ColumnInfo(name = "player_id") var playerId: Long,
     @ColumnInfo(name = "game_id") var gameId: Long,
-    @ColumnInfo(name = "phase") var phaseNr: Byte
+    @ColumnInfo(name = "phase") var phaseNr: Byte,
+    @ColumnInfo("open") var open: Boolean = true
 ) {
-    @ColumnInfo("open")
-    var open: Boolean = true
-
     @ColumnInfo("timestampModified")
     var timestampModified: Long = System.currentTimeMillis()
 }
@@ -41,6 +39,12 @@ data class Phases(
 interface PhasesDao {
     @Query("SELECT * FROM Phases WHERE player_id IS :playerId ORDER BY phase ASC")
     fun getPhasesOfPlayer(playerId: Long): Flow<List<Phases>>
+
+    @Query("SELECT * FROM Phases WHERE game_id IS :gameId ORDER BY player_id ASC")
+    fun getPhasesOfGame(gameId: Long): Flow<List<Phases>>
+
+    @Query("SELECT * FROM Phases ORDER BY player_id ASC")
+    fun getPhases(): Flow<List<Phases>>
 
     @Update
     suspend fun updatePhase(phases: Phases)

@@ -40,6 +40,9 @@ data class PointHistory(
 
 @Dao
 interface PoinHistoryDao {
+    @Query("SELECT * FROM PointHistory ORDER BY timestampCreated DESC")
+    fun getPointHistory(): Flow<List<PointHistory>>
+
     @Query("SELECT * FROM PointHistory WHERE game_id IS :gameId ORDER BY timestampCreated DESC")
     fun getPointHistoryOfGame(gameId: Long): Flow<List<PointHistory>>
 

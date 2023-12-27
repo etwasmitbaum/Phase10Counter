@@ -17,6 +17,8 @@
 package com.tjEnterprises.phase10Counter.data.di
 
 import com.tjEnterprises.phase10Counter.data.DatabaseRepository
+import com.tjEnterprises.phase10Counter.data.local.GameModel
+import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
@@ -41,15 +43,14 @@ interface DataModule {
 }
 
 class FakeDatabaseRepository @Inject constructor(
-    override val players: Flow<List<Player>>,
 ) : DatabaseRepository {
-    override val games: Flow<List<Game>> = flowOf(fakeDatabases)
+    override val games: Flow<List<GameModel>> = flowOf(fakeDatabases)
 
-    override suspend fun insertPlayer(player: Player) {
+    override suspend fun insertPlayer(player: Player): Long {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPlayerFromGame(gameID: Long): Flow<List<Player>> {
+    override suspend fun getPlayerFromGame(gameId: Long): Flow<List<PlayerModel>> {
         TODO("Not yet implemented")
     }
 
@@ -65,7 +66,15 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun changePlayerPhases(player: Player) {
+    override suspend fun updatePlayerPhases(
+        playerId: Long,
+        gameId: Long,
+        openPhases: List<Boolean>
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertPhasesForPlayer(playerId: Long, gameId: Long) {
         TODO("Not yet implemented")
     }
 
@@ -98,4 +107,84 @@ class FakeDatabaseRepository @Inject constructor(
     }
 }
 
-val fakeDatabases = listOf(Game(name = "One"), Game(name = "Two"), Game(name = "Three"))
+val fakeDatabases = listOf(
+    GameModel(
+        1L, "Game 1", 0L, 0L,
+        listOf(
+            PlayerModel(
+                1L,
+                1L,
+                "Player1",
+                listOf(256L),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            ), PlayerModel(
+                1L,
+                1L,
+                "Player1",
+                listOf(256L),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            ), PlayerModel(
+                1L,
+                1L,
+                "Player1",
+                listOf(256L),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            )
+        ),
+    ), GameModel(
+        2L, "Game 2", 0L, 0L,
+        listOf(
+            PlayerModel(
+                1L,
+                2L,
+                "Player1",
+                listOf(256L),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            ), PlayerModel(
+                1L,
+                2L,
+                "Player1",
+                listOf(256L),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            ), PlayerModel(
+                1L,
+                2L,
+                "Player1",
+                listOf(256L),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            )
+        ),
+    ), GameModel(
+        1L, "Game 3", 0L, 0L,
+        listOf(
+            PlayerModel(
+                1L,
+                3L,
+                "Player1",
+                listOf(256L),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            ), PlayerModel(
+                1L,
+                3L,
+                "Player1",
+                listOf(256L),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            ), PlayerModel(
+                1L,
+                3L,
+                "Player1",
+                listOf(256L),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            )
+        ),
+    )
+)

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "deb601c2cf1366aa0198465d88b1759b",
+    "identityHash": "af1304b9aaf322a5874958a46f4fe8ad",
     "entities": [
       {
         "tableName": "Game",
@@ -190,12 +190,81 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Phases",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`player_id` INTEGER NOT NULL, `game_id` INTEGER NOT NULL, `phase` INTEGER NOT NULL, `open` INTEGER NOT NULL, `timestampModified` INTEGER NOT NULL, PRIMARY KEY(`game_id`, `player_id`, `phase`), FOREIGN KEY(`game_id`) REFERENCES `Game`(`game_id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`player_id`) REFERENCES `Player`(`player_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "playerId",
+            "columnName": "player_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phaseNr",
+            "columnName": "phase",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "open",
+            "columnName": "open",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestampModified",
+            "columnName": "timestampModified",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "game_id",
+            "player_id",
+            "phase"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "Game",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "game_id"
+            ],
+            "referencedColumns": [
+              "game_id"
+            ]
+          },
+          {
+            "table": "Player",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "player_id"
+            ],
+            "referencedColumns": [
+              "player_id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'deb601c2cf1366aa0198465d88b1759b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'af1304b9aaf322a5874958a46f4fe8ad')"
     ]
   }
 }

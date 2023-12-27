@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import com.tjEnterprises.phase10Counter.ui.GameUiState
@@ -55,7 +56,6 @@ fun GameScreen(
 ) {
     val gamesUiState by viewModel.gameUiState.collectAsState()
     val playersUiState by viewModel.playersUiState.collectAsState()
-    val pointHistoryUiState by viewModel.pointHistoryUiState.collectAsState()
     viewModel.setGameId(gameId)
 
     BackHandler {
@@ -67,28 +67,14 @@ fun GameScreen(
             val games = (gamesUiState as GameUiState.GameSuccess).data
             when (playersUiState) {
                 is PlayersUiState.PlayersSuccess -> {
-                    when (pointHistoryUiState) {
-                        is PointHistoryUiState.PointHistorySuccess -> {
-                            GameScreen(
-                                players = (playersUiState as PlayersUiState.PlayersSuccess).data,
-                                gameTitle = games.name,
-                                openDrawer = openDrawer,
-                                pointHistory = (pointHistoryUiState as PointHistoryUiState.PointHistorySuccess).data,
-                                addPointHistoryEntry = { viewModel.addPointHistoryEntry(it) },
-                                savePhasesOfPlayer = { viewModel.savePlayerPhases(it) },
-                                modifier = modifier
-                            )
-                        }
-
-                        is PointHistoryUiState.PointHistoryLoading -> {
-                            Text(text = "Loading Point History")
-                        }
-
-                        is PointHistoryUiState.PointHistoryError -> {
-                            Text(text = "Error Point History")
-                        }
-
-                    }
+                    GameScreen(
+                        players = (playersUiState as PlayersUiState.PlayersSuccess).data,
+                        gameTitle = games.name,
+                        openDrawer = openDrawer,
+                        addPointHistoryEntry = { viewModel.addPointHistoryEntry(it) },
+                        savePhasesOfPlayer = { playerId, gameIdPlayer, openPhases -> viewModel.savePlayerPhases(playerId, gameIdPlayer, openPhases) },
+                        modifier = modifier
+                    )
 
                 }
 
@@ -114,12 +100,11 @@ fun GameScreen(
 
 @Composable
 internal fun GameScreen(
-    players: List<Player>,
+    players: List<PlayerModel>,
     gameTitle: String,
     openDrawer: () -> Unit,
-    pointHistory: List<PointHistory>,
     addPointHistoryEntry: (PointHistory) -> Unit,
-    savePhasesOfPlayer: (Player) -> Unit,
+    savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -137,7 +122,7 @@ internal fun GameScreen(
                         .padding(8.dp)
                         .padding(bottom = 8.dp)
                         .fillMaxWidth(),
-                    listOfPoints = pointHistory.filter { it.playerId == player.playerId },
+                    listOfPoints = listOf(player.pointSum),
                     addPointHistoryEntry = addPointHistoryEntry,
                     savePhasesOfPlayer = savePhasesOfPlayer
                 )
@@ -164,10 +149,8 @@ internal fun GameScreen(
 @Composable
 fun GameScreenPreview() {
     GameScreen(players = listOf(
-        Player(0L, "Player1"),
-        Player(0L, "Player2"),
-        Player(0L, "Player3")
-    ), openDrawer = {}, gameTitle = "Game 1", pointHistory = listOf(
-        PointHistory(70L, 0L, 0L), PointHistory(180L, 0L, 0L)
-    ), addPointHistoryEntry = {}, savePhasesOfPlayer = {})
+        PlayerModel(1L, 1L, "Player1", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
+        PlayerModel(1L, 1L, "Player2", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
+        PlayerModel(1L, 1L, "Player3", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true))
+    ), openDrawer = {}, gameTitle = "Game 1", addPointHistoryEntry = {}, savePhasesOfPlayer = {playerId, gameId, openPhases ->})
 }

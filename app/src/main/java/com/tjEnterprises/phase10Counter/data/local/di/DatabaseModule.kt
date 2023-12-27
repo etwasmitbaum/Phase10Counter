@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
+import com.tjEnterprises.phase10Counter.data.local.database.PhasesDao
 import com.tjEnterprises.phase10Counter.data.local.database.PlayerDao
 import com.tjEnterprises.phase10Counter.data.local.database.PoinHistoryDao
 import dagger.Module
@@ -46,6 +47,11 @@ class DatabaseModule {
     @Provides
     fun providePointHistoryDao(appDatabase: AppDatabase): PoinHistoryDao{
         return appDatabase.PoinHistoryDao()
+    }
+
+    @Provides
+    fun providePhasesDao(appDatabase: AppDatabase): PhasesDao{
+        return appDatabase.PhasesDao()
     }
 
     @Provides

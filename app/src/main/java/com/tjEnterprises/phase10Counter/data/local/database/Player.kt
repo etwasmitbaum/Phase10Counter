@@ -9,6 +9,7 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Update
+import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import kotlinx.coroutines.flow.Flow
 
 @Entity(
@@ -43,7 +44,7 @@ interface PlayerDao {
     suspend fun updatePlayer(player: Player)
 
     @Insert
-    suspend fun insertPlayer(player: Player)
+    suspend fun insertPlayer(player: Player): Long
 
     @Delete
     suspend fun deletePlayer(player: Player)
