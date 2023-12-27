@@ -45,24 +45,15 @@ interface DataModule {
 class FakeDatabaseRepository @Inject constructor(
 ) : DatabaseRepository {
     override val games: Flow<List<GameModel>> = flowOf(fakeDatabases)
-
-    override suspend fun insertPlayer(player: Player): Long {
+    override suspend fun insertPlayer(playerName: String, gameId: Long): Long {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPlayerFromGame(gameId: Long): Flow<List<PlayerModel>> {
+    override suspend fun getPlayersFromGame(gameId: Long): Flow<List<PlayerModel>> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deletePlayer(player: Player) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updatePlayer(player: Player) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun changePlayerName(player: Player) {
+    override suspend fun deletePlayer(playerId: Long) {
         TODO("Not yet implemented")
     }
 
@@ -78,19 +69,23 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun insertGame(game: Game): Long {
+    override suspend fun getGameFromId(gameId: Long): Flow<GameModel> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getGameFromId(gameID: Long): Game {
+    override suspend fun insertGame(gameName: String): Long {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeGame(game: Game) {
+    override suspend fun deleteGame(game: Game) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateGameModifiedTimestamp(game: Game) {
+    override suspend fun deleteGame(gameId: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateGameModifiedTimestamp(gameId: Long) {
         TODO("Not yet implemented")
     }
 
@@ -98,13 +93,14 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun insertPointHistory(pointHistory: PointHistory) {
+    override suspend fun insertPointHistory(point: Long, gameId: Long, playerId: Long) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removePointHistory(pointHistory: PointHistory) {
+    override suspend fun deletePointHistoryOfPlayer(playerId: Long) {
         TODO("Not yet implemented")
     }
+
 }
 
 val fakeDatabases = listOf(

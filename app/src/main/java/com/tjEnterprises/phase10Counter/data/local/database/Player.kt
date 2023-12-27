@@ -40,6 +40,9 @@ interface PlayerDao {
     @Query("SELECT * FROM Game WHERE game_id IS (:gameIDofPlayer)")
     suspend fun getGameFromPlayerID(gameIDofPlayer: Long): Game
 
+    @Query("SELECT * FROM Player WHERE player_id IS (:playerId)")
+    suspend fun getPlayerFromId(playerId: Long): Player
+
     @Update
     suspend fun updatePlayer(player: Player)
 

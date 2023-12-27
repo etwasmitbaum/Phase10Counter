@@ -48,8 +48,8 @@ fun AddGameScreen(
     val newCreatedGameID by viewModel.newCreatedGameID.collectAsState()
 
     AddGameScreen(openDrawer = openDrawer,
-        addGame = { game, names ->
-            viewModel.addGame(game, names)
+        addGame = { gameName, names ->
+            viewModel.addGame(gameName, names)
         },
         newCreatedGameID = newCreatedGameID,
         tempPlayerNames = viewModel.tempPlayerNames,
@@ -66,7 +66,7 @@ internal fun AddGameScreen(
     modifier: Modifier = Modifier,
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
-    addGame: (Game, List<String>) -> Unit,
+    addGame: (String, List<String>) -> Unit,
     resetNewCreatedGameID: () -> Unit,
     newCreatedGameID: Long,
     tempPlayerNames: SnapshotStateList<String>,
@@ -167,7 +167,7 @@ internal fun AddGameScreen(
             }
 
             Button(onClick = {
-                addGame(Game(textGame), tempPlayerNames)
+                addGame(textGame, tempPlayerNames)
             }, modifier = Modifier.align(Alignment.End)) {
                 Text(text = "Start")
             }

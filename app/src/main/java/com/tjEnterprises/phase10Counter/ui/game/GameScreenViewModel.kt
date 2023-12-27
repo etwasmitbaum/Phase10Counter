@@ -19,13 +19,7 @@ package com.tjEnterprises.phase10Counter.ui.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tjEnterprises.phase10Counter.data.DatabaseRepository
-import com.tjEnterprises.phase10Counter.data.local.PlayerModel
-import com.tjEnterprises.phase10Counter.data.local.database.Player
-import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import com.tjEnterprises.phase10Counter.ui.GameUiState
-import com.tjEnterprises.phase10Counter.ui.PlayersUiState
-import com.tjEnterprises.phase10Counter.ui.PlayersUiState.PlayersSuccess
-import com.tjEnterprises.phase10Counter.ui.PointHistoryUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,23 +35,17 @@ class GameViewModel @Inject constructor(
     private val _gameUiState = MutableStateFlow<GameUiState>(GameUiState.GameLoading)
     val gameUiState: StateFlow<GameUiState> = _gameUiState
 
-    private val _playersUiState = MutableStateFlow<PlayersUiState>(PlayersUiState.PlayersLoading)
-    val playersUiState: StateFlow<PlayersUiState> = _playersUiState
-
-    fun setGameId(gameId: Long) {
+    fun setGameFromId(gameId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            _gameUiState.value = GameUiState.GameSuccess(databaseRepository.getGameFromId(gameId))
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            databaseRepository.getPlayerFromGame(gameId).collect {
-                _playersUiState.value = PlayersSuccess(it)
+            databaseRepository.getGameFromId(gameId).collect {
+                _gameUiState.value = GameUiState.GameSuccess(it)
             }
         }
     }
 
-    fun addPointHistoryEntry(pointHistory: PointHistory) {
+    fun addPointHistoryEntry(point: Long, gameId: Long, playerId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            databaseRepository.insertPointHistory(pointHistory = pointHistory)
+            databaseRepository.insertPointHistory(point = point, gameId = gameId, playerId = playerId)
         }
     }
 

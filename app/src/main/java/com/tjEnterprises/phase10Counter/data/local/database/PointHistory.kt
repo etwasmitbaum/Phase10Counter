@@ -46,6 +46,12 @@ interface PoinHistoryDao {
     @Query("SELECT * FROM PointHistory WHERE game_id IS :gameId ORDER BY timestampCreated DESC")
     fun getPointHistoryOfGame(gameId: Long): Flow<List<PointHistory>>
 
+    @Query("SELECT * FROM PointHistory WHERE pointId IS :pointHistoryId")
+    suspend fun getPointHistoryFromId(pointHistoryId: Long): PointHistory
+
+    @Query("SELECT * FROM PointHistory WHERE player_id IS :playerId")
+    suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistory>
+
     @Insert
     suspend fun insertPoint(pointHistory: PointHistory)
 

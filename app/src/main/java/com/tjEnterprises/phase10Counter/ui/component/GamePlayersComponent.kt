@@ -45,7 +45,7 @@ fun OnePlayerView(
     player: PlayerModel,
     listOfPoints: List<Long>,
     savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
-    addPointHistoryEntry: (PointHistory) -> Unit
+    addPointHistoryEntry: (Long, Long, Long) -> Unit
 ) {
     var text by remember {
         mutableStateOf("")
@@ -90,11 +90,7 @@ fun OnePlayerView(
                     .widthIn(1.dp, 150.dp)
                     .onFocusChanged {
                         if (!it.isFocused && text != "" && !(text.contains('.') || text.contains(','))) {
-                            addPointHistoryEntry(
-                                PointHistory(
-                                    text.toLong(), player.playerId, gameId = player.gameId
-                                )
-                            )
+                            addPointHistoryEntry(text.toLong(), player.gameId, player.playerId)
                             text = ""
                         }
                     })
@@ -194,7 +190,7 @@ fun OnePlayerPreview() {
         listOf(true, true, true, true, true, true, true, true, true, true)
     ), listOfPoints = listOf(
         70L, 100L
-    ), addPointHistoryEntry = {}, savePhasesOfPlayer = {playerId, gameId, openPhases ->})
+    ), addPointHistoryEntry = {_, _, _ ->}, savePhasesOfPlayer = {_, _, _ ->})
 }
 
 @Preview(showBackground = true)

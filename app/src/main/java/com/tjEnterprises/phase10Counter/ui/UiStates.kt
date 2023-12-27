@@ -21,7 +21,7 @@ sealed interface GamesUiState {
 sealed interface GameUiState {
     object GameLoading : GameUiState
     data class GameError(val throwable: Throwable) : GameUiState
-    data class GameSuccess(val data: Game) : GameUiState
+    data class GameSuccess(val data: GameModel) : GameUiState
 }
 
 sealed interface PointHistoryUiState {

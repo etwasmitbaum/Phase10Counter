@@ -48,7 +48,7 @@ fun PhasesComponent(
         ),
         onDismissRequest = {
             dismiss(
-                checkedList = openPhases,
+                openPhases = openPhases,
                 player = player,
                 savePhasesOfPlayer = savePhasesOfPlayer,
                 closeDialog = closeDialog
@@ -58,7 +58,7 @@ fun PhasesComponent(
         confirmButton = {
             TextButton(onClick = {
                 dismiss(
-                    checkedList = openPhases,
+                    openPhases = openPhases,
                     player = player,
                     savePhasesOfPlayer = savePhasesOfPlayer,
                     closeDialog = closeDialog
@@ -87,8 +87,8 @@ fun PhasesComponent(
                                     modifier = Modifier.clickable {
                                         openPhases[j] = !openPhases[j]
                                     }) {
-                                    Checkbox(checked = openPhases[j],
-                                        onCheckedChange = { openPhases[j] = it })
+                                    Checkbox(checked = !openPhases[j],
+                                        onCheckedChange = { openPhases[j] = !it })
                                     Text(text = stringArrayResource(id = R.array.phases)[j])
                                 }
                             }
@@ -100,13 +100,13 @@ fun PhasesComponent(
 }
 
 fun dismiss(
-    checkedList: List<Boolean>,
+    openPhases: List<Boolean>,
     player: PlayerModel,
     savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
     closeDialog: () -> Unit
 ) {
 
-    savePhasesOfPlayer(player.playerId, player.gameId, checkedList)
+    savePhasesOfPlayer(player.playerId, player.gameId, openPhases)
     closeDialog()
 }
 
