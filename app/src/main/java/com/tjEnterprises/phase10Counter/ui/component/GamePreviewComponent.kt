@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.GameModel
 import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
@@ -70,15 +72,15 @@ fun GamePreviewComponent(
                     ) {
                         Text(text = player.name)
                         if (bExpanded) {
-                            Text(text = ": " + player.pointSum.toString() + " Points")
+                            Text(text = ": " + player.pointSum.toString() + " " + stringResource(id = R.string.points))
                         }
                     }
                 }
             }
 
-            var sExpandText = "Expand"
+            var sExpandText = stringResource(id = R.string.showDetails)
             if (bExpanded) {
-                sExpandText = "Collapse"
+                sExpandText = stringResource(id = R.string.hideDetails)
             }
 
             Column(
@@ -105,13 +107,13 @@ fun GamePreviewComponent(
                     onClick = { deleteGame(game.gameId) },
                     modifier = Modifier.padding(bottom = 16.dp, end = 4.dp)
                 ) {
-                    Text(text = "Delete")
+                    Text(text = stringResource(id = R.string.delete))
                 }
                 Button(
                     onClick = { resetGame(game.gameId) },
                     modifier = Modifier.padding(bottom = 16.dp, end = 4.dp)
                 ) {
-                    Text(text = "ResetGame")
+                    Text(text = stringResource(id = R.string.reset))
                 }
             }
         }
@@ -153,7 +155,7 @@ fun GamePreviewComponentPreview(expand: Boolean = false) {
     )
 }
 
-@Preview(showBackground = true, heightDp = 300)
+@Preview(showBackground = true, heightDp = 300, locale = "DE")
 @Composable
 fun GamePreviewComponentPreviewExpanded() {
     GamePreviewComponentPreview(expand = true)

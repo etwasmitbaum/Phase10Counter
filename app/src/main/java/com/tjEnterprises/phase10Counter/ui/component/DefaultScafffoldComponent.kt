@@ -13,9 +13,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tjEnterprises.phase10Counter.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +40,12 @@ fun DefaultScaffold(
                     title = { Text(text = title) },
                     navigationIcon = {
                         IconButton(onClick = openDrawer) {
-                            Icon(imageVector = Icons.Filled.Menu, contentDescription = "Menu")
+                            Icon(
+                                imageVector = Icons.Filled.Menu,
+                                contentDescription = stringResource(
+                                    id = R.string.menu
+                                )
+                            )
                         }
                     },
                 )
@@ -51,7 +58,9 @@ fun DefaultScaffold(
                         .padding(4.dp)
                 ) {
                     IconButton(onClick = openDrawer) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu")
+                        Icon(Icons.Default.Menu, contentDescription = stringResource(
+                            id = R.string.menu
+                        ))
                     }
                 }
                 content(

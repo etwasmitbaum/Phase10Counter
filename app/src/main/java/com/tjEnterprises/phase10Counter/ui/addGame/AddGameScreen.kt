@@ -29,12 +29,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tjEnterprises.phase10Counter.R
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 
@@ -85,7 +86,7 @@ internal fun AddGameScreen(
         })
     }
 
-    DefaultScaffold(title = "Add new Game", openDrawer = openDrawer) { scaffoldModifier ->
+    DefaultScaffold(title = stringResource(id = R.string.title_addNewGame), openDrawer = openDrawer) { scaffoldModifier ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = scaffoldModifier
@@ -99,7 +100,7 @@ internal fun AddGameScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         TextField(value = textGame,
                             onValueChange = { textGame = it },
-                            label = { Text("Game Name") },
+                            label = { Text(stringResource(id = R.string.gameName)) },
                             maxLines = 1,
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(
@@ -112,7 +113,7 @@ internal fun AddGameScreen(
                         )
                         TextField(value = textPlayer,
                             onValueChange = { textPlayer = it },
-                            label = { Text("Player Name") },
+                            label = { Text(stringResource(id = R.string.playerName)) },
                             maxLines = 1,
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -122,7 +123,7 @@ internal fun AddGameScreen(
                             tempPlayerNames.add(0, textPlayer)
                             textPlayer = ""
                         }) {
-                            Text(text = "Add Player")
+                            Text(text = stringResource(id = R.string.addPlayer))
                         }
                     }
                 }
@@ -133,7 +134,7 @@ internal fun AddGameScreen(
                     ) {
                         TextField(value = textGame,
                             onValueChange = { textGame = it },
-                            label = { Text("Game Name") },
+                            label = { Text(stringResource(id = R.string.gameName)) },
                             maxLines = 1,
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(
@@ -146,7 +147,7 @@ internal fun AddGameScreen(
                         )
                         TextField(value = textPlayer,
                             onValueChange = { textPlayer = it },
-                            label = { Text("Player Name") },
+                            label = { Text(stringResource(id = R.string.playerName)) },
                             maxLines = 1,
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -160,7 +161,7 @@ internal fun AddGameScreen(
                                 textPlayer = ""
                             }
                         }) {
-                            Text(text = "Add Player")
+                            Text(text = stringResource(id = R.string.addPlayer))
                         }
                     }
                 }
@@ -169,7 +170,7 @@ internal fun AddGameScreen(
             Button(onClick = {
                 addGame(textGame, tempPlayerNames)
             }, modifier = Modifier.align(Alignment.End)) {
-                Text(text = "Start")
+                Text(text = stringResource(id = R.string.start))
             }
             PlayersList(
                 modifier = modifier,
@@ -209,7 +210,9 @@ internal fun PlayersList(
                         modifier = Modifier.padding(end = 16.dp, start = 16.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Delete, contentDescription = "Delete Player"
+                            imageVector = Icons.Default.Delete, contentDescription = stringResource(
+                                id = R.string.deletePlayer
+                            )
                         )
                     }
                 }
@@ -220,9 +223,10 @@ internal fun PlayersList(
 
 
 @Preview(showBackground = true, widthDp = 400)
-@Preview(showBackground = true, widthDp = 500)
+@Preview(showBackground = true, widthDp = 500, heightDp = 500)
 @Composable
 fun AddGameScreenPreview() {
+    // gotta test very long names
     val tempPlayerNames = remember {
         mutableStateListOf<String>(
             "Player 1",

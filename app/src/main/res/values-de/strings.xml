@@ -12,9 +12,9 @@
     <string name="phase9"><b>Runde 9: </b>Ein Fünfling + ein Zwilling</string>
     <string name="phase10"><b>Runde 10: </b>Ein Fünfling + ein Drilling</string>
     <string name="phasenPlayerFragment">Runden</string>
-    <string name="punkteHint">Punkte</string>
-    <string name="offene_phasen">Offene Runden:</string>
-    <string name="add_player">Hinzufügen</string>
+    <string name="points">Punkte</string>
+    <string name="openPhases">Offene Runden:</string>
+    <string name="addPlayer">Hinzufügen</string>
     <string name="start">Start</string>
     <string name="player_message_tv">Spieler:</string>
     <string name="ok">Ok</string>
@@ -24,7 +24,7 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="reset_all_data_btn">Runde beenden</string>
-    <string name="show_phases_sets_btn">Runden</string>
+    <string name="phases">Runden</string>
     <string name="name">Name</string>
     <string name="none">keine</string>
     <string name="at_leat_2_players">Mindestens 2 Spieler!</string>
@@ -53,4 +53,17 @@
     <string name="all_opensource_license">Alle Lizen</string>
     <string name="back_deletion_on_uninstall_disclaimer">ALLE Backups gehen verloren, wenn die App deinstalliert wird</string>
     <string name="check_for_updates_switch">Überpüfe automatisch auf Updates</string>
+    <string name="title_addNewGame">Neues Spiel Hinzufügen</string>
+    <string name="gameName">Spielname</string>
+    <string name="playerName">Spielername</string>
+    <string name="deletePlayer">Spieler löschen</string>
+    <string name="closeNavigationDrawer">Schließe Navigation</string>
+    <string name="title_selectGame">Spielauswahl</string>
+    <string name="menu">Menü</string>
+    <string name="showPointHistory">Zeige Punkteverlauf</string>
+    <string name="showDetails">Details</string>
+    <string name="hideDetails">Details ausblenden</string>
+    <string name="delete">Löschen</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="confirm">Bestätigen</string>
 </resources>

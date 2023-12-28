@@ -29,7 +29,6 @@ import org.junit.Test
 /**
  * Unit tests for [DefaultDatabaseRepository].
  */
-@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
 class DefaultDatabaseRepositoryTest {
 
     @Test

@@ -28,7 +28,7 @@ import androidx.room.RoomDatabase
 abstract class AppDatabase : RoomDatabase() {
     abstract fun GameDao(): GameDao
     abstract fun PlayerDao(): PlayerDao
-    abstract fun PoinHistoryDao(): PoinHistoryDao
+    abstract fun PoinHistoryDao(): PointHistoryDao
     abstract fun PhasesDao(): PhasesDao
     abstract fun HighscoreDao(): HighscoreDao
 }

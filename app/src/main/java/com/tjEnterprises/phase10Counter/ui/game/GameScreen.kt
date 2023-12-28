@@ -72,11 +72,23 @@ fun GameScreen(
         }
 
         is GameUiState.GameLoading -> {
-            Text(text = "Loading Games")
+            GameScreen(
+                players = emptyList(),
+                gameTitle = "Loading Games",
+                openDrawer = openDrawer,
+                addPointHistoryEntry = {_, _, _ ->},
+                savePhasesOfPlayer = {_, _, _ ->}
+            )
         }
 
         is GameUiState.GameError -> {
-            Text(text = "Error Games")
+            GameScreen(
+                players = emptyList(),
+                gameTitle = "Error Games",
+                openDrawer = openDrawer,
+                addPointHistoryEntry = {_, _, _ ->},
+                savePhasesOfPlayer = {_, _, _ ->}
+            )
         }
     }
 

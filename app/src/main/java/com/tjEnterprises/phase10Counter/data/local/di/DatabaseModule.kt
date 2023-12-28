@@ -22,7 +22,7 @@ import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
 import com.tjEnterprises.phase10Counter.data.local.database.PhasesDao
 import com.tjEnterprises.phase10Counter.data.local.database.PlayerDao
-import com.tjEnterprises.phase10Counter.data.local.database.PoinHistoryDao
+import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,7 +45,7 @@ class DatabaseModule {
     }
 
     @Provides
-    fun providePointHistoryDao(appDatabase: AppDatabase): PoinHistoryDao{
+    fun providePointHistoryDao(appDatabase: AppDatabase): PointHistoryDao{
         return appDatabase.PoinHistoryDao()
     }
 

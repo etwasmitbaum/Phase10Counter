@@ -8,13 +8,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.GameModel
 import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.GamesUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.component.GamePreviewComponent
+import java.util.Locale
 
 @Composable
 fun SelectGame(
@@ -38,7 +41,28 @@ fun SelectGame(
             )
         }
 
-        else -> {}
+        is GamesUiState.GamesLoading -> {
+            SelectGame(
+                games = emptyList(),
+                openDrawer = openDrawer,
+                navigateToGame = navigateToGame,
+                resetGame = { _ -> },
+                deleteGame = { _ -> },
+                title = "Games Loading",
+                modifier = modifier
+            )
+        }
+        is GamesUiState.GamesError -> {
+            SelectGame(
+                games = emptyList(),
+                openDrawer = openDrawer,
+                navigateToGame = navigateToGame,
+                resetGame = { _ -> },
+                deleteGame = { _ -> },
+                title = "Games Error",
+                modifier = modifier
+            )
+        }
     }
 
 }
@@ -46,18 +70,15 @@ fun SelectGame(
 @Composable
 internal fun SelectGame(
     modifier: Modifier = Modifier,
+    title: String = stringResource(id = R.string.title_selectGame),
     games: List<GameModel>,
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
     resetGame: (Long) -> Unit,
     deleteGame: (Long) -> Unit
 ) {
-    // TODO Expand card to show all players with their points
-    // TODO Delete Games
-    // TODO reset games -> delete the point history and phases
-    // TODO make gridLayout
-    // TODO add "Reset Game" Button
-    DefaultScaffold(title = "Select Game", openDrawer = openDrawer) { scaffoldModifier ->
+    // TODO make gridLayout maybe?
+    DefaultScaffold(title = title, openDrawer = openDrawer) { scaffoldModifier ->
         LazyColumn(modifier = scaffoldModifier
             .then(modifier)
             .fillMaxWidth(),
@@ -76,7 +97,7 @@ internal fun SelectGame(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, locale = "DE")
 @Composable
 
 fun SelectGamePreview() {

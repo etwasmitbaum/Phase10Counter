@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import com.tjEnterprises.phase10Counter.data.local.PlayerModel
-import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
+import com.tjEnterprises.phase10Counter.R
 
 @Composable
 // Max width of 400dp expected
@@ -75,11 +76,11 @@ fun OnePlayerView(
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Button(onClick = { openDialog.value = true }, modifier = Modifier.padding(end = 8.dp)) {
-                Text(text = "Phasen")
+                Text(text = stringResource(id = R.string.phases))
             }
             TextField(value = text,
                 onValueChange = { text = it },
-                label = { Text("Punkte") },
+                label = { Text(stringResource(id = R.string.points)) },
                 maxLines = 1,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -107,7 +108,7 @@ fun OnePlayerView(
         // remove last ", " and assign + save new phases
         phasesString = phasesString.dropLast(2)
 
-        Text("Offene Phasen: $phasesString", modifier = Modifier.padding(top = 4.dp))
+        Text(stringResource(id = R.string.openPhases) + " $phasesString", modifier = Modifier.padding(top = 4.dp))
     }
 }
 
@@ -141,7 +142,7 @@ fun PointHistoryDropDown(
                 expanded = true
             }) {
                 Icon(
-                    imageVector = Icons.Default.MoreVert, contentDescription = "Open Options"
+                    imageVector = Icons.Default.MoreVert, contentDescription = stringResource(id = R.string.showPointHistory)
                 )
             }
         }

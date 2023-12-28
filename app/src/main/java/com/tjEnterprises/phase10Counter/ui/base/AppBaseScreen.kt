@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -25,6 +26,7 @@ import com.tjEnterprises.phase10Counter.ui.navigation.MainNavigation
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationActions
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 import kotlinx.coroutines.launch
+import com.tjEnterprises.phase10Counter.R
 
 @Composable
 fun AppBaseScreen(
@@ -50,26 +52,23 @@ fun AppBaseScreen(
 
         ModalDrawerSheet {
             IconButton(onClick = { scope.launch { drawerState.close() } }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Close Drawer")
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = stringResource(id = R.string.closeNavigationDrawer))
             }
             Divider()
 
             NavigationDrawerItem(label = {
-                Text(text = "Add new Game")
+                Text(text = stringResource(id = R.string.title_addNewGame))
             }, selected = currentRoute == NavigationDestination.ADD_GAMESCREEN, onClick = {
                 navigationActions.navigateToAnyScreen(NavigationDestination.ADD_GAMESCREEN)
                 scope.launch { drawerState.close() }
             })
 
-            NavigationDrawerItem(label = { Text(text = "Select Game") },
+            NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.title_selectGame)) },
                 selected = currentRoute == NavigationDestination.SELECT_GAME,
                 onClick = {
                     navigationActions.navigateToGameSelect()
                     scope.launch { drawerState.close() }
                 })
-            Divider()
-
-            Text(text = "Text", modifier = Modifier.padding(16.dp))
             Divider()
         }
 

@@ -24,7 +24,7 @@ import com.tjEnterprises.phase10Counter.data.local.database.Phases
 import com.tjEnterprises.phase10Counter.data.local.database.PhasesDao
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PlayerDao
-import com.tjEnterprises.phase10Counter.data.local.database.PoinHistoryDao
+import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -50,7 +50,7 @@ interface DatabaseRepository {
     class DefaultDatabaseRepository @Inject constructor(
         private val gameDao: GameDao,
         private val playerDao: PlayerDao,
-        private val pointHistoryDao: PoinHistoryDao,
+        private val pointHistoryDao: PointHistoryDao,
         private val phasesDao: PhasesDao
     ) : DatabaseRepository {
 

@@ -39,7 +39,7 @@ data class PointHistory(
 }
 
 @Dao
-interface PoinHistoryDao {
+interface PointHistoryDao {
     @Query("SELECT * FROM PointHistory ORDER BY timestampCreated DESC")
     fun getPointHistory(): Flow<List<PointHistory>>
 
