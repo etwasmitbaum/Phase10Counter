@@ -28,10 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.data.local.GameModel
-import com.tjEnterprises.phase10Counter.data.local.PlayerModel
+import com.tjEnterprises.phase10Counter.data.local.models.GameModel
+import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun GamePreviewComponent(

@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.data.local.PlayerModel
+import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 
 @Composable
 // well i know this is no mvvm here, but for this ONE fixed function it seems a bit overkill
@@ -117,5 +117,5 @@ fun dismiss(
 @Preview(device = Devices.NEXUS_5)
 @Composable
 fun PhasesComponentPreview() {
-    PhasesComponent(player = PlayerModel(1L, 1L, "Player1", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)), closeDialog = {}, savePhasesOfPlayer = {playerId, gameId, openPhases ->})
+    PhasesComponent(player = PlayerModel(1L, 1L, "Player1", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)), closeDialog = {}, savePhasesOfPlayer = { playerId, gameId, openPhases ->})
 }

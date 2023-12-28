@@ -2,20 +2,23 @@
 androidGradlePlugin = "8.2.0"
 androidxCore = "1.12.0"
 androidxLifecycle = "2.6.2"
-androidxActivity = "1.8.1"
+androidxActivity = "1.8.2"
 androidxComposeBom = "2023.10.01"
-androidxComposeCompiler = "1.5.4"
+androidxComposeCompiler = "1.5.7"
 androidxHilt = "1.1.0"
-androidxNavigation = "2.7.5"
+androidxNavigation = "2.7.6"
 androidxRoom = "2.6.1"
 androidxTest = "1.5.0"
 androidxTestExt = "1.1.5"
 androidxTestRunner = "1.5.2"
 coroutines = "1.7.3"
+datastore = "1.0.0"
+datastorePreferences = "1.0.0"
+datastorePreferencesCore = "1.0.0"
 hilt = "2.48.1"
 junit = "4.13.2"
-kotlin = "1.9.20"
-ksp = "1.9.20-1.0.14"
+kotlin = "1.9.21"
+ksp = "1.9.21-1.0.15"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -28,6 +31,9 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4"}
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling"}
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest"}
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferencesCore" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHilt" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }

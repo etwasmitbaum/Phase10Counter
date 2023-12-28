@@ -1,4 +1,4 @@
-package com.tjEnterprises.phase10Counter.data.local
+package com.tjEnterprises.phase10Counter.data.local.models
 
 data class GameModel(
     val gameId: Long,

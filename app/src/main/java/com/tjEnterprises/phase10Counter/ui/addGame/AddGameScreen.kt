@@ -34,8 +34,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.tjEnterprises.phase10Counter.R
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 

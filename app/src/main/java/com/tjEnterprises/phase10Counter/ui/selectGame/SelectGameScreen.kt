@@ -12,12 +12,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.data.local.GameModel
-import com.tjEnterprises.phase10Counter.data.local.PlayerModel
-import com.tjEnterprises.phase10Counter.ui.GamesUiState
+import com.tjEnterprises.phase10Counter.data.local.models.GameModel
+import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
+import com.tjEnterprises.phase10Counter.ui.SelectGameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.component.GamePreviewComponent
-import java.util.Locale
 
 @Composable
 fun SelectGame(
@@ -26,22 +25,24 @@ fun SelectGame(
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit
 ) {
-    val gamesUiState by viewModel.gamesUiState.collectAsState()
-
+    val gamesUiState by viewModel.selectGameUiState.collectAsState()
 
     when (gamesUiState) {
-        is GamesUiState.GamesSuccess -> {
-            SelectGame(
-                games = (gamesUiState as GamesUiState.GamesSuccess).data,
-                openDrawer = openDrawer,
-                navigateToGame = navigateToGame,
-                resetGame = { viewModel.resetGameWithData(it) },
-                deleteGame = { viewModel.deleteGameWithData(it) },
-                modifier = modifier
-            )
+        is SelectGameUiState.SelectGameSuccess -> {
+            if((gamesUiState as SelectGameUiState.SelectGameSuccess).settings.checkForUpdates){
+                SelectGame(
+                    games = (gamesUiState as SelectGameUiState.SelectGameSuccess).games,
+                    openDrawer = openDrawer,
+                    navigateToGame = navigateToGame,
+                    resetGame = { viewModel.resetGameWithData(it) },
+                    deleteGame = { viewModel.deleteGameWithData(it) },
+                    modifier = modifier
+                )
+            }
+
         }
 
-        is GamesUiState.GamesLoading -> {
+        is SelectGameUiState.SelectGameLoading -> {
             SelectGame(
                 games = emptyList(),
                 openDrawer = openDrawer,
@@ -52,7 +53,7 @@ fun SelectGame(
                 modifier = modifier
             )
         }
-        is GamesUiState.GamesError -> {
+        is SelectGameUiState.SelectGameError -> {
             SelectGame(
                 games = emptyList(),
                 openDrawer = openDrawer,

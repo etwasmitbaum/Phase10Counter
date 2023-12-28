@@ -18,7 +18,7 @@ package com.tjEnterprises.phase10Counter.ui.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tjEnterprises.phase10Counter.data.DatabaseRepository
+import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
 import com.tjEnterprises.phase10Counter.ui.GameUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

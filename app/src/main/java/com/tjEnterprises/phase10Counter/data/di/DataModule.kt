@@ -16,12 +16,12 @@
 
 package com.tjEnterprises.phase10Counter.data.di
 
-import com.tjEnterprises.phase10Counter.data.DatabaseRepository
-import com.tjEnterprises.phase10Counter.data.local.GameModel
-import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.database.Game
-import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
+import com.tjEnterprises.phase10Counter.data.local.models.GameModel
+import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
+import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
+import com.tjEnterprises.phase10Counter.data.local.repositories.SettingsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -40,6 +40,10 @@ interface DataModule {
     fun bindsDatabaseRepository(
         databaseRepository: DatabaseRepository.DefaultDatabaseRepository
     ): DatabaseRepository
+
+    @Singleton
+    @Binds
+    fun bindsSettingsRepository(settingsRepository: SettingsRepository.SettingsRepositoryImpl): SettingsRepository
 }
 
 class FakeDatabaseRepository @Inject constructor(
@@ -58,9 +62,7 @@ class FakeDatabaseRepository @Inject constructor(
     }
 
     override suspend fun updatePlayerPhases(
-        playerId: Long,
-        gameId: Long,
-        openPhases: List<Boolean>
+        playerId: Long, gameId: Long, openPhases: List<Boolean>
     ) {
         TODO("Not yet implemented")
     }

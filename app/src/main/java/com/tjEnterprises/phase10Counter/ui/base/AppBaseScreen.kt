@@ -1,11 +1,9 @@
 package com.tjEnterprises.phase10Counter.ui.base
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Divider
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,14 +17,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.ui.navigation.MainNavigation
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationActions
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 import kotlinx.coroutines.launch
-import com.tjEnterprises.phase10Counter.R
 
 @Composable
 fun AppBaseScreen(
@@ -67,6 +64,14 @@ fun AppBaseScreen(
                 selected = currentRoute == NavigationDestination.SELECT_GAME,
                 onClick = {
                     navigationActions.navigateToGameSelect()
+                    scope.launch { drawerState.close() }
+                })
+            Divider()
+
+            NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.settings)) },
+                selected = currentRoute == NavigationDestination.SETTINGS,
+                onClick = {
+                    navigationActions.navigateToAnyScreen(NavigationDestination.SETTINGS)
                     scope.launch { drawerState.close() }
                 })
             Divider()

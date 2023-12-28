@@ -29,6 +29,7 @@ import androidx.navigation.navigation
 import com.tjEnterprises.phase10Counter.ui.addGame.AddGameScreen
 import com.tjEnterprises.phase10Counter.ui.game.GameScreen
 import com.tjEnterprises.phase10Counter.ui.selectGame.SelectGame
+import com.tjEnterprises.phase10Counter.ui.settings.SettingsScreen
 
 @Composable
 fun MainNavigation(
@@ -48,7 +49,12 @@ fun MainNavigation(
                 openDrawer = openDrawer, navigateToGame = navigationActions.navigateToGame
             )
         }
+
         selectGameGraph(openDrawer = openDrawer, navigationActions = navigationActions)
+
+        composable(route = NavigationDestination.SETTINGS) {
+            SettingsScreen(openDrawer = openDrawer)
+        }
     }
 }
 

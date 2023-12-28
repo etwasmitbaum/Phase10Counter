@@ -1,31 +1,22 @@
 package com.tjEnterprises.phase10Counter.ui
 
-import com.tjEnterprises.phase10Counter.data.local.GameModel
-import com.tjEnterprises.phase10Counter.data.local.PlayerModel
-import com.tjEnterprises.phase10Counter.data.local.database.Game
-import com.tjEnterprises.phase10Counter.data.local.database.Player
-import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
+import com.tjEnterprises.phase10Counter.data.local.models.GameModel
+import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 
-sealed interface PlayersUiState {
-    object PlayersLoading : PlayersUiState
-    data class PlayersError(val throwable: Throwable) : PlayersUiState
-    data class PlayersSuccess(val data: List<PlayerModel>) : PlayersUiState
-}
-
-sealed interface GamesUiState {
-    object GamesLoading : GamesUiState
-    data class GamesError(val throwable: Throwable) : GamesUiState
-    data class GamesSuccess(val data: List<GameModel>) : GamesUiState
+sealed interface SelectGameUiState {
+    object SelectGameLoading : SelectGameUiState
+    data class SelectGameError(val throwable: Throwable) : SelectGameUiState
+    data class SelectGameSuccess(val games: List<GameModel>, val settings: SettingsModel) : SelectGameUiState
 }
 
 sealed interface GameUiState {
     object GameLoading : GameUiState
     data class GameError(val throwable: Throwable) : GameUiState
-    data class GameSuccess(val data: GameModel) : GameUiState
+    data class GameSuccess(val game: GameModel) : GameUiState
 }
 
-sealed interface PointHistoryUiState {
-    object PointHistoryLoading : PointHistoryUiState
-    data class PointHistoryError(val throwable: Throwable) : PointHistoryUiState
-    data class PointHistorySuccess(val data: List<PointHistory>) : PointHistoryUiState
+sealed interface SettingsUiState {
+    object SettingsLoading : SettingsUiState
+    data class SettingsError(val throwable: Throwable) : SettingsUiState
+    data class SettingsSuccess(val settings: SettingsModel) : SettingsUiState
 }

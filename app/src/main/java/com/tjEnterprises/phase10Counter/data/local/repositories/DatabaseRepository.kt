@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package com.tjEnterprises.phase10Counter.data
+package com.tjEnterprises.phase10Counter.data.local.repositories
 
-import com.tjEnterprises.phase10Counter.data.local.GameModel
-import com.tjEnterprises.phase10Counter.data.local.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
 import com.tjEnterprises.phase10Counter.data.local.database.Phases
 import com.tjEnterprises.phase10Counter.data.local.database.PhasesDao
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.database.PlayerDao
-import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
+import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
+import com.tjEnterprises.phase10Counter.data.local.models.GameModel
+import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import java.lang.NullPointerException
 import javax.inject.Inject
 
 interface DatabaseRepository {
@@ -54,7 +56,7 @@ interface DatabaseRepository {
         private val phasesDao: PhasesDao
     ) : DatabaseRepository {
 
-        override var games: Flow<List<GameModel>> = combine(
+        override val games: Flow<List<GameModel>> = combine(
             gameDao.getAllGames(),
             playerDao.getAllPlayers(),
             pointHistoryDao.getPointHistory(),
@@ -161,20 +163,27 @@ interface DatabaseRepository {
         }
 
         override suspend fun getGameFromId(gameId: Long): Flow<GameModel> {
-            val gameModel: Flow<GameModel> = combine(
-                gameDao.getGameFromIdAsFlow(gameId),
-                getPlayersFromGame(gameId)
-            ) { game, playersFromGame ->
-                val gameModels = GameModel(
-                    gameId = gameId,
-                    name = game.name,
-                    created = game.timestampCreated,
-                    modified = game.timestampModified,
-                    players = playersFromGame
-                )
-                gameModels
-            }
-            return gameModel
+                val gameModel: Flow<GameModel> = combine(
+                    gameDao.getGameFromIdAsFlow(gameId),
+                    getPlayersFromGame(gameId)
+                ) { game, playersFromGame ->
+                    // if you reset the game and then quickly delete it,
+                    // a nullPointerException is thrown
+                    try {
+                        val gameModels = GameModel(
+                            gameId = gameId,
+                            name = game.name,
+                            created = game.timestampCreated,
+                            modified = game.timestampModified,
+                            players = playersFromGame
+                        )
+                        gameModels
+                    } catch (npe: NullPointerException){
+                        npe.printStackTrace()
+                        GameModel(-1L, "Error Game", 0L, 0L, emptyList())
+                    }
+                }
+                return gameModel
         }
 
         override suspend fun insertGame(gameName: String): Long {

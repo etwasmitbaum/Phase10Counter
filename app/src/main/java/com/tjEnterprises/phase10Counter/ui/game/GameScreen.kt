@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,10 +33,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tjEnterprises.phase10Counter.data.local.PlayerModel
-import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
+import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.GameUiState
-import com.tjEnterprises.phase10Counter.ui.PlayersUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.component.OnePlayerView
 import javax.inject.Singleton
@@ -60,7 +57,7 @@ fun GameScreen(
 
     when (gamesUiState) {
         is GameUiState.GameSuccess -> {
-            val games = (gamesUiState as GameUiState.GameSuccess).data
+            val games = (gamesUiState as GameUiState.GameSuccess).game
             GameScreen(
                 players = games.players,
                 gameTitle = games.name,

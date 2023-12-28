@@ -1,6 +1,4 @@
-package com.tjEnterprises.phase10Counter.data.local
-
-import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
+package com.tjEnterprises.phase10Counter.data.local.models
 
 data class PlayerModel(
     val playerId: Long,

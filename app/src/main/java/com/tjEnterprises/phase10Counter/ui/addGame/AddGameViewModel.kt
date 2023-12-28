@@ -3,9 +3,7 @@ package com.tjEnterprises.phase10Counter.ui.addGame
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tjEnterprises.phase10Counter.data.DatabaseRepository
-import com.tjEnterprises.phase10Counter.data.local.database.Game
-import com.tjEnterprises.phase10Counter.data.local.database.Player
+import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
