@@ -17,6 +17,7 @@ interface SettingsRepository {
     val settingsModelFlow: Flow<SettingsModel>
 
     suspend fun updateCheckForUpdates(checkForUpdates: Boolean)
+    suspend fun updateEnableMaterialUDesign(enableMaterialUDesign: Boolean)
 
     @Singleton
     class SettingsRepositoryImpl @Inject constructor(
@@ -25,6 +26,7 @@ interface SettingsRepository {
 
         private object SettingsKeys {
             val CHECK_FOR_UPDATES = booleanPreferencesKey("checkForUpdates")
+            val MATERIAL_U_DESIGN = booleanPreferencesKey("materialUDesign")
         }
 
         override val settingsModelFlow: Flow<SettingsModel>
@@ -35,13 +37,23 @@ interface SettingsRepository {
                     throw exception
                 }
             }.map { preferences ->
-                val checkForUpdates = preferences[SettingsKeys.CHECK_FOR_UPDATES] ?: true
-                SettingsModel(checkForUpdates = checkForUpdates)
+
+                val defaultSetting = SettingsModel()
+
+                val checkForUpdates = preferences[SettingsKeys.CHECK_FOR_UPDATES] ?: defaultSetting.checkForUpdates
+                val materialUDesign = preferences[SettingsKeys.MATERIAL_U_DESIGN] ?: defaultSetting.enableMaterialUDesign
+                SettingsModel(checkForUpdates = checkForUpdates, enableMaterialUDesign = materialUDesign)
             }
 
         override suspend fun updateCheckForUpdates(checkForUpdates: Boolean) {
             dataStore.edit { preferences ->
                 preferences[SettingsKeys.CHECK_FOR_UPDATES] = checkForUpdates
+            }
+        }
+
+        override suspend fun updateEnableMaterialUDesign(enableMaterialUDesign: Boolean) {
+            dataStore.edit { preferences ->
+                preferences[SettingsKeys.MATERIAL_U_DESIGN] = enableMaterialUDesign
             }
         }
     }

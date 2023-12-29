@@ -21,7 +21,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.gradle)
     alias(libs.plugins.ksp)
-    id("com.mikepenz.aboutlibraries.plugin") apply true version "10.10.0-rc02"
+    alias(libs.plugins.aboutlibraries)
 }
 
 android {
