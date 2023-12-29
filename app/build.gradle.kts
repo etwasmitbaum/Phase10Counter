@@ -21,6 +21,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.gradle)
     alias(libs.plugins.ksp)
+    id("com.mikepenz.aboutlibraries.plugin") apply true version "10.10.0-rc02"
 }
 
 android {
@@ -139,4 +140,6 @@ dependencies {
     // Compose-Settings -> https://github.com/alorma/Compose-Settings
     implementation(libs.compose.settings.ui.m3)
 
+    // AboutLibraries https://github.com/mikepenz/AboutLibraries
+    implementation(libs.aboutlibraries.compose)
 }

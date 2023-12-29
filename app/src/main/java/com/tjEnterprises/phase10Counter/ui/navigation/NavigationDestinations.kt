@@ -6,4 +6,5 @@ object NavigationDestination {
     const val SELECT_GAME = "selectGame"
     const val GAME_ROUTE = "gameRoute"
     const val SETTINGS = "settings"
+    const val ABOUT_LIBRARIES = "aboutLibraries"
 }

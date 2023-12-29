@@ -16,6 +16,7 @@
 
 package com.tjEnterprises.phase10Counter.ui.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +27,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.tjEnterprises.phase10Counter.ui.addGame.AddGameScreen
+import com.tjEnterprises.phase10Counter.ui.component.AboutLibrariesComponent
+import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.game.GameScreen
 import com.tjEnterprises.phase10Counter.ui.selectGame.SelectGame
 import com.tjEnterprises.phase10Counter.ui.settings.SettingsScreen
@@ -53,7 +57,11 @@ fun MainNavigation(
         selectGameGraph(openDrawer = openDrawer, navigationActions = navigationActions)
 
         composable(route = NavigationDestination.SETTINGS) {
-            SettingsScreen(openDrawer = openDrawer)
+            SettingsScreen(openDrawer = openDrawer, navigateToAboutLibraries = navigationActions.navigateToAboutLibraries)
+        }
+
+        composable(route = NavigationDestination.ABOUT_LIBRARIES){
+            AboutLibrariesComponent (openDrawer = openDrawer)
         }
     }
 }

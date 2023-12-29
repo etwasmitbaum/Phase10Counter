@@ -41,4 +41,18 @@ class NavigationActions(navController: NavHostController) {
             restoreState = true
         }
     }
+
+    val navigateToAboutLibraries: () -> Unit = {
+        navController.navigate(NavigationDestination.ABOUT_LIBRARIES) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                inclusive = false
+            }
+
+            // Avoid multiple copies of the same destination when
+            // reselecting the same item
+            launchSingleTop = true
+            // Restore state when reselecting a previously selected item
+            restoreState = true
+        }
+    }
 }
