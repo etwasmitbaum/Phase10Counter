@@ -66,4 +66,7 @@
     <string name="reset">Reset</string>
     <string name="confirm">Confirm</string>
     <string name="enableDynamicColors">Enable Dynamic Colors</string>
+    <string name="requiresAndroid12plus">Requires Androind 12+</string>
+    <string name="followSystemTheme">Follow System theme</string>
+    <string name="darkTheme">Dark theme</string>
 </resources>

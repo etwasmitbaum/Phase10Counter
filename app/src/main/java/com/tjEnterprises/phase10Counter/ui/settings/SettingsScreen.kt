@@ -39,7 +39,9 @@ fun SettingsScreen(
                 settings = (settingsUiState as SettingsUiState.SettingsSuccess).settings,
                 openDrawer = openDrawer,
                 updateCheckForUpdates = { viewModel.updateCheckForUpdates(it) },
-                updateEnableMaterialUDesign = { viewModel.updateEnableMaterialUDesign(it) },
+                updateUseDynamicColors = { viewModel.updateUseDynamicColors(it) },
+                updateUseSystemTheme = { viewModel.updateUseSystemTheme(it) },
+                updateUseDarkTheme = { viewModel.updateUseDarkTheme(it) },
                 navigateToAboutLibraries = navigateToAboutLibraries
             )
         }
@@ -50,7 +52,9 @@ fun SettingsScreen(
                 title = "Loading Settings",
                 openDrawer = openDrawer,
                 updateCheckForUpdates = {},
-                updateEnableMaterialUDesign = {},
+                updateUseDynamicColors = {},
+                updateUseSystemTheme = {},
+                updateUseDarkTheme = {},
                 navigateToAboutLibraries = {})
         }
 
@@ -60,7 +64,9 @@ fun SettingsScreen(
                 title = "Error Settings",
                 openDrawer = openDrawer,
                 updateCheckForUpdates = {},
-                updateEnableMaterialUDesign = {},
+                updateUseDynamicColors = {},
+                updateUseSystemTheme = {},
+                updateUseDarkTheme = {},
                 navigateToAboutLibraries = {})
         }
     }
@@ -73,7 +79,9 @@ internal fun SettingsScreen(
     title: String = stringResource(id = R.string.settings),
     openDrawer: () -> Unit,
     updateCheckForUpdates: (Boolean) -> Unit,
-    updateEnableMaterialUDesign: (Boolean) -> Unit,
+    updateUseDynamicColors: (Boolean) -> Unit,
+    updateUseSystemTheme: (Boolean) -> Unit,
+    updateUseDarkTheme: (Boolean) -> Unit,
     navigateToAboutLibraries: () -> Unit
 ) {
 
@@ -90,12 +98,18 @@ internal fun SettingsScreen(
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
                 })
+
             Divider()
 
-            // Enable materialU design (android 12+)
+            // Enable Dynamic Colors (android 12+)
             SettingsSwitch(title = { Text(text = stringResource(id = R.string.enableDynamicColors)) },
-                state = rememberBooleanSettingState(settings.enableMaterialUDesign),
-                onCheckedChange = { newValue -> updateEnableMaterialUDesign(newValue) },
+                subtitle = {
+                    Text(
+                        text = stringResource(id = R.string.requiresAndroid12plus)
+                    )
+                },
+                state = rememberBooleanSettingState(settings.useDynamicColors),
+                onCheckedChange = { newValue -> updateUseDynamicColors(newValue) },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Check,
@@ -103,6 +117,37 @@ internal fun SettingsScreen(
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
                 })
+
+            // Use System Theme
+            SettingsSwitch(
+                title = { Text(text = stringResource(id = R.string.followSystemTheme)) },
+                state = rememberBooleanSettingState(settings.useSystemTheme),
+                onCheckedChange = { newValue -> updateUseSystemTheme(newValue)},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null,
+                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                    )
+                }
+            )
+
+            // Use Dark Theme
+            SettingsSwitch(
+                title = { Text(text = stringResource(id = R.string.darkTheme)) },
+                state = rememberBooleanSettingState(settings.useDarkTheme),
+                onCheckedChange = { newValue -> updateUseDarkTheme(newValue)},
+                enabled = !settings.useSystemTheme,
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null,
+                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                    )
+                }
+            )
+
+            Divider()
 
             // Show all opensource licences
             SettingsMenuLink(title = { Text(text = stringResource(id = R.string.all_opensource_license)) },
@@ -115,7 +160,9 @@ internal fun SettingsScreen(
                 }) {
                 navigateToAboutLibraries()
             }
+
             Divider()
+
         }
     }
 }
@@ -125,9 +172,11 @@ internal fun SettingsScreen(
 @Composable
 fun SettingsScreenPreview() {
     SettingsScreen(modifier = Modifier,
-        settings = SettingsModel(checkForUpdates = true),
+        settings = SettingsModel(useSystemTheme = false, useDarkTheme = true),
         openDrawer = { },
         updateCheckForUpdates = {},
-        updateEnableMaterialUDesign = {},
+        updateUseDynamicColors = {},
+        updateUseSystemTheme = {},
+        updateUseDarkTheme = {},
         navigateToAboutLibraries = {})
 }

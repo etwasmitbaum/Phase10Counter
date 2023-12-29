@@ -17,7 +17,9 @@ interface SettingsRepository {
     val settingsModelFlow: Flow<SettingsModel>
 
     suspend fun updateCheckForUpdates(checkForUpdates: Boolean)
-    suspend fun updateEnableMaterialUDesign(enableMaterialUDesign: Boolean)
+    suspend fun updateUseDynamicColors(useDynamicColors: Boolean)
+    suspend fun updateUseSystemTheme(useSystemTheme: Boolean)
+    suspend fun updateUseDarkTheme(useDarkTheme: Boolean)
 
     @Singleton
     class SettingsRepositoryImpl @Inject constructor(
@@ -26,7 +28,9 @@ interface SettingsRepository {
 
         private object SettingsKeys {
             val CHECK_FOR_UPDATES = booleanPreferencesKey("checkForUpdates")
-            val MATERIAL_U_DESIGN = booleanPreferencesKey("materialUDesign")
+            val USE_DYNAMIC_COLORS = booleanPreferencesKey("useDynamicColors")
+            val USE_DARK_THEME = booleanPreferencesKey("useDarkTheme")
+            val USE_SYSTEM_THEME = booleanPreferencesKey("useSystemTheme")
         }
 
         override val settingsModelFlow: Flow<SettingsModel>
@@ -40,21 +44,44 @@ interface SettingsRepository {
 
                 val defaultSetting = SettingsModel()
 
-                val checkForUpdates = preferences[SettingsKeys.CHECK_FOR_UPDATES] ?: defaultSetting.checkForUpdates
-                val materialUDesign = preferences[SettingsKeys.MATERIAL_U_DESIGN] ?: defaultSetting.enableMaterialUDesign
-                SettingsModel(checkForUpdates = checkForUpdates, enableMaterialUDesign = materialUDesign)
+                val checkForUpdates =
+                    preferences[SettingsKeys.CHECK_FOR_UPDATES] ?: defaultSetting.checkForUpdates
+                val useDynamicColors =
+                    preferences[SettingsKeys.USE_DYNAMIC_COLORS] ?: defaultSetting.useDynamicColors
+                val useDarkTheme =
+                    preferences[SettingsKeys.USE_DARK_THEME] ?: defaultSetting.useDarkTheme
+                val useSystemTheme =
+                    preferences[SettingsKeys.USE_SYSTEM_THEME] ?: defaultSetting.useSystemTheme
+
+                SettingsModel(
+                    checkForUpdates = checkForUpdates,
+                    useDynamicColors = useDynamicColors,
+                    useDarkTheme = useDarkTheme,
+                    useSystemTheme = useSystemTheme
+                )
             }
+
+        private suspend fun writeBooleanToDataStore(key: Preferences.Key<Boolean>, value: Boolean){
+            dataStore.edit { preferences ->
+                preferences[key] = value
+            }
+        }
 
         override suspend fun updateCheckForUpdates(checkForUpdates: Boolean) {
-            dataStore.edit { preferences ->
-                preferences[SettingsKeys.CHECK_FOR_UPDATES] = checkForUpdates
-            }
+            writeBooleanToDataStore(SettingsKeys.CHECK_FOR_UPDATES, checkForUpdates)
         }
 
-        override suspend fun updateEnableMaterialUDesign(enableMaterialUDesign: Boolean) {
-            dataStore.edit { preferences ->
-                preferences[SettingsKeys.MATERIAL_U_DESIGN] = enableMaterialUDesign
-            }
+        override suspend fun updateUseDynamicColors(useDynamicColors: Boolean) {
+            writeBooleanToDataStore(SettingsKeys.USE_DYNAMIC_COLORS, useDynamicColors)
         }
+
+        override suspend fun updateUseSystemTheme(useSystemTheme: Boolean) {
+            writeBooleanToDataStore(SettingsKeys.USE_SYSTEM_THEME, useSystemTheme)
+        }
+
+        override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
+            writeBooleanToDataStore(SettingsKeys.USE_DARK_THEME, useDarkTheme)
+        }
+
     }
 }

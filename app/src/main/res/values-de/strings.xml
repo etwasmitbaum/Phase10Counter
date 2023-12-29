@@ -67,4 +67,7 @@
     <string name="reset">Zurücksetzen</string>
     <string name="confirm">Bestätigen</string>
     <string name="enableDynamicColors">Aktiviere dynamische Farben</string>
+    <string name="requiresAndroid12plus">Benötigt Androird 12+</string>
+    <string name="followSystemTheme">Folge Systemdesign</string>
+    <string name="darkTheme">Dunkles Design</string>
 </resources>

@@ -65,14 +65,13 @@ fun MyApplicationTheme(
         is SettingsUiState.SettingsSuccess -> {
             val s = (settingsUiState as SettingsUiState.SettingsSuccess)
             MyAppTheme(
-                dynamicColor = s.settings.enableMaterialUDesign,
-                darkTheme = isSystemInDarkTheme(),
+                dynamicColor = s.settings.useDynamicColors,
+                darkTheme = (isSystemInDarkTheme() && s.settings.useSystemTheme) || s.settings.useDarkTheme,
                 content = content
             )
         }
 
         is SettingsUiState.SettingsLoading -> {
-
         }
 
         is SettingsUiState.SettingsError -> {

@@ -7,7 +7,6 @@ import com.tjEnterprises.phase10Counter.data.local.repositories.SettingsReposito
 import com.tjEnterprises.phase10Counter.ui.SettingsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -15,8 +14,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.coroutines.coroutineContext
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -37,9 +34,19 @@ class SettingsViewModel @Inject constructor(
             settingsRepository.updateCheckForUpdates(checkForUpdates)
         }
     }
-    fun updateEnableMaterialUDesign(enableMaterialUDesign: Boolean){
+    fun updateUseDynamicColors(useDynamicColors: Boolean){
         viewModelScope.launch(Dispatchers.IO) {
-            settingsRepository.updateEnableMaterialUDesign(enableMaterialUDesign)
+            settingsRepository.updateUseDynamicColors(useDynamicColors)
+        }
+    }
+    fun updateUseSystemTheme(useSystemTheme: Boolean){
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.updateUseSystemTheme(useSystemTheme)
+        }
+    }
+    fun updateUseDarkTheme(useDarkTheme: Boolean){
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.updateUseDarkTheme(useDarkTheme)
         }
     }
 }
