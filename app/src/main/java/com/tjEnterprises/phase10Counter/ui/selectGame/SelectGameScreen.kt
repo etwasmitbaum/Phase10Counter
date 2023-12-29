@@ -29,17 +29,14 @@ fun SelectGame(
 
     when (gamesUiState) {
         is SelectGameUiState.SelectGameSuccess -> {
-            if((gamesUiState as SelectGameUiState.SelectGameSuccess).settings.checkForUpdates){
-                SelectGame(
-                    games = (gamesUiState as SelectGameUiState.SelectGameSuccess).games,
-                    openDrawer = openDrawer,
-                    navigateToGame = navigateToGame,
-                    resetGame = { viewModel.resetGameWithData(it) },
-                    deleteGame = { viewModel.deleteGameWithData(it) },
-                    modifier = modifier
-                )
-            }
-
+            SelectGame(
+                games = (gamesUiState as SelectGameUiState.SelectGameSuccess).games,
+                openDrawer = openDrawer,
+                navigateToGame = navigateToGame,
+                resetGame = { viewModel.resetGameWithData(it) },
+                deleteGame = { viewModel.deleteGameWithData(it) },
+                modifier = modifier
+            )
         }
 
         is SelectGameUiState.SelectGameLoading -> {

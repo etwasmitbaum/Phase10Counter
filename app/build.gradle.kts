@@ -136,4 +136,7 @@ dependencies {
     // DataStore API
     implementation(libs.androidx.datastore.preferences)
 
+    // Compose-Settings -> https://github.com/alorma/Compose-Settings
+    implementation(libs.compose.settings.ui.m3)
+
 }
