@@ -79,7 +79,7 @@ internal fun AddGameScreen(
     var textPlayer by remember { mutableStateOf("") }
     var textGame by remember { mutableStateOf("") }
 
-    // when the gameID is not -1 (default) the side effect will cause a navigation to the newly created game
+    // when the gameID is not -1L (default) the side effect will cause a navigation to the newly created game
     // there are no other circumstances, where newCreatedGameID will change its value from -1L
     if (newCreatedGameID != -1L) {
         LaunchedEffect(key1 = newCreatedGameID, block = {

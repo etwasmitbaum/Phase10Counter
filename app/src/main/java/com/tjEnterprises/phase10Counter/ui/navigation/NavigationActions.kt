@@ -19,11 +19,7 @@ class NavigationActions(navController: NavHostController) {
 
     val navigateToGame: (String) -> Unit = {route ->
         navController.navigate(route) {
-
-            // Avoid multiple copies of the same destination when
-            // reselecting the same item
             launchSingleTop = true
-            // Restore state when reselecting a previously selected item
             restoreState = true
         }
     }
@@ -33,25 +29,21 @@ class NavigationActions(navController: NavHostController) {
             popUpTo(navController.graph.findStartDestination().id) {
                 inclusive = false
             }
-
-            // Avoid multiple copies of the same destination when
-            // reselecting the same item
             launchSingleTop = true
-            // Restore state when reselecting a previously selected item
             restoreState = true
         }
     }
 
     val navigateToAboutLibraries: () -> Unit = {
         navController.navigate(NavigationDestination.ABOUT_LIBRARIES) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                inclusive = false
-            }
-
-            // Avoid multiple copies of the same destination when
-            // reselecting the same item
             launchSingleTop = true
-            // Restore state when reselecting a previously selected item
+            restoreState = true
+        }
+    }
+
+    val navigateToSettings: () -> Unit = {
+        navController.navigate(NavigationDestination.SETTINGS) {
+            launchSingleTop = true
             restoreState = true
         }
     }

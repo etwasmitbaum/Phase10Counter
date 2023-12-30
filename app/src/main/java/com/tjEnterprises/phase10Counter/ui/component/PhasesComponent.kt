@@ -69,7 +69,7 @@ fun PhasesComponent(
             }
         },
         dismissButton = {},
-        title = { Text(text = stringResource(id = R.string.phases)) },
+        title = { Text(text = stringResource(id = R.string.phasesOf) + " " + player.name) },
         text = {
             LazyVerticalGrid(modifier = Modifier.wrapContentSize(),
                 columns = GridCells.Adaptive(200.dp),

@@ -1,7 +1,7 @@
 package com.tjEnterprises.phase10Counter.ui.settings
 
+import android.os.Build
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
@@ -37,8 +37,7 @@ fun SettingsScreen(
 
     when (settingsUiState) {
         is SettingsUiState.SettingsSuccess -> {
-            SettingsScreen(
-                modifier = modifier,
+            SettingsScreen(modifier = modifier,
                 settings = (settingsUiState as SettingsUiState.SettingsSuccess).settings,
                 openDrawer = openDrawer,
                 updateCheckForUpdates = { viewModel.updateCheckForUpdates(it) },
@@ -46,8 +45,7 @@ fun SettingsScreen(
                 updateUseSystemTheme = { viewModel.updateUseSystemTheme(it) },
                 updateUseDarkTheme = { viewModel.updateUseDarkTheme(it) },
                 navigateToAboutLibraries = navigateToAboutLibraries,
-                updateChecker = { UpdateCheckerComponent(it) }
-            )
+                updateChecker = { UpdateCheckerComponent(it) })
         }
 
         is SettingsUiState.SettingsLoading -> {
@@ -98,7 +96,7 @@ internal fun SettingsScreen(
 
             // Auto check for Updates only for GitHub and Debug builds
             if (BuildConfig.BUILD_TYPE != "release") {
-                SettingsSwitch(title = { Text(text = stringResource(id = R.string.check_for_updates_switch)) },
+                SettingsSwitch(title = { Text(text = stringResource(id = R.string.autoCheckForUpdates)) },
                     state = rememberBooleanSettingState(settings.checkForUpdates),
                     onCheckedChange = { newValue -> updateCheckForUpdates(newValue) },
                     icon = {
@@ -112,34 +110,38 @@ internal fun SettingsScreen(
 
             Divider()
 
-            // Enable Dynamic Colors (android 12+)
-            SettingsSwitch(title = { Text(text = stringResource(id = R.string.enableDynamicColors)) },
-                subtitle = {
-                    Text(
-                        text = stringResource(id = R.string.requiresAndroid12plus)
-                    )
-                },
-                state = rememberBooleanSettingState(settings.useDynamicColors),
-                onCheckedChange = { newValue -> updateUseDynamicColors(newValue) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = null,
-                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
-                    )
-                })
+            // Enable Dynamic Colors (Android 12+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                SettingsSwitch(title = { Text(text = stringResource(id = R.string.enableDynamicColors)) },
+                    subtitle = {
+                        Text(
+                            text = stringResource(id = R.string.useSystemColors)
+                        )
+                    },
+                    state = rememberBooleanSettingState(settings.useDynamicColors),
+                    onCheckedChange = { newValue -> updateUseDynamicColors(newValue) },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                        )
+                    })
+            }
 
-            // Use System Theme
-            SettingsSwitch(title = { Text(text = stringResource(id = R.string.followSystemTheme)) },
-                state = rememberBooleanSettingState(settings.useSystemTheme),
-                onCheckedChange = { newValue -> updateUseSystemTheme(newValue) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = null,
-                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
-                    )
-                })
+            // Use System Theme (Android 10+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                SettingsSwitch(title = { Text(text = stringResource(id = R.string.followSystemTheme)) },
+                    state = rememberBooleanSettingState(settings.useSystemTheme),
+                    onCheckedChange = { newValue -> updateUseSystemTheme(newValue) },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                        )
+                    })
+            }
 
             // Use Dark Theme
             SettingsSwitch(title = { Text(text = stringResource(id = R.string.darkTheme)) },
@@ -157,7 +159,7 @@ internal fun SettingsScreen(
             Divider()
 
             // Show all opensource licences
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.all_opensource_license)) },
+            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.allOpenSourceLicenses)) },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Clear,

@@ -2,7 +2,6 @@ package com.tjEnterprises.phase10Counter.ui.updateChecker
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +20,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.R
@@ -47,10 +45,10 @@ internal fun UpdateCheckerComponent(modifier: Modifier, versionNumber: Int) {
     var enableOnClick = false
 
     if (versionNumber > BuildConfig.VERSION_CODE) {
-        text = stringResource(id = R.string.new_version_click_to_download)
+        text = stringResource(id = R.string.newVersionClickToDownload)
         enableOnClick = true
     } else if (versionNumber == UpdateCheckerCodes.ERROR_GETTING_LATEST_VERSION_NUMBER) {
-        text = stringResource(id = R.string.error_while_checking_for_update)
+        text = stringResource(id = R.string.errorWhileCheckingForUpdate)
     }
 
     // Do nothing on versionNumber == -2 (number not yet received)

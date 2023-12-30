@@ -1,8 +1,10 @@
 package com.tjEnterprises.phase10Counter.ui.base
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -41,18 +43,23 @@ fun AppBaseScreen(
     val drawerState = rememberDrawerState(initialValue = initialDrawerValue)
 
     ModalNavigationDrawer(modifier = modifier, drawerState = drawerState, drawerContent = {
-        if( drawerState.isOpen ) {
+        if (drawerState.isOpen) {
             BackHandler {
                 scope.launch { drawerState.close() }
             }
         }
 
         ModalDrawerSheet {
+            // Close Navigation Button
             IconButton(onClick = { scope.launch { drawerState.close() } }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = stringResource(id = R.string.closeNavigationDrawer))
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = stringResource(id = R.string.closeNavigationDrawer)
+                )
             }
             Divider()
 
+            // Add new Game
             NavigationDrawerItem(label = {
                 Text(text = stringResource(id = R.string.title_addNewGame))
             }, selected = currentRoute == NavigationDestination.ADD_GAMESCREEN, onClick = {
@@ -60,6 +67,7 @@ fun AppBaseScreen(
                 scope.launch { drawerState.close() }
             })
 
+            // Select Game
             NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.title_selectGame)) },
                 selected = currentRoute == NavigationDestination.SELECT_GAME,
                 onClick = {
@@ -68,10 +76,22 @@ fun AppBaseScreen(
                 })
             Divider()
 
+            // Push settings to bottom
+            Spacer(modifier = Modifier.weight(1f))
+            Divider()
+
+            // Settings
             NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.settings)) },
                 selected = currentRoute == NavigationDestination.SETTINGS,
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Settings, contentDescription = stringResource(
+                            id = R.string.settings
+                        )
+                    )
+                },
                 onClick = {
-                    navigationActions.navigateToAnyScreen(NavigationDestination.SETTINGS)
+                    navigationActions.navigateToSettings()
                     scope.launch { drawerState.close() }
                 })
             Divider()
@@ -86,4 +106,4 @@ fun AppBaseScreen(
     }
 }
 
-// preview not working because it cant provide a navcontroller
+// preview not working because it needs a viewModel from the default Route
