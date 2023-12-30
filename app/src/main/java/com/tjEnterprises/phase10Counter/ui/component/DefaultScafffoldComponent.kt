@@ -24,8 +24,6 @@ import com.tjEnterprises.phase10Counter.R
 fun DefaultScaffold(
     title: String, openDrawer: () -> Unit, content: @Composable (modifier: Modifier) -> Unit
 ) {
-
-
     BoxWithConstraints {
         /*
         if in landscape with low height, remove the topBar and only show Menu button

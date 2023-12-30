@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
+import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
 
 @Composable
 fun AddGameScreen(
@@ -57,6 +58,7 @@ fun AddGameScreen(
         removeTempPlayerName = { viewModel.removeTempPlayerName(it) },
         navigateToGame = navigateToGame,
         resetNewCreatedGameID = { viewModel.resetNewCreatedGameID() },
+        updateChecker = { UpdateCheckerComponent(it) },
         modifier = modifier
     )
 
@@ -71,7 +73,8 @@ internal fun AddGameScreen(
     resetNewCreatedGameID: () -> Unit,
     newCreatedGameID: Long,
     tempPlayerNames: SnapshotStateList<String>,
-    removeTempPlayerName: (Int) -> Unit
+    removeTempPlayerName: (Int) -> Unit,
+    updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
     var textPlayer by remember { mutableStateOf("") }
     var textGame by remember { mutableStateOf("") }
@@ -94,6 +97,7 @@ internal fun AddGameScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
+            updateChecker(Modifier.padding(bottom = 4.dp))
             BoxWithConstraints {
                 // Put TextFields and button in a row
                 if (maxWidth > 400.dp) {
@@ -242,5 +246,6 @@ fun AddGameScreenPreview() {
         resetNewCreatedGameID = { },
         newCreatedGameID = -1L,
         tempPlayerNames = tempPlayerNames,
-        removeTempPlayerName = {})
+        removeTempPlayerName = {},
+        updateChecker = {})
 }

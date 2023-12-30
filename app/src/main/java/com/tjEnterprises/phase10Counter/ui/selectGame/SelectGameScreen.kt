@@ -17,6 +17,7 @@ import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.SelectGameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.component.GamePreviewComponent
+import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
 
 @Composable
 fun SelectGame(
@@ -35,6 +36,7 @@ fun SelectGame(
                 navigateToGame = navigateToGame,
                 resetGame = { viewModel.resetGameWithData(it) },
                 deleteGame = { viewModel.deleteGameWithData(it) },
+                updateChecker = { UpdateCheckerComponent(it) },
                 modifier = modifier
             )
         }
@@ -73,15 +75,17 @@ internal fun SelectGame(
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
     resetGame: (Long) -> Unit,
-    deleteGame: (Long) -> Unit
+    deleteGame: (Long) -> Unit,
+    updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
     // TODO make gridLayout maybe?
     DefaultScaffold(title = title, openDrawer = openDrawer) { scaffoldModifier ->
         LazyColumn(modifier = scaffoldModifier
             .then(modifier)
             .fillMaxWidth(),
-            horizontalAlignment = Alignment.End,
+            horizontalAlignment = Alignment.CenterHorizontally,
             content = {
+                item { updateChecker(Modifier) }
                 items(games) { game ->
                     GamePreviewComponent(
                         game = game,

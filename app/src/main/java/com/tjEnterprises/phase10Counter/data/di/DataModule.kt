@@ -22,6 +22,7 @@ import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
 import com.tjEnterprises.phase10Counter.data.local.repositories.SettingsRepository
+import com.tjEnterprises.phase10Counter.data.network.repositories.UpdateCheckerRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -44,6 +45,10 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindsSettingsRepository(settingsRepository: SettingsRepository.SettingsRepositoryImpl): SettingsRepository
+
+    @Singleton
+    @Binds
+    fun bindsUpdateCheckerRepository(updateCheckerRepository: UpdateCheckerRepository.UpdateCheckerRepositoryImpl) : UpdateCheckerRepository
 }
 
 class FakeDatabaseRepository @Inject constructor(

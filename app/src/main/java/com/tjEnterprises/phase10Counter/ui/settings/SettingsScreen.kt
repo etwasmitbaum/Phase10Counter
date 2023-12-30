@@ -1,6 +1,7 @@
 package com.tjEnterprises.phase10Counter.ui.settings
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
@@ -18,10 +19,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.alorma.compose.settings.storage.base.rememberBooleanSettingState
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSwitch
+import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.ui.SettingsUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
+import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
 
 @Composable
 fun SettingsScreen(
@@ -42,7 +45,8 @@ fun SettingsScreen(
                 updateUseDynamicColors = { viewModel.updateUseDynamicColors(it) },
                 updateUseSystemTheme = { viewModel.updateUseSystemTheme(it) },
                 updateUseDarkTheme = { viewModel.updateUseDarkTheme(it) },
-                navigateToAboutLibraries = navigateToAboutLibraries
+                navigateToAboutLibraries = navigateToAboutLibraries,
+                updateChecker = { UpdateCheckerComponent(it) }
             )
         }
 
@@ -82,22 +86,29 @@ internal fun SettingsScreen(
     updateUseDynamicColors: (Boolean) -> Unit,
     updateUseSystemTheme: (Boolean) -> Unit,
     updateUseDarkTheme: (Boolean) -> Unit,
-    navigateToAboutLibraries: () -> Unit
+    navigateToAboutLibraries: () -> Unit,
+    updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
 
     DefaultScaffold(title = title, openDrawer = openDrawer) { scaffoldModifier ->
+
         Column(modifier = scaffoldModifier.then(modifier)) {
-            // Auto check for Updates
-            SettingsSwitch(title = { Text(text = stringResource(id = R.string.check_for_updates_switch)) },
-                state = rememberBooleanSettingState(settings.checkForUpdates),
-                onCheckedChange = { newValue -> updateCheckForUpdates(newValue) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = null,
-                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
-                    )
-                })
+
+            updateChecker(Modifier)
+
+            // Auto check for Updates only for GitHub and Debug builds
+            if (BuildConfig.BUILD_TYPE != "release") {
+                SettingsSwitch(title = { Text(text = stringResource(id = R.string.check_for_updates_switch)) },
+                    state = rememberBooleanSettingState(settings.checkForUpdates),
+                    onCheckedChange = { newValue -> updateCheckForUpdates(newValue) },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                        )
+                    })
+            }
 
             Divider()
 
@@ -119,24 +130,21 @@ internal fun SettingsScreen(
                 })
 
             // Use System Theme
-            SettingsSwitch(
-                title = { Text(text = stringResource(id = R.string.followSystemTheme)) },
+            SettingsSwitch(title = { Text(text = stringResource(id = R.string.followSystemTheme)) },
                 state = rememberBooleanSettingState(settings.useSystemTheme),
-                onCheckedChange = { newValue -> updateUseSystemTheme(newValue)},
+                onCheckedChange = { newValue -> updateUseSystemTheme(newValue) },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                }
-            )
+                })
 
             // Use Dark Theme
-            SettingsSwitch(
-                title = { Text(text = stringResource(id = R.string.darkTheme)) },
+            SettingsSwitch(title = { Text(text = stringResource(id = R.string.darkTheme)) },
                 state = rememberBooleanSettingState(settings.useDarkTheme),
-                onCheckedChange = { newValue -> updateUseDarkTheme(newValue)},
+                onCheckedChange = { newValue -> updateUseDarkTheme(newValue) },
                 enabled = !settings.useSystemTheme,
                 icon = {
                     Icon(
@@ -144,8 +152,7 @@ internal fun SettingsScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                }
-            )
+                })
 
             Divider()
 
@@ -173,7 +180,7 @@ internal fun SettingsScreen(
 fun SettingsScreenPreview() {
     SettingsScreen(modifier = Modifier,
         settings = SettingsModel(useSystemTheme = false, useDarkTheme = true),
-        openDrawer = { },
+        openDrawer = {},
         updateCheckForUpdates = {},
         updateUseDynamicColors = {},
         updateUseSystemTheme = {},

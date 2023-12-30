@@ -69,7 +69,7 @@ android {
     buildFeatures {
         compose = true
         aidl = false
-        buildConfig = false
+        buildConfig = true
         renderScript = false
         shaders = false
     }
@@ -142,4 +142,11 @@ dependencies {
 
     // AboutLibraries https://github.com/mikepenz/AboutLibraries
     implementation(libs.aboutlibraries.compose)
+
+    // Retrofit for networking
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    // Retrofit debugging
+    implementation (libs.logging.interceptor)
+    implementation (libs.converter.scalars)
 }
