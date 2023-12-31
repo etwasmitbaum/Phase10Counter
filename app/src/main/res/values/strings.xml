@@ -58,4 +58,12 @@
     <string name="useSystemColors">Use system colors</string>
     <string name="followSystemTheme">Follow System theme</string>
     <string name="darkTheme">Dark theme</string>
+    <string name="highscoresError">High scores Error</string>
+    <string name="highscoresLoading">Loading High scores</string>
+    <string name="selectGameLoading">Loading Games</string>
+    <string name="selectGameError">Error Loading Games</string>
+    <string name="settingsLoading">Loading Settings</string>
+    <string name="settingsError">Error Settings</string>
+    <string name="gameScreenLoading">Loading Game</string>
+    <string name="gameScreenError">Error loading Game</string>
 </resources>

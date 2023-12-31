@@ -49,27 +49,11 @@ fun SettingsScreen(
         }
 
         is SettingsUiState.SettingsLoading -> {
-            SettingsScreen(modifier = modifier,
-                settings = SettingsModel(),
-                title = "Loading Settings",
-                openDrawer = openDrawer,
-                updateCheckForUpdates = {},
-                updateUseDynamicColors = {},
-                updateUseSystemTheme = {},
-                updateUseDarkTheme = {},
-                navigateToAboutLibraries = {})
+            DefaultScaffold(title = stringResource(id = R.string.settingsLoading), openDrawer = openDrawer) {}
         }
 
         is SettingsUiState.SettingsError -> {
-            SettingsScreen(modifier = modifier,
-                settings = SettingsModel(),
-                title = "Error Settings",
-                openDrawer = openDrawer,
-                updateCheckForUpdates = {},
-                updateUseDynamicColors = {},
-                updateUseSystemTheme = {},
-                updateUseDarkTheme = {},
-                navigateToAboutLibraries = {})
+            DefaultScaffold(title = stringResource(id = R.string.settingsError), openDrawer = openDrawer) {}
         }
     }
 }

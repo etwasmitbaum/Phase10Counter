@@ -59,4 +59,12 @@
     <string name="useSystemColors">Verwende Systemfarben</string>
     <string name="followSystemTheme">Folge Systemdesign</string>
     <string name="darkTheme">Dunkles Design</string>
+    <string name="highscoresError">Fehler Highscores</string>
+    <string name="highscoresLoading">Laden der Highscores</string>
+    <string name="selectGameLoading">Laden der Spiele</string>
+    <string name="selectGameError">Fehler beim laden der Spiele</string>
+    <string name="settingsLoading">Laden der Einstellungen</string>
+    <string name="settingsError">Fehler beim laden der Einstellungen</string>
+    <string name="gameScreenLoading">Laden des Spiels</string>
+    <string name="gameScreenError">Feheler beim laden des Spiels</string>
 </resources>

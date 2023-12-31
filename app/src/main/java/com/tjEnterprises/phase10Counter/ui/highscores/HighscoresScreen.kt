@@ -45,11 +45,11 @@ fun Highscores(
         }
 
         is HighscoresUiState.HighscoresError -> {
-
+            DefaultScaffold(title = stringResource(id = R.string.highscoresError), openDrawer = openDrawer) {}
         }
 
         is HighscoresUiState.HighscoresLoading -> {
-
+            DefaultScaffold(title = stringResource(id = R.string.highscoresLoading), openDrawer = openDrawer) {}
         }
     }
 }
@@ -65,7 +65,9 @@ internal fun Highscores(
             ) {
                 Text(
                     text = stringResource(id = R.string.name),
-                    modifier = Modifier.weight(0.333f).padding(bottom = 4.dp),
+                    modifier = Modifier
+                        .weight(0.333f)
+                        .padding(bottom = 4.dp),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold
                 )

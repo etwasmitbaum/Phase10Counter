@@ -42,26 +42,10 @@ fun SelectGame(
         }
 
         is SelectGameUiState.SelectGameLoading -> {
-            SelectGame(
-                games = emptyList(),
-                openDrawer = openDrawer,
-                navigateToGame = navigateToGame,
-                resetGame = { _ -> },
-                deleteGame = { _ -> },
-                title = "Games Loading",
-                modifier = modifier
-            )
+            DefaultScaffold(title = stringResource(id = R.string.selectGameLoading), openDrawer = openDrawer) {}
         }
         is SelectGameUiState.SelectGameError -> {
-            SelectGame(
-                games = emptyList(),
-                openDrawer = openDrawer,
-                navigateToGame = navigateToGame,
-                resetGame = { _ -> },
-                deleteGame = { _ -> },
-                title = "Games Error",
-                modifier = modifier
-            )
+            DefaultScaffold(title = stringResource(id = R.string.selectGameError), openDrawer = openDrawer) {}
         }
     }
 
