@@ -38,11 +38,17 @@ class UpdateCheckerViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            // Try 3 times, in case there is some unexpected trouble
             for (i in 0..2) {
-                _versionNumber.value = updateCheckerRepository.getLatestReleaseVersionNumber()
-                if (_versionNumber.value != UpdateCheckerCodes.ERROR_GETTING_LATEST_VERSION_NUMBER) {
-                    break
+                try {
+                    _versionNumber.value = updateCheckerRepository.getLatestReleaseVersionNumber()
+                    if (_versionNumber.value != UpdateCheckerCodes.ERROR_GETTING_LATEST_VERSION_NUMBER) {
+                        break
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
+
             }
         }
 
