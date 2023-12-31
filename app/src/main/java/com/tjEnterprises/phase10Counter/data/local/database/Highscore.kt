@@ -10,7 +10,7 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Entity
-data class Highscrore(
+data class Highscore(
     @ColumnInfo(name = "playerName") val playerName: String,
     @ColumnInfo(name = "points") val points: Long
 ) {
@@ -24,12 +24,15 @@ data class Highscrore(
 
 @Dao
 interface HighscoreDao {
-    @Query("SELECT * FROM Highscrore ORDER BY points ASC")
-    fun getAllHighscores(): Flow<List<Highscrore>>
+    @Query("SELECT * FROM Highscore ORDER BY points ASC")
+    fun getAllHighscores(): Flow<List<Highscore>>
+
+    @Query("SELECT * FROM Highscore WHERE id IS :highscoreId")
+    fun getHighscore(highscoreId: Long): Highscore
 
     @Insert
-    suspend fun insertHighscore(highscrore: Highscrore)
+    suspend fun insertHighscore(highscore: Highscore)
 
     @Delete
-    suspend fun deleteHighscore(highscrore: Highscrore)
+    suspend fun deleteHighscore(highscore: Highscore)
 }

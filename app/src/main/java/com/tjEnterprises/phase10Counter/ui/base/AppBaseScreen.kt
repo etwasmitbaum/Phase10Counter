@@ -63,7 +63,7 @@ fun AppBaseScreen(
             NavigationDrawerItem(label = {
                 Text(text = stringResource(id = R.string.title_addNewGame))
             }, selected = currentRoute == NavigationDestination.ADD_GAMESCREEN, onClick = {
-                navigationActions.navigateToAnyScreen(NavigationDestination.ADD_GAMESCREEN)
+                navigationActions.navigateToAddGameScreen()
                 scope.launch { drawerState.close() }
             })
 
@@ -75,6 +75,14 @@ fun AppBaseScreen(
                     scope.launch { drawerState.close() }
                 })
             Divider()
+
+            // Highscores
+            NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.highscores)) },
+                selected = currentRoute == NavigationDestination.HIGHSCORES,
+                onClick = {
+                    navigationActions.navigateToHighscores()
+                    scope.launch { drawerState.close() }
+                })
 
             // Push settings to bottom
             Spacer(modifier = Modifier.weight(1f))

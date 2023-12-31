@@ -7,6 +7,7 @@ import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseReposito
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,7 +16,8 @@ class AddGameViewModel @Inject constructor(
     private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
 
-    val newCreatedGameID = MutableStateFlow(-1L)
+    private val _newCreatedGameID = MutableStateFlow(-1L)
+    val newCreatedGameID: StateFlow<Long> = _newCreatedGameID
 
     val tempPlayerNames = mutableStateListOf<String>()
 
@@ -24,7 +26,7 @@ class AddGameViewModel @Inject constructor(
     }
 
     fun resetNewCreatedGameID (){
-        newCreatedGameID.value = -1
+        _newCreatedGameID.value = -1
     }
 
     fun addGame(gameName: String, playerNames: List<String>){
@@ -34,7 +36,7 @@ class AddGameViewModel @Inject constructor(
                 val newPlayerId = databaseRepository.insertPlayer(playerName = playerNames[i], gameId = newGameId)
                 databaseRepository.insertPhasesForPlayer(playerId = newPlayerId, gameId = newGameId)
             }
-            newCreatedGameID.value = newGameId
+            _newCreatedGameID.value = newGameId
         }
     }
 }

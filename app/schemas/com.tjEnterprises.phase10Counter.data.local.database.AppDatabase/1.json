@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "af1304b9aaf322a5874958a46f4fe8ad",
+    "identityHash": "30eb37d66d453bb454e0e221972b446b",
     "entities": [
       {
         "tableName": "Game",
@@ -154,7 +154,7 @@
         ]
       },
       {
-        "tableName": "Highscrore",
+        "tableName": "Highscore",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`playerName` TEXT NOT NULL, `points` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL)",
         "fields": [
           {
@@ -264,7 +264,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'af1304b9aaf322a5874958a46f4fe8ad')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '30eb37d66d453bb454e0e221972b446b')"
     ]
   }
 }

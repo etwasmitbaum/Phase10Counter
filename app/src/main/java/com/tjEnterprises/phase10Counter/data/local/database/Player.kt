@@ -34,7 +34,10 @@ interface PlayerDao {
     fun getAllPlayers(): Flow<List<Player>>
 
     @Query("SELECT * FROM Player WHERE game_id IS (:gameID) ORDER BY player_id ASC")
-    fun getAllPlayersFromGame(gameID: Long): Flow<List<Player>>
+    fun getAllPlayersFromGameAsFlow(gameID: Long): Flow<List<Player>>
+
+    @Query("SELECT * FROM Player WHERE game_id IS (:gameID) ORDER BY player_id ASC")
+    fun getAllPlayersFromGame(gameID: Long): List<Player>
 
     @Query("SELECT * FROM Game WHERE game_id IS (:gameIDofPlayer)")
     suspend fun getGameFromPlayerID(gameIDofPlayer: Long): Game

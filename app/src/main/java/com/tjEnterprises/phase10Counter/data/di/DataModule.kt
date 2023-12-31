@@ -17,6 +17,8 @@
 package com.tjEnterprises.phase10Counter.data.di
 
 import com.tjEnterprises.phase10Counter.data.local.database.Game
+import com.tjEnterprises.phase10Counter.data.local.database.Highscore
+import com.tjEnterprises.phase10Counter.data.local.database.Phases
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
@@ -53,12 +55,18 @@ interface DataModule {
 
 class FakeDatabaseRepository @Inject constructor(
 ) : DatabaseRepository {
-    override val games: Flow<List<GameModel>> = flowOf(fakeDatabases)
+
+    override val games: Flow<List<GameModel>> = flowOf()
+    override val highscores: Flow<List<Highscore>> = flowOf()
     override suspend fun insertPlayer(playerName: String, gameId: Long): Long {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPlayersFromGame(gameId: Long): Flow<List<PlayerModel>> {
+    override fun getPlayersFlowFromGame(gameId: Long): Flow<List<PlayerModel>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPlayersFromGame(gameId: Long): List<PlayerModel> {
         TODO("Not yet implemented")
     }
 
@@ -67,7 +75,9 @@ class FakeDatabaseRepository @Inject constructor(
     }
 
     override suspend fun updatePlayerPhases(
-        playerId: Long, gameId: Long, openPhases: List<Boolean>
+        playerId: Long,
+        gameId: Long,
+        openPhases: List<Boolean>
     ) {
         TODO("Not yet implemented")
     }
@@ -76,7 +86,15 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getGameFromId(gameId: Long): Flow<GameModel> {
+    override suspend fun getPhasesOfPlayer(playerId: Long): List<Phases> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGameFlowFromId(gameId: Long): Flow<GameModel> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getGameFromId(gameId: Long): GameModel {
         TODO("Not yet implemented")
     }
 
@@ -96,7 +114,11 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPointHistoryOfGame(gameId: Long): Flow<List<PointHistory>> {
+    override fun getPointHistoryOfGameAsFlow(gameId: Long): Flow<List<PointHistory>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistory> {
         TODO("Not yet implemented")
     }
 
@@ -105,6 +127,14 @@ class FakeDatabaseRepository @Inject constructor(
     }
 
     override suspend fun deletePointHistoryOfPlayer(playerId: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertHighscore(playerName: String, point: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteHighScore(highscoreId: Long) {
         TODO("Not yet implemented")
     }
 

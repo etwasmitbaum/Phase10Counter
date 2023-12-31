@@ -38,7 +38,10 @@ data class Phases(
 @Dao
 interface PhasesDao {
     @Query("SELECT * FROM Phases WHERE player_id IS :playerId ORDER BY phase ASC")
-    fun getPhasesOfPlayer(playerId: Long): Flow<List<Phases>>
+    fun getPhasesOfPlayerAsFlow(playerId: Long): Flow<List<Phases>>
+
+    @Query("SELECT * FROM Phases WHERE player_id IS :playerId ORDER BY phase ASC")
+    fun getPhasesOfPlayer(playerId: Long): List<Phases>
 
     @Query("SELECT * FROM Phases WHERE game_id IS :gameId ORDER BY player_id ASC")
     fun getPhasesOfGame(gameId: Long): Flow<List<Phases>>

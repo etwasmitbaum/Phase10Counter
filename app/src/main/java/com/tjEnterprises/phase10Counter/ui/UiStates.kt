@@ -1,5 +1,6 @@
 package com.tjEnterprises.phase10Counter.ui
 
+import com.tjEnterprises.phase10Counter.data.local.database.Highscore
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 
@@ -19,4 +20,10 @@ sealed interface SettingsUiState {
     object SettingsLoading : SettingsUiState
     data class SettingsError(val throwable: Throwable) : SettingsUiState
     data class SettingsSuccess(val settings: SettingsModel) : SettingsUiState
+}
+
+sealed interface HighscoresUiState {
+    object HighscoresLoading : HighscoresUiState
+    data class HighscoresError(val throwable: Throwable) : HighscoresUiState
+    data class HighscoresSuccess(val highscores: List<Highscore>) : HighscoresUiState
 }

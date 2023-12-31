@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
+import com.tjEnterprises.phase10Counter.data.local.database.HighscoreDao
 import com.tjEnterprises.phase10Counter.data.local.database.PhasesDao
 import com.tjEnterprises.phase10Counter.data.local.database.PlayerDao
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
@@ -47,6 +48,11 @@ class DatabaseModule {
     @Provides
     fun providePointHistoryDao(appDatabase: AppDatabase): PointHistoryDao{
         return appDatabase.PoinHistoryDao()
+    }
+
+    @Provides
+    fun provideHighscoreDao(appDatabase: AppDatabase): HighscoreDao{
+        return appDatabase.HighscoreDao()
     }
 
     @Provides

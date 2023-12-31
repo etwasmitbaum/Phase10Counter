@@ -37,7 +37,7 @@ class GameViewModel @Inject constructor(
 
     fun setGameFromId(gameId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            databaseRepository.getGameFromId(gameId).collect {
+            databaseRepository.getGameFlowFromId(gameId).collect {
                 _gameUiState.value = GameUiState.GameSuccess(it)
             }
         }

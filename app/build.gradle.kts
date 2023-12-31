@@ -40,6 +40,8 @@ android {
             useSupportLibrary = true
         }
 
+        resourceConfigurations.addAll(arrayOf("en", "de", "pl"))
+
         // Enable room auto-migrations
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")

@@ -28,7 +28,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Phase10Counter"
         android:name=".Phase10Counter"
-        tools:targetApi="31">
+        android:localeConfig="@xml/locale_config"
+        tools:targetApi="33">
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"

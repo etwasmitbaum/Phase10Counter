@@ -24,8 +24,8 @@ class NavigationActions(navController: NavHostController) {
         }
     }
 
-    val navigateToAnyScreen: (String) -> Unit = {route ->
-        navController.navigate(route) {
+    val navigateToAddGameScreen: () -> Unit = {
+        navController.navigate(NavigationDestination.ADD_GAMESCREEN) {
             popUpTo(navController.graph.findStartDestination().id) {
                 inclusive = false
             }
@@ -36,6 +36,13 @@ class NavigationActions(navController: NavHostController) {
 
     val navigateToAboutLibraries: () -> Unit = {
         navController.navigate(NavigationDestination.ABOUT_LIBRARIES) {
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
+    val navigateToHighscores: () -> Unit = {
+        navController.navigate(NavigationDestination.HIGHSCORES) {
             launchSingleTop = true
             restoreState = true
         }

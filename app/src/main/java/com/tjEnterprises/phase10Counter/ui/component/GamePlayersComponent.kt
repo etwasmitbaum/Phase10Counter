@@ -107,6 +107,9 @@ fun OnePlayerView(
         }
         // remove last ", " and assign + save new phases
         phasesString = phasesString.dropLast(2)
+        if (phasesString == ""){
+            phasesString = stringResource(id = R.string.none)
+        }
 
         Text(stringResource(id = R.string.openPhases) + " $phasesString", modifier = Modifier.padding(top = 4.dp))
     }
@@ -179,7 +182,7 @@ fun PointHistoryDropDown(
 
 
 // Previews
-@Preview(showBackground = true, heightDp = 500)
+@Preview(showBackground = true)
 @Composable
 fun OnePlayerPreview() {
     OnePlayerView(player = PlayerModel(
@@ -189,6 +192,21 @@ fun OnePlayerPreview() {
         listOf(256L),
         256L,
         listOf(true, true, true, true, true, true, true, true, true, true)
+    ), listOfPoints = listOf(
+        70L, 100L
+    ), addPointHistoryEntry = {_, _, _ ->}, savePhasesOfPlayer = {_, _, _ ->})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OnePlayerPreview2() {
+    OnePlayerView(player = PlayerModel(
+        1L,
+        1L,
+        "Player1",
+        listOf(256L),
+        256L,
+        listOf(false, false, false, false, false, false, false, false, false, false)
     ), listOfPoints = listOf(
         70L, 100L
     ), addPointHistoryEntry = {_, _, _ ->}, savePhasesOfPlayer = {_, _, _ ->})

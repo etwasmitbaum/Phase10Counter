@@ -32,6 +32,7 @@ import com.tjEnterprises.phase10Counter.ui.addGame.AddGameScreen
 import com.tjEnterprises.phase10Counter.ui.component.AboutLibrariesComponent
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.game.GameScreen
+import com.tjEnterprises.phase10Counter.ui.highscores.Highscores
 import com.tjEnterprises.phase10Counter.ui.selectGame.SelectGame
 import com.tjEnterprises.phase10Counter.ui.settings.SettingsScreen
 
@@ -62,6 +63,10 @@ fun MainNavigation(
 
         composable(route = NavigationDestination.ABOUT_LIBRARIES){
             AboutLibrariesComponent (openDrawer = openDrawer)
+        }
+
+        composable(route = NavigationDestination.HIGHSCORES){
+            Highscores (openDrawer = openDrawer)
         }
     }
 }

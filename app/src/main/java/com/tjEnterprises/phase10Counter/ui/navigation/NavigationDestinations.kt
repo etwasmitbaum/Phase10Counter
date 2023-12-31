@@ -7,4 +7,5 @@ object NavigationDestination {
     const val GAME_ROUTE = "gameRoute"
     const val SETTINGS = "settings"
     const val ABOUT_LIBRARIES = "aboutLibraries"
+    const val HIGHSCORES = "highscores"
 }

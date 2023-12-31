@@ -20,7 +20,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Game::class, Player::class, PointHistory::class, Highscrore::class, Phases::class],
+    entities = [Game::class, Player::class, PointHistory::class, Highscore::class, Phases::class],
     version = 1,
     exportSchema = true
     )
