@@ -21,6 +21,7 @@ import androidx.room.Room
 import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
 import com.tjEnterprises.phase10Counter.data.local.database.HighscoreDao
+import com.tjEnterprises.phase10Counter.data.local.database.MigrationHelper
 import com.tjEnterprises.phase10Counter.data.local.database.PhasesDao
 import com.tjEnterprises.phase10Counter.data.local.database.PlayerDao
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
@@ -67,6 +68,6 @@ class DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "GameDatabase"
-        ).addMigrations().build()
+        ).addMigrations(MigrationHelper.MIGRATION_1_2, MigrationHelper.MIGRATION_2_3, MigrationHelper.MIGRATION_3_4).build()
     }
 }
