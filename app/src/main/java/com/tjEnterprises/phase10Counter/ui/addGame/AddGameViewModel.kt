@@ -33,8 +33,7 @@ class AddGameViewModel @Inject constructor(
         viewModelScope.launch (Dispatchers.IO) {
             val newGameId = databaseRepository.insertGame(gameName)
             for(i in playerNames.indices.reversed()){
-                val newPlayerId = databaseRepository.insertPlayer(playerName = playerNames[i], gameId = newGameId)
-                databaseRepository.insertPhasesForPlayer(playerId = newPlayerId, gameId = newGameId)
+                databaseRepository.insertPlayer(playerName = playerNames[i], gameId = newGameId)
             }
             _newCreatedGameId.value = newGameId
         }

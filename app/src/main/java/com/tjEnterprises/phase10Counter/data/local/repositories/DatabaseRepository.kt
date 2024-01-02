@@ -43,7 +43,6 @@ interface DatabaseRepository {
     suspend fun deletePlayer(playerId: Long)
 
     suspend fun updatePlayerPhases(playerId: Long, gameId: Long, openPhases: List<Boolean>)
-    suspend fun insertPhasesForPlayer(playerId: Long, gameId: Long)
     suspend fun getPhasesOfPlayer(playerId: Long): List<Phases>
 
     fun getGameFlowFromId(gameId: Long): Flow<GameModel>
@@ -116,7 +115,10 @@ interface DatabaseRepository {
         override val highscores = highscoreDao.getAllHighscores()
 
         override suspend fun insertPlayer(playerName: String, gameId: Long): Long {
-            return playerDao.insertPlayer(Player(gameID = gameId, name = playerName))
+            val playerId = playerDao.insertPlayer(Player(gameID = gameId, name = playerName))
+            insertPhasesForPlayer(playerId = playerId, gameId = gameId)
+
+            return playerId
         }
 
         override fun getPlayersFlowFromGame(gameId: Long): Flow<List<PlayerModel>> {
@@ -205,7 +207,7 @@ interface DatabaseRepository {
             }
         }
 
-        override suspend fun insertPhasesForPlayer(playerId: Long, gameId: Long) {
+        private suspend fun insertPhasesForPlayer(playerId: Long, gameId: Long) {
             for (i in 0..9) {
                 phasesDao.insertPhase(Phases(playerId, gameId, i.toByte()))
             }
