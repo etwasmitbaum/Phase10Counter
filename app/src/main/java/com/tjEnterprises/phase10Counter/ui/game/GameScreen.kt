@@ -40,7 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.GameUiState
-import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
+import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import javax.inject.Singleton
 
 @Composable
@@ -73,11 +73,11 @@ fun GameScreen(
         }
 
         is GameUiState.GameLoading -> {
-            DefaultScaffold(title = stringResource(id = R.string.gameScreenLoading), openDrawer = openDrawer) {}
+            DefaultScaffoldNavigation(title = stringResource(id = R.string.gameScreenLoading), openDrawer = openDrawer) {}
         }
 
         is GameUiState.GameError -> {
-            DefaultScaffold(title = stringResource(id = R.string.gameScreenError), openDrawer = openDrawer) {}
+            DefaultScaffoldNavigation(title = stringResource(id = R.string.gameScreenError), openDrawer = openDrawer) {}
         }
     }
 
@@ -93,7 +93,7 @@ internal fun GameScreen(
     modifier: Modifier = Modifier
 ) {
 
-    DefaultScaffold(title = gameTitle, openDrawer = openDrawer, content = { scaffoldModifier ->
+    DefaultScaffoldNavigation(title = gameTitle, openDrawer = openDrawer, content = { scaffoldModifier ->
         // TODO make "force portrait" setting
         LazyVerticalGrid(
             modifier = scaffoldModifier

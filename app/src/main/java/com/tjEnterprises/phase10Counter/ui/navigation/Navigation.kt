@@ -16,7 +16,6 @@
 
 package com.tjEnterprises.phase10Counter.ui.navigation
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,10 +26,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
+import com.tjEnterprises.phase10Counter.ui.about.AboutScreen
+import com.tjEnterprises.phase10Counter.ui.about.AppLicenceScreen
 import com.tjEnterprises.phase10Counter.ui.addGame.AddGameScreen
 import com.tjEnterprises.phase10Counter.ui.component.AboutLibrariesComponent
-import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.game.GameScreen
 import com.tjEnterprises.phase10Counter.ui.highscores.Highscores
 import com.tjEnterprises.phase10Counter.ui.selectGame.SelectGame
@@ -58,15 +57,24 @@ fun MainNavigation(
         selectGameGraph(openDrawer = openDrawer, navigationActions = navigationActions)
 
         composable(route = NavigationDestination.SETTINGS) {
-            SettingsScreen(openDrawer = openDrawer, navigateToAboutLibraries = navigationActions.navigateToAboutLibraries)
+            SettingsScreen(openDrawer = openDrawer)
         }
 
         composable(route = NavigationDestination.ABOUT_LIBRARIES){
-            AboutLibrariesComponent (openDrawer = openDrawer)
+            AboutLibrariesComponent (navigateOneBack = navigationActions.navigateOneBack)
         }
 
         composable(route = NavigationDestination.HIGHSCORES){
             Highscores (openDrawer = openDrawer)
+        }
+
+        composable(route = NavigationDestination.ABOUT_SCREEN){
+            AboutScreen (openDrawer = openDrawer, navigateToAboutLibraries = navigationActions.navigateToAboutLibraries,
+                navigateToAppLicence = navigationActions.navigateToAppLicence)
+        }
+
+        composable(route = NavigationDestination.APP_LICENCE){
+            AppLicenceScreen (navigateOneBack = navigationActions.navigateOneBack)
         }
     }
 }

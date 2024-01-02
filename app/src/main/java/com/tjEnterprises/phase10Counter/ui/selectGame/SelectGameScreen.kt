@@ -23,7 +23,7 @@ import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.SelectGameUiState
-import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
+import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
 
 @Composable
@@ -49,13 +49,13 @@ fun SelectGame(
         }
 
         is SelectGameUiState.SelectGameLoading -> {
-            DefaultScaffold(
+            DefaultScaffoldNavigation(
                 title = stringResource(id = R.string.selectGameLoading), openDrawer = openDrawer
             ) {}
         }
 
         is SelectGameUiState.SelectGameError -> {
-            DefaultScaffold(
+            DefaultScaffoldNavigation(
                 title = stringResource(id = R.string.selectGameError), openDrawer = openDrawer
             ) {}
         }
@@ -74,7 +74,7 @@ internal fun SelectGame(
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
     // TODO make gridLayout maybe?
-    DefaultScaffold(title = title, openDrawer = openDrawer) { scaffoldModifier ->
+    DefaultScaffoldNavigation(title = title, openDrawer = openDrawer) { scaffoldModifier ->
         Column(modifier = scaffoldModifier) {
             updateChecker(Modifier.padding(top = 8.dp))
 

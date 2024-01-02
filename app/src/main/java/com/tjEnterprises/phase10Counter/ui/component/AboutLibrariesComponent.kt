@@ -9,8 +9,8 @@ import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults.libraryColors
 
 @Composable
-fun AboutLibrariesComponent(openDrawer: () -> Unit) {
-    DefaultScaffold(title = "Open Source Licenses", openDrawer = openDrawer) { scaffoldModifier ->
+fun AboutLibrariesComponent(navigateOneBack: () -> Unit) {
+    DefaultScaffoldBack(title = "Open Source Licenses", navigateOneBack = navigateOneBack) { scaffoldModifier ->
         LibrariesContainer(
             scaffoldModifier.then(Modifier.fillMaxSize()),
             showAuthor = true,
@@ -31,6 +31,6 @@ fun AboutLibrariesComponent(openDrawer: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun AboutLibrariesComponentPreview() {
-    AboutLibrariesComponent(openDrawer = {})
+    AboutLibrariesComponent(navigateOneBack = {})
 }
 

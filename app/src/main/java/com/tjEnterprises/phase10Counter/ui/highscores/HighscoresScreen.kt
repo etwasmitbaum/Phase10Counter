@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
 import com.tjEnterprises.phase10Counter.ui.HighscoresUiState
-import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
+import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.component.VerticalDivider
 
 @Composable
@@ -43,13 +43,13 @@ fun Highscores(
         }
 
         is HighscoresUiState.HighscoresError -> {
-            DefaultScaffold(
+            DefaultScaffoldNavigation(
                 title = stringResource(id = R.string.highscoresError), openDrawer = openDrawer
             ) {}
         }
 
         is HighscoresUiState.HighscoresLoading -> {
-            DefaultScaffold(
+            DefaultScaffoldNavigation(
                 title = stringResource(id = R.string.highscoresLoading), openDrawer = openDrawer
             ) {}
         }
@@ -60,7 +60,7 @@ fun Highscores(
 internal fun Highscores(
     modifier: Modifier, title: String, highscores: List<Highscore>, openDrawer: () -> Unit
 ) {
-    DefaultScaffold(title = title, openDrawer = openDrawer) { scaffoldModifier ->
+    DefaultScaffoldNavigation(title = title, openDrawer = openDrawer) { scaffoldModifier ->
         Column(modifier = scaffoldModifier.then(modifier)) {
             Row(
                 modifier = Modifier.height(IntrinsicSize.Min)

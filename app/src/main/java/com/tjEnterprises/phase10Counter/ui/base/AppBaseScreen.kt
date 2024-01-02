@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
@@ -103,6 +104,21 @@ fun AppBaseScreen(
                     scope.launch { drawerState.close() }
                 })
             Divider()
+
+            // About Screen
+            NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.about)) },
+                selected = currentRoute == NavigationDestination.ABOUT_SCREEN,
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Info, contentDescription = stringResource(
+                            id = R.string.about
+                        )
+                    )
+                },
+                onClick = {
+                    navigationActions.navigateToAboutScreen()
+                    scope.launch { drawerState.close() }
+                })
         }
 
     }) {

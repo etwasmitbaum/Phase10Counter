@@ -8,4 +8,6 @@ object NavigationDestination {
     const val SETTINGS = "settings"
     const val ABOUT_LIBRARIES = "aboutLibraries"
     const val HIGHSCORES = "highscores"
+    const val ABOUT_SCREEN = "aboutScreen"
+    const val APP_LICENCE = "appLicence"
 }

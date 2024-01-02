@@ -21,7 +21,7 @@ import com.tjEnterprises.phase10Counter.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultScaffold(
+fun DefaultScaffoldNavigation (
     title: String, openDrawer: () -> Unit, content: @Composable (modifier: Modifier) -> Unit
 ) {
     BoxWithConstraints {
@@ -77,7 +77,7 @@ fun DefaultScaffold(
 @Preview(showBackground = true, widthDp = 600, heightDp = 250)
 @Composable
 fun DefaultScaffoldPreview() {
-    DefaultScaffold(title = "Title", openDrawer = { }) {
+    DefaultScaffoldNavigation(title = "Title", openDrawer = { }) {
         Text(text = "Content", fontSize = 24.sp, modifier = it)
     }
 }

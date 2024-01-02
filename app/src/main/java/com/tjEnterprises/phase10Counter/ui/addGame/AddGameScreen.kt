@@ -33,10 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
+import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
-import kotlinx.coroutines.currentCoroutineContext
 
 @Composable
 fun AddGameScreen(
@@ -90,7 +89,7 @@ internal fun AddGameScreen(
         })
     }
 
-    DefaultScaffold(
+    DefaultScaffoldNavigation(
         title = stringResource(id = R.string.title_addNewGame), openDrawer = openDrawer
     ) { scaffoldModifier ->
         Column(

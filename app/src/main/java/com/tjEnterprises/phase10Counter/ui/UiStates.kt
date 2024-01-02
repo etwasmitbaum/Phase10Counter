@@ -27,3 +27,9 @@ sealed interface HighscoresUiState {
     data class HighscoresError(val throwable: Throwable) : HighscoresUiState
     data class HighscoresSuccess(val highscores: List<Highscore>) : HighscoresUiState
 }
+
+sealed interface AppLicenceUiState {
+    object AppLicenceLoading : AppLicenceUiState
+    data class AppLicenceError(val throwable: Throwable) : AppLicenceUiState
+    data class AppLicenceSuccess(val license: String) : AppLicenceUiState
+}

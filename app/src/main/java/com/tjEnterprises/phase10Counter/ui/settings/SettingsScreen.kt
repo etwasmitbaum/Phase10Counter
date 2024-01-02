@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -17,13 +16,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alorma.compose.settings.storage.base.rememberBooleanSettingState
-import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSwitch
 import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.ui.SettingsUiState
-import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
+import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
 
 @Composable
@@ -31,7 +29,6 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
     openDrawer: () -> Unit,
-    navigateToAboutLibraries: () -> Unit
 ) {
     val settingsUiState by viewModel.settingsUiState.collectAsState()
 
@@ -44,16 +41,15 @@ fun SettingsScreen(
                 updateUseDynamicColors = { viewModel.updateUseDynamicColors(it) },
                 updateUseSystemTheme = { viewModel.updateUseSystemTheme(it) },
                 updateUseDarkTheme = { viewModel.updateUseDarkTheme(it) },
-                navigateToAboutLibraries = navigateToAboutLibraries,
                 updateChecker = { UpdateCheckerComponent(it) })
         }
 
         is SettingsUiState.SettingsLoading -> {
-            DefaultScaffold(title = stringResource(id = R.string.settingsLoading), openDrawer = openDrawer) {}
+            DefaultScaffoldNavigation(title = stringResource(id = R.string.settingsLoading), openDrawer = openDrawer) {}
         }
 
         is SettingsUiState.SettingsError -> {
-            DefaultScaffold(title = stringResource(id = R.string.settingsError), openDrawer = openDrawer) {}
+            DefaultScaffoldNavigation(title = stringResource(id = R.string.settingsError), openDrawer = openDrawer) {}
         }
     }
 }
@@ -68,11 +64,10 @@ internal fun SettingsScreen(
     updateUseDynamicColors: (Boolean) -> Unit,
     updateUseSystemTheme: (Boolean) -> Unit,
     updateUseDarkTheme: (Boolean) -> Unit,
-    navigateToAboutLibraries: () -> Unit,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
 
-    DefaultScaffold(title = title, openDrawer = openDrawer) { scaffoldModifier ->
+    DefaultScaffoldNavigation(title = title, openDrawer = openDrawer) { scaffoldModifier ->
 
         Column(modifier = scaffoldModifier.then(modifier)) {
 
@@ -133,6 +128,7 @@ internal fun SettingsScreen(
                 onCheckedChange = { newValue -> updateUseDarkTheme(newValue) },
                 enabled = !settings.useSystemTheme,
                 icon = {
+                    // TODO Add Dark/Light Theme Icon
                     Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = null,
@@ -141,21 +137,6 @@ internal fun SettingsScreen(
                 })
 
             Divider()
-
-            // Show all opensource licences
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.allOpenSourceLicenses)) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = null,
-                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
-                    )
-                }) {
-                navigateToAboutLibraries()
-            }
-
-            Divider()
-
         }
     }
 }
@@ -170,6 +151,5 @@ fun SettingsScreenPreview() {
         updateCheckForUpdates = {},
         updateUseDynamicColors = {},
         updateUseSystemTheme = {},
-        updateUseDarkTheme = {},
-        navigateToAboutLibraries = {})
+        updateUseDarkTheme = {})
 }

@@ -41,6 +41,13 @@ class NavigationActions(navController: NavHostController) {
         }
     }
 
+    val navigateToAboutScreen: () -> Unit = {
+        navController.navigate(NavigationDestination.ABOUT_SCREEN) {
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
     val navigateToHighscores: () -> Unit = {
         navController.navigate(NavigationDestination.HIGHSCORES) {
             launchSingleTop = true
@@ -53,5 +60,16 @@ class NavigationActions(navController: NavHostController) {
             launchSingleTop = true
             restoreState = true
         }
+    }
+
+    val navigateToAppLicence: () -> Unit = {
+        navController.navigate(NavigationDestination.APP_LICENCE) {
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
+    val navigateOneBack: () -> Unit = {
+        navController.popBackStack()
     }
 }

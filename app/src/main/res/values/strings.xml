@@ -54,7 +54,7 @@
     <string name="delete">Delete</string>
     <string name="reset">Reset</string>
     <string name="confirm">Confirm</string>
-    <string name="enableDynamicColors">Enable Dynamic Colors</string>
+    <string name="enableDynamicColors">Dynamic Colors</string>
     <string name="useSystemColors">Use system colors</string>
     <string name="followSystemTheme">Follow System theme</string>
     <string name="darkTheme">Dark theme</string>
@@ -69,4 +69,6 @@
     <string name="gameMustHaveAName">Game must have a name</string>
     <string name="noGamesAddedYet">No Games added yet</string>
     <string name="noHighscoresYet">No High scores yet</string>
+    <string name="errorAppLicence">Error Loading Licence</string>
+    <string name="loadingAppLicence">Loading App Licence</string>
 </resources>
