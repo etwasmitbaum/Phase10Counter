@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.R
@@ -56,7 +57,7 @@ internal fun UpdateCheckerComponent(modifier: Modifier, versionNumber: Int) {
         }
         val uriHandler = LocalUriHandler.current
         ClickableText(text = annotatedString, modifier = modifier.fillMaxWidth(), style = TextStyle(
-            textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface
+            textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface, fontSize = 16.sp
         ), onClick = {
             if (enableOnClick) {
                 uriHandler.openUri("https://github.com/etwasmitbaum/Phase10Counter/releases/latest/download/Phase10Counter.apk")

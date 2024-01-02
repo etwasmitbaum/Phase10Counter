@@ -67,4 +67,6 @@
     <string name="settingsError">Fehler beim laden der Einstellungen</string>
     <string name="gameScreenLoading">Laden des Spiels</string>
     <string name="gameScreenError">Feheler beim laden des Spiels</string>
+    <string name="gameMustHaveAName">Spielname wird benötigt</string>
+    <string name="noGamesAddedYet">Noch keine Spiele hinzugefügt</string>
 </resources>

@@ -1,18 +1,23 @@
 package com.tjEnterprises.phase10Counter.ui.selectGame
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
@@ -44,13 +49,17 @@ fun SelectGame(
         }
 
         is SelectGameUiState.SelectGameLoading -> {
-            DefaultScaffold(title = stringResource(id = R.string.selectGameLoading), openDrawer = openDrawer) {}
+            DefaultScaffold(
+                title = stringResource(id = R.string.selectGameLoading), openDrawer = openDrawer
+            ) {}
         }
+
         is SelectGameUiState.SelectGameError -> {
-            DefaultScaffold(title = stringResource(id = R.string.selectGameError), openDrawer = openDrawer) {}
+            DefaultScaffold(
+                title = stringResource(id = R.string.selectGameError), openDrawer = openDrawer
+            ) {}
         }
     }
-
 }
 
 @Composable
@@ -66,21 +75,35 @@ internal fun SelectGame(
 ) {
     // TODO make gridLayout maybe?
     DefaultScaffold(title = title, openDrawer = openDrawer) { scaffoldModifier ->
-        Column {
-            updateChecker(Modifier)
-            LazyVerticalGrid(modifier = scaffoldModifier
+        Column(modifier = scaffoldModifier) {
+            updateChecker(Modifier.padding(top = 8.dp))
+
+            LazyVerticalGrid(modifier = Modifier
                 .then(modifier)
-                .fillMaxWidth().padding(bottom = 4.dp),
+                .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.Center,
                 columns = GridCells.Adaptive(330.dp),
                 content = {
-
-                    items(games, key = {game -> game.gameId}) { game ->
+                    items(games, key = { game -> game.gameId }) { game ->
                         GamePreviewComponent(
                             game = game,
                             navigateToGame = navigateToGame,
                             deleteGame = deleteGame,
-                            resetGame = resetGame
+                            resetGame = resetGame,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                         )
+                    }
+
+                    if (games.isEmpty()) {
+                        item {
+                            Text(
+                                text = stringResource(id = R.string.noGamesAddedYet),
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                fontSize = 18.sp
+                            )
+                        }
 
                     }
                 })
@@ -88,9 +111,10 @@ internal fun SelectGame(
     }
 }
 
-@Preview(showBackground = true, locale = "DE")
-@Composable
 
+@Preview(showBackground = true, locale = "DE")
+@Preview(showBackground = true, widthDp = 800, heightDp = 300)
+@Composable
 fun SelectGamePreview() {
     SelectGame(games = listOf(
         GameModel(
@@ -177,6 +201,44 @@ fun SelectGamePreview() {
 
 @Preview(showBackground = true, widthDp = 800, heightDp = 300)
 @Composable
-fun SelectGamePreviewLandscape(){
-    SelectGamePreview()
+fun SelectGamePreviewWithOneGame() {
+    SelectGame(games = listOf(
+        GameModel(
+            1L, "Game 1", 0L, 0L,
+            listOf(
+                PlayerModel(
+                    1L,
+                    1L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                ), PlayerModel(
+                    1L,
+                    1L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                ), PlayerModel(
+                    1L,
+                    1L,
+                    "Player1",
+                    listOf(256L),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true)
+                )
+            ),
+        )
+    ), openDrawer = {}, navigateToGame = {}, resetGame = {}, deleteGame = {})
+}
+
+@Preview(showBackground = true, widthDp = 400, heightDp = 500)
+@Composable
+fun SelectGamePreviewWithNoGames() {
+    SelectGame(games = listOf(),
+        openDrawer = {},
+        navigateToGame = {},
+        resetGame = {},
+        deleteGame = {})
 }

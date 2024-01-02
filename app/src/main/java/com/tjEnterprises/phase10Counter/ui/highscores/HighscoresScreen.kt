@@ -3,8 +3,10 @@ package com.tjEnterprises.phase10Counter.ui.highscores
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -41,11 +43,15 @@ fun Highscores(
         }
 
         is HighscoresUiState.HighscoresError -> {
-            DefaultScaffold(title = stringResource(id = R.string.highscoresError), openDrawer = openDrawer) {}
+            DefaultScaffold(
+                title = stringResource(id = R.string.highscoresError), openDrawer = openDrawer
+            ) {}
         }
 
         is HighscoresUiState.HighscoresLoading -> {
-            DefaultScaffold(title = stringResource(id = R.string.highscoresLoading), openDrawer = openDrawer) {}
+            DefaultScaffold(
+                title = stringResource(id = R.string.highscoresLoading), openDrawer = openDrawer
+            ) {}
         }
     }
 }
@@ -82,16 +88,26 @@ internal fun Highscores(
                     fontWeight = FontWeight.Bold
                 )
             }
-            //Divider()
+
             highscores.forEach { highscore ->
                 HighscoreComponent(highscore = highscore)
             }
+
+            if (highscores.isEmpty()) {
+                Divider()
+                Text(
+                    text = stringResource(id = R.string.noHighscoresYet),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
+
         }
 
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 300)
 @Composable
 fun HighscoresPreview() {
     Highscores(
@@ -101,6 +117,16 @@ fun HighscoresPreview() {
             Highscore(playerName = "Player 3", points = 10L),
             Highscore(playerName = "Player 4", points = 560L)
         )
+    ) {
+
+    }
+}
+
+@Preview(showBackground = true, heightDp = 300)
+@Composable
+fun HighscoresPreviewNoScores() {
+    Highscores(
+        modifier = Modifier, title = stringResource(id = R.string.highscores), highscores = listOf()
     ) {
 
     }

@@ -66,4 +66,7 @@
     <string name="settingsError">Error Settings</string>
     <string name="gameScreenLoading">Loading Game</string>
     <string name="gameScreenError">Error loading Game</string>
+    <string name="gameMustHaveAName">Game must have a name</string>
+    <string name="noGamesAddedYet">No Games added yet</string>
+    <string name="noHighscoresYet">No High scores yet</string>
 </resources>

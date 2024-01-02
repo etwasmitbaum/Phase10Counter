@@ -15,10 +15,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tjEnterprises.phase10Counter.R
 
@@ -29,7 +32,7 @@ internal fun PlayersList(
     removeTempPlayerName: (Int) -> Unit
 ) {
     LazyColumn(
-        modifier = modifier.padding(top = 8.dp), horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         itemsIndexed(tempPlayerNames) { index, item ->
             BoxWithConstraints {
@@ -60,4 +63,20 @@ internal fun PlayersList(
             }
         }
     }
+}
+
+@Preview(showBackground = true, widthDp = 400)
+@Preview(showBackground = true, widthDp = 500, heightDp = 500)
+@Composable
+fun PlayerListPreview() {
+    val tempPlayerNames = remember {
+        mutableStateListOf<String>(
+            "Player 1",
+            "Player 2",
+            "Player 3",
+            "Plaaaaaaaaaaaaaaaaayyyyyyyyyyyyyyyyeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrr",
+            "Plaaaaaaaaaaaaaaaaayyyyyyyyyyyyyyyyeeeeee"
+        )
+    }
+    PlayersList(modifier = Modifier, tempPlayerNames = tempPlayerNames, removeTempPlayerName = {})
 }

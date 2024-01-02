@@ -1,5 +1,7 @@
 package com.tjEnterprises.phase10Counter.ui.addGame
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,6 +36,7 @@ import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
+import kotlinx.coroutines.currentCoroutineContext
 
 @Composable
 fun AddGameScreen(
@@ -72,6 +76,7 @@ internal fun AddGameScreen(
 ) {
     var textPlayer by rememberSaveable { mutableStateOf("") }
     var textGame by rememberSaveable { mutableStateOf("") }
+    val context = LocalContext.current
 
     // when the gameID is not -1L (default) the side effect will cause a navigation to the newly created game
     // there are no other circumstances, where newCreatedGameID will change its value from -1L
@@ -95,7 +100,7 @@ internal fun AddGameScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            updateChecker(Modifier.padding(bottom = 4.dp))
+            updateChecker(Modifier.padding(bottom = 10.dp))
             BoxWithConstraints {
                 // Put TextFields and button in a row
                 if (maxWidth > 400.dp) {
@@ -122,14 +127,16 @@ internal fun AddGameScreen(
                                 keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                             ),
                             keyboardActions = KeyboardActions(onNext = {
-                                tempPlayerNames.add(0, textPlayer)
-                                textPlayer = ""
+                                if (addPlayerToList(textPlayer, tempPlayerNames, context)) {
+                                    textPlayer = ""
+                                }
                             }),
                             modifier = Modifier.widthIn(1.dp, 150.dp)
                         )
                         Button(modifier = Modifier.padding(horizontal = 8.dp), onClick = {
-                            tempPlayerNames.add(0, textPlayer)
-                            textPlayer = ""
+                            if (addPlayerToList(textPlayer, tempPlayerNames, context)) {
+                                textPlayer = ""
+                            }
                         }) {
                             Text(text = stringResource(id = R.string.addPlayer))
                         }
@@ -162,16 +169,16 @@ internal fun AddGameScreen(
                                 keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                             ),
                             keyboardActions = KeyboardActions(onNext = {
-                                tempPlayerNames.add(0, textPlayer)
-                                textPlayer = ""
+                                if (addPlayerToList(textPlayer, tempPlayerNames, context)) {
+                                    textPlayer = ""
+                                }
                             }),
                             modifier = Modifier
                                 .widthIn(1.dp, 150.dp)
                                 .padding(bottom = 4.dp)
                         )
                         Button(onClick = {
-                            if (textPlayer != "") {
-                                tempPlayerNames.add(0, textPlayer)
+                            if (addPlayerToList(textPlayer, tempPlayerNames, context)) {
                                 textPlayer = ""
                             }
                         }) {
@@ -182,17 +189,37 @@ internal fun AddGameScreen(
             }
 
             Button(onClick = {
-                addGame(textGame, tempPlayerNames)
+                if(textGame != ""){
+                    if (tempPlayerNames.size >= 2) {
+                        addGame(textGame, tempPlayerNames)
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.atLeast2PlayersRequired), Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(context, context.getString(R.string.gameMustHaveAName), Toast.LENGTH_SHORT).show()
+                }
+
             }, modifier = Modifier.align(Alignment.End)) {
                 Text(text = stringResource(id = R.string.start))
             }
             PlayersList(
-                modifier = modifier,
+                modifier = modifier.padding(top = 8.dp),
                 tempPlayerNames = tempPlayerNames,
                 removeTempPlayerName = removeTempPlayerName
             )
 
         }
+    }
+}
+
+// returns true, if player was saved successfully
+fun addPlayerToList(textFieldText: String, tempPlayerNames: SnapshotStateList<String>, context: Context) : Boolean{
+    return if (textFieldText != "") {
+        tempPlayerNames.add(0, textFieldText)
+        true
+    } else {
+        Toast.makeText(context, context.getString(R.string.playerMustHaveAName), Toast.LENGTH_SHORT).show()
+        false
     }
 }
 

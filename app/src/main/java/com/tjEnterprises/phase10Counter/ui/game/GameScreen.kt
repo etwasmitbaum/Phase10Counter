@@ -17,10 +17,13 @@
 package com.tjEnterprises.phase10Counter.ui.game
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -95,7 +98,9 @@ internal fun GameScreen(
         LazyVerticalGrid(
             modifier = scaffoldModifier
                 .then(modifier)
-                .padding(bottom = 4.dp),
+                .padding(bottom = 4.dp).fillMaxSize(),
+            horizontalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center,
             columns = GridCells.Adaptive(300.dp)
         ) {
             items(players, key = {player -> player.playerId}) { player ->
@@ -118,7 +123,7 @@ internal fun GameScreen(
                         LocalConfiguration.current.screenHeightDp.dp.div(
                             4
                         )
-                    )
+                    ).width(1.dp)
                 )
             }
         }
@@ -133,7 +138,7 @@ internal fun GameScreen(
 fun GameScreenPreview() {
     GameScreen(players = listOf(
         PlayerModel(1L, 1L, "Player1", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
-        PlayerModel(1L, 1L, "Player2", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
-        PlayerModel(1L, 1L, "Player3", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true))
+        PlayerModel(2L, 1L, "Player2", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
+        PlayerModel(3L, 1L, "Player3", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true))
     ), openDrawer = {}, gameTitle = "Game 1", addPointHistoryEntry = {_, _, _ ->}, savePhasesOfPlayer = {_, _, _ ->})
 }
