@@ -1,14 +1,13 @@
-package com.tjEnterprises.phase10Counter.ui.component
+package com.tjEnterprises.phase10Counter.ui.selectGame
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -44,12 +43,14 @@ fun GamePreviewComponent(
     resetGame: (Long) -> Unit,
     modifier: Modifier = Modifier,
     expand: Boolean = false,
+    maxCardWidth: Dp = 350.dp
 ) {
     var bExpanded by remember { mutableStateOf(expand) }
 
     Card(
         modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .widthIn(min = 50.dp, max = maxCardWidth),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.scrim)
     ) {
         Column(
@@ -59,7 +60,11 @@ fun GamePreviewComponent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ClickableText(text = buildAnnotatedString {
-                withStyle(style = SpanStyle(fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)) {
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                ) {
                     append(
                         game.name
                     )
@@ -91,13 +96,12 @@ fun GamePreviewComponent(
             val sExpandText =
                 if (bExpanded) stringResource(id = R.string.hideDetails) else stringResource(id = R.string.showDetails)
 
-            ClickableText(
-                text = buildAnnotatedString {
-                    append(sExpandText)
-                },
+            ClickableText(text = buildAnnotatedString {
+                append(sExpandText)
+            },
                 onClick = { bExpanded = !bExpanded },
                 modifier = Modifier
-                    .padding(top = 4.dp, start = 4.dp)
+                    .padding(top = 4.dp, start = 4.dp, bottom = 4.dp)
                     .fillMaxWidth(),
                 style = TextStyle(
                     textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.primary
@@ -105,28 +109,53 @@ fun GamePreviewComponent(
             )
 
             if (bExpanded) {
-                val btnModifier = Modifier.padding(bottom = 4.dp, end = 4.dp)
-                // TODO Make dropdown menu for delete, reset
-                // TODO Possible ass "rename game" to dropdown
-                Column {
-                    Row (horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                        Button(
-                            onClick = { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) }
-                        ) {
-                            Text(text = stringResource(id = R.string.start))
-                        }
-                    }
 
-                    Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
-                        Button(
-                            onClick = { deleteGame(game.gameId) }, modifier = btnModifier
-                        ) {
-                            Text(text = stringResource(id = R.string.delete))
+                BoxWithConstraints {
+                    if (maxWidth < maxCardWidth.minus(20.dp)) {
+                        val btnModifier = Modifier
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Button(
+                                onClick = { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) },
+                                modifier = btnModifier
+                            ) {
+                                Text(text = stringResource(id = R.string.start))
+                            }
+                            Button(
+                                onClick = { deleteGame(game.gameId) }, modifier = btnModifier
+                            ) {
+                                Text(text = stringResource(id = R.string.delete))
+                            }
+                            Button(
+                                onClick = { resetGame(game.gameId) }, modifier = btnModifier
+                            ) {
+                                Text(text = stringResource(id = R.string.reset))
+                            }
                         }
-                        Button(
-                            onClick = { resetGame(game.gameId) }, modifier = btnModifier
+                    } else {
+                        val btnModifier = Modifier.padding(horizontal = 2.dp)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = stringResource(id = R.string.reset))
+                            Button(
+                                onClick = { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) },
+                                modifier = btnModifier
+                            ) {
+                                Text(text = stringResource(id = R.string.start))
+                            }
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            Button(
+                                onClick = { deleteGame(game.gameId) }, modifier = btnModifier
+                            ) {
+                                Text(text = stringResource(id = R.string.delete))
+                            }
+                            Button(
+                                onClick = { resetGame(game.gameId) }, modifier = btnModifier
+                            ) {
+                                Text(text = stringResource(id = R.string.reset))
+                            }
                         }
                     }
                 }
@@ -183,8 +212,7 @@ fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
                 listOf(256L),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true)
-            ),
-            PlayerModel(
+            ), PlayerModel(
                 2L,
                 1L,
                 "VeryLongPlayerINeedToTestIDon'tKnowHowLongThisShouldBe2",
@@ -215,7 +243,7 @@ fun ExpandedLongNames() {
     GamePreviewComponentPreviewWithVeryLongNames(expand = true)
 }
 
-@Preview(showBackground = true, heightDp = 300, widthDp = 200)
+@Preview(showBackground = true, heightDp = 500, widthDp = 200)
 @Composable
 fun ExpandedLongNamesSmallScreen() {
     GamePreviewComponentPreviewWithVeryLongNames(expand = true)

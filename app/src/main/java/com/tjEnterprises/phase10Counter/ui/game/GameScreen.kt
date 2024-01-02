@@ -38,7 +38,6 @@ import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.GameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
-import com.tjEnterprises.phase10Counter.ui.component.OnePlayerView
 import javax.inject.Singleton
 
 @Composable

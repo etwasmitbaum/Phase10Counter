@@ -3,17 +3,14 @@ package com.tjEnterprises.phase10Counter.ui.highscores
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +20,6 @@ import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
 import com.tjEnterprises.phase10Counter.ui.HighscoresUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffold
-import com.tjEnterprises.phase10Counter.ui.component.HighscoreComponent
 import com.tjEnterprises.phase10Counter.ui.component.VerticalDivider
 
 @Composable

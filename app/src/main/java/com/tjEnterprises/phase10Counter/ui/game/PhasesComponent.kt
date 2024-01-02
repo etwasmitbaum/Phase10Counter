@@ -1,4 +1,4 @@
-package com.tjEnterprises.phase10Counter.ui.component
+package com.tjEnterprises.phase10Counter.ui.game
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

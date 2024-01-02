@@ -1,4 +1,4 @@
-package com.tjEnterprises.phase10Counter.ui.component
+package com.tjEnterprises.phase10Counter.ui.highscores
 
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -13,10 +13,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
-import java.text.DateFormat
+import com.tjEnterprises.phase10Counter.ui.component.VerticalDivider
 import java.text.SimpleDateFormat
 import java.util.Locale
-import java.util.TimeZone
 
 @Composable
 fun HighscoreComponent(modifier: Modifier = Modifier, highscore: Highscore){
