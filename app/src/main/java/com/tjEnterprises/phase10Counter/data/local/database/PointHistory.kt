@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.Flow
         childColumns = ["player_id"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
-    )]
+    )], indices = [Index(value = ["game_id"]), Index(value = ["player_id"])]
 )
 data class PointHistory(
     @ColumnInfo(name = "point") var point: Long,

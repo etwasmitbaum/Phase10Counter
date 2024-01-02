@@ -5,13 +5,15 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Entity(
-    tableName = "Phases", foreignKeys = [ForeignKey(
+    tableName = "Phases",
+    foreignKeys = [ForeignKey(
         entity = Game::class,
         parentColumns = ["game_id"],
         childColumns = ["game_id"],
@@ -23,7 +25,9 @@ import kotlinx.coroutines.flow.Flow
         childColumns = ["player_id"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
-    )], primaryKeys = ["game_id", "player_id", "phase"]
+    )],
+    primaryKeys = ["game_id", "player_id", "phase"],
+    indices = [Index(value = ["game_id"]), Index(value = ["player_id"])]
 )
 data class Phases(
     @ColumnInfo(name = "player_id") var playerId: Long,

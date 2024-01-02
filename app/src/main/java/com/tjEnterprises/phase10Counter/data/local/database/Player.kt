@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
@@ -18,14 +19,12 @@ import kotlinx.coroutines.flow.Flow
         childColumns = ["game_id"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
-    )]
+    )], indices = [Index(value = ["game_id"])]
 )
 data class Player(
     @ColumnInfo("game_id") val gameID: Long,
     @ColumnInfo("name") val name: String,
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo("player_id")
-    val playerId: Long = 0
+    @PrimaryKey(autoGenerate = true) @ColumnInfo("player_id") val playerId: Long = 0
 ) {}
 
 @Dao

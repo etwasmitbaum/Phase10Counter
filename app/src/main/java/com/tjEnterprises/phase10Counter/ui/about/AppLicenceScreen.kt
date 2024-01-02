@@ -70,7 +70,8 @@ internal fun AppLicenceScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 300)
+@Preview(showBackground = true, widthDp = 500, heightDp = 200)
 @Composable
 fun AppLicenceScreenPreview() {
     AppLicenceScreen(modifier = Modifier,

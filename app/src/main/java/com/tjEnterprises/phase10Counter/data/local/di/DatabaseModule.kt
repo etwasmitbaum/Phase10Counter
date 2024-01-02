@@ -67,6 +67,6 @@ class DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "GameDatabase"
-        ).build()
+        ).addMigrations().build()
     }
 }
