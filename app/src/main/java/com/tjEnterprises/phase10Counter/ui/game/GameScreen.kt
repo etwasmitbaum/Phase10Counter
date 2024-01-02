@@ -110,7 +110,7 @@ internal fun GameScreen(
                         .padding(8.dp)
                         .padding(bottom = 8.dp)
                         .fillMaxWidth(),
-                    listOfPoints = listOf(player.pointSum),
+                    listOfPoints = player.pointHistory,
                     addPointHistoryEntry = addPointHistoryEntry,
                     savePhasesOfPlayer = savePhasesOfPlayer
                 )

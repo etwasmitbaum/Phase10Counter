@@ -82,10 +82,6 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun insertPhasesForPlayer(playerId: Long, gameId: Long) {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun getPhasesOfPlayer(playerId: Long): List<Phases> {
         TODO("Not yet implemented")
     }
