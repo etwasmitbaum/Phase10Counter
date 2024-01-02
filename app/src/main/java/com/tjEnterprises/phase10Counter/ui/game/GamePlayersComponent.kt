@@ -84,7 +84,7 @@ fun OnePlayerView(
                 maxLines = 1,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
-                    // TODO scroll down fruhter than just the textfield ,on ImeAction
+                    // TODO scroll down further than just the textfield ,on ImeAction
                     keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
                 ),
                 modifier = Modifier
@@ -101,7 +101,7 @@ fun OnePlayerView(
         var phasesString = ""
         player.phasesOpen.forEachIndexed { idx, open ->
             if (open) {
-                val phase = idx + 1;
+                val phase = idx + 1
                 phasesString = phasesString.plus("$phase, ")
             }
         }
@@ -189,7 +189,7 @@ fun OnePlayerPreview() {
         1L,
         1L,
         "Player1",
-        listOf(256L),
+        listOf(256L, 254L),
         256L,
         listOf(true, true, true, true, true, true, true, true, true, true)
     ), listOfPoints = listOf(
