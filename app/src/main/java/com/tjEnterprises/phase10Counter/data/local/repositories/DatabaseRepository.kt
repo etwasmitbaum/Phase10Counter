@@ -90,7 +90,7 @@ interface DatabaseRepository {
 
                     pointHistory.filter { it.playerId == player.playerId }.forEach {
                         pointSum += it.point
-                        pointHistoryPlayer.add(it.pointId)
+                        pointHistoryPlayer.add(it.point)
                     }
 
                     phases.filter { it.playerId == player.playerId }.forEach {
@@ -135,7 +135,7 @@ interface DatabaseRepository {
 
                     pointHistoryList.filter { it.playerId == player.playerId }.forEach {
                         pointSum += it.point
-                        pointHistoryPlayer.add(it.pointId)
+                        pointHistoryPlayer.add(it.point)
                     }
 
                     phasesList.filter { it.playerId == player.playerId }.forEach {
