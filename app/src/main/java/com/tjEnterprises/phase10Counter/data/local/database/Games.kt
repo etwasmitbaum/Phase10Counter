@@ -43,7 +43,7 @@ data class Game(
 
 @Dao
 interface GameDao {
-    @Query("SELECT * FROM Game ORDER BY game_id ASC")
+    @Query("SELECT * FROM Game ORDER BY game_id DESC")
     fun getAllGames(): Flow<List<Game>>
 
     @Query("SELECT * FROM Game WHERE game_id IS :gameId")

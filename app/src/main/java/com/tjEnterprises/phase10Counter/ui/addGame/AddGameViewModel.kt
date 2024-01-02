@@ -16,8 +16,8 @@ class AddGameViewModel @Inject constructor(
     private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
 
-    private val _newCreatedGameID = MutableStateFlow(-1L)
-    val newCreatedGameID: StateFlow<Long> = _newCreatedGameID
+    private val _newCreatedGameId = MutableStateFlow(-1L)
+    val newCreatedGameId: StateFlow<Long> = _newCreatedGameId
 
     val tempPlayerNames = mutableStateListOf<String>()
 
@@ -26,7 +26,7 @@ class AddGameViewModel @Inject constructor(
     }
 
     fun resetNewCreatedGameID (){
-        _newCreatedGameID.value = -1
+        _newCreatedGameId.value = -1
     }
 
     fun addGame(gameName: String, playerNames: List<String>){
@@ -36,7 +36,7 @@ class AddGameViewModel @Inject constructor(
                 val newPlayerId = databaseRepository.insertPlayer(playerName = playerNames[i], gameId = newGameId)
                 databaseRepository.insertPhasesForPlayer(playerId = newPlayerId, gameId = newGameId)
             }
-            _newCreatedGameID.value = newGameId
+            _newCreatedGameId.value = newGameId
         }
     }
 }

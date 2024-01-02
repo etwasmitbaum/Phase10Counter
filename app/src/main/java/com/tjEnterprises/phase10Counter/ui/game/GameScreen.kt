@@ -92,13 +92,14 @@ internal fun GameScreen(
 ) {
 
     DefaultScaffold(title = gameTitle, openDrawer = openDrawer, content = { scaffoldModifier ->
+        // TODO make "force portrait" setting
         LazyVerticalGrid(
             modifier = scaffoldModifier
                 .then(modifier)
-                .padding(top = 8.dp, bottom = 4.dp),
-            columns = GridCells.Adaptive(370.dp)
+                .padding(bottom = 4.dp),
+            columns = GridCells.Adaptive(300.dp)
         ) {
-            items(players) { player ->
+            items(players, key = {player -> player.playerId}) { player ->
                 OnePlayerView(
                     player = player,
                     modifier = Modifier

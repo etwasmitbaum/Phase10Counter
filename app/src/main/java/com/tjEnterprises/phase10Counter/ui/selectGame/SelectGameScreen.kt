@@ -1,7 +1,12 @@
 package com.tjEnterprises.phase10Counter.ui.selectGame
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -10,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
@@ -64,22 +70,25 @@ internal fun SelectGame(
 ) {
     // TODO make gridLayout maybe?
     DefaultScaffold(title = title, openDrawer = openDrawer) { scaffoldModifier ->
-        LazyColumn(modifier = scaffoldModifier
-            .then(modifier)
-            .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            content = {
-                item { updateChecker(Modifier) }
-                items(games) { game ->
-                    GamePreviewComponent(
-                        game = game,
-                        navigateToGame = navigateToGame,
-                        deleteGame = deleteGame,
-                        resetGame = resetGame
-                    )
+        Column {
+            updateChecker(Modifier)
+            LazyVerticalGrid(modifier = scaffoldModifier
+                .then(modifier)
+                .fillMaxWidth().padding(bottom = 4.dp),
+                columns = GridCells.Adaptive(330.dp),
+                content = {
 
-                }
-            })
+                    items(games, key = {game -> game.gameId}) { game ->
+                        GamePreviewComponent(
+                            game = game,
+                            navigateToGame = navigateToGame,
+                            deleteGame = deleteGame,
+                            resetGame = resetGame
+                        )
+
+                    }
+                })
+        }
     }
 }
 
@@ -141,7 +150,7 @@ fun SelectGamePreview() {
                 )
             ),
         ), GameModel(
-            1L, "Game 3", 0L, 0L,
+            3L, "Game 3", 0L, 0L,
             listOf(
                 PlayerModel(
                     1L,
@@ -168,4 +177,10 @@ fun SelectGamePreview() {
             ),
         )
     ), openDrawer = {}, navigateToGame = {}, resetGame = {}, deleteGame = {})
+}
+
+@Preview(showBackground = true, widthDp = 800, heightDp = 300)
+@Composable
+fun SelectGamePreviewLandscape(){
+    SelectGamePreview()
 }

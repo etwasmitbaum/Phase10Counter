@@ -1,7 +1,5 @@
 package com.tjEnterprises.phase10Counter.ui.updateChecker
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
@@ -12,13 +10,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.BuildConfig
@@ -41,7 +37,6 @@ fun UpdateCheckerComponent(
 internal fun UpdateCheckerComponent(modifier: Modifier, versionNumber: Int) {
 
     var text by remember { mutableStateOf("") }
-    val context = LocalContext.current
     var enableOnClick = false
 
     if (versionNumber > BuildConfig.VERSION_CODE) {
@@ -56,19 +51,15 @@ internal fun UpdateCheckerComponent(modifier: Modifier, versionNumber: Int) {
 
     // only place ClickableText if text exists
     if (text != "") {
-        ClickableText(text = buildAnnotatedString {
-            withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
-                append(
-                    text
-                )
-            }
-        }, modifier = modifier.fillMaxWidth(), style = TextStyle(textAlign = TextAlign.Center), onClick = {
+        val annotatedString = buildAnnotatedString {
+            append(text)
+        }
+        val uriHandler = LocalUriHandler.current
+        ClickableText(text = annotatedString, modifier = modifier.fillMaxWidth(), style = TextStyle(
+            textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface
+        ), onClick = {
             if (enableOnClick) {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://github.com/etwasmitbaum/Phase10Counter/releases/latest/download/Phase10Counter.apk")
-                )
-                context.startActivity(intent)
+                uriHandler.openUri("https://github.com/etwasmitbaum/Phase10Counter/releases/latest/download/Phase10Counter.apk")
             }
         })
     }

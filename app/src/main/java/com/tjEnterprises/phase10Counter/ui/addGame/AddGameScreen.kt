@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -25,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -47,7 +49,7 @@ fun AddGameScreen(
     openDrawer: () -> Unit,
     viewModel: AddGameViewModel = hiltViewModel()
 ) {
-    val newCreatedGameID by viewModel.newCreatedGameID.collectAsState()
+    val newCreatedGameID by viewModel.newCreatedGameId.collectAsState()
 
     AddGameScreen(openDrawer = openDrawer,
         addGame = { gameName, names ->
@@ -76,20 +78,24 @@ internal fun AddGameScreen(
     removeTempPlayerName: (Int) -> Unit,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
-    var textPlayer by remember { mutableStateOf("") }
-    var textGame by remember { mutableStateOf("") }
+    var textPlayer by rememberSaveable { mutableStateOf("") }
+    var textGame by rememberSaveable { mutableStateOf("") }
 
     // when the gameID is not -1L (default) the side effect will cause a navigation to the newly created game
     // there are no other circumstances, where newCreatedGameID will change its value from -1L
     if (newCreatedGameID != -1L) {
         LaunchedEffect(key1 = newCreatedGameID, block = {
-            resetNewCreatedGameID()
+            resetNewCreatedGameID()     // reset gameId, else will be stuck in endless in navigating to new game
+            textGame = ""
+            textPlayer = ""
             tempPlayerNames.clear()
             navigateToGame(NavigationDestination.GAMESCREEN + "/" + newCreatedGameID)
         })
     }
 
-    DefaultScaffold(title = stringResource(id = R.string.title_addNewGame), openDrawer = openDrawer) { scaffoldModifier ->
+    DefaultScaffold(
+        title = stringResource(id = R.string.title_addNewGame), openDrawer = openDrawer
+    ) { scaffoldModifier ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = scaffoldModifier
@@ -120,7 +126,13 @@ internal fun AddGameScreen(
                             label = { Text(stringResource(id = R.string.playerName)) },
                             maxLines = 1,
                             singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
+                            ),
+                            keyboardActions = KeyboardActions(onNext = {
+                                tempPlayerNames.add(0, textPlayer)
+                                textPlayer = ""
+                            }),
                             modifier = Modifier.widthIn(1.dp, 150.dp)
                         )
                         Button(modifier = Modifier.padding(horizontal = 8.dp), onClick = {
@@ -154,7 +166,13 @@ internal fun AddGameScreen(
                             label = { Text(stringResource(id = R.string.playerName)) },
                             maxLines = 1,
                             singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
+                            ),
+                            keyboardActions = KeyboardActions(onNext = {
+                                tempPlayerNames.add(0, textPlayer)
+                                textPlayer = ""
+                            }),
                             modifier = Modifier
                                 .widthIn(1.dp, 150.dp)
                                 .padding(bottom = 4.dp)
@@ -204,7 +222,8 @@ internal fun PlayersList(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = item, modifier = Modifier
+                        text = item,
+                        modifier = Modifier
                             .widthIn(max = maxWidth.minus(64.dp))
                             .wrapContentWidth()
                             .padding(start = 16.dp)

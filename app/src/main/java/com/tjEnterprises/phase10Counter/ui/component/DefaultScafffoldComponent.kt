@@ -64,7 +64,7 @@ fun DefaultScaffold(
                 content(
                     Modifier
                         .padding(innerPadding)
-                        .padding(start = 52.dp)
+                        .padding(start = 52.dp, top = 8.dp)
                 )
             } else {
                 content(Modifier.padding(innerPadding))
