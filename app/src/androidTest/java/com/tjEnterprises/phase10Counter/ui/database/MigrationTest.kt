@@ -2,6 +2,7 @@ package com.tjEnterprises.phase10Counter.ui.database
 
 import android.content.Context
 import android.database.Cursor
+import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.core.app.ApplicationProvider
@@ -12,6 +13,7 @@ import com.tjEnterprises.phase10Counter.data.legacy.GlobalHighscores
 import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.Migration2To3
 import com.tjEnterprises.phase10Counter.data.local.database.Migration3To4
+import com.tjEnterprises.phase10Counter.data.local.database.MigrationHelper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Rule
@@ -31,6 +33,28 @@ class MigrationTest {
         AppDatabase::class.java.canonicalName,
         FrameworkSQLiteOpenHelperFactory()
     )
+
+    @Test
+    @Throws(IOException::class)
+    fun migrateAllWithoutData() {
+        val context: Context = ApplicationProvider.getApplicationContext()
+
+        // Create earliest version of the database.
+        helper.createDatabase(TEST_DB, 1).apply {
+            close()
+        }
+
+        // Open latest version of the database. Room validates the schema
+        // once all migrations execute.
+        Room.databaseBuilder(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            AppDatabase::class.java,
+            TEST_DB
+        ).addMigrations(MigrationHelper.MIGRATION_1_2, Migration2To3(context = context), Migration3To4(context = context)).build().apply {
+            openHelper.writableDatabase.close()
+        }
+    }
+
 
     @Test
     @Throws(IOException::class)
