@@ -19,10 +19,13 @@ package com.tjEnterprises.phase10Counter.testdi
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
 import com.tjEnterprises.phase10Counter.data.di.DataModule
 import com.tjEnterprises.phase10Counter.data.di.FakeDatabaseRepository
+import com.tjEnterprises.phase10Counter.data.local.repositories.SettingsRepository
+import com.tjEnterprises.phase10Counter.data.network.repositories.UpdateCheckerRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
+import javax.inject.Singleton
 
 @Module
 @TestInstallIn(
@@ -35,4 +38,11 @@ interface FakeDataModule {
     abstract fun bindRepository(
         fakeRepository: FakeDatabaseRepository
     ): DatabaseRepository
+
+    @Binds
+    fun bindsSettingsRepository(settingsRepository: SettingsRepository.SettingsRepositoryImpl): SettingsRepository
+
+    @Binds
+    fun bindsUpdateCheckerRepository(updateCheckerRepository: UpdateCheckerRepository.UpdateCheckerRepositoryImpl) : UpdateCheckerRepository
+
 }

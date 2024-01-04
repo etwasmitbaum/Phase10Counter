@@ -57,7 +57,7 @@ interface DatabaseRepository {
     suspend fun insertPointHistory(point: Long, gameId: Long, playerId: Long)
     suspend fun deletePointHistoryOfPlayer(playerId: Long)
 
-    suspend fun insertHighscore(playerName: String, point: Long)
+    suspend fun insertHighscore(playerName: String, point: Long, timeStamp: Long = -1L)
     suspend fun deleteHighScore(highscoreId: Long)
 
     class DefaultDatabaseRepository @Inject constructor(
@@ -293,8 +293,13 @@ interface DatabaseRepository {
             }
         }
 
-        override suspend fun insertHighscore(playerName: String, point: Long) {
-            highscoreDao.insertHighscore(Highscore(playerName = playerName, points = point))
+        override suspend fun insertHighscore(playerName: String, point: Long, timeStamp: Long) {
+            if (timeStamp != -1L) {
+                highscoreDao.insertHighscore(Highscore(playerName = playerName, points = point, timestamp = timeStamp))
+            } else {
+                highscoreDao.insertHighscore(Highscore(playerName = playerName, points = point))
+            }
+
         }
 
         override suspend fun deleteHighScore(highscoreId: Long) {

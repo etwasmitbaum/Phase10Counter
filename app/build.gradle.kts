@@ -48,6 +48,11 @@ android {
         }
     }
 
+    sourceSets {
+        // Adds exported schema location as test app assets.
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -107,6 +112,9 @@ dependencies {
     // Hilt and Robolectric tests.
     testImplementation(libs.hilt.android.testing)
     kaptTest(libs.hilt.android.compiler)
+
+    // Room Tests
+    androidTestImplementation(libs.androidx.room.testing)
 
     // Arch Components
     implementation(libs.androidx.lifecycle.runtime.compose)

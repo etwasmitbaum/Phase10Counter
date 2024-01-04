@@ -22,6 +22,7 @@ import com.tjEnterprises.phase10Counter.data.local.database.Phases
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
+import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
 import com.tjEnterprises.phase10Counter.data.local.repositories.SettingsRepository
 import com.tjEnterprises.phase10Counter.data.network.repositories.UpdateCheckerRepository
@@ -126,7 +127,7 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun insertHighscore(playerName: String, point: Long) {
+    override suspend fun insertHighscore(playerName: String, point: Long, timeStamp: Long) {
         TODO("Not yet implemented")
     }
 
@@ -136,84 +137,28 @@ class FakeDatabaseRepository @Inject constructor(
 
 }
 
-val fakeDatabases = listOf(
-    GameModel(
-        1L, "Game 1", 0L, 0L,
-        listOf(
-            PlayerModel(
-                1L,
-                1L,
-                "Player1",
-                listOf(256L),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
-            ), PlayerModel(
-                1L,
-                1L,
-                "Player1",
-                listOf(256L),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
-            ), PlayerModel(
-                1L,
-                1L,
-                "Player1",
-                listOf(256L),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
-            )
-        ),
-    ), GameModel(
-        2L, "Game 2", 0L, 0L,
-        listOf(
-            PlayerModel(
-                1L,
-                2L,
-                "Player1",
-                listOf(256L),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
-            ), PlayerModel(
-                1L,
-                2L,
-                "Player1",
-                listOf(256L),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
-            ), PlayerModel(
-                1L,
-                2L,
-                "Player1",
-                listOf(256L),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
-            )
-        ),
-    ), GameModel(
-        1L, "Game 3", 0L, 0L,
-        listOf(
-            PlayerModel(
-                1L,
-                3L,
-                "Player1",
-                listOf(256L),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
-            ), PlayerModel(
-                1L,
-                3L,
-                "Player1",
-                listOf(256L),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
-            ), PlayerModel(
-                1L,
-                3L,
-                "Player1",
-                listOf(256L),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
-            )
-        ),
-    )
-)
+class fakeSettingsRepository @Inject constructor() : SettingsRepository {
+    override val settingsModelFlow: Flow<SettingsModel> = flowOf()
+    override suspend fun updateCheckForUpdates(checkForUpdates: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUseDynamicColors(useDynamicColors: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUseSystemTheme(useSystemTheme: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
+        TODO("Not yet implemented")
+    }
+}
+
+class UpdateCheckerRepository @Inject constructor() : UpdateCheckerRepository {
+    override suspend fun getLatestReleaseVersionNumber(): Int {
+        TODO("Not yet implemented")
+    }
+
+}
