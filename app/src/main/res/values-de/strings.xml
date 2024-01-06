@@ -73,4 +73,7 @@
     <string name="errorAppLicence">Fehler beim Laden der Lizenz</string>
     <string name="loadingAppLicence">Laden der Lizenz</string>
     <string name="dontChangeUiOnWideScreen">Kein Ändern der Oberfläche auf breiten Bildschirmen</string>
+    <string name="cancel">Abbruch</string>
+    <string name="deleteGame">Lösche Spiel</string>
+    <string name="resetGame">Spiel zurücksetzen</string>
 </resources>

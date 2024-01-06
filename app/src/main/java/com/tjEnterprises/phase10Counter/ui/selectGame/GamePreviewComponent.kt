@@ -48,6 +48,40 @@ fun GamePreviewComponent(
     expand: Boolean = false,
 ) {
     var bExpanded by remember { mutableStateOf(expand) }
+    val openResetGameDialog = remember {
+        mutableStateOf(false)
+    }
+    val openDeleteGameDialog = remember {
+        mutableStateOf(false)
+    }
+
+    when {
+        openDeleteGameDialog.value -> {
+            DeleteDialog(showDialog = openDeleteGameDialog, deleteGame = { deleteGame(game.gameId) })
+        }
+        openResetGameDialog.value -> {
+            ResetDialog(showDialog = openResetGameDialog, resetGame = { resetGame(game.gameId) })
+        }
+    }
+
+    val gameTitle: @Composable () -> Unit = {
+        ClickableText(modifier = Modifier.fillMaxWidth(),
+            style = TextStyle(textAlign = TextAlign.Center),
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                ) {
+                    append(
+                        game.name
+                    )
+                }
+            },
+            onClick = {
+                navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId)
+            })
+    }
 
     // Somehow this box is needed for "widthIn" to work
     BoxWithConstraints {
@@ -60,19 +94,8 @@ fun GamePreviewComponent(
                     .align(Alignment.CenterHorizontally),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ClickableText(modifier = Modifier.fillMaxWidth(), style = TextStyle(textAlign = TextAlign.Center), text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    ) {
-                        append(
-                            game.name
-                        )
-                    }
-                }, onClick = {
-                    navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId)
-                })
+
+                gameTitle()
 
                 if (bExpanded) {
                     Column {
@@ -96,11 +119,9 @@ fun GamePreviewComponent(
 
                 val sExpandText =
                     if (bExpanded) stringResource(id = R.string.hideDetails) else stringResource(id = R.string.showDetails)
-
-                ClickableText(
-                    text = buildAnnotatedString {
-                        append(sExpandText)
-                    },
+                ClickableText(text = buildAnnotatedString {
+                    append(sExpandText)
+                },
                     onClick = { bExpanded = !bExpanded },
                     modifier = Modifier
                         .padding(top = 4.dp, start = 4.dp, bottom = 4.dp)
@@ -116,7 +137,7 @@ fun GamePreviewComponent(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        IconButton(onClick = { deleteGame(game.gameId) }) {
+                        IconButton(onClick = { openDeleteGameDialog.value = true }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(
@@ -125,7 +146,7 @@ fun GamePreviewComponent(
                             )
                         }
 
-                        IconButton(onClick = { resetGame(game.gameId) }) {
+                        IconButton(onClick = { openResetGameDialog.value = true }) {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
                                 contentDescription = stringResource(

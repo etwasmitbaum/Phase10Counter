@@ -56,12 +56,14 @@ fun OnePlayerView(
         mutableStateOf(false)
     }
 
-    if (openDialog.value) {
-        PhasesComponent(
-            player = player,
-            closeDialog = { openDialog.value = false },
-            savePhasesOfPlayer = savePhasesOfPlayer
-        )
+    when {
+        openDialog.value -> {
+            PhasesComponent(
+                player = player,
+                closeDialog = { openDialog.value = false },
+                savePhasesOfPlayer = savePhasesOfPlayer
+            )
+        }
     }
 
     Column(
@@ -107,11 +109,14 @@ fun OnePlayerView(
         }
         // remove last ", " and assign + save new phases
         phasesString = phasesString.dropLast(2)
-        if (phasesString == ""){
+        if (phasesString == "") {
             phasesString = stringResource(id = R.string.none)
         }
 
-        Text(stringResource(id = R.string.openPhases) + " $phasesString", modifier = Modifier.padding(top = 4.dp))
+        Text(
+            stringResource(id = R.string.openPhases) + " $phasesString",
+            modifier = Modifier.padding(top = 4.dp)
+        )
     }
 }
 
@@ -145,7 +150,8 @@ fun PointHistoryDropDown(
                 expanded = true
             }) {
                 Icon(
-                    imageVector = Icons.Default.MoreVert, contentDescription = stringResource(id = R.string.showPointHistory)
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = stringResource(id = R.string.showPointHistory)
                 )
             }
         }
@@ -194,7 +200,7 @@ fun OnePlayerPreview() {
         listOf(true, true, true, true, true, true, true, true, true, true)
     ), listOfPoints = listOf(
         70L, 100L
-    ), addPointHistoryEntry = {_, _, _ ->}, savePhasesOfPlayer = {_, _, _ ->})
+    ), addPointHistoryEntry = { _, _, _ -> }, savePhasesOfPlayer = { _, _, _ -> })
 }
 
 @Preview(showBackground = true)
@@ -209,7 +215,7 @@ fun OnePlayerPreview2() {
         listOf(false, false, false, false, false, false, false, false, false, false)
     ), listOfPoints = listOf(
         70L, 100L
-    ), addPointHistoryEntry = {_, _, _ ->}, savePhasesOfPlayer = {_, _, _ ->})
+    ), addPointHistoryEntry = { _, _, _ -> }, savePhasesOfPlayer = { _, _, _ -> })
 }
 
 @Preview(showBackground = true)

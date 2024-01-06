@@ -16,7 +16,7 @@
     <string name="openPhases">Open Rounds:</string>
     <string name="ok">OK</string>
     <string name="playerMustHaveAName">Player must have a name</string>
-    <string name="areYouSureAllMatchDataWillBeLost">Are you sure? All data of this match will be lost.</string>
+    <string name="areYouSureAllMatchDataWillBeLost">Are you sure? All data of this game will be lost.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="phases">Sets</string>
@@ -72,4 +72,7 @@
     <string name="errorAppLicence">Error Loading Licence</string>
     <string name="loadingAppLicence">Loading App Licence</string>
     <string name="dontChangeUiOnWideScreen">Don\'t change UI on wide screens</string>
+    <string name="cancel">Cancel</string>
+    <string name="deleteGame">Delete game</string>
+    <string name="resetGame">Reset game</string>
 </resources>
