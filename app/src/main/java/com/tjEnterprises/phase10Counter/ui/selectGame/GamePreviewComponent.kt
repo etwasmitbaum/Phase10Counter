@@ -60,10 +60,10 @@ fun GamePreviewComponent(
                     .align(Alignment.CenterHorizontally),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ClickableText(text = buildAnnotatedString {
+                ClickableText(modifier = Modifier.fillMaxWidth(), style = TextStyle(textAlign = TextAlign.Center), text = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
-                            fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurfaceVariant
+                            fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     ) {
                         append(

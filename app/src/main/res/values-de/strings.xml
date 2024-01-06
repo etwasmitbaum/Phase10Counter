@@ -72,4 +72,5 @@
     <string name="noHighscoresYet">Noch keine Highscores vorhanden</string>
     <string name="errorAppLicence">Fehler beim Laden der Lizenz</string>
     <string name="loadingAppLicence">Laden der Lizenz</string>
+    <string name="dontChangeUiOnWideScreen">Kein Ändern der Oberfläche auf breiten Bildschirmen</string>
 </resources>

@@ -20,17 +20,19 @@ interface SettingsRepository {
     suspend fun updateUseDynamicColors(useDynamicColors: Boolean)
     suspend fun updateUseSystemTheme(useSystemTheme: Boolean)
     suspend fun updateUseDarkTheme(useDarkTheme: Boolean)
+    suspend fun updateDontChangeUiWideScreen(dontChangeUiWideScreen: Boolean)
 
     @Singleton
     class SettingsRepositoryImpl @Inject constructor(
         private val dataStore: DataStore<Preferences>
     ) : SettingsRepository {
 
-        private object SettingsKeys {
+        object SettingsKeys {
             val CHECK_FOR_UPDATES = booleanPreferencesKey("checkForUpdates")
             val USE_DYNAMIC_COLORS = booleanPreferencesKey("useDynamicColors")
             val USE_DARK_THEME = booleanPreferencesKey("useDarkTheme")
             val USE_SYSTEM_THEME = booleanPreferencesKey("useSystemTheme")
+            val DONT_CHANGE_UI_WIDE_SCREEN = booleanPreferencesKey("dontChangeUiOnWideScreen")
         }
 
         override val settingsModelFlow: Flow<SettingsModel>
@@ -52,16 +54,19 @@ interface SettingsRepository {
                     preferences[SettingsKeys.USE_DARK_THEME] ?: defaultSetting.useDarkTheme
                 val useSystemTheme =
                     preferences[SettingsKeys.USE_SYSTEM_THEME] ?: defaultSetting.useSystemTheme
+                val dontChangeUiWideScreen = preferences[SettingsKeys.DONT_CHANGE_UI_WIDE_SCREEN]
+                    ?: defaultSetting.dontChangeUiOnWideScreen
 
                 SettingsModel(
                     checkForUpdates = checkForUpdates,
                     useDynamicColors = useDynamicColors,
                     useDarkTheme = useDarkTheme,
-                    useSystemTheme = useSystemTheme
+                    useSystemTheme = useSystemTheme,
+                    dontChangeUiOnWideScreen = dontChangeUiWideScreen
                 )
             }
 
-        private suspend fun writeBooleanToDataStore(key: Preferences.Key<Boolean>, value: Boolean){
+        private suspend fun writeBooleanToDataStore(key: Preferences.Key<Boolean>, value: Boolean) {
             dataStore.edit { preferences ->
                 preferences[key] = value
             }
@@ -81,6 +86,10 @@ interface SettingsRepository {
 
         override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
             writeBooleanToDataStore(SettingsKeys.USE_DARK_THEME, useDarkTheme)
+        }
+
+        override suspend fun updateDontChangeUiWideScreen(dontChangeUiWideScreen: Boolean) {
+            writeBooleanToDataStore(SettingsKeys.DONT_CHANGE_UI_WIDE_SCREEN, dontChangeUiWideScreen)
         }
 
     }

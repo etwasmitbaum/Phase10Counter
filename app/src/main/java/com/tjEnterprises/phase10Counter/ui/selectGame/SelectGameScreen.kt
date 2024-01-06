@@ -37,9 +37,11 @@ fun SelectGame(
 
     when (gamesUiState) {
         is SelectGameUiState.SelectGameSuccess -> {
+
             SelectGame(
                 games = (gamesUiState as SelectGameUiState.SelectGameSuccess).games,
                 openDrawer = openDrawer,
+                dontChangeUiWideScreen = (gamesUiState as SelectGameUiState.SelectGameSuccess).settings.dontChangeUiOnWideScreen,
                 navigateToGame = navigateToGame,
                 resetGame = { viewModel.resetGameWithData(it) },
                 deleteGame = { viewModel.deleteGameWithData(it) },
@@ -66,6 +68,7 @@ fun SelectGame(
 internal fun SelectGame(
     modifier: Modifier = Modifier,
     title: String = stringResource(id = R.string.title_selectGame),
+    dontChangeUiWideScreen: Boolean,
     games: List<GameModel>,
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
@@ -73,8 +76,7 @@ internal fun SelectGame(
     deleteGame: (Long) -> Unit,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
-    // TODO make gridLayout maybe?
-    DefaultScaffoldNavigation(title = title, openDrawer = openDrawer) { scaffoldModifier ->
+    DefaultScaffoldNavigation(title = title, openDrawer = openDrawer, dontChangeUiWideScreen = dontChangeUiWideScreen) { scaffoldModifier ->
         Column(modifier = scaffoldModifier) {
             updateChecker(Modifier.padding(top = 8.dp))
 
@@ -83,7 +85,7 @@ internal fun SelectGame(
                 .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalArrangement = Arrangement.Center,
-                columns = GridCells.Adaptive(330.dp),
+                columns = if(dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(330.dp),
                 content = {
                     items(games, key = { game -> game.gameId }) { game ->
                         GamePreviewComponent(
@@ -116,7 +118,7 @@ internal fun SelectGame(
 @Preview(showBackground = true, widthDp = 800, heightDp = 300)
 @Composable
 fun SelectGamePreview() {
-    SelectGame(games = listOf(
+    SelectGame(dontChangeUiWideScreen = false, games = listOf(
         GameModel(
             1L, "Game 1", 0L, 0L,
             listOf(
@@ -202,7 +204,7 @@ fun SelectGamePreview() {
 @Preview(showBackground = true, widthDp = 800, heightDp = 300)
 @Composable
 fun SelectGamePreviewWithOneGame() {
-    SelectGame(games = listOf(
+    SelectGame(dontChangeUiWideScreen = false, games = listOf(
         GameModel(
             1L, "Game 1", 0L, 0L,
             listOf(
@@ -236,7 +238,7 @@ fun SelectGamePreviewWithOneGame() {
 @Preview(showBackground = true, widthDp = 400, heightDp = 500)
 @Composable
 fun SelectGamePreviewWithNoGames() {
-    SelectGame(games = listOf(),
+    SelectGame(dontChangeUiWideScreen = false, games = listOf(),
         openDrawer = {},
         navigateToGame = {},
         resetGame = {},

@@ -30,12 +30,14 @@ fun Highscores(
     viewModel: HighscoresViewModel = hiltViewModel(),
     openDrawer: () -> Unit
 ) {
+    val dontChangeUiWideScreen by viewModel.dontChangeUiWideScreen.collectAsState()
     val highscoresUiState by viewModel.highscoresUiState.collectAsState()
 
     when (highscoresUiState) {
         is HighscoresUiState.HighscoresSuccess -> {
             Highscores(
                 modifier = modifier,
+                dontChangeUiWideScreen = dontChangeUiWideScreen,
                 title = stringResource(id = R.string.highscores),
                 highscores = (highscoresUiState as HighscoresUiState.HighscoresSuccess).highscores,
                 openDrawer = openDrawer
@@ -44,13 +46,15 @@ fun Highscores(
 
         is HighscoresUiState.HighscoresError -> {
             DefaultScaffoldNavigation(
-                title = stringResource(id = R.string.highscoresError), openDrawer = openDrawer
+                title = stringResource(id = R.string.highscoresError),
+                openDrawer = openDrawer,
             ) {}
         }
 
         is HighscoresUiState.HighscoresLoading -> {
             DefaultScaffoldNavigation(
-                title = stringResource(id = R.string.highscoresLoading), openDrawer = openDrawer
+                title = stringResource(id = R.string.highscoresLoading),
+                openDrawer = openDrawer,
             ) {}
         }
     }
@@ -58,9 +62,15 @@ fun Highscores(
 
 @Composable
 internal fun Highscores(
-    modifier: Modifier, title: String, highscores: List<Highscore>, openDrawer: () -> Unit
+    modifier: Modifier,
+    title: String,
+    highscores: List<Highscore>,
+    dontChangeUiWideScreen: Boolean,
+    openDrawer: () -> Unit
 ) {
-    DefaultScaffoldNavigation(title = title, openDrawer = openDrawer) { scaffoldModifier ->
+    DefaultScaffoldNavigation(
+        title = title, openDrawer = openDrawer, dontChangeUiWideScreen = dontChangeUiWideScreen
+    ) { scaffoldModifier ->
         Column(modifier = scaffoldModifier.then(modifier)) {
             Row(
                 modifier = Modifier.height(IntrinsicSize.Min)
@@ -111,7 +121,10 @@ internal fun Highscores(
 @Composable
 fun HighscoresPreview() {
     Highscores(
-        modifier = Modifier, title = stringResource(id = R.string.highscores), highscores = listOf(
+        modifier = Modifier,
+        dontChangeUiWideScreen = false,
+        title = stringResource(id = R.string.highscores),
+        highscores = listOf(
             Highscore(playerName = "Player 1", points = 100L),
             Highscore(playerName = "Player 2", points = 37824L),
             Highscore(playerName = "Player 3", points = 10L),
@@ -126,7 +139,7 @@ fun HighscoresPreview() {
 @Composable
 fun HighscoresPreviewNoScores() {
     Highscores(
-        modifier = Modifier, title = stringResource(id = R.string.highscores), highscores = listOf()
+        modifier = Modifier, dontChangeUiWideScreen = false, title = stringResource(id = R.string.highscores), highscores = listOf()
     ) {
 
     }

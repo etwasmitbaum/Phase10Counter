@@ -18,22 +18,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tjEnterprises.phase10Counter.R
+import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultScaffoldNavigation (
-    title: String, openDrawer: () -> Unit, content: @Composable (modifier: Modifier) -> Unit
+    title: String, openDrawer: () -> Unit, dontChangeUiWideScreen: Boolean = SettingsModel().dontChangeUiOnWideScreen, content: @Composable (modifier: Modifier) -> Unit
 ) {
     BoxWithConstraints {
         /*
         if in landscape with low height, remove the topBar and only show Menu button
         the left side is filled with padding, so the content wont overlap with the button
-        TODO make it configurable to disable the the landscape separation
         */
         val landscape = maxHeight <= 375.dp
 
         Scaffold(topBar = {
-            if (!landscape) {
+            if (!landscape || dontChangeUiWideScreen) {
                 CenterAlignedTopAppBar(
                     title = { Text(text = title) },
                     navigationIcon = {
@@ -49,7 +49,7 @@ fun DefaultScaffoldNavigation (
                 )
             }
         }) { innerPadding ->
-            if (landscape) {
+            if (landscape && !dontChangeUiWideScreen) {
                 Box(
                     modifier = Modifier
                         .padding(innerPadding)
@@ -77,7 +77,7 @@ fun DefaultScaffoldNavigation (
 @Preview(showBackground = true, widthDp = 600, heightDp = 250)
 @Composable
 fun DefaultScaffoldPreview() {
-    DefaultScaffoldNavigation(title = "Title", openDrawer = { }) {
+    DefaultScaffoldNavigation(title = "Title", openDrawer = { }, dontChangeUiWideScreen = false) {
         Text(text = "Content", fontSize = 24.sp, modifier = it)
     }
 }

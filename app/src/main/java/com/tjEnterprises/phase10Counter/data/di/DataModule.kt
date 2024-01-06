@@ -154,6 +154,10 @@ class fakeSettingsRepository @Inject constructor() : SettingsRepository {
     override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
         TODO("Not yet implemented")
     }
+
+    override suspend fun updateDontChangeUiWideScreen(dontChangeUiWideScreen: Boolean) {
+        TODO("Not yet implemented")
+    }
 }
 
 class UpdateCheckerRepository @Inject constructor() : UpdateCheckerRepository {

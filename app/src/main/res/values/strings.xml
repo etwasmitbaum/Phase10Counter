@@ -71,4 +71,5 @@
     <string name="noHighscoresYet">No High scores yet</string>
     <string name="errorAppLicence">Error Loading Licence</string>
     <string name="loadingAppLicence">Loading App Licence</string>
+    <string name="dontChangeUiOnWideScreen">Don\'t change UI on wide screens</string>
 </resources>

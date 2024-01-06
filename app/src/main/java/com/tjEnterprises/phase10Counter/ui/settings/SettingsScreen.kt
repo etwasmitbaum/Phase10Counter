@@ -2,18 +2,28 @@ package com.tjEnterprises.phase10Counter.ui.settings
 
 import android.os.Build
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alorma.compose.settings.storage.base.rememberBooleanSettingState
 import com.alorma.compose.settings.ui.SettingsSwitch
@@ -41,15 +51,20 @@ fun SettingsScreen(
                 updateUseDynamicColors = { viewModel.updateUseDynamicColors(it) },
                 updateUseSystemTheme = { viewModel.updateUseSystemTheme(it) },
                 updateUseDarkTheme = { viewModel.updateUseDarkTheme(it) },
+                updateDontChangeUiWideScreen = { viewModel.updateDontChangeUiWideScreen(it) },
                 updateChecker = { UpdateCheckerComponent(it) })
         }
 
         is SettingsUiState.SettingsLoading -> {
-            DefaultScaffoldNavigation(title = stringResource(id = R.string.settingsLoading), openDrawer = openDrawer) {}
+            DefaultScaffoldNavigation(
+                title = stringResource(id = R.string.settingsLoading), openDrawer = openDrawer
+            ) {}
         }
 
         is SettingsUiState.SettingsError -> {
-            DefaultScaffoldNavigation(title = stringResource(id = R.string.settingsError), openDrawer = openDrawer) {}
+            DefaultScaffoldNavigation(
+                title = stringResource(id = R.string.settingsError), openDrawer = openDrawer
+            ) {}
         }
     }
 }
@@ -64,12 +79,22 @@ internal fun SettingsScreen(
     updateUseDynamicColors: (Boolean) -> Unit,
     updateUseSystemTheme: (Boolean) -> Unit,
     updateUseDarkTheme: (Boolean) -> Unit,
+    updateDontChangeUiWideScreen: (Boolean) -> Unit,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
 
-    DefaultScaffoldNavigation(title = title, openDrawer = openDrawer) { scaffoldModifier ->
+    DefaultScaffoldNavigation(
+        title = title,
+        openDrawer = openDrawer,
+        dontChangeUiWideScreen = settings.dontChangeUiOnWideScreen
+    ) { scaffoldModifier ->
 
-        Column(modifier = scaffoldModifier.then(modifier)) {
+        val scrollState = rememberScrollState()
+        Column(
+            modifier = scaffoldModifier
+                .then(modifier)
+                .verticalScroll(scrollState)
+        ) {
 
             updateChecker(Modifier)
 
@@ -137,12 +162,27 @@ internal fun SettingsScreen(
                 })
 
             Divider()
+
+            // Force don't Change Ui on Wide Screen
+            SettingsSwitch(title = { Text(text = stringResource(id = R.string.dontChangeUiOnWideScreen)) },
+                state = rememberBooleanSettingState(settings.dontChangeUiOnWideScreen),
+                onCheckedChange = { newValue -> updateDontChangeUiWideScreen(newValue) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null,
+                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                    )
+                })
+
+            Divider()
         }
     }
 }
 
 
 @Preview(showBackground = true)
+@Preview(showBackground = true, locale = "DE")
 @Composable
 fun SettingsScreenPreview() {
     SettingsScreen(modifier = Modifier,
@@ -151,5 +191,6 @@ fun SettingsScreenPreview() {
         updateCheckForUpdates = {},
         updateUseDynamicColors = {},
         updateUseSystemTheme = {},
+        updateDontChangeUiWideScreen = {},
         updateUseDarkTheme = {})
 }

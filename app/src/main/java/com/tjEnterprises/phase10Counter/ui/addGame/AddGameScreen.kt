@@ -44,14 +44,17 @@ fun AddGameScreen(
     openDrawer: () -> Unit,
     viewModel: AddGameViewModel = hiltViewModel()
 ) {
+    val dontChangeUiWideScreen by viewModel.dontChangeUiWideScreen.collectAsState()
     val newCreatedGameID by viewModel.newCreatedGameId.collectAsState()
 
-    AddGameScreen(openDrawer = openDrawer,
+    AddGameScreen(
+        openDrawer = openDrawer,
         addGame = { gameName, names ->
             viewModel.addGame(gameName, names)
         },
         newCreatedGameID = newCreatedGameID,
         tempPlayerNames = viewModel.tempPlayerNames,
+        dontChangeUiWideScreen = dontChangeUiWideScreen,
         removeTempPlayerName = { viewModel.removeTempPlayerName(it) },
         navigateToGame = navigateToGame,
         resetNewCreatedGameID = { viewModel.resetNewCreatedGameID() },
@@ -69,6 +72,7 @@ internal fun AddGameScreen(
     addGame: (String, List<String>) -> Unit,
     resetNewCreatedGameID: () -> Unit,
     newCreatedGameID: Long,
+    dontChangeUiWideScreen: Boolean,
     tempPlayerNames: SnapshotStateList<String>,
     removeTempPlayerName: (Int) -> Unit,
     updateChecker: @Composable (Modifier) -> Unit = {}
@@ -90,7 +94,9 @@ internal fun AddGameScreen(
     }
 
     DefaultScaffoldNavigation(
-        title = stringResource(id = R.string.title_addNewGame), openDrawer = openDrawer
+        title = stringResource(id = R.string.title_addNewGame),
+        openDrawer = openDrawer,
+        dontChangeUiWideScreen = dontChangeUiWideScreen
     ) { scaffoldModifier ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -102,7 +108,7 @@ internal fun AddGameScreen(
             updateChecker(Modifier.padding(bottom = 10.dp))
             BoxWithConstraints {
                 // Put TextFields and button in a row
-                if (maxWidth > 400.dp) {
+                if (maxWidth > 400.dp && !dontChangeUiWideScreen) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         TextField(value = textGame,
                             onValueChange = { textGame = it },
@@ -188,14 +194,20 @@ internal fun AddGameScreen(
             }
 
             Button(onClick = {
-                if(textGame != ""){
+                if (textGame != "") {
                     if (tempPlayerNames.size >= 2) {
                         addGame(textGame, tempPlayerNames)
                     } else {
-                        Toast.makeText(context, context.getString(R.string.atLeast2PlayersRequired), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.atLeast2PlayersRequired),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
-                    Toast.makeText(context, context.getString(R.string.gameMustHaveAName), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context, context.getString(R.string.gameMustHaveAName), Toast.LENGTH_SHORT
+                    ).show()
                 }
 
             }, modifier = Modifier.align(Alignment.End)) {
@@ -212,12 +224,15 @@ internal fun AddGameScreen(
 }
 
 // returns true, if player was saved successfully
-fun addPlayerToList(textFieldText: String, tempPlayerNames: SnapshotStateList<String>, context: Context) : Boolean{
+fun addPlayerToList(
+    textFieldText: String, tempPlayerNames: SnapshotStateList<String>, context: Context
+): Boolean {
     return if (textFieldText != "") {
         tempPlayerNames.add(0, textFieldText)
         true
     } else {
-        Toast.makeText(context, context.getString(R.string.playerMustHaveAName), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.playerMustHaveAName), Toast.LENGTH_SHORT)
+            .show()
         false
     }
 }
@@ -242,6 +257,7 @@ fun AddGameScreenPreview() {
         addGame = { _, _ -> },
         resetNewCreatedGameID = { },
         newCreatedGameID = -1L,
+        dontChangeUiWideScreen = false,
         tempPlayerNames = tempPlayerNames,
         removeTempPlayerName = {},
         updateChecker = {})

@@ -49,4 +49,9 @@ class SettingsViewModel @Inject constructor(
             settingsRepository.updateUseDarkTheme(useDarkTheme)
         }
     }
+    fun updateDontChangeUiWideScreen(dontChangeUiWideScreen: Boolean){
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.updateDontChangeUiWideScreen(dontChangeUiWideScreen)
+        }
+    }
 }

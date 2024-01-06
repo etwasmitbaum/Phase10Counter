@@ -1,6 +1,8 @@
 package com.tjEnterprises.phase10Counter.ui.about
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ExitToApp
@@ -9,25 +11,51 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 
 @Composable
-fun AboutScreen(openDrawer: () -> Unit, navigateToAboutLibraries: () -> Unit, navigateToAppLicence: () -> Unit) {
+fun AboutScreen(
+    openDrawer: () -> Unit, navigateToAboutLibraries: () -> Unit, navigateToAppLicence: () -> Unit, viewModel: AboutScreenViewModel = hiltViewModel()
+) {
+    val dontChangeUiWideScreen by viewModel.dontChangeUiWideScreen.collectAsState()
+
+    AboutScreen(
+        openDrawer = openDrawer,
+        navigateToAboutLibraries = navigateToAboutLibraries,
+        navigateToAppLicence = navigateToAppLicence,
+        dontChangeUiWideScreen = dontChangeUiWideScreen
+    )
+}
+
+
+@Composable
+fun AboutScreen(
+    openDrawer: () -> Unit,
+    navigateToAboutLibraries: () -> Unit,
+    navigateToAppLicence: () -> Unit,
+    dontChangeUiWideScreen: Boolean
+) {
     DefaultScaffoldNavigation(
-        title = stringResource(id = R.string.about), openDrawer = openDrawer
+        title = stringResource(id = R.string.about),
+        openDrawer = openDrawer,
+        dontChangeUiWideScreen = dontChangeUiWideScreen
     ) { scaffoldModifier ->
 
         val uriHandler = LocalUriHandler.current
+        val scrollState = rememberScrollState()
 
-        Column(modifier = scaffoldModifier) {
+        Column(modifier = scaffoldModifier.verticalScroll(scrollState)) {
 
             // Open Link to GitHub
             SettingsMenuLink(title = { Text(text = stringResource(id = R.string.githubRepository)) },
@@ -78,8 +106,7 @@ fun AboutScreen(openDrawer: () -> Unit, navigateToAboutLibraries: () -> Unit, na
             Divider()
 
             // Show all opensource licences
-            SettingsMenuLink(
-                title = { Text(text = stringResource(id = R.string.allOpenSourceLicenses)) },
+            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.allOpenSourceLicenses)) },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Clear,
@@ -96,8 +123,7 @@ fun AboutScreen(openDrawer: () -> Unit, navigateToAboutLibraries: () -> Unit, na
                         )
                     }
 
-                }
-            ) {
+                }) {
                 navigateToAboutLibraries()
             }
             Divider()
@@ -120,5 +146,5 @@ fun AboutScreen(openDrawer: () -> Unit, navigateToAboutLibraries: () -> Unit, na
 @Preview(showBackground = true)
 @Composable
 fun AboutScreenPreview() {
-    AboutScreen(openDrawer = {}, navigateToAboutLibraries = {}, navigateToAppLicence = {})
+    AboutScreen(openDrawer = {}, navigateToAboutLibraries = {}, navigateToAppLicence = {}, dontChangeUiWideScreen = false)
 }

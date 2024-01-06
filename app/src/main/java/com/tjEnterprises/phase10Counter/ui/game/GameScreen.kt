@@ -52,6 +52,7 @@ fun GameScreen(
     navigateToGameSelect: () -> Unit,
     openDrawer: () -> Unit,
 ) {
+    val dontChangeUiWideScreen by viewModel.dontChangeUiWideScreen.collectAsState()
     val gamesUiState by viewModel.gameUiState.collectAsState()
     viewModel.setGameFromId(gameId)
 
@@ -66,18 +67,33 @@ fun GameScreen(
                 players = games.players,
                 gameTitle = games.name,
                 openDrawer = openDrawer,
-                addPointHistoryEntry = { point, pointGameId, playerId -> viewModel.addPointHistoryEntry(point = point, gameId = pointGameId, playerId = playerId) },
-                savePhasesOfPlayer = { playerId, gameIdPlayer, openPhases -> viewModel.savePlayerPhases(playerId, gameIdPlayer, openPhases) },
+                addPointHistoryEntry = { point, pointGameId, playerId ->
+                    viewModel.addPointHistoryEntry(
+                        point = point, gameId = pointGameId, playerId = playerId
+                    )
+                },
+                savePhasesOfPlayer = { playerId, gameIdPlayer, openPhases ->
+                    viewModel.savePlayerPhases(
+                        playerId, gameIdPlayer, openPhases
+                    )
+                },
+                dontChangeUiWideScreen = dontChangeUiWideScreen,
                 modifier = modifier
             )
         }
 
         is GameUiState.GameLoading -> {
-            DefaultScaffoldNavigation(title = stringResource(id = R.string.gameScreenLoading), openDrawer = openDrawer) {}
+            DefaultScaffoldNavigation(
+                title = stringResource(id = R.string.gameScreenLoading),
+                openDrawer = openDrawer,
+            ) {}
         }
 
         is GameUiState.GameError -> {
-            DefaultScaffoldNavigation(title = stringResource(id = R.string.gameScreenError), openDrawer = openDrawer) {}
+            DefaultScaffoldNavigation(
+                title = stringResource(id = R.string.gameScreenError),
+                openDrawer = openDrawer,
+            ) {}
         }
     }
 
@@ -87,47 +103,54 @@ fun GameScreen(
 internal fun GameScreen(
     players: List<PlayerModel>,
     gameTitle: String,
+    dontChangeUiWideScreen: Boolean,
     openDrawer: () -> Unit,
     addPointHistoryEntry: (Long, Long, Long) -> Unit,
     savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-    DefaultScaffoldNavigation(title = gameTitle, openDrawer = openDrawer, content = { scaffoldModifier ->
-        // TODO make "force portrait" setting
-        LazyVerticalGrid(
-            modifier = scaffoldModifier
-                .then(modifier)
-                .padding(bottom = 4.dp).fillMaxSize(),
-            horizontalArrangement = Arrangement.Center,
-            verticalArrangement = Arrangement.Center,
-            columns = GridCells.Adaptive(300.dp)
-        ) {
-            items(players, key = {player -> player.playerId}) { player ->
-                OnePlayerView(
-                    player = player,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .padding(bottom = 8.dp)
-                        .fillMaxWidth(),
-                    listOfPoints = player.pointHistory,
-                    addPointHistoryEntry = addPointHistoryEntry,
-                    savePhasesOfPlayer = savePhasesOfPlayer
-                )
-            }
+    DefaultScaffoldNavigation(title = gameTitle,
+        openDrawer = openDrawer,
+        dontChangeUiWideScreen = dontChangeUiWideScreen,
+        content = { scaffoldModifier ->
+            // TODO make "force portrait" setting
+            LazyVerticalGrid(
+                modifier = scaffoldModifier
+                    .then(modifier)
+                    .padding(bottom = 4.dp)
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center,
+                columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(300.dp)
+            ) {
+                items(players, key = { player -> player.playerId }) { player ->
+                    OnePlayerView(
+                        player = player,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .padding(bottom = 8.dp)
+                            .fillMaxWidth(),
+                        listOfPoints = player.pointHistory,
+                        addPointHistoryEntry = addPointHistoryEntry,
+                        savePhasesOfPlayer = savePhasesOfPlayer
+                    )
+                }
 
-            // add some padding at the bottom
-            item {
-                Spacer(
-                    modifier = Modifier.height(
-                        LocalConfiguration.current.screenHeightDp.dp.div(
-                            4
-                        )
-                    ).width(1.dp)
-                )
+                // add some padding at the bottom
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .height(
+                                LocalConfiguration.current.screenHeightDp.dp.div(
+                                    4
+                                )
+                            )
+                            .width(1.dp)
+                    )
+                }
             }
-        }
-    })
+        })
 }
 
 // Previews
@@ -137,8 +160,33 @@ internal fun GameScreen(
 @Composable
 fun GameScreenPreview() {
     GameScreen(players = listOf(
-        PlayerModel(1L, 1L, "Player1", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
-        PlayerModel(2L, 1L, "Player2", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
-        PlayerModel(3L, 1L, "Player3", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true))
-    ), openDrawer = {}, gameTitle = "Game 1", addPointHistoryEntry = {_, _, _ ->}, savePhasesOfPlayer = {_, _, _ ->})
+        PlayerModel(
+            1L,
+            1L,
+            "Player1",
+            listOf(256L),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true)
+        ), PlayerModel(
+            2L,
+            1L,
+            "Player2",
+            listOf(256L),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true)
+        ), PlayerModel(
+            3L,
+            1L,
+            "Player3",
+            listOf(256L),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true)
+        )
+    ),
+        openDrawer = {},
+        gameTitle = "Game 1",
+        addPointHistoryEntry = { _, _, _ -> },
+        savePhasesOfPlayer = { _, _, _ -> },
+        dontChangeUiWideScreen = false
+    )
 }
