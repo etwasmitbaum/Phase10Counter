@@ -117,5 +117,5 @@ fun dismiss(
 @Preview(device = Devices.NEXUS_5)
 @Composable
 fun PhasesComponentPreview() {
-    PhasesComponent(player = PlayerModel(1L, 1L, "Player1", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)), closeDialog = {}, savePhasesOfPlayer = { playerId, gameId, openPhases ->})
+    PhasesComponent(player = PlayerModel(1L, 1L, "Player1", listOf(256L), 256L, listOf(true, true, true, true, true, true, true, true, true, true)), closeDialog = {}, savePhasesOfPlayer = { _, _, _ ->})
 }

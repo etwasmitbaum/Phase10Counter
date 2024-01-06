@@ -16,10 +16,12 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tjEnterprises.phase10Counter.R
@@ -30,16 +32,29 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AppBaseScreen(
-    modifier: Modifier = Modifier, initialDrawerValue: DrawerValue = DrawerValue.Closed
+    modifier: Modifier = Modifier,
+    initialDrawerValue: DrawerValue = DrawerValue.Closed,
+    viewModel: AppBaseScreenViewModel = hiltViewModel()
+) {
+    val gamesCount by viewModel.gamesCount.collectAsState()
+
+    AppBaseScreen(
+        modifier = modifier, initialDrawerValue = initialDrawerValue, gamesCount = gamesCount
+    )
+}
+
+@Composable
+internal fun AppBaseScreen(
+    modifier: Modifier = Modifier,
+    initialDrawerValue: DrawerValue = DrawerValue.Closed,
+    gamesCount: Long
 ) {
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
     val navigationActions = NavigationActions(navController = navController)
 
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: NavigationDestination.ADD_GAMESCREEN
-
 
     val drawerState = rememberDrawerState(initialValue = initialDrawerValue)
 
@@ -125,7 +140,8 @@ fun AppBaseScreen(
         MainNavigation(
             navController = navController,
             openDrawer = { scope.launch { drawerState.open() } },
-            navigationActions = navigationActions
+            navigationActions = navigationActions,
+            startDestination = if (gamesCount == 0L) NavigationDestination.ADD_GAMESCREEN else NavigationDestination.GAME_ROUTE
         )
     }
 }

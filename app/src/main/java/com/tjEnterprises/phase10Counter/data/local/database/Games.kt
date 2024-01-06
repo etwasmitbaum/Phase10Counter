@@ -47,10 +47,13 @@ interface GameDao {
     fun getAllGames(): Flow<List<Game>>
 
     @Query("SELECT * FROM Game WHERE game_id IS :gameId")
-    fun getGameFromId(gameId: Long): Game
+    suspend fun getGameFromId(gameId: Long): Game
 
     @Query("SELECT * FROM Game WHERE game_id IS :gameId")
     fun getGameFromIdAsFlow(gameId: Long): Flow<Game>
+
+    @Query("SELECT COUNT(*) FROM Game")
+    suspend fun getGamesCount(): Long
 
     @Insert
     suspend fun insertGame(game: Game): Long

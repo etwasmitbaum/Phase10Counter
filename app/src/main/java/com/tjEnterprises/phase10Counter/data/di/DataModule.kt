@@ -116,6 +116,10 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun getGamesCount(): Long {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistory> {
         TODO("Not yet implemented")
     }

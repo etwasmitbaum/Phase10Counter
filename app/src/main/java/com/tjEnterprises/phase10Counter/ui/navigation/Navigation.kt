@@ -40,11 +40,12 @@ fun MainNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     openDrawer: () -> Unit = {},
-    navigationActions: NavigationActions
+    navigationActions: NavigationActions,
+    startDestination: String
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavigationDestination.ADD_GAMESCREEN,
+        startDestination = startDestination,
         modifier = modifier,
         contentAlignment = Alignment.TopStart // this is needed, else a weird bouncing animation in introduced. see https://issuetracker.google.com/issues/295536728
     ) {

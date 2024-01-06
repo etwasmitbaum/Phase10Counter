@@ -54,6 +54,7 @@ interface DatabaseRepository {
     suspend fun updateGameModifiedTimestamp(gameId: Long)
 
     fun getPointHistoryOfGameAsFlow(gameId: Long): Flow<List<PointHistory>>
+    suspend fun getGamesCount(): Long
     suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistory>
     suspend fun insertPointHistory(point: Long, gameId: Long, playerId: Long)
     suspend fun deletePointHistoryOfPlayer(playerId: Long)
@@ -276,6 +277,10 @@ interface DatabaseRepository {
 
         override fun getPointHistoryOfGameAsFlow(gameId: Long): Flow<List<PointHistory>> {
             return pointHistoryDao.getPointHistoryOfGame(gameId)
+        }
+
+        override suspend fun getGamesCount(): Long {
+            return gameDao.getGamesCount()
         }
 
         override suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistory> {
