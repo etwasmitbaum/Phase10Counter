@@ -16,6 +16,7 @@
 
 package com.tjEnterprises.phase10Counter.data.local.repositories
 
+import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
@@ -60,12 +61,15 @@ interface DatabaseRepository {
     suspend fun insertHighscore(playerName: String, point: Long, timeStamp: Long = -1L)
     suspend fun deleteHighScore(highscoreId: Long)
 
+    fun closeDatabase()
+
     class DefaultDatabaseRepository @Inject constructor(
         private val gameDao: GameDao,
         private val playerDao: PlayerDao,
         private val pointHistoryDao: PointHistoryDao,
         private val phasesDao: PhasesDao,
-        private val highscoreDao: HighscoreDao
+        private val highscoreDao: HighscoreDao,
+        private val appDatabase: AppDatabase
     ) : DatabaseRepository {
 
         override val games: Flow<List<GameModel>> = combine(
@@ -304,6 +308,10 @@ interface DatabaseRepository {
 
         override suspend fun deleteHighScore(highscoreId: Long) {
             highscoreDao.deleteHighscore(highscoreDao.getHighscore(highscoreId))
+        }
+
+        override fun closeDatabase() {
+            appDatabase.close()
         }
     }
 }

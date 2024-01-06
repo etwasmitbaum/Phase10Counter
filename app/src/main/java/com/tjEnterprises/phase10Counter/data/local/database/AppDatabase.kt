@@ -31,4 +31,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun PoinHistoryDao(): PointHistoryDao
     abstract fun PhasesDao(): PhasesDao
     abstract fun HighscoreDao(): HighscoreDao
+
+    companion object {
+        fun getName(): String{
+            return "Database"
+        }
+    }
 }

@@ -16,6 +16,7 @@
 
 package com.tjEnterprises.phase10Counter.data.di
 
+import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
 import com.tjEnterprises.phase10Counter.data.local.database.Phases
@@ -135,6 +136,9 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override fun closeDatabase() {
+        TODO("Not yet implemented")
+    }
 }
 
 class fakeSettingsRepository @Inject constructor() : SettingsRepository {

@@ -75,4 +75,10 @@
     <string name="cancel">Cancel</string>
     <string name="deleteGame">Delete game</string>
     <string name="resetGame">Reset game</string>
+    <string name="backupGames">Backup all games</string>
+    <string name="restoreGames">Restore games</string>
+    <string name="backupFileName">Phase10 Backup</string>
+    <string name="errorCreatingBackup">Error while creating backup</string>
+    <string name="errorWhileRestoring">Error while restoring</string>
+    <string name="thisWillOverwriteAllExistingData">This will overwite all existing data</string>
 </resources>

@@ -1,18 +1,24 @@
 package com.tjEnterprises.phase10Counter.ui.settings
 
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -21,18 +27,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alorma.compose.settings.storage.base.rememberBooleanSettingState
+import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSwitch
 import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.R
+import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.ui.SettingsUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun SettingsScreen(
@@ -41,6 +52,7 @@ fun SettingsScreen(
     openDrawer: () -> Unit,
 ) {
     val settingsUiState by viewModel.settingsUiState.collectAsState()
+    val copyError by viewModel.copyError.collectAsState()
 
     when (settingsUiState) {
         is SettingsUiState.SettingsSuccess -> {
@@ -51,6 +63,9 @@ fun SettingsScreen(
                 updateUseDynamicColors = { viewModel.updateUseDynamicColors(it) },
                 updateUseSystemTheme = { viewModel.updateUseSystemTheme(it) },
                 updateUseDarkTheme = { viewModel.updateUseDarkTheme(it) },
+                doBackup = {context, pickedUri, progress -> viewModel.backUpDatabase(context, pickedUri, progress) },
+                doRestore = {context, pickedUri, progress -> viewModel.restoreDatabase(context, pickedUri, progress) },
+                copyError = copyError,
                 updateDontChangeUiWideScreen = { viewModel.updateDontChangeUiWideScreen(it) },
                 updateChecker = { UpdateCheckerComponent(it) })
         }
@@ -79,9 +94,52 @@ internal fun SettingsScreen(
     updateUseDynamicColors: (Boolean) -> Unit,
     updateUseSystemTheme: (Boolean) -> Unit,
     updateUseDarkTheme: (Boolean) -> Unit,
+    doBackup: (Context, Uri, MutableFloatState) -> Unit,
+    doRestore: (Context, Uri, MutableFloatState) -> Unit,
+    copyError: Boolean,
     updateDontChangeUiWideScreen: (Boolean) -> Unit,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
+    val copyProgress = remember { mutableFloatStateOf(0f) }
+    val context = LocalContext.current
+    val showCopyDialog = remember { mutableStateOf(false) }
+    var wasBackup: Boolean? = null
+
+    val backupARL = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val pickedURI = result.data?.data
+            showCopyDialog.value = true
+            wasBackup = true
+            doBackup(context, pickedURI!!, copyProgress)
+        } else { /* The activity was canceled. */ }
+    }
+
+    val restoreARL = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val pickedURI = result.data?.data
+            showCopyDialog.value = true
+            wasBackup = false
+            doRestore(context, pickedURI!!, copyProgress)
+        } else { /* The activity was canceled. */ }
+    }
+
+    when {
+        showCopyDialog.value -> {
+            CopyDialog(progress = copyProgress.floatValue, showDialog = showCopyDialog)
+        }
+        copyError -> {
+            if (wasBackup == false){
+                Toast.makeText(context, stringResource(id = R.string.errorWhileRestoring), Toast.LENGTH_SHORT).show()
+
+            } else if (wasBackup == true){
+                Toast.makeText(context, stringResource(id = R.string.errorCreatingBackup), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     DefaultScaffoldNavigation(
         title = title,
@@ -176,6 +234,42 @@ internal fun SettingsScreen(
                 })
 
             Divider()
+
+            // Backup Game
+            val fileName = stringResource(id = R.string.backupFileName)
+            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.backupGames)) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null,
+                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                    )
+                }) {
+                val intent =
+                    Intent(Intent.ACTION_CREATE_DOCUMENT).setType("application/octet-stream")
+                        .putExtra(
+                            Intent.EXTRA_TITLE, "$fileName " + SimpleDateFormat(
+                                "dd MMM yyyy", Locale.getDefault()
+                            ).format(System.currentTimeMillis())
+                        )
+                backupARL.launch(intent)
+            }
+
+            // Restore games from backup file
+            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.restoreGames)) },
+                subtitle = { Text(text = stringResource(id = R.string.thisWillOverwriteAllExistingData))},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null,
+                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                    )
+                }) {
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).setType("application/octet-stream")
+                restoreARL.launch(intent)
+            }
+
+            Divider()
         }
     }
 }
@@ -191,6 +285,9 @@ fun SettingsScreenPreview() {
         updateCheckForUpdates = {},
         updateUseDynamicColors = {},
         updateUseSystemTheme = {},
+        doBackup = { _, _, _ ->  },
+        doRestore = { _, _, _ ->  },
+        copyError = false,
         updateDontChangeUiWideScreen = {},
         updateUseDarkTheme = {})
 }

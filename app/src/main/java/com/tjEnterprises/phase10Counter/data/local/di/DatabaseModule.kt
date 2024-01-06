@@ -18,6 +18,7 @@ package com.tjEnterprises.phase10Counter.data.local.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
 import com.tjEnterprises.phase10Counter.data.local.database.HighscoreDao
@@ -44,22 +45,22 @@ class DatabaseModule {
     }
 
     @Provides
-    fun providePlayerDao(appDatabase: AppDatabase): PlayerDao{
+    fun providePlayerDao(appDatabase: AppDatabase): PlayerDao {
         return appDatabase.PlayerDao()
     }
 
     @Provides
-    fun providePointHistoryDao(appDatabase: AppDatabase): PointHistoryDao{
+    fun providePointHistoryDao(appDatabase: AppDatabase): PointHistoryDao {
         return appDatabase.PoinHistoryDao()
     }
 
     @Provides
-    fun provideHighscoreDao(appDatabase: AppDatabase): HighscoreDao{
+    fun provideHighscoreDao(appDatabase: AppDatabase): HighscoreDao {
         return appDatabase.HighscoreDao()
     }
 
     @Provides
-    fun providePhasesDao(appDatabase: AppDatabase): PhasesDao{
+    fun providePhasesDao(appDatabase: AppDatabase): PhasesDao {
         return appDatabase.PhasesDao()
     }
 
@@ -67,9 +68,13 @@ class DatabaseModule {
     @Singleton
     fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
         return Room.databaseBuilder(
-            appContext,
-            AppDatabase::class.java,
-            "Database"
-        ).addMigrations(MigrationHelper.MIGRATION_1_2, Migration2To3(context = appContext), Migration3To4(context = appContext)).build()
+            appContext, AppDatabase::class.java, AppDatabase.getName()
+        ).addMigrations(
+            MigrationHelper.MIGRATION_1_2,
+            Migration2To3(context = appContext),
+            Migration3To4(context = appContext)
+        ).setJournalMode(
+            RoomDatabase.JournalMode.TRUNCATE // set to TRUNCATE, so all is always stored in a single file to easier make backups
+        ).build()
     }
 }

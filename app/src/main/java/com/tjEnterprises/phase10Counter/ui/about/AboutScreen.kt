@@ -77,7 +77,9 @@ fun AboutScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                }) {}
+                }) {
+                uriHandler.openUri("https://github.com/etwasmitbaum/Phase10Counter")
+            }
             Divider()
 
             // App Licence
