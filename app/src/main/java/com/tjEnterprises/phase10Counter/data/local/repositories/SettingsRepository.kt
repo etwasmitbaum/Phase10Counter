@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -27,7 +28,7 @@ interface SettingsRepository {
         private val dataStore: DataStore<Preferences>
     ) : SettingsRepository {
 
-        object SettingsKeys {
+        private object SettingsKeys {
             val CHECK_FOR_UPDATES = booleanPreferencesKey("checkForUpdates")
             val USE_DYNAMIC_COLORS = booleanPreferencesKey("useDynamicColors")
             val USE_DARK_THEME = booleanPreferencesKey("useDarkTheme")
@@ -46,8 +47,11 @@ interface SettingsRepository {
 
                 val defaultSetting = SettingsModel()
 
+                // Don't check for updates on F-Droid release
                 val checkForUpdates =
-                    preferences[SettingsKeys.CHECK_FOR_UPDATES] ?: defaultSetting.checkForUpdates
+                    if (BuildConfig.BUILD_TYPE != "release") preferences[SettingsKeys.CHECK_FOR_UPDATES]
+                        ?: defaultSetting.checkForUpdates else false
+
                 val useDynamicColors =
                     preferences[SettingsKeys.USE_DYNAMIC_COLORS] ?: defaultSetting.useDynamicColors
                 val useDarkTheme =

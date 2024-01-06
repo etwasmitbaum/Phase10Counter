@@ -30,6 +30,7 @@ fun UpdateCheckerComponent(
     val checkForUpdates by viewModel.checkForUpdates.collectAsState()
 
     if (checkForUpdates) {
+        viewModel.loadVersionNumber()
         UpdateCheckerComponent(modifier = modifier, versionNumber = versionNumber)
     }
 }
