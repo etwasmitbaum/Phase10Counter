@@ -26,10 +26,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -41,6 +43,7 @@ import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.ui.GameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
+import kotlinx.coroutines.launch
 import javax.inject.Singleton
 
 @Composable
@@ -114,27 +117,34 @@ internal fun GameScreen(
         openDrawer = openDrawer,
         dontChangeUiWideScreen = dontChangeUiWideScreen,
         content = { scaffoldModifier ->
-            // TODO make "force portrait" setting
+
+            val gridState = rememberLazyGridState()
+            val coroutineScope = rememberCoroutineScope()
+
             LazyVerticalGrid(
                 modifier = scaffoldModifier
                     .then(modifier)
                     .padding(bottom = 4.dp)
                     .fillMaxSize(),
+                state = gridState,
                 horizontalArrangement = Arrangement.Center,
                 verticalArrangement = Arrangement.Center,
                 columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(300.dp)
             ) {
-                items(players, key = { player -> player.playerId }) { player ->
-                    OnePlayerView(
-                        player = player,
+                itemsIndexed(items = players) { idx, player ->
+                    OnePlayerView(player = player,
                         modifier = Modifier
                             .padding(8.dp)
                             .padding(bottom = 8.dp)
                             .fillMaxWidth(),
                         listOfPoints = player.pointHistory,
                         addPointHistoryEntry = addPointHistoryEntry,
-                        savePhasesOfPlayer = savePhasesOfPlayer
-                    )
+                        savePhasesOfPlayer = savePhasesOfPlayer,
+                        scrollToNextPosition = {
+                            coroutineScope.launch {
+                                gridState.animateScrollToItem(if (idx > 1) idx - 1 else 0)
+                            }
+                        })
                 }
 
                 // add some padding at the bottom
@@ -143,7 +153,7 @@ internal fun GameScreen(
                         modifier = Modifier
                             .height(
                                 LocalConfiguration.current.screenHeightDp.dp.div(
-                                    4
+                                    3
                                 )
                             )
                             .width(1.dp)

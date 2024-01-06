@@ -46,7 +46,8 @@ fun OnePlayerView(
     player: PlayerModel,
     listOfPoints: List<Long>,
     savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
-    addPointHistoryEntry: (Long, Long, Long) -> Unit
+    addPointHistoryEntry: (Long, Long, Long) -> Unit,
+    scrollToNextPosition: () -> Unit
 ) {
     var text by remember {
         mutableStateOf("")
@@ -86,7 +87,6 @@ fun OnePlayerView(
                 maxLines = 1,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
-                    // TODO scroll down further than just the textfield ,on ImeAction
                     keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
                 ),
                 modifier = Modifier
@@ -95,6 +95,9 @@ fun OnePlayerView(
                         if (!it.isFocused && text != "" && !(text.contains('.') || text.contains(','))) {
                             addPointHistoryEntry(text.toLong(), player.gameId, player.playerId)
                             text = ""
+                        }
+                        if (it.isFocused) {
+                            scrollToNextPosition()
                         }
                     })
             PointHistoryDropDown(listOfPoints, player.pointSum)
@@ -200,7 +203,7 @@ fun OnePlayerPreview() {
         listOf(true, true, true, true, true, true, true, true, true, true)
     ), listOfPoints = listOf(
         70L, 100L
-    ), addPointHistoryEntry = { _, _, _ -> }, savePhasesOfPlayer = { _, _, _ -> })
+    ), addPointHistoryEntry = { _, _, _ -> }, savePhasesOfPlayer = { _, _, _ -> }, scrollToNextPosition = {})
 }
 
 @Preview(showBackground = true)
@@ -215,7 +218,7 @@ fun OnePlayerPreview2() {
         listOf(false, false, false, false, false, false, false, false, false, false)
     ), listOfPoints = listOf(
         70L, 100L
-    ), addPointHistoryEntry = { _, _, _ -> }, savePhasesOfPlayer = { _, _, _ -> })
+    ), addPointHistoryEntry = { _, _, _ -> }, savePhasesOfPlayer = { _, _, _ -> }, scrollToNextPosition = {})
 }
 
 @Preview(showBackground = true)
