@@ -17,6 +17,8 @@ The Source Code is half english half german and probably contains several war cr
 # Big thanks
 Big thanks to [@rafi0101](https://github.com/rafi0101) for his [Android-Room-Database-Backup](https://github.com/rafi0101/Android-Room-Database-Backup) project. I used and slightly modfied his code for this app (before Version 3.0).
 
+Big thanks to [@fz72](https://github.com/fz72) for his help on this project.
+
 # Copyright notice and Attribution
 This App uses the Architecture Template from here: https://github.com/android/architecture-templates/tree/base which is Licensed under the Apache License 2.0.
 
