@@ -11,15 +11,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Entity
 data class Highscore(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo("id")
+    var id: Long = 0,
     @ColumnInfo(name = "playerName") val playerName: String,
     @ColumnInfo(name = "points") val points: Long,
     @ColumnInfo("timestamp")
     var timestamp: Long = System.currentTimeMillis()
-) {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo("id")
-    var id: Long = 0
-}
+)
 
 @Dao
 interface HighscoreDao {

@@ -79,6 +79,7 @@
     <string name="backupFileName">Phase10 Backup</string>
     <string name="errorCreatingBackup">Fehler beim Backup erstellen</string>
     <string name="errorWhileRestoring">Fehler beim wiederherstellen</string>
-    <string name="thisWillOverwriteAllExistingData">Alle verhandenen Daten werden überschrieben</string>
+    <string name="thisWillOverwriteAllExistingData">Alle verhandenen Daten werden überschrieben.</string>
     <string name="highscoresHint">Lösche oder setze ein Spiel zurück, wo ein Spieler alle Phasen abgeschlossen hat, um einen Highscore hinzuzufügen.</string>
+    <string name="appRestartMayBeRequired">App neustart kann erforderlich sein.</string>
 </resources>

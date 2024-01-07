@@ -1,0 +1,3 @@
+- Komplette Neuprogramierung der App
+- Es ist möglich, mehrere Spiele zu haben
+- Es kann nun der Backuppfad ausgewählt werden

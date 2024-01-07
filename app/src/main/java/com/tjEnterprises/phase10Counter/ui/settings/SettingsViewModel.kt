@@ -153,3 +153,9 @@ class SettingsViewModel @Inject constructor(
         }
     }
 }
+
+object WasCopyRestore {
+    const val WAS_NEITHER = 0
+    const val WAS_BACKUP = 1
+    const val WAS_RESTORE = 2
+}

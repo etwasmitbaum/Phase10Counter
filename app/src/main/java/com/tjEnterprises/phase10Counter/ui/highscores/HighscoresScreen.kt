@@ -3,9 +3,13 @@ package com.tjEnterprises.phase10Counter.ui.highscores
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -71,51 +75,66 @@ internal fun Highscores(
     DefaultScaffoldNavigation(
         title = title, openDrawer = openDrawer, dontChangeUiWideScreen = dontChangeUiWideScreen
     ) { scaffoldModifier ->
-        Column(modifier = scaffoldModifier.then(modifier)) {
-            Row(
-                modifier = Modifier.height(IntrinsicSize.Min)
-            ) {
-                Text(
-                    text = stringResource(id = R.string.name),
-                    modifier = Modifier
-                        .weight(0.333f)
-                        .padding(bottom = 4.dp),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
-                )
-                VerticalDivider()
-                Text(
-                    text = stringResource(id = R.string.points),
-                    modifier = Modifier.weight(0.333f),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
-                )
-                VerticalDivider()
-                Text(
-                    text = stringResource(id = R.string.date),
-                    modifier = Modifier.weight(0.333f),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
-                )
+        LazyColumn(modifier = scaffoldModifier.then(modifier)) {
+            item {
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.name),
+                        modifier = Modifier
+                            .weight(0.333f)
+                            .padding(bottom = 4.dp),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+                    VerticalDivider()
+                    Text(
+                        text = stringResource(id = R.string.points),
+                        modifier = Modifier.weight(0.333f),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+                    VerticalDivider()
+                    Text(
+                        text = stringResource(id = R.string.date),
+                        modifier = Modifier.weight(0.333f),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
 
-            highscores.forEach { highscore ->
+
+            items(highscores, key = {highscore -> highscore.id}) { highscore ->
                 HighscoreComponent(highscore = highscore)
             }
 
-            if (highscores.isEmpty()) {
+            item {
+                if (highscores.isEmpty()) {
+                    Divider()
+                    Text(
+                        text = stringResource(id = R.string.noHighscoresYet),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 4.dp),
+                        textAlign = TextAlign.Center
+                    )
+
+                }
+            }
+
+            item {
                 Divider()
                 Text(
-                    text = stringResource(id = R.string.noHighscoresYet),
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
-                    textAlign = TextAlign.Center
-                )
-                Text(
                     text = stringResource(id = R.string.highscoresHint),
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                     textAlign = TextAlign.Center
                 )
             }
+
 
         }
 
@@ -130,10 +149,10 @@ fun HighscoresPreview() {
         dontChangeUiWideScreen = false,
         title = stringResource(id = R.string.highscores),
         highscores = listOf(
-            Highscore(playerName = "Player 1", points = 100L),
-            Highscore(playerName = "Player 2", points = 37824L),
-            Highscore(playerName = "Player 3", points = 10L),
-            Highscore(playerName = "Player 4", points = 560L)
+            Highscore(playerName = "Player 1", points = 100L, id = 1L),
+            Highscore(playerName = "Player 2", points = 37824L, id = 2L),
+            Highscore(playerName = "Player 3", points = 10L, id = 3L),
+            Highscore(playerName = "Player 4", points = 560L, id = 4L)
         )
     ) {
 

@@ -22,22 +22,20 @@ import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alorma.compose.settings.storage.base.rememberBooleanSettingState
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSwitch
 import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.ui.SettingsUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
@@ -63,8 +61,16 @@ fun SettingsScreen(
                 updateUseDynamicColors = { viewModel.updateUseDynamicColors(it) },
                 updateUseSystemTheme = { viewModel.updateUseSystemTheme(it) },
                 updateUseDarkTheme = { viewModel.updateUseDarkTheme(it) },
-                doBackup = {context, pickedUri, progress -> viewModel.backUpDatabase(context, pickedUri, progress) },
-                doRestore = {context, pickedUri, progress -> viewModel.restoreDatabase(context, pickedUri, progress) },
+                doBackup = { context, pickedUri, progress ->
+                    viewModel.backUpDatabase(
+                        context, pickedUri, progress
+                    )
+                },
+                doRestore = { context, pickedUri, progress ->
+                    viewModel.restoreDatabase(
+                        context, pickedUri, progress
+                    )
+                },
                 copyError = copyError,
                 updateDontChangeUiWideScreen = { viewModel.updateDontChangeUiWideScreen(it) },
                 updateChecker = { UpdateCheckerComponent(it) })
@@ -103,7 +109,7 @@ internal fun SettingsScreen(
     val copyProgress = remember { mutableFloatStateOf(0f) }
     val context = LocalContext.current
     val showCopyDialog = remember { mutableStateOf(false) }
-    var wasBackup: Boolean? = null
+    val wasBackup = remember { mutableIntStateOf(WasCopyRestore.WAS_NEITHER) }
 
     val backupARL = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -111,9 +117,10 @@ internal fun SettingsScreen(
         if (result.resultCode == RESULT_OK) {
             val pickedURI = result.data?.data
             showCopyDialog.value = true
-            wasBackup = true
+            wasBackup.intValue = WasCopyRestore.WAS_BACKUP
             doBackup(context, pickedURI!!, copyProgress)
-        } else { /* The activity was canceled. */ }
+        } else { /* The activity was canceled. */
+        }
     }
 
     val restoreARL = rememberLauncherForActivityResult(
@@ -122,21 +129,35 @@ internal fun SettingsScreen(
         if (result.resultCode == RESULT_OK) {
             val pickedURI = result.data?.data
             showCopyDialog.value = true
-            wasBackup = false
+            wasBackup.intValue = WasCopyRestore.WAS_RESTORE
             doRestore(context, pickedURI!!, copyProgress)
-        } else { /* The activity was canceled. */ }
+        } else { /* The activity was canceled. */
+        }
     }
 
     when {
         showCopyDialog.value -> {
             CopyDialog(progress = copyProgress.floatValue, showDialog = showCopyDialog)
         }
-        copyError -> {
-            if (wasBackup == false){
-                Toast.makeText(context, stringResource(id = R.string.errorWhileRestoring), Toast.LENGTH_SHORT).show()
 
-            } else if (wasBackup == true){
-                Toast.makeText(context, stringResource(id = R.string.errorCreatingBackup), Toast.LENGTH_SHORT).show()
+        wasBackup.intValue == WasCopyRestore.WAS_RESTORE -> {
+            Toast.makeText(
+                LocalContext.current,
+                stringResource(id = R.string.appRestartMayBeRequired),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        copyError -> {
+            if (wasBackup.intValue == WasCopyRestore.WAS_RESTORE) {
+                Toast.makeText(
+                    context, stringResource(id = R.string.errorWhileRestoring), Toast.LENGTH_SHORT
+                ).show()
+
+            } else if (wasBackup.intValue == WasCopyRestore.WAS_BACKUP) {
+                Toast.makeText(
+                    context, stringResource(id = R.string.errorCreatingBackup), Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -257,7 +278,13 @@ internal fun SettingsScreen(
 
             // Restore games from backup file
             SettingsMenuLink(title = { Text(text = stringResource(id = R.string.restoreGames)) },
-                subtitle = { Text(text = stringResource(id = R.string.thisWillOverwriteAllExistingData))},
+                subtitle = {
+                    Text(
+                        text = stringResource(id = R.string.thisWillOverwriteAllExistingData) + "\n" + stringResource(
+                            id = R.string.appRestartMayBeRequired
+                        )
+                    )
+                },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Clear,
@@ -285,8 +312,8 @@ fun SettingsScreenPreview() {
         updateCheckForUpdates = {},
         updateUseDynamicColors = {},
         updateUseSystemTheme = {},
-        doBackup = { _, _, _ ->  },
-        doRestore = { _, _, _ ->  },
+        doBackup = { _, _, _ -> },
+        doRestore = { _, _, _ -> },
         copyError = false,
         updateDontChangeUiWideScreen = {},
         updateUseDarkTheme = {})
