@@ -107,7 +107,12 @@ internal fun Highscores(
                 Divider()
                 Text(
                     text = stringResource(id = R.string.noHighscoresYet),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    text = stringResource(id = R.string.highscoresHint),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                     textAlign = TextAlign.Center
                 )
             }

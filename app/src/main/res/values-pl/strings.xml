@@ -24,8 +24,6 @@
     <string name="none">żadne</string>
     <string name="atLeast2PlayersRequired">Wymagane co najmniej 2 graczy!</string>
     <string name="phasesOf">"Runda z "</string>
-    <string name="invalid_punkte_number">Numer jest nieprawidłowy (za duży)!</string>
-    <string name="one_empty_line">\n</string>
     <string name="date">Data</string>
     <string name="back">Wstecz</string>
     <string name="highscores">Wysokie wyniki</string>
