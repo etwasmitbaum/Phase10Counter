@@ -1,5 +1,6 @@
 package com.tjEnterprises.phase10Counter.data.network.repositories
 
+import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.data.network.services.GetLatestReleaseService
 import javax.inject.Inject
 
@@ -15,14 +16,17 @@ interface UpdateCheckerRepository {
     class UpdateCheckerRepositoryImpl @Inject constructor(private val getLatestReleaseService: GetLatestReleaseService) :
         UpdateCheckerRepository {
         override suspend fun getLatestReleaseVersionNumber(): Int {
-            return try {
-                getLatestReleaseService.getLatestReleaseTag().tagName.filter { it.isDigit() }
-                    .toInt()
-            } catch (e: NumberFormatException) {
-                e.printStackTrace()
+            return if (BuildConfig.BUILD_TYPE != "release") {
+                try {
+                    getLatestReleaseService.getLatestReleaseTag().tagName.filter { it.isDigit() }
+                        .toInt()
+                } catch (e: NumberFormatException) {
+                    e.printStackTrace()
+                    UpdateCheckerCodes.ERROR_GETTING_LATEST_VERSION_NUMBER
+                }
+            } else {
                 UpdateCheckerCodes.ERROR_GETTING_LATEST_VERSION_NUMBER
             }
         }
-
     }
 }
