@@ -1,0 +1,1 @@
+- Es wurde ein Fehler behobe, wobei ein Spiel ohne Spieler bei der Datenmigration erstellt wird
