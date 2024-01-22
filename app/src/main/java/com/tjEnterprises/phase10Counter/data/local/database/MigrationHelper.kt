@@ -121,61 +121,65 @@ class Migration3To4(private val context: Context) : Migration(startVersion = 3, 
             db.execSQL("INSERT INTO 'Highscore' (playerName, points, timestamp) VALUES ('$playerName', '$point', '$timeStamp')")
         }
 
-        db.execSQL("INSERT INTO 'Game' (name, timestampCreated, timestampModified) VALUES ('Game 1', $timeNow, $timeNow)")
-        // get created gameId so nothing can go wrong
-        val gameCursor = db.query("SELECT * FROM Game")
-        gameCursor.moveToFirst()
-        val gameId = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("game_id"))
+        // Only create game, if players existed before
+        if (oldPlayers.isNotEmpty()) {
+            db.execSQL("INSERT INTO 'Game' (name, timestampCreated, timestampModified) VALUES ('Game 1', $timeNow, $timeNow)")
+            // get created gameId so nothing can go wrong
+            val gameCursor = db.query("SELECT * FROM Game")
+            gameCursor.moveToFirst()
+            val gameId = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("game_id"))
 
-        oldPlayers.forEach { player ->
-            val pointsHistoryOfPlayer = oldPointHistory.filter { it.playerId == player.id }
-            val playerName = player.name
-            db.execSQL("INSERT INTO 'Player' (game_id, name) VALUES($gameId, '$playerName')")
+            oldPlayers.forEach { player ->
+                val pointsHistoryOfPlayer = oldPointHistory.filter { it.playerId == player.id }
+                val playerName = player.name
+                db.execSQL("INSERT INTO 'Player' (game_id, name) VALUES($gameId, '$playerName')")
 
-            // get created playerId
-            val newPlayerIdCursor = db.query("SELECT last_insert_rowid() AS player_id")
-            newPlayerIdCursor.moveToFirst()
-            val newPlayerId =
-                newPlayerIdCursor.getLong(newPlayerIdCursor.getColumnIndexOrThrow("player_id"))
+                // get created playerId
+                val newPlayerIdCursor = db.query("SELECT last_insert_rowid() AS player_id")
+                newPlayerIdCursor.moveToFirst()
+                val newPlayerId =
+                    newPlayerIdCursor.getLong(newPlayerIdCursor.getColumnIndexOrThrow("player_id"))
 
-            // Handle if PlayerData Punkte != sum of PointHistory
-            pointsHistoryOfPlayer.run {
-                if (isEmpty()) {
-                    listOf(OldPointHistory(0, player.punkte, player.id, timeNow))
-                } else {
-                    var sum = 0
-                    forEach { point ->
-                        sum += point.point
-                    }
-                    if (sum != player.punkte) {
-                        pointsHistoryOfPlayer[0].point += player.punkte - sum
-                        pointsHistoryOfPlayer
+                // Handle if PlayerData Punkte != sum of PointHistory
+                pointsHistoryOfPlayer.run {
+                    if (isEmpty()) {
+                        listOf(OldPointHistory(0, player.punkte, player.id, timeNow))
                     } else {
-                        pointsHistoryOfPlayer
+                        var sum = 0
+                        forEach { point ->
+                            sum += point.point
+                        }
+                        if (sum != player.punkte) {
+                            pointsHistoryOfPlayer[0].point += player.punkte - sum
+                            pointsHistoryOfPlayer
+                        } else {
+                            pointsHistoryOfPlayer
+                        }
+                    }
+                }.let { updatedPointsHistoryOfPlayer ->
+                    updatedPointsHistoryOfPlayer.forEach { point ->
+                        val pointValue = point.point
+                        val timeStamp = point.time
+                        db.execSQL("INSERT INTO 'PointHistory' (point, player_id, game_id, timestampCreated) VALUES($pointValue, $newPlayerId, $gameId, $timeStamp)")
                     }
                 }
-            }.let { updatedPointsHistoryOfPlayer ->
-                updatedPointsHistoryOfPlayer.forEach { point ->
-                    val pointValue = point.point
-                    val timeStamp = point.time
-                    db.execSQL("INSERT INTO 'PointHistory' (point, player_id, game_id, timestampCreated) VALUES($pointValue, $newPlayerId, $gameId, $timeStamp)")
+
+                val phasesOpen = mutableListOf<Boolean>()
+                val openPhasesOfPlayer =
+                    "\\d+".toRegex().findAll(player.phasen).map { it.value.toInt() }
+                for (i in 0..9) {
+
+                    // if phase found from string, do not check box
+                    if (openPhasesOfPlayer.find { it == (i + 1) } != null) {
+                        phasesOpen.add(i, true)
+                    } else {
+                        phasesOpen.add(i, false)
+                    }
                 }
-            }
 
-            val phasesOpen = mutableListOf<Boolean>()
-            val openPhasesOfPlayer = "\\d+".toRegex().findAll(player.phasen).map { it.value.toInt() }
-            for (i in 0..9) {
-
-                // if phase found from string, do not check box
-                if (openPhasesOfPlayer.find { it == (i + 1) } != null) {
-                    phasesOpen.add(i, true)
-                } else {
-                    phasesOpen.add(i, false)
+                phasesOpen.forEachIndexed { idx, open ->
+                    db.execSQL("INSERT INTO 'Phases' (player_id, game_id, phase, open, timestampModified) VALUES($newPlayerId, $gameId, $idx, $open, $timeNow)")
                 }
-            }
-
-            phasesOpen.forEachIndexed { idx, open ->
-                db.execSQL("INSERT INTO 'Phases' (player_id, game_id, phase, open, timestampModified) VALUES($newPlayerId, $gameId, $idx, $open, $timeNow)")
             }
         }
     }
