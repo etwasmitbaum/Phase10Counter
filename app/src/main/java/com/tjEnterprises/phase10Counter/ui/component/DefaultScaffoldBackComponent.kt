@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -39,7 +39,7 @@ fun DefaultScaffoldBack (
                     navigationIcon = {
                         IconButton(onClick = navigateOneBack) {
                             Icon(
-                                imageVector = Icons.Filled.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = stringResource(
                                     id = R.string.back
                                 )
@@ -57,7 +57,7 @@ fun DefaultScaffoldBack (
                 ) {
                     IconButton(onClick = navigateOneBack) {
                         Icon(
-                            Icons.Default.ArrowBack, contentDescription = stringResource(
+                            Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(
                             id = R.string.back
                         )
                         )

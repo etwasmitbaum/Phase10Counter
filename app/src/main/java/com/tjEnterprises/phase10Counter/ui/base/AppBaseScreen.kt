@@ -3,11 +3,11 @@ package com.tjEnterprises.phase10Counter.ui.base
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
@@ -69,11 +69,11 @@ internal fun AppBaseScreen(
             // Close Navigation Button
             IconButton(onClick = { scope.launch { drawerState.close() } }) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(id = R.string.closeNavigationDrawer)
                 )
             }
-            Divider()
+            HorizontalDivider()
 
             // Add new Game
             NavigationDrawerItem(label = {
@@ -90,7 +90,7 @@ internal fun AppBaseScreen(
                     navigationActions.navigateToGameSelect()
                     scope.launch { drawerState.close() }
                 })
-            Divider()
+            HorizontalDivider()
 
             // Highscores
             NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.highscores)) },
@@ -102,7 +102,7 @@ internal fun AppBaseScreen(
 
             // Push settings to bottom
             Spacer(modifier = Modifier.weight(1f))
-            Divider()
+            HorizontalDivider()
 
             // Settings
             NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.settings)) },
@@ -118,7 +118,7 @@ internal fun AppBaseScreen(
                     navigationActions.navigateToSettings()
                     scope.launch { drawerState.close() }
                 })
-            Divider()
+            HorizontalDivider()
 
             // About Screen
             NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.about)) },

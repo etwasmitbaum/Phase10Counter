@@ -148,7 +148,8 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     // Compose-Settings -> https://github.com/alorma/Compose-Settings
-    implementation(libs.compose.settings.ui.m3)
+    implementation(libs.composeSettings.ui.extended)
+    implementation(libs.composeSettings.ui)
 
     // AboutLibraries https://github.com/mikepenz/AboutLibraries
     implementation(libs.aboutlibraries.compose)

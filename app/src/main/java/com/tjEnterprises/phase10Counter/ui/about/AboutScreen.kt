@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -64,7 +64,7 @@ fun AboutScreen(
                     IconButton(onClick = { uriHandler.openUri("https://github.com/etwasmitbaum/Phase10Counter") }) {
                         Icon(
                             // TODO Change icon to "external app"
-                            imageVector = Icons.Default.ExitToApp,
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                             contentDescription = null,
                         )
                     }
@@ -80,7 +80,7 @@ fun AboutScreen(
                 }) {
                 uriHandler.openUri("https://github.com/etwasmitbaum/Phase10Counter")
             }
-            Divider()
+            HorizontalDivider()
 
             // App Licence
             SettingsMenuLink(title = { Text(text = stringResource(id = R.string.app_license)) },
@@ -89,7 +89,7 @@ fun AboutScreen(
                     IconButton(onClick = { navigateToAppLicence() }) {
                         Icon(
                             // TODO Change icon to "external app"
-                            imageVector = Icons.Default.ExitToApp,
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                             contentDescription = null,
                         )
                     }
@@ -105,7 +105,7 @@ fun AboutScreen(
                 }) {
                 navigateToAppLicence()
             }
-            Divider()
+            HorizontalDivider()
 
             // Show all opensource licences
             SettingsMenuLink(title = { Text(text = stringResource(id = R.string.allOpenSourceLicenses)) },
@@ -120,7 +120,7 @@ fun AboutScreen(
                     IconButton(onClick = { navigateToAboutLibraries() }) {
                         Icon(
                             // TODO Change icon to "external app"
-                            imageVector = Icons.Default.ExitToApp,
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                             contentDescription = null,
                         )
                     }
@@ -128,7 +128,7 @@ fun AboutScreen(
                 }) {
                 navigateToAboutLibraries()
             }
-            Divider()
+            HorizontalDivider()
 
             // App Version
             SettingsMenuLink(title = { Text(text = stringResource(id = R.string.version)) },
@@ -140,7 +140,7 @@ fun AboutScreen(
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
                 }) {}
-            Divider()
+            HorizontalDivider()
         }
     }
 }

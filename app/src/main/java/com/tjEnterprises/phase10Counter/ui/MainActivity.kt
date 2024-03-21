@@ -23,12 +23,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.ui.base.AppBaseScreen
-import com.tjEnterprises.phase10Counter.ui.settings.SettingsViewModel
 import com.tjEnterprises.phase10Counter.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

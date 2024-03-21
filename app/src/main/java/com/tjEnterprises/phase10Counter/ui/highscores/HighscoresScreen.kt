@@ -1,17 +1,15 @@
 package com.tjEnterprises.phase10Counter.ui.highscores
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,7 +24,6 @@ import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
 import com.tjEnterprises.phase10Counter.ui.HighscoresUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
-import com.tjEnterprises.phase10Counter.ui.component.VerticalDivider
 
 @Composable
 fun Highscores(
@@ -112,7 +109,7 @@ internal fun Highscores(
 
             item {
                 if (highscores.isEmpty()) {
-                    Divider()
+                    HorizontalDivider()
                     Text(
                         text = stringResource(id = R.string.noHighscoresYet),
                         modifier = Modifier
@@ -125,7 +122,7 @@ internal fun Highscores(
             }
 
             item {
-                Divider()
+                HorizontalDivider()
                 Text(
                     text = stringResource(id = R.string.highscoresHint),
                     modifier = Modifier

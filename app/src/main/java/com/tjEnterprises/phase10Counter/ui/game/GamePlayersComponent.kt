@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import androidx.core.text.isDigitsOnly
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 
@@ -92,7 +94,7 @@ fun OnePlayerView(
                 modifier = Modifier
                     .widthIn(1.dp, 150.dp)
                     .onFocusChanged {
-                        if (!it.isFocused && text != "" && !(text.contains('.') || text.contains(','))) {
+                        if (!it.isFocused && text != "" && text.isDigitsOnly()) {
                             addPointHistoryEntry(text.toLong(), player.gameId, player.playerId)
                             text = ""
                         }
@@ -182,7 +184,7 @@ fun PointHistoryDropDown(
                 )
                 // don't place a divider at the bottom
                 if (idx != lastElement) {
-                    Divider()
+                    HorizontalDivider()
                 }
             }
         }

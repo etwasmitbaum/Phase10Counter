@@ -14,7 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +31,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.alorma.compose.settings.storage.base.rememberBooleanSettingState
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.alorma.compose.settings.ui.SettingsSwitch
 import com.tjEnterprises.phase10Counter.BuildConfig
@@ -180,7 +179,7 @@ internal fun SettingsScreen(
             // Auto check for Updates only for GitHub and Debug builds
             if (BuildConfig.BUILD_TYPE != "release") {
                 SettingsSwitch(title = { Text(text = stringResource(id = R.string.autoCheckForUpdates)) },
-                    state = rememberBooleanSettingState(settings.checkForUpdates),
+                    state = settings.checkForUpdates,
                     onCheckedChange = { newValue -> updateCheckForUpdates(newValue) },
                     icon = {
                         Icon(
@@ -191,7 +190,7 @@ internal fun SettingsScreen(
                     })
             }
 
-            Divider()
+            HorizontalDivider()
 
             // Enable Dynamic Colors (Android 12+)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -201,7 +200,7 @@ internal fun SettingsScreen(
                             text = stringResource(id = R.string.useSystemColors)
                         )
                     },
-                    state = rememberBooleanSettingState(settings.useDynamicColors),
+                    state = settings.useDynamicColors,
                     onCheckedChange = { newValue -> updateUseDynamicColors(newValue) },
                     icon = {
                         Icon(
@@ -215,7 +214,7 @@ internal fun SettingsScreen(
             // Use System Theme (Android 10+)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 SettingsSwitch(title = { Text(text = stringResource(id = R.string.followSystemTheme)) },
-                    state = rememberBooleanSettingState(settings.useSystemTheme),
+                    state = settings.useSystemTheme,
                     onCheckedChange = { newValue -> updateUseSystemTheme(newValue) },
                     icon = {
                         Icon(
@@ -228,7 +227,7 @@ internal fun SettingsScreen(
 
             // Use Dark Theme
             SettingsSwitch(title = { Text(text = stringResource(id = R.string.darkTheme)) },
-                state = rememberBooleanSettingState(settings.useDarkTheme),
+                state = settings.useDarkTheme,
                 onCheckedChange = { newValue -> updateUseDarkTheme(newValue) },
                 enabled = !settings.useSystemTheme,
                 icon = {
@@ -240,11 +239,11 @@ internal fun SettingsScreen(
                     )
                 })
 
-            Divider()
+            HorizontalDivider()
 
             // Force don't Change Ui on Wide Screen
             SettingsSwitch(title = { Text(text = stringResource(id = R.string.dontChangeUiOnWideScreen)) },
-                state = rememberBooleanSettingState(settings.dontChangeUiOnWideScreen),
+                state = settings.dontChangeUiOnWideScreen,
                 onCheckedChange = { newValue -> updateDontChangeUiWideScreen(newValue) },
                 icon = {
                     Icon(
@@ -254,7 +253,7 @@ internal fun SettingsScreen(
                     )
                 })
 
-            Divider()
+            HorizontalDivider()
 
             // Backup Game
             val fileName = stringResource(id = R.string.backupFileName)
@@ -296,7 +295,7 @@ internal fun SettingsScreen(
                 restoreARL.launch(intent)
             }
 
-            Divider()
+            HorizontalDivider()
         }
     }
 }
