@@ -1,37 +1,35 @@
 [versions]
-androidGradlePlugin = "8.3.1"
-androidxCore = "1.12.0"
-androidxLifecycle = "2.7.0"
-androidxActivity = "1.8.2"
-androidxComposeBom = "2024.03.00"
-androidxComposeCompiler = "1.5.11"
+androidGradlePlugin = "8.5.0"
+androidxCore = "1.13.1"
+androidxLifecycle = "2.8.2"
+androidxActivity = "1.9.0"
+androidxComposeBom = "2024.06.00"
 androidxHilt = "1.2.0"
 androidxNavigation = "2.7.7"
 androidxRoom = "2.6.1"
-androidxTest = "1.5.0"
-androidxTestExt = "1.1.5"
-androidxTestRunner = "1.5.2"
-compose-settings = "2.1.0"
+androidxTest = "1.6.1"
+androidxTestExt = "1.2.1"
+androidxTestRunner = "1.6.1"
+compose-settings = "2.4.0"
 converterGson = "2.9.0"
 converterScalars = "2.9.0"
-coroutines = "1.7.3"
-datastore = "1.0.0"
-datastorePreferences = "1.0.0"
-datastorePreferencesCore = "1.0.0"
-hilt = "2.49"
+coroutines = "1.8.1"
+datastore = "1.1.1"
+datastorePreferences = "1.1.1"
+datastorePreferencesCore = "1.1.1"
+hilt = "2.51"
 junit = "4.13.2"
-kotlin = "1.9.23"
-ksp = "1.9.23-1.0.19"
+kotlin = "2.0.0"
+ksp = "2.0.0-1.0.22"
 latestAboutLibsRelease = "11.1.0"
 loggingInterceptor = "4.9.1"
-retrofit = "2.9.0"
+retrofit = "2.11.0"
 roomTesting = "2.6.1"
 
 [libraries]
 aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "latestAboutLibsRelease" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
-androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "androidxComposeCompiler" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3"}
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui"}
@@ -70,9 +68,8 @@ composeSettings-ui-extended = { group = "com.github.alorma.compose-settings", na
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 hilt-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "latestAboutLibsRelease" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

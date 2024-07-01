@@ -11,6 +11,8 @@ fun CopyDialog(progress: Float, showDialog: MutableState<Boolean>) {
         showDialog.value = false
     }
     Dialog(onDismissRequest = {  }) {
-        LinearProgressIndicator(progress = progress)
+        LinearProgressIndicator(
+            progress = { progress },
+        )
     }
 }

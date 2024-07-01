@@ -79,3 +79,4 @@ app/release/
 app/github_release/
 app/production.jks
 app/production.properties
+/.kotlin
