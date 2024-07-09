@@ -10,4 +10,5 @@ object NavigationDestination {
     const val HIGHSCORES = "highscores"
     const val ABOUT_SCREEN = "aboutScreen"
     const val APP_LICENCE = "appLicence"
+    const val OPENCV_TEST = "opencvtest"
 }

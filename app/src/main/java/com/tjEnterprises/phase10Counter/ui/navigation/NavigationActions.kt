@@ -69,6 +69,13 @@ class NavigationActions(navController: NavHostController) {
         }
     }
 
+    val navigateToOpenCVTest: () -> Unit = {
+        navController.navigate(NavigationDestination.OPENCV_TEST) {
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
     val navigateOneBack: () -> Unit = {
         navController.popBackStack()
     }

@@ -32,6 +32,7 @@ import com.tjEnterprises.phase10Counter.ui.addGame.AddGameScreen
 import com.tjEnterprises.phase10Counter.ui.component.AboutLibrariesComponent
 import com.tjEnterprises.phase10Counter.ui.game.GameScreen
 import com.tjEnterprises.phase10Counter.ui.highscores.Highscores
+import com.tjEnterprises.phase10Counter.ui.opencvtest.OpenCVScreen
 import com.tjEnterprises.phase10Counter.ui.selectGame.SelectGame
 import com.tjEnterprises.phase10Counter.ui.settings.SettingsScreen
 
@@ -45,7 +46,7 @@ fun MainNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = NavigationDestination.OPENCV_TEST, //startDestination,
         modifier = modifier,
         contentAlignment = Alignment.TopStart // this is needed, else a weird bouncing animation in introduced. see https://issuetracker.google.com/issues/295536728
     ) {
@@ -76,6 +77,10 @@ fun MainNavigation(
 
         composable(route = NavigationDestination.APP_LICENCE){
             AppLicenceScreen (navigateOneBack = navigationActions.navigateOneBack)
+        }
+
+        composable(route = NavigationDestination.OPENCV_TEST){
+            OpenCVScreen(openDrawer = openDrawer, modifier = Modifier)
         }
     }
 }

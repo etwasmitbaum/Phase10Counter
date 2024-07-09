@@ -25,7 +25,7 @@ class SelectGameViewModel @Inject constructor(
 ) : ViewModel() {
 
     /*
-    * This will first combine the all the games and the settings into one flow.
+    * This will first combine all the games and the settings into one flow.
     * The combined flow then gets mapped onto SelectGameUiState to pass a single
     * variable to the SelectGameScreen instead of two separate.
     */

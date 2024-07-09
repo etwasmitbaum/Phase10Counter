@@ -156,4 +156,18 @@ dependencies {
     // Retrofit debugging
     implementation (libs.logging.interceptor)
     implementation (libs.converter.scalars)
+
+    // OpenCV
+    implementation(libs.opencv)
+
+    // Permissions Jetpack Compose library
+    implementation(libs.accompanist.permissions)
+
+    // CameraX
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.video)
+    implementation(libs.camera.view)
+    implementation(libs.camera.extensions)
 }

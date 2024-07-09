@@ -100,6 +100,14 @@ internal fun AppBaseScreen(
                     scope.launch { drawerState.close() }
                 })
 
+            // OpenCV Test
+            NavigationDrawerItem(label = { Text(text = "OpenCV Test") },
+                selected = currentRoute == NavigationDestination.OPENCV_TEST,
+                onClick = {
+                    navigationActions.navigateToOpenCVTest()
+                    scope.launch { drawerState.close() }
+                })
+
             // Push settings to bottom
             Spacer(modifier = Modifier.weight(1f))
             HorizontalDivider()
