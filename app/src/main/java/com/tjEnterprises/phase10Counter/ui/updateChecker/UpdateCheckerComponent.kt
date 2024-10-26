@@ -49,10 +49,10 @@ internal fun UpdateCheckerComponent(modifier: Modifier, versionNumber: Int) {
     }
 
     // Do nothing on versionNumber == -2 (number not yet received)
-    // DO nothing on else, already on latest version
+    // Do nothing on else, already on latest version
 
     // only place ClickableText if text exists
-    if (text != "") {
+    if (text.isNotBlank()) {
         val annotatedString = buildAnnotatedString {
             append(text)
         }

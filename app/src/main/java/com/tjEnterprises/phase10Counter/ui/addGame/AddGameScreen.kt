@@ -194,7 +194,7 @@ internal fun AddGameScreen(
             }
 
             Button(onClick = {
-                if (textGame != "") {
+                if (textGame.isNotBlank()) {
                     if (tempPlayerNames.size >= 2) {
                         addGame(textGame, tempPlayerNames)
                     } else {
@@ -227,7 +227,7 @@ internal fun AddGameScreen(
 fun addPlayerToList(
     textFieldText: String, tempPlayerNames: SnapshotStateList<String>, context: Context
 ): Boolean {
-    return if (textFieldText != "") {
+    return if (textFieldText.isNotBlank()) {
         tempPlayerNames.add(0, textFieldText)
         true
     } else {

@@ -94,7 +94,7 @@ fun OnePlayerView(
                 modifier = Modifier
                     .widthIn(1.dp, 150.dp)
                     .onFocusChanged {
-                        if (!it.isFocused && text != "" && text.isDigitsOnly()) {
+                        if (!it.isFocused && text.isNotBlank() && text.isDigitsOnly()) {
                             addPointHistoryEntry(text.toLong(), player.gameId, player.playerId)
                             text = ""
                         }
