@@ -138,10 +138,6 @@ class FakeDatabaseRepository @Inject constructor(
     override suspend fun deleteHighScore(highscoreId: Long) {
         TODO("Not yet implemented")
     }
-
-    override fun closeDatabase() {
-        TODO("Not yet implemented")
-    }
 }
 
 class fakeSettingsRepository @Inject constructor() : SettingsRepository {

@@ -29,7 +29,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val databaseRepository: DefaultDatabaseRepository
 ) : ViewModel() {
 
     private val _copyError: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -75,8 +74,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun backUpDatabase(context: Context, pickedUri: Uri, progress: MutableFloatState) {
-        databaseRepository.closeDatabase()
         viewModelScope.launch(Dispatchers.IO) {
+            //appDatabase.close()   // No need to close database, it is in TRUNCATE mode
             copyFileWithUri(
                 context = context,
                 sourceUri = context.getDatabasePath(AppDatabase.getName()).toUri(),
@@ -87,8 +86,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun restoreDatabase(context: Context, pickedUri: Uri, progress: MutableFloatState) {
-        databaseRepository.closeDatabase()
         viewModelScope.launch(Dispatchers.IO) {
+            //appDatabase.close()   // No need to close database, it is in TRUNCATE mode
             copyFileWithUri(
                 context = context,
                 sourceUri = pickedUri,

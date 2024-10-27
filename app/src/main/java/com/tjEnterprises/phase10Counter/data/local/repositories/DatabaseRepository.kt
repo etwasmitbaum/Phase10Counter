@@ -61,15 +61,12 @@ interface DatabaseRepository {
     suspend fun insertHighscore(playerName: String, point: Long, timeStamp: Long = -1L)
     suspend fun deleteHighScore(highscoreId: Long)
 
-    fun closeDatabase()
-
     class DefaultDatabaseRepository @Inject constructor(
         private val gameDao: GameDao,
         private val playerDao: PlayerDao,
         private val pointHistoryDao: PointHistoryDao,
         private val phasesDao: PhasesDao,
         private val highscoreDao: HighscoreDao,
-        private val appDatabase: AppDatabase
     ) : DatabaseRepository {
 
         override val games: Flow<List<GameModel>> = combine(
@@ -314,8 +311,5 @@ interface DatabaseRepository {
             highscoreDao.deleteHighscore(highscoreDao.getHighscore(highscoreId))
         }
 
-        override fun closeDatabase() {
-            appDatabase.close()
-        }
     }
 }
