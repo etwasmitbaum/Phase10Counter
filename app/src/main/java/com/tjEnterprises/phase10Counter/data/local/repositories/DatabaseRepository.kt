@@ -16,7 +16,6 @@
 
 package com.tjEnterprises.phase10Counter.data.local.repositories
 
-import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
@@ -29,6 +28,7 @@ import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
+import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -85,13 +85,13 @@ interface DatabaseRepository {
                 val playerModels: MutableList<PlayerModel> = mutableListOf()
 
                 players.filter { it.gameID == gameId }.forEach { player ->
-                    val pointHistoryPlayer: MutableList<Long> = mutableListOf()
+                    val pointHistoryPlayer: MutableList<PointHistoryItem> = mutableListOf()
                     var pointSum = 0L
                     val phasesOpen: MutableList<Boolean> = mutableListOf()
 
                     pointHistory.filter { it.playerId == player.playerId }.forEach {
                         pointSum += it.point
-                        pointHistoryPlayer.add(it.point)
+                        pointHistoryPlayer.add(PointHistoryItem(it.point, it.pointId))
                     }
 
                     phases.filter { it.playerId == player.playerId }.forEach {
@@ -130,13 +130,13 @@ interface DatabaseRepository {
             ) { playersList, pointHistoryList, phasesList ->
                 val playerModels: MutableList<PlayerModel> = mutableListOf()
                 playersList.forEach { player ->
-                    val pointHistoryPlayer: MutableList<Long> = mutableListOf()
+                    val pointHistoryPlayer: MutableList<PointHistoryItem> = mutableListOf()
                     var pointSum = 0L
                     val phasesOpen: MutableList<Boolean> = mutableListOf()
 
                     pointHistoryList.filter { it.playerId == player.playerId }.forEach {
                         pointSum += it.point
-                        pointHistoryPlayer.add(it.point)
+                        pointHistoryPlayer.add(PointHistoryItem(it.point, it.pointId))
                     }
 
                     phasesList.filter { it.playerId == player.playerId }.forEach {
@@ -164,10 +164,10 @@ interface DatabaseRepository {
 
             players.forEach { player ->
                 val pointHistory = pointHistoryDao.getPointHistoryOfPlayer(player.playerId)
-                val pointHistoryPlayer: MutableList<Long> = mutableListOf()
+                val pointHistoryPlayer: MutableList<PointHistoryItem> = mutableListOf()
                 var sum = 0L
                 pointHistory.forEach { pointHistoryEntry ->
-                    pointHistoryPlayer.add(pointHistoryEntry.point)
+                    pointHistoryPlayer.add(PointHistoryItem(pointHistoryEntry.point, pointHistoryEntry.pointId))
                     sum += pointHistoryEntry.point
                 }
 

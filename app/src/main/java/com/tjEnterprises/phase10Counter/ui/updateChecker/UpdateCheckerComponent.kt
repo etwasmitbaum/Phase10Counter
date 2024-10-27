@@ -57,6 +57,7 @@ internal fun UpdateCheckerComponent(modifier: Modifier, versionNumber: Int) {
             append(text)
         }
         val uriHandler = LocalUriHandler.current
+        //TODO Resolve deprecation
         ClickableText(text = annotatedString, modifier = modifier.fillMaxWidth(), style = TextStyle(
             textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface, fontSize = 16.sp
         ), onClick = {

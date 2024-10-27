@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
+import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 
 @Composable
@@ -65,6 +66,7 @@ fun GamePreviewComponent(
     }
 
     val gameTitle: @Composable () -> Unit = {
+        // TODO Resolve deprecation
         ClickableText(modifier = Modifier.fillMaxWidth(),
             style = TextStyle(textAlign = TextAlign.Center),
             text = buildAnnotatedString {
@@ -184,21 +186,21 @@ fun GamePreviewComponentPreview(expand: Boolean = false) {
                 1L,
                 1L,
                 "Player12345",
-                listOf(256L),
+                listOf(PointHistoryItem(256L, 1L)),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true)
             ), PlayerModel(
                 2L,
                 1L,
                 "P2",
-                listOf(256L),
+                listOf(PointHistoryItem(256L, 1L)),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true)
             ), PlayerModel(
                 3L,
                 1L,
                 "Player3",
-                listOf(256L),
+                listOf(PointHistoryItem(256L, 1L)),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true)
             )
@@ -217,14 +219,14 @@ fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
                 1L,
                 1L,
                 "VeryLongPlayerINeedToTestIDon'tKnowHowLongThisShouldBe",
-                listOf(256L),
+                listOf(PointHistoryItem(256L, 1L)),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true)
             ), PlayerModel(
                 2L,
                 1L,
                 "VeryLongPlayerINeedToTestIDon'tKnowHowLongThisShouldBe2",
-                listOf(256L),
+                listOf(PointHistoryItem(256L, 1L)),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true)
             )

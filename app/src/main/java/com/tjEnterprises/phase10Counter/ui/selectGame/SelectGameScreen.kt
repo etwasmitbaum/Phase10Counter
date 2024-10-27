@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
+import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.ui.SelectGameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
@@ -126,21 +127,21 @@ fun SelectGamePreview() {
                     1L,
                     1L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 ), PlayerModel(
                     1L,
                     1L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 ), PlayerModel(
                     1L,
                     1L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 )
@@ -152,21 +153,21 @@ fun SelectGamePreview() {
                     1L,
                     2L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 ), PlayerModel(
                     1L,
                     2L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 ), PlayerModel(
                     1L,
                     2L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 )
@@ -178,21 +179,21 @@ fun SelectGamePreview() {
                     1L,
                     3L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 ), PlayerModel(
                     1L,
                     3L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 ), PlayerModel(
                     1L,
                     3L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 )
@@ -212,21 +213,21 @@ fun SelectGamePreviewWithOneGame() {
                     1L,
                     1L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 ), PlayerModel(
                     1L,
                     1L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 ), PlayerModel(
                     1L,
                     1L,
                     "Player1",
-                    listOf(256L),
+                    listOf(PointHistoryItem(256L, 1L)),
                     256L,
                     listOf(true, true, true, true, true, true, true, true, true, true)
                 )

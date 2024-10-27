@@ -35,12 +35,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
+import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.ui.GameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import kotlinx.coroutines.launch
@@ -137,7 +137,6 @@ internal fun GameScreen(
                             .padding(8.dp)
                             .padding(bottom = 8.dp)
                             .fillMaxWidth(),
-                        listOfPoints = player.pointHistory,
                         addPointHistoryEntry = addPointHistoryEntry,
                         savePhasesOfPlayer = savePhasesOfPlayer,
                         scrollToNextPosition = {
@@ -174,21 +173,21 @@ fun GameScreenPreview() {
             1L,
             1L,
             "Player1",
-            listOf(256L),
+            listOf(PointHistoryItem(256L, 1)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true)
         ), PlayerModel(
             2L,
             1L,
             "Player2",
-            listOf(256L),
+            listOf(PointHistoryItem(256L, 1)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true)
         ), PlayerModel(
             3L,
             1L,
             "Player3",
-            listOf(256L),
+            listOf(PointHistoryItem(256L, 1)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true)
         )
