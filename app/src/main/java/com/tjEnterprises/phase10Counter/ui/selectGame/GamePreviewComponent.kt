@@ -1,6 +1,7 @@
 package com.tjEnterprises.phase10Counter.ui.selectGame
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -85,8 +86,7 @@ fun GamePreviewComponent(
             })
     }
 
-    // Somehow this box is needed for "widthIn" to work
-    BoxWithConstraints {
+    Box {
         Card(
             modifier = modifier, border = BorderStroke(1.dp, MaterialTheme.colorScheme.scrim)
         ) {
