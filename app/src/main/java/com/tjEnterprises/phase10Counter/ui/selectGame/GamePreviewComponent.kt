@@ -1,14 +1,14 @@
 package com.tjEnterprises.phase10Counter.ui.selectGame
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.MutatorMutex
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PlayArrow
@@ -59,17 +59,20 @@ fun GamePreviewComponent(
 
     when {
         openDeleteGameDialog.value -> {
-            DeleteDialog(showDialog = openDeleteGameDialog, deleteGame = { deleteGame(game.gameId) })
+            DeleteDialog(
+                showDialog = openDeleteGameDialog,
+                deleteGame = { deleteGame(game.gameId) })
         }
+
         openResetGameDialog.value -> {
             ResetDialog(showDialog = openResetGameDialog, resetGame = { resetGame(game.gameId) })
         }
     }
 
     val gameTitle: @Composable () -> Unit = {
-        // TODO Resolve deprecation
-        ClickableText(modifier = Modifier.fillMaxWidth(),
-            style = TextStyle(textAlign = TextAlign.Center),
+
+        // TODO Remove animation of click
+        Text(style = TextStyle(textAlign = TextAlign.Center),
             text = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
@@ -81,9 +84,9 @@ fun GamePreviewComponent(
                     )
                 }
             },
-            onClick = {
-                navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId)
-            })
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) })
     }
 
     Box {
@@ -121,17 +124,16 @@ fun GamePreviewComponent(
 
                 val sExpandText =
                     if (bExpanded) stringResource(id = R.string.hideDetails) else stringResource(id = R.string.showDetails)
-                ClickableText(text = buildAnnotatedString {
-                    append(sExpandText)
-                },
-                    onClick = { bExpanded = !bExpanded },
-                    modifier = Modifier
-                        .padding(top = 4.dp, start = 4.dp, bottom = 4.dp)
-                        .fillMaxWidth(),
+
+                // TODO remove animation of click
+                Text(text = sExpandText,
                     style = TextStyle(
                         textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.primary
-                    )
-                )
+                    ),
+                    modifier = Modifier
+                        .padding(top = 4.dp, start = 4.dp, bottom = 4.dp)
+                        .fillMaxWidth()
+                        .clickable { bExpanded = !bExpanded })
 
                 if (bExpanded) {
                     Row(

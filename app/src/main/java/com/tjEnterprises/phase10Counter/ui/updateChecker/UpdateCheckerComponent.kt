@@ -1,8 +1,8 @@
 package com.tjEnterprises.phase10Counter.ui.updateChecker
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -10,11 +10,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,23 +49,24 @@ internal fun UpdateCheckerComponent(modifier: Modifier, versionNumber: Int) {
         text = stringResource(id = R.string.errorWhileCheckingForUpdate)
     }
 
-    // Do nothing on versionNumber == -2 (number not yet received)
+    // Do nothing on versionNumber == NO_RESPONSE (-2) (number not yet received)
     // Do nothing on else, already on latest version
 
-    // only place ClickableText if text exists
+    // only place Text if text exists
     if (text.isNotBlank()) {
-        val annotatedString = buildAnnotatedString {
-            append(text)
-        }
-        val uriHandler = LocalUriHandler.current
-        //TODO Resolve deprecation
-        ClickableText(text = annotatedString, modifier = modifier.fillMaxWidth(), style = TextStyle(
-            textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface, fontSize = 16.sp
-        ), onClick = {
-            if (enableOnClick) {
-                uriHandler.openUri("https://github.com/etwasmitbaum/Phase10Counter/releases/latest/download/Phase10Counter.apk")
-            }
-        })
+        Text(
+            buildAnnotatedString {
+                if (!enableOnClick) {
+                    append(text)
+                }
+                withLink(LinkAnnotation.Url(url = "https://github.com/etwasmitbaum/Phase10Counter/releases/latest/download/Phase10Counter.apk"),
+                    block = { if (enableOnClick) append(text) })
+            }, modifier = modifier.fillMaxWidth(), style = TextStyle(
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 16.sp
+            )
+        )
     }
 }
 
