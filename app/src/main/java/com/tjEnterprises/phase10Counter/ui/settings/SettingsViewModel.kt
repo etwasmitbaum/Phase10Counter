@@ -7,6 +7,7 @@ import androidx.compose.runtime.MutableFloatState
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tjEnterprises.phase10Counter.data.FileUtils.Companion.copyFileWithUri
 import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository.DefaultDatabaseRepository
@@ -76,7 +77,7 @@ class SettingsViewModel @Inject constructor(
     fun backUpDatabase(context: Context, pickedUri: Uri, progress: MutableFloatState) {
         viewModelScope.launch(Dispatchers.IO) {
             //appDatabase.close()   // No need to close database, it is in TRUNCATE mode
-            copyFileWithUri(
+            _copyError.value != copyFileWithUri(
                 context = context,
                 sourceUri = context.getDatabasePath(AppDatabase.getName()).toUri(),
                 destinationUri = pickedUri,
@@ -88,64 +89,12 @@ class SettingsViewModel @Inject constructor(
     fun restoreDatabase(context: Context, pickedUri: Uri, progress: MutableFloatState) {
         viewModelScope.launch(Dispatchers.IO) {
             //appDatabase.close()   // No need to close database, it is in TRUNCATE mode
-            copyFileWithUri(
+            _copyError.value != copyFileWithUri(
                 context = context,
                 sourceUri = pickedUri,
                 destinationUri = context.getDatabasePath(AppDatabase.getName()).toUri(),
                 progress = progress
             )
-        }
-    }
-
-    private fun copyFileWithUri(
-        context: Context, sourceUri: Uri, destinationUri: Uri, progress: MutableFloatState
-    ): Boolean {
-        try {
-            val contentResolver: ContentResolver = context.contentResolver
-
-            // Open a ParcelFileDescriptor for the source URI
-            val sourcePFD = contentResolver.openFileDescriptor(sourceUri, "r")
-
-            // Open an InputStream to read from the source URI
-            val inputStream = FileInputStream(sourcePFD!!.fileDescriptor)
-
-            // Open an OutputStream to write to the destination URI
-            val outputStream = contentResolver.openOutputStream(destinationUri)
-
-            // Copy data from the input stream to the output stream
-
-            val sourceFileSize = sourceUri.path?.let { File(it).length() }
-            val buffer = ByteArray(1024)
-            var bytesRead: Int
-            var bytesReadTotal = 0
-
-            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                // display progress
-                bytesReadTotal += bytesRead
-                if (sourceFileSize != null) {
-                    progress.floatValue = ((bytesReadTotal.toFloat() / sourceFileSize.toFloat()) * 100)
-                } else {
-                    _copyError.value = true
-                    return false
-                }
-
-                outputStream?.write(buffer, 0, bytesRead)
-            }
-
-            // Close the streams
-            inputStream.close()
-            outputStream?.close()
-
-            // Close the ParcelFileDescriptor
-            sourcePFD.close()
-
-            progress.floatValue = 1f
-            _copyError.value = false
-            return true // Successfully copied the file
-        } catch (e: IOException) {
-            e.printStackTrace()
-            _copyError.value = true
-            return false // Failed to copy the file
         }
     }
 }
