@@ -1,8 +1,8 @@
 package com.tjEnterprises.phase10Counter.ui.selectGame
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.MutatorMutex
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -70,23 +70,21 @@ fun GamePreviewComponent(
     }
 
     val gameTitle: @Composable () -> Unit = {
-
-        // TODO Remove animation of click
-        Text(style = TextStyle(textAlign = TextAlign.Center),
-            text = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                ) {
-                    append(
-                        game.name
-                    )
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) })
+        Text(style = TextStyle(textAlign = TextAlign.Center), text = buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            ) {
+                append(
+                    game.name
+                )
+            }
+        }, modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() }, indication = null
+            ) { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) })
     }
 
     Box {
@@ -133,7 +131,10 @@ fun GamePreviewComponent(
                     modifier = Modifier
                         .padding(top = 4.dp, start = 4.dp, bottom = 4.dp)
                         .fillMaxWidth()
-                        .clickable { bExpanded = !bExpanded })
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) { bExpanded = !bExpanded })
 
                 if (bExpanded) {
                     Row(
