@@ -84,5 +84,5 @@
     <string name="appRestartMayBeRequired">App neustart kann erforderlich sein.</string>
     <string name="onlyNumbersAreAllows">Es sind nur Zahlen erlaubt</string>
     <string name="deleted">Gelöscht</string>
-    <string name="editPoint">Punkt bearbeiten</string>
+    <string name="editValue">Wert ändern</string>
 </resources>
