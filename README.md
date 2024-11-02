@@ -1,6 +1,15 @@
 # Phase10Counter
 Small App to keep track of your Phase10 game! Optimised for Phones and Tablets.
 
+## Features:
+- Add as many games as you like, with as many player as you want
+- Write down the poinbts and edit them afterwards, when you had a typo
+- Mark the completed phases 
+- Dark/Light Theme
+- UI for Phone and Tablet
+- Keep track of High Scores
+- Import/Export your data
+
 # Phase10Counter_Fdroid.apk vs Phase10Counter.apk
 The only difference is, the Fdroid version does not have an integrated update checker and there does not have internet permission. The not Fdroid version requires internet only for the update checking.
 
