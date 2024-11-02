@@ -94,7 +94,7 @@ internal fun SelectGame(
                             navigateToGame = navigateToGame,
                             deleteGame = deleteGame,
                             resetGame = resetGame,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
                         )
                     }
 

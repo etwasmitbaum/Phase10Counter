@@ -25,6 +25,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -102,18 +103,17 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun MyApplicationTheme(
-    viewModel: ThemeViewModel = hiltViewModel(),
-    content: @Composable () -> Unit
+    viewModel: ThemeViewModel = hiltViewModel(), content: @Composable () -> Unit
 ) {
 
     val settingsUiState by viewModel.settingsUiState.collectAsState()
 
     when (settingsUiState) {
         is SettingsUiState.SettingsSuccess -> {
-            val s = (settingsUiState as SettingsUiState.SettingsSuccess)
+            val settings = (settingsUiState as SettingsUiState.SettingsSuccess)
             MyAppTheme(
-                dynamicColor = s.settings.useDynamicColors,
-                darkTheme = (isSystemInDarkTheme() && s.settings.useSystemTheme) || s.settings.useDarkTheme,
+                dynamicColor = settings.settings.useDynamicColors,
+                darkTheme = (isSystemInDarkTheme() && settings.settings.useSystemTheme) || settings.settings.useDarkTheme,
                 content = content
             )
         }
@@ -140,14 +140,14 @@ internal fun MyAppTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
+    // All of this looks wrong, but it works.
     val view = LocalView.current
     if (!view.isInEditMode) {
-        val currentWindow = (view.context as? Activity)?.window
-            ?: throw Exception("Not in an activity - unable to get Window reference")
-        SideEffect {
-            currentWindow.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightStatusBars =
-                darkTheme
+        LaunchedEffect(darkTheme, colorScheme) {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.tertiary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 

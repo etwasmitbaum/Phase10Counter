@@ -74,8 +74,7 @@ fun GamePreviewComponent(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(8.dp),
+            .wrapContentHeight(),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.scrim)
     ) {
         Column(
