@@ -81,6 +81,8 @@ fun GameScreen(
                     )
                 },
                 dontChangeUiWideScreen = dontChangeUiWideScreen,
+                deletePointHistoryItem = { viewModel.deletePointHistoryEntry(it) },
+                updatePointHistoryItem = { viewModel.updatePointHistoryEntry(it) },
                 modifier = modifier
             )
         }
@@ -110,6 +112,8 @@ internal fun GameScreen(
     openDrawer: () -> Unit,
     addPointHistoryEntry: (Long, Long, Long) -> Unit,
     savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
+    deletePointHistoryItem: (PointHistoryItem) -> Unit,
+    updatePointHistoryItem: (PointHistoryItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -139,6 +143,8 @@ internal fun GameScreen(
                             .fillMaxWidth(),
                         addPointHistoryEntry = addPointHistoryEntry,
                         savePhasesOfPlayer = savePhasesOfPlayer,
+                        deletePointHistoryItem = deletePointHistoryItem,
+                        updatePointHistoryItem = updatePointHistoryItem,
                         scrollToNextPosition = {
                             coroutineScope.launch {
                                 gridState.animateScrollToItem(if (idx > 1) idx - 1 else 0)
@@ -168,34 +174,36 @@ internal fun GameScreen(
 @Preview(device = "spec:width=1280dp,height=800dp,dpi=240")
 @Composable
 fun GameScreenPreview() {
-    GameScreen(players = listOf(
-        PlayerModel(
-            1L,
-            1L,
-            "Player1",
-            listOf(PointHistoryItem(256L, 1)),
-            256L,
-            listOf(true, true, true, true, true, true, true, true, true, true)
-        ), PlayerModel(
-            2L,
-            1L,
-            "Player2",
-            listOf(PointHistoryItem(256L, 1)),
-            256L,
-            listOf(true, true, true, true, true, true, true, true, true, true)
-        ), PlayerModel(
-            3L,
-            1L,
-            "Player3",
-            listOf(PointHistoryItem(256L, 1)),
-            256L,
-            listOf(true, true, true, true, true, true, true, true, true, true)
-        )
-    ),
+    GameScreen(
+        players = listOf(
+            PlayerModel(
+                1L,
+                1L,
+                "Player1",
+                listOf(PointHistoryItem(256L, 1)),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            ), PlayerModel(
+                2L,
+                1L,
+                "Player2",
+                listOf(PointHistoryItem(256L, 1)),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            ), PlayerModel(
+                3L,
+                1L,
+                "Player3",
+                listOf(PointHistoryItem(256L, 1)),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true)
+            )
+        ),
         openDrawer = {},
         gameTitle = "Game 1",
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
-        dontChangeUiWideScreen = false
+        dontChangeUiWideScreen = false, deletePointHistoryItem = {},
+        updatePointHistoryItem = {},
     )
 }

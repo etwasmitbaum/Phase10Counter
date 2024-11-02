@@ -9,6 +9,7 @@ import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Entity(
@@ -55,6 +56,9 @@ interface PointHistoryDao {
 
     @Insert
     suspend fun insertPoint(pointHistory: PointHistory)
+
+    @Update
+    suspend fun updatePoint(pointHistory: PointHistory)
 
     @Delete
     suspend fun deletePoint(pointHistory: PointHistory)

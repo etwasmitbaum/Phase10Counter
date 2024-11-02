@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.tjEnterprises.phase10Counter.R
 
 @Composable
-fun DeleteDialog (showDialog: MutableState<Boolean>, deleteGame: () -> Unit) {
+fun DeleteGameDialog (showDialog: MutableState<Boolean>, deleteGame: () -> Unit) {
     AlertDialog(
         icon = {
             Icon(Icons.Default.Info, contentDescription = null)
@@ -53,7 +53,7 @@ fun DeleteDialog (showDialog: MutableState<Boolean>, deleteGame: () -> Unit) {
 }
 
 @Composable
-fun ResetDialog (showDialog: MutableState<Boolean>, resetGame: () -> Unit) {
+fun ResetGameDialog (showDialog: MutableState<Boolean>, resetGame: () -> Unit) {
     AlertDialog(
         icon = {
             Icon(Icons.Default.Info, contentDescription = null)
@@ -95,7 +95,7 @@ fun DeleteDialogPreview() {
     val show = remember {
         mutableStateOf(true)
     }
-    DeleteDialog(showDialog = show, deleteGame = {})
+    DeleteGameDialog(showDialog = show, deleteGame = {})
 }
 
 @Preview(showBackground = true, locale = "DE")
@@ -104,5 +104,5 @@ fun ResetDialogPreview() {
     val show = remember {
         mutableStateOf(true)
     }
-    ResetDialog(showDialog = show, resetGame = {})
+    ResetGameDialog(showDialog = show, resetGame = {})
 }

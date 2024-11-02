@@ -24,7 +24,7 @@
     <string name="name">Name</string>
     <string name="none">keine</string>
     <string name="atLeast2PlayersRequired">Mindestens 2 Spieler!</string>
-    <string name="phasesOf">"Runden von "</string>
+    <string name="phasesOf">Runden von</string>
     <string name="date">Datum</string>
     <string name="back">Zurück</string>
     <string name="highscores">Highscores</string>
@@ -82,4 +82,7 @@
     <string name="thisWillOverwriteAllExistingData">Alle verhandenen Daten werden überschrieben.</string>
     <string name="highscoresHint">Lösche oder setze ein Spiel zurück, wo ein Spieler alle Phasen abgeschlossen hat, um einen Highscore hinzuzufügen.</string>
     <string name="appRestartMayBeRequired">App neustart kann erforderlich sein.</string>
+    <string name="onlyNumbersAreAllows">Es sind nur Zahlen erlaubt</string>
+    <string name="deleted">Gelöscht</string>
+    <string name="editPoint">Punkt bearbeiten</string>
 </resources>

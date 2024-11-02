@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,9 +35,11 @@ fun OnePlayerView(
     player: PlayerModel,
     savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
     addPointHistoryEntry: (Long, Long, Long) -> Unit,
+    deletePointHistoryItem: (PointHistoryItem) -> Unit,
+    updatePointHistoryItem: (PointHistoryItem) -> Unit,
     scrollToNextPosition: () -> Unit
 ) {
-    var text by remember {
+    var text by rememberSaveable() {
         mutableStateOf("")
     }
 
@@ -87,7 +90,12 @@ fun OnePlayerView(
                             scrollToNextPosition()
                         }
                     })
-            PointHistoryDropDown(player.pointHistory, player.pointSum)
+            PointHistoryDropDown(
+                pointHistory = player.pointHistory,
+                sumOfPoints = player.pointSum,
+                deletePointHistoryItem = deletePointHistoryItem,
+                updatePointHistoryItem = updatePointHistoryItem
+            )
         }
 
         var phasesString = ""
@@ -124,7 +132,9 @@ fun OnePlayerPreview() {
     ),
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
-        scrollToNextPosition = {})
+        scrollToNextPosition = {},
+        deletePointHistoryItem = {},
+        updatePointHistoryItem = {})
 }
 
 @Preview(showBackground = true)
@@ -140,5 +150,7 @@ fun OnePlayerPreview2() {
     ),
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
-        scrollToNextPosition = {})
+        scrollToNextPosition = {},
+        deletePointHistoryItem = {},
+        updatePointHistoryItem = {})
 }

@@ -56,7 +56,9 @@ interface DatabaseRepository {
     suspend fun getGamesCount(): Long
     suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistory>
     suspend fun insertPointHistory(point: Long, gameId: Long, playerId: Long)
+    suspend fun updatePointHistoryEntry(pointHistoryItem: PointHistoryItem)
     suspend fun deletePointHistoryOfPlayer(playerId: Long)
+    suspend fun deletePointHistoryEntry(pointHistoryItem: PointHistoryItem)
 
     suspend fun insertHighscore(playerName: String, point: Long, timeStamp: Long = -1L)
     suspend fun deleteHighScore(highscoreId: Long)
@@ -292,10 +294,20 @@ interface DatabaseRepository {
             updateGameModifiedTimestamp(gameId)
         }
 
+        override suspend fun updatePointHistoryEntry(pointHistoryItem: PointHistoryItem) {
+            val newPointHistory = pointHistoryDao.getPointHistoryFromId(pointHistoryItem.pointId)
+            newPointHistory.point = pointHistoryItem.point
+            pointHistoryDao.updatePoint(newPointHistory)
+        }
+
         override suspend fun deletePointHistoryOfPlayer(playerId: Long) {
             pointHistoryDao.getPointHistoryOfPlayer(playerId = playerId).forEach {
                 pointHistoryDao.deletePoint(it)
             }
+        }
+
+        override suspend fun deletePointHistoryEntry(pointHistoryItem: PointHistoryItem) {
+            pointHistoryDao.deletePoint(pointHistoryDao.getPointHistoryFromId(pointHistoryItem.pointId))
         }
 
         override suspend fun insertHighscore(playerName: String, point: Long, timeStamp: Long) {

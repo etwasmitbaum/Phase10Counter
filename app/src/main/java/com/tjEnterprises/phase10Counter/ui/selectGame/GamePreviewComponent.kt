@@ -2,13 +2,14 @@ package com.tjEnterprises.phase10Counter.ui.selectGame
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PlayArrow
@@ -22,15 +23,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,7 +49,7 @@ fun GamePreviewComponent(
     modifier: Modifier = Modifier,
     expand: Boolean = false,
 ) {
-    var bExpanded by remember { mutableStateOf(expand) }
+    var detailsExpanded by rememberSaveable { mutableStateOf(expand) }
     val openResetGameDialog = remember {
         mutableStateOf(false)
     }
@@ -57,126 +57,122 @@ fun GamePreviewComponent(
         mutableStateOf(false)
     }
 
+    // Open Dialog when needed
     when {
         openDeleteGameDialog.value -> {
-            DeleteDialog(
-                showDialog = openDeleteGameDialog,
+            DeleteGameDialog(showDialog = openDeleteGameDialog,
                 deleteGame = { deleteGame(game.gameId) })
         }
 
         openResetGameDialog.value -> {
-            ResetDialog(showDialog = openResetGameDialog, resetGame = { resetGame(game.gameId) })
+            ResetGameDialog(showDialog = openResetGameDialog,
+                resetGame = { resetGame(game.gameId) })
         }
     }
 
-    val gameTitle: @Composable () -> Unit = {
-        Text(style = TextStyle(textAlign = TextAlign.Center), text = buildAnnotatedString {
-            withStyle(
-                style = SpanStyle(
-                    fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            ) {
-                append(
-                    game.name
-                )
-            }
-        }, modifier = Modifier
+
+    Card(
+        modifier = modifier
             .fillMaxWidth()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() }, indication = null
-            ) { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) })
-    }
-
-    Box {
-        Card(
-            modifier = modifier, border = BorderStroke(1.dp, MaterialTheme.colorScheme.scrim)
+            .wrapContentHeight()
+            .padding(8.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.scrim)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .align(Alignment.CenterHorizontally),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
+
+            Text(style = TextStyle(
+                textAlign = TextAlign.Center,
+                fontSize = 30.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+                text = game.name,
                 modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.CenterHorizontally),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 4.dp)
+                    .clip(shape = RoundedCornerShape(30)) // Clip for rounded corner ripple#
+                    .clickable { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) })
 
-                gameTitle()
-
-                if (bExpanded) {
-                    Column {
-                        game.players.forEach { player ->
-                            Text(
-                                text = player.name + ": " + player.pointSum.toString() + " " + stringResource(
-                                    id = R.string.points
-                                )
-                            )
-                        }
-                    }
-
-                } else {
-                    var playersText = ""
+            // Print player names in expanded version or small
+            if (detailsExpanded) {
+                Column {
                     game.players.forEach { player ->
-                        playersText = playersText.plus(player.name + ", ")
+                        Text(
+                            text = player.name + ": " + player.pointSum.toString() + " " + stringResource(
+                                id = R.string.points
+                            )
+                        )
                     }
-                    playersText = playersText.dropLast(2)
-                    Text(text = playersText)
                 }
 
-                val sExpandText =
-                    if (bExpanded) stringResource(id = R.string.hideDetails) else stringResource(id = R.string.showDetails)
+            } else {
+                var playersText = ""
+                game.players.forEach { player ->
+                    playersText = playersText.plus(player.name + ", ")
+                }
+                playersText = playersText.dropLast(2)
+                Text(text = playersText)
+            }
 
-                // TODO remove animation of click
-                Text(text = sExpandText,
-                    style = TextStyle(
-                        textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.primary
-                    ),
-                    modifier = Modifier
-                        .padding(top = 4.dp, start = 4.dp, bottom = 4.dp)
-                        .fillMaxWidth()
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) { bExpanded = !bExpanded })
 
-                if (bExpanded) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+            Text(text = if (detailsExpanded) stringResource(id = R.string.hideDetails) else stringResource(
+                id = R.string.showDetails
+            ),
+                style = TextStyle(
+                    textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp, vertical = 4.dp)
+                    .clip(shape = RoundedCornerShape(50)) // Clip for rounded corner ripple
+                    .clickable { detailsExpanded = !detailsExpanded })
 
-                        IconButton(onClick = { openDeleteGameDialog.value = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(
-                                    id = R.string.delete
-                                )
+
+            // When expanded show buttons, to delete, reset or start a game
+            if (detailsExpanded) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().offset(y = (-4).dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    IconButton(onClick = { openDeleteGameDialog.value = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete, contentDescription = stringResource(
+                                id = R.string.delete
                             )
-                        }
-
-                        IconButton(onClick = { openResetGameDialog.value = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Refresh,
-                                contentDescription = stringResource(
-                                    id = R.string.reset
-                                )
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        IconButton(onClick = { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) }) {
-                            Icon(
-                                imageVector = Icons.Default.PlayArrow,
-                                contentDescription = stringResource(
-                                    id = R.string.start
-                                )
-                            )
-                        }
+                        )
                     }
 
+                    IconButton(onClick = { openResetGameDialog.value = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = stringResource(
+                                id = R.string.reset
+                            )
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    IconButton(onClick = { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) }) {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = stringResource(
+                                id = R.string.start
+                            )
+                        )
+                    }
                 }
             }
-        }
 
+        }
     }
+
+
 }
 
 @Preview(showBackground = true, widthDp = 500)
@@ -238,9 +234,21 @@ fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
     )
 }
 
+@Preview(showBackground = true, locale = "DE", fontScale = 2f)
+@Composable
+fun NormalViewExpandedBigAndLongTextSize() {
+    GamePreviewComponentPreviewWithVeryLongNames(expand = false)
+}
+
 @Preview(showBackground = true, heightDp = 300, locale = "DE")
 @Composable
 fun NormalViewExpanded() {
+    GamePreviewComponentPreview(expand = true)
+}
+
+@Preview(showBackground = true, heightDp = 300, locale = "DE", fontScale = 2f)
+@Composable
+fun NormalViewExpandedBigTextSize() {
     GamePreviewComponentPreview(expand = true)
 }
 

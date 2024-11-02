@@ -23,7 +23,7 @@
     <string name="name">Name</string>
     <string name="none">none</string>
     <string name="atLeast2PlayersRequired">At least 2 players required!</string>
-    <string name="phasesOf">"Rounds of "</string>
+    <string name="phasesOf">Rounds of</string>
     <string name="date">Date</string>
     <string name="back">Back</string>
     <string name="highscores">High scores</string>
@@ -81,4 +81,7 @@
     <string name="thisWillOverwriteAllExistingData">This will overwrite all existing data.</string>
     <string name="highscoresHint">Delete or reset a game, where a player finished all rounds to add a highscore.</string>
     <string name="appRestartMayBeRequired">App restart may be required.</string>
+    <string name="onlyNumbersAreAllows">Only numbers are allowed</string>
+    <string name="deleted">Deleted</string>
+    <string name="editPoint">Edit Point</string>
 </resources>

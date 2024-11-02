@@ -18,6 +18,7 @@ package com.tjEnterprises.phase10Counter.ui.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
 import com.tjEnterprises.phase10Counter.data.local.repositories.SettingsRepository
@@ -62,6 +63,18 @@ class GameViewModel @Inject constructor(
     fun addPointHistoryEntry(point: Long, gameId: Long, playerId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.insertPointHistory(point = point, gameId = gameId, playerId = playerId)
+        }
+    }
+
+    fun updatePointHistoryEntry(pointHistoryItem: PointHistoryItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            databaseRepository.updatePointHistoryEntry(pointHistoryItem)
+        }
+    }
+
+    fun deletePointHistoryEntry(pointHistoryItem: PointHistoryItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            databaseRepository.deletePointHistoryEntry(pointHistoryItem)
         }
     }
 

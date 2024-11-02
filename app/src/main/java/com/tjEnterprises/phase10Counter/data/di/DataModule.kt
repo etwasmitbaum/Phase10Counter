@@ -22,6 +22,7 @@ import com.tjEnterprises.phase10Counter.data.local.database.Phases
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
+import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
 import com.tjEnterprises.phase10Counter.data.local.repositories.SettingsRepository
@@ -127,7 +128,15 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun updatePointHistoryEntry(pointHistoryItem: PointHistoryItem) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun deletePointHistoryOfPlayer(playerId: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deletePointHistoryEntry(pointHistoryItem: PointHistoryItem) {
         TODO("Not yet implemented")
     }
 
