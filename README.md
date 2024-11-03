@@ -2,9 +2,9 @@
 Small App to keep track of your Phase10 game! Optimised for Phones and Tablets.
 
 ## Features:
-- Add as many games as you like, with as many player as you want
-- Write down the poinbts and edit them afterwards, when you had a typo
-- Mark the completed phases 
+- Add as many games as you like, with as many players as you want
+- Write down the points and edit them afterwards if you made a typo
+- Mark completed phases 
 - Dark/Light Theme
 - UI for Phone and Tablet
 - Keep track of High Scores
