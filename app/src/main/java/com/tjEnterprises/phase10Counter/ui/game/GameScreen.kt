@@ -171,6 +171,7 @@ internal fun GameScreen(
 // Previews
 @Preview(showBackground = true, widthDp = 500)
 @Preview(showBackground = true, widthDp = 800, heightDp = 350)
+@Preview(showBackground = true, widthDp = 400, fontScale = 2f)
 @Preview(device = "spec:width=1280dp,height=800dp,dpi=240")
 @Composable
 fun GameScreenPreview() {

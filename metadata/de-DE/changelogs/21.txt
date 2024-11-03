@@ -1,0 +1,4 @@
+- NEU: Ändere die Punkte im Nachhinein, falls man sich vertippt hat
+- Unterstützung für Android 15
+- Kleine Design-Anpassungen
+- Fehler behoben, der zum Absturz führen konnte

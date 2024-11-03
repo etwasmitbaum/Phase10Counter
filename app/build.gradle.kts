@@ -26,14 +26,14 @@ plugins {
 
 android {
     namespace = "com.tjEnterprises.phase10Counter"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.tjEnterprises.phase10Counter"
         minSdk = 21
         targetSdk = 35
-        versionCode = 20
-        versionName = "3.0.1"
+        versionCode = 21
+        versionName = "3.1.0"
 
         testInstrumentationRunner = "com.tjEnterprises.phase10Counter.HiltTestRunner"
         vectorDrawables {

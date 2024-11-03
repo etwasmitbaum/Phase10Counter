@@ -1,0 +1,4 @@
+- NEW: Edit entered points afterward in case of a typo
+- Support for Android 15
+- Minor UI improvements
+- Fixed a bug that could cause the app to crash

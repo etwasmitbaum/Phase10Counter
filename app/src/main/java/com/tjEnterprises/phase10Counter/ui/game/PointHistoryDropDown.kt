@@ -100,7 +100,7 @@ fun PointHistoryDropDown(
             shape = RoundedCornerShape(20),
             modifier = Modifier
                 .widthIn(min = 1.dp, max = 128.dp)
-                .background(color = MaterialTheme.colorScheme.tertiaryContainer)
+                .background(color = MaterialTheme.colorScheme.surfaceContainerHighest)
                 .wrapContentSize(),
             properties = PopupProperties(usePlatformDefaultWidth = false)
         ) {
@@ -134,13 +134,13 @@ fun PointHistoryDropDown(
 
                 Text(
                     text = item.point.toString(),
-                    style = TextStyle(color = MaterialTheme.colorScheme.onTertiaryContainer, fontSize = 16.sp),
+                    style = TextStyle(fontSize = 16.sp),
                     modifier = modifier
                         .defaultMinSize(minWidth = 65.dp)
                         .clip(shape = RoundedCornerShape(50))
                         .clickable { showEditDeleteDialog.value = true }
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                        .padding(horizontal = 8.dp, vertical = 6.dp),
                     textAlign = TextAlign.Center
                 )
                 // don't place a divider at the bottom

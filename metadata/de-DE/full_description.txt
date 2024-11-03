@@ -2,3 +2,11 @@ Jeder, der gerne Phase 10 spielt, kennt wahrscheinlich das Problem des Zählens 
 Diese einfache App hilft Ihnen, den Überblick über Ihr Spiel zu behalten.
 Fügen Sie ein paar Spieler hinzu und schon kann es losgehen.
 Wenn eine Phase abgeschlossen ist, kann sie abgehakt werden. Die Phasen müssen nicht in der richtigen Reihenfolge abgehakt werden.
+Features: 
+- Füge so viele Spiele mit so vielen Spielern wir nötig hinzu
+- Speichere die Punkte jeder Runde und ändere diese im nachhinein, falls etwas falsch eingetragen wurde
+- Hacke abgeschlossene Phasen ab
+- Dunkles/Helles Theme
+- Design für Smartphones und Tablets
+- Speichere Highscores
+- Importiere/Exportiere die Daten
