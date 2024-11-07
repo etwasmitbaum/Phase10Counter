@@ -117,6 +117,7 @@ internal fun SelectGame(
 
 @Preview(showBackground = true, locale = "DE")
 @Preview(showBackground = true, widthDp = 800, heightDp = 300)
+@Preview(showBackground = true, widthDp = 800, heightDp = 300)
 @Composable
 fun SelectGamePreview() {
     SelectGame(dontChangeUiWideScreen = false, games = listOf(
@@ -192,40 +193,6 @@ fun SelectGamePreview() {
                 ), PlayerModel(
                     1L,
                     3L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
-                )
-            ),
-        )
-    ), openDrawer = {}, navigateToGame = {}, resetGame = {}, deleteGame = {})
-}
-
-@Preview(showBackground = true, widthDp = 800, heightDp = 300)
-@Composable
-fun SelectGamePreviewWithOneGame() {
-    SelectGame(dontChangeUiWideScreen = false, games = listOf(
-        GameModel(
-            1L, "Game 1", 0L, 0L,
-            listOf(
-                PlayerModel(
-                    1L,
-                    1L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
-                ), PlayerModel(
-                    1L,
-                    1L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
-                ), PlayerModel(
-                    1L,
-                    1L,
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,

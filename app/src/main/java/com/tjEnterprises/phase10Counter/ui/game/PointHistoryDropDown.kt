@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -67,30 +68,24 @@ fun PointHistoryDropDown(
         mutableStateOf(defaultExpanded)
     }
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .widthIn(1.dp, Dp.Infinity)
-            .wrapContentSize()
-            .padding(start = 16.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End,
-            modifier = modifier
-        ) {
-            Text(
-                text = sumOfPoints.toString()
-            )   // total points
-            IconButton(onClick = {
-                expanded = true
-            }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = stringResource(id = R.string.showPointHistory)
-                )
-            }
+
+    Row(verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End,
+        modifier = modifier.clickable(
+            interactionSource = remember { MutableInteractionSource() }, indication = null
+        ) { expanded = true }) {
+        Text(
+            text = sumOfPoints.toString()
+        )
+        IconButton(onClick = {
+            expanded = true
+        }) {
+            Icon(
+                imageVector = Icons.Default.ArrowDropDown,
+                contentDescription = stringResource(id = R.string.showPointHistory)
+            )
         }
+
 
         DropdownMenu(
             expanded = expanded,
@@ -111,7 +106,7 @@ fun PointHistoryDropDown(
             if (pointHistory.isEmpty()) {
                 Text(
                     text = "0",
-                    modifier = modifier
+                    modifier = Modifier
                         .clip(shape = RoundedCornerShape(50))
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -132,17 +127,15 @@ fun PointHistoryDropDown(
                     )
                 }
 
-                Text(
-                    text = item.point.toString(),
+                Text(text = item.point.toString(),
                     style = TextStyle(fontSize = 16.sp),
-                    modifier = modifier
+                    modifier = Modifier
                         .defaultMinSize(minWidth = 65.dp)
                         .clip(shape = RoundedCornerShape(50))
                         .clickable { showEditDeleteDialog.value = true }
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp, vertical = 6.dp),
-                    textAlign = TextAlign.Center
-                )
+                    textAlign = TextAlign.Center)
                 // don't place a divider at the bottom
                 if (idx != lastElement) {
                     HorizontalDivider()
@@ -231,6 +224,7 @@ fun EditDeletePointHistoryDialog(
 
 
 @Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 200, heightDp = 400)
 @Composable
 fun PointHistoryDropDownPreview() {
     PointHistoryDropDown(pointHistory = listOf(
@@ -239,21 +233,6 @@ fun PointHistoryDropDownPreview() {
         PointHistoryItem(10L, 3L),
         PointHistoryItem(98L, 4L)
     ), sumOfPoints = 790L, deletePointHistoryItem = {}, updatePointHistoryItem = {})
-}
-
-@Preview(showBackground = true, widthDp = 200, heightDp = 400)
-@Composable
-fun PointHistoryDropDownExpandedPreview() {
-    PointHistoryDropDown(pointHistory = listOf(
-        PointHistoryItem(70L, 1L),
-        PointHistoryItem(720L, 2L),
-        PointHistoryItem(10L, 3L),
-        PointHistoryItem(98L, 4L)
-    ),
-        sumOfPoints = 790L,
-        defaultExpanded = true,
-        deletePointHistoryItem = {},
-        updatePointHistoryItem = {})
 }
 
 @Preview(showBackground = true)

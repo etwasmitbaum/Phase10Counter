@@ -1,5 +1,6 @@
 package com.tjEnterprises.phase10Counter.ui.game
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -67,7 +68,9 @@ fun OnePlayerView(
                 .padding(bottom = 8.dp)
                 .widthIn(min = 0.dp, max = 400.dp)
         )
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Button(onClick = { openDialog.value = true }, modifier = Modifier.padding(end = 8.dp)) {
                 Text(text = stringResource(id = R.string.phases))
             }
@@ -80,7 +83,7 @@ fun OnePlayerView(
                     keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
                 ),
                 modifier = Modifier
-                    .widthIn(1.dp, 150.dp)
+                    .widthIn(1.dp, 128.dp)
                     .onFocusChanged {
                         if (!it.isFocused && text.isNotBlank() && text.isDigitsOnly()) {
                             addPointHistoryEntry(text.toLong(), player.gameId, player.playerId)
@@ -94,7 +97,8 @@ fun OnePlayerView(
                 pointHistory = player.pointHistory,
                 sumOfPoints = player.pointSum,
                 deletePointHistoryItem = deletePointHistoryItem,
-                updatePointHistoryItem = updatePointHistoryItem
+                updatePointHistoryItem = updatePointHistoryItem,
+                modifier = Modifier.padding(start = 12.dp)
             )
         }
 
@@ -120,6 +124,9 @@ fun OnePlayerView(
 
 // Previews
 @Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 350)
+@Preview(showBackground = true, widthDp = 350, locale = "de")
+@Preview(showBackground = true, widthDp = 350, locale = "pl")
 @Composable
 fun OnePlayerPreview() {
     OnePlayerView(player = PlayerModel(
@@ -127,7 +134,7 @@ fun OnePlayerPreview() {
         1L,
         "Player1",
         listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
-        256L,
+        2560L,
         listOf(true, true, true, true, true, true, true, true, true, true)
     ),
         addPointHistoryEntry = { _, _, _ -> },
@@ -145,7 +152,7 @@ fun OnePlayerPreview2() {
         1L,
         "Player1",
         listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
-        256L,
+        2560L,
         listOf(false, false, false, false, false, false, false, false, false, false)
     ),
         addPointHistoryEntry = { _, _, _ -> },

@@ -133,7 +133,7 @@ internal fun GameScreen(
                 state = gridState,
                 horizontalArrangement = Arrangement.Center,
                 verticalArrangement = Arrangement.Center,
-                columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(300.dp)
+                columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(400.dp)
             ) {
                 itemsIndexed(items = players) { idx, player ->
                     OnePlayerView(player = player,
@@ -170,7 +170,8 @@ internal fun GameScreen(
 
 // Previews
 @Preview(showBackground = true, widthDp = 500)
-@Preview(showBackground = true, widthDp = 800, heightDp = 350)
+@Preview(showBackground = true, widthDp = 900, heightDp = 350)
+@Preview(showBackground = true, widthDp = 900, heightDp = 350, fontScale = 2f)
 @Preview(showBackground = true, widthDp = 400, fontScale = 2f)
 @Preview(device = "spec:width=1280dp,height=800dp,dpi=240")
 @Composable
