@@ -11,7 +11,7 @@ Small App to keep track of your Phase10 game! Optimised for Phones and Tablets.
 - Import/Export your data
 
 # Phase10Counter_Fdroid.apk vs Phase10Counter.apk
-The only difference is, the Fdroid version does not have an integrated update checker and there does not have internet permission. The not Fdroid version requires internet only for the update checking.
+The only difference is, the Fdroid version does not have an integrated update checker and does not request internet permission. The not Fdroid version requires internet only for the update checking process.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
