@@ -1,7 +1,11 @@
 package com.tjEnterprises.phase10Counter.ui.base
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
@@ -57,15 +61,17 @@ internal fun AppBaseScreen(
     val currentRoute = navBackStackEntry?.destination?.route ?: NavigationDestination.ADD_GAMESCREEN
 
     val drawerState = rememberDrawerState(initialValue = initialDrawerValue)
+    val scrollState = rememberScrollState()
 
-    ModalNavigationDrawer(modifier = modifier, drawerState = drawerState, drawerContent = {
-        if (drawerState.isOpen) {
-            BackHandler {
-                scope.launch { drawerState.close() }
-            }
-        }
+    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
 
-        ModalDrawerSheet {
+        ModalDrawerSheet(
+            windowInsets = WindowInsets.safeDrawing,
+            drawerState = drawerState,
+            modifier = Modifier
+                .fillMaxHeight()
+                .verticalScroll(state = scrollState)
+        ) {
             // Close Navigation Button
             IconButton(onClick = { scope.launch { drawerState.close() } }) {
                 Icon(
@@ -100,6 +106,7 @@ internal fun AppBaseScreen(
                     scope.launch { drawerState.close() }
                 })
 
+
             // Push settings to bottom
             Spacer(modifier = Modifier.weight(1f))
             HorizontalDivider()
@@ -109,7 +116,8 @@ internal fun AppBaseScreen(
                 selected = currentRoute == NavigationDestination.SETTINGS,
                 icon = {
                     Icon(
-                        imageVector = Icons.Default.Settings, contentDescription = stringResource(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = stringResource(
                             id = R.string.settings
                         )
                     )

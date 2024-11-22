@@ -1,6 +1,5 @@
 package com.tjEnterprises.phase10Counter.ui.settings
 
-import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.MutableFloatState
@@ -10,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.tjEnterprises.phase10Counter.data.FileUtils.Companion.copyFileWithUri
 import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
-import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository.DefaultDatabaseRepository
 import com.tjEnterprises.phase10Counter.data.local.repositories.SettingsRepository
 import com.tjEnterprises.phase10Counter.ui.SettingsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,9 +20,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel

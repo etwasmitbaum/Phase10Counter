@@ -16,7 +16,6 @@
 
 package com.tjEnterprises.phase10Counter.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -25,13 +24,9 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.ui.SettingsUiState
 
@@ -112,8 +107,8 @@ private val darkScheme = darkColorScheme(
 )
 
 @Composable
-fun MyApplicationTheme(
-    viewModel: ThemeViewModel = hiltViewModel(), content: @Composable () -> Unit
+fun Phase10CounterTheme(
+    viewModel: ThemeViewModel = hiltViewModel(), ligma: (Boolean) -> Unit, content: @Composable () -> Unit
 ) {
 
     val settingsUiState by viewModel.settingsUiState.collectAsState()
@@ -121,9 +116,11 @@ fun MyApplicationTheme(
     when (settingsUiState) {
         is SettingsUiState.SettingsSuccess -> {
             val settings = (settingsUiState as SettingsUiState.SettingsSuccess)
-            MyAppTheme(
+            val darkTheme = (isSystemInDarkTheme() && settings.settings.useSystemTheme) || settings.settings.useDarkTheme
+            ligma(darkTheme)
+            AppTheme(
                 dynamicColor = settings.settings.useDynamicColors,
-                darkTheme = (isSystemInDarkTheme() && settings.settings.useSystemTheme) || settings.settings.useDarkTheme,
+                darkTheme = darkTheme,
                 content = content
             )
         }
@@ -138,7 +135,7 @@ fun MyApplicationTheme(
 }
 
 @Composable
-internal fun MyAppTheme(
+internal fun AppTheme(
     dynamicColor: Boolean, darkTheme: Boolean, content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -146,19 +143,8 @@ internal fun MyAppTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> darkScheme
         else -> lightScheme
-    }
-
-    // All of this looks wrong, but it works.
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        LaunchedEffect(darkTheme, colorScheme) {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.tertiary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-        }
     }
 
     MaterialTheme(

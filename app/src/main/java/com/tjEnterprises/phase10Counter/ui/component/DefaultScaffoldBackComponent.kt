@@ -2,7 +2,9 @@ package com.tjEnterprises.phase10Counter.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -22,18 +24,21 @@ import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultScaffoldBack (
-    title: String, navigateOneBack: () -> Unit, dontChangeUiWideScreen: Boolean = SettingsModel().dontChangeUiOnWideScreen, content: @Composable (modifier: Modifier) -> Unit
+fun DefaultScaffoldBack(
+    title: String,
+    navigateOneBack: () -> Unit,
+    dontChangeUiWideScreen: Boolean = SettingsModel().dontChangeUiOnWideScreen,
+    content: @Composable (modifier: Modifier) -> Unit
 ) {
     BoxWithConstraints {
         /*
         if in landscape with low height, remove the topBar and only show Menu button
         the left side is filled with padding, so the content wont overlap with the button
         */
-        val landscape = maxHeight <= 375.dp
+        val landscapeMaxHeightLow = maxHeight <= 375.dp
 
         Scaffold(topBar = {
-            if (!landscape || dontChangeUiWideScreen) {
+            if (!landscapeMaxHeightLow || dontChangeUiWideScreen) {
                 CenterAlignedTopAppBar(
                     title = { Text(text = title) },
                     navigationIcon = {
@@ -48,8 +53,8 @@ fun DefaultScaffoldBack (
                     },
                 )
             }
-        }) { innerPadding ->
-            if (landscape && !dontChangeUiWideScreen) {
+        }, contentWindowInsets = WindowInsets.safeDrawing) { innerPadding ->
+            if (landscapeMaxHeightLow && !dontChangeUiWideScreen) {
                 Box(
                     modifier = Modifier
                         .padding(innerPadding)
@@ -57,14 +62,16 @@ fun DefaultScaffoldBack (
                 ) {
                     IconButton(onClick = navigateOneBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(
-                            id = R.string.back
-                        )
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(
+                                id = R.string.back
+                            )
                         )
                     }
                 }
                 content(
                     Modifier
+                        //.windowInsetsPadding(WindowInsets.safeDrawing)
                         .padding(innerPadding)
                         .padding(start = 52.dp, top = 8.dp)
                 )

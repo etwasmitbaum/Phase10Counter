@@ -29,9 +29,10 @@
         android:theme="@style/Theme.Phase10Counter"
         android:name=".Phase10Counter"
         android:localeConfig="@xml/locale_config"
-        tools:targetApi="33">
+        tools:targetApi="34">
         <activity
             android:name=".ui.MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"
             android:theme="@style/Theme.Phase10Counter">
             <intent-filter>
