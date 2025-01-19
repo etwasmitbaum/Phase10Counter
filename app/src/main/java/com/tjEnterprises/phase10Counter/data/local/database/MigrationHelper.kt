@@ -5,6 +5,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.tjEnterprises.phase10Counter.data.legacy.GlobalDataDatabase
 import com.tjEnterprises.phase10Counter.data.legacy.GlobalHighscores
+import com.tjEnterprises.phase10Counter.model.GameType
 import java.util.Date
 
 class MigrationHelper {
@@ -182,5 +183,16 @@ class Migration3To4(private val context: Context) : Migration(startVersion = 3, 
                 }
             }
         }
+    }
+}
+
+class Migration4To5() : Migration(startVersion = 4, endVersion = 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+
+        val defaultGameType = GameType.GAME_TYPE_STANDARD.key
+        db.execSQL("ALTER TABLE Game ADD COLUMN gameType STRING NOT NULL DEFAULT '$defaultGameType'" )
+
+        db.execSQL("UPDATE Game SET gameType = '$defaultGameType' WHERE gameType IS NULL")
+
     }
 }

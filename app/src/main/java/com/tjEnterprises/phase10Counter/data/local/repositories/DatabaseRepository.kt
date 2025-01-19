@@ -29,6 +29,7 @@ import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
+import com.tjEnterprises.phase10Counter.model.GameType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -47,7 +48,7 @@ interface DatabaseRepository {
 
     fun getGameFlowFromId(gameId: Long): Flow<GameModel>
     suspend fun getGameFromId(gameId: Long): GameModel
-    suspend fun insertGame(gameName: String): Long
+    suspend fun insertGame(gameName: String, gameType: String): Long
     suspend fun deleteGame(game: Game)
     suspend fun deleteGame(gameId: Long)
     suspend fun updateGameModifiedTimestamp(gameId: Long)
@@ -110,7 +111,7 @@ interface DatabaseRepository {
                         )
                     )
                 }
-                gameModels.add(GameModel(gameId, gameName, gameCreated, gameModified, playerModels))
+                gameModels.add(GameModel(gameId, gameName, game.gameType, gameCreated, gameModified, playerModels))
             }
             gameModels
         }
@@ -231,6 +232,7 @@ interface DatabaseRepository {
                         val gameModels = GameModel(
                             gameId = gameId,
                             name = game.name,
+                            gameType = game.gameType,
                             created = game.timestampCreated,
                             modified = game.timestampModified,
                             players = playersFromGame
@@ -238,7 +240,7 @@ interface DatabaseRepository {
                         gameModels
                     } catch (npe: NullPointerException){
                         npe.printStackTrace()
-                        GameModel(-1L, "Error Game", 0L, 0L, emptyList())
+                        GameModel(-1L, "Error Game", GameType.GAME_TYPE_STANDARD.key, 0L, 0L, emptyList())
                     }
                 }
                 return gameModel
@@ -249,14 +251,15 @@ interface DatabaseRepository {
             return GameModel(
                 gameId = game.gameId,
                 name = game.name,
+                gameType = game.gameType,
                 created = game.timestampCreated,
                 modified = game.timestampModified,
                 players = getPlayersFromGame(gameId)
             )
         }
 
-        override suspend fun insertGame(gameName: String): Long {
-            return gameDao.insertGame(Game(name = gameName))
+        override suspend fun insertGame(gameName: String, gameType: String): Long {
+            return gameDao.insertGame(Game(name = gameName, gameType= gameType))
         }
 
         override suspend fun deleteGame(game: Game) {

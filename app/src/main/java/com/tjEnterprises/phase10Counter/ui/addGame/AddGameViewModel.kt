@@ -45,9 +45,9 @@ class AddGameViewModel @Inject constructor(
         _newCreatedGameId.value = -1
     }
 
-    fun addGame(gameName: String, playerNames: List<String>){
+    fun addGame(gameName: String, gameType: String, playerNames: List<String>){
         viewModelScope.launch (Dispatchers.IO) {
-            val newGameId = databaseRepository.insertGame(gameName)
+            val newGameId = databaseRepository.insertGame(gameName, gameType)
             for(i in playerNames.indices.reversed()){
                 databaseRepository.insertPlayer(playerName = playerNames[i], gameId = newGameId)
             }

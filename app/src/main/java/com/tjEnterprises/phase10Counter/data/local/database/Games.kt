@@ -28,7 +28,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Entity
 data class Game(
-    @ColumnInfo("name") val name: String
+    @ColumnInfo("name") val name: String,
+    @ColumnInfo("gameType") val gameType: String
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("game_id")

@@ -26,6 +26,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
+import com.tjEnterprises.phase10Counter.model.GameType
 
 @Composable
 // well i know this is no mvvm here, but for this ONE fixed function it seems a bit overkill
@@ -33,6 +34,7 @@ import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 fun PhasesComponent(
     modifier: Modifier = Modifier,
     player: PlayerModel,
+    gameType: String,
     closeDialog: () -> Unit,
     savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit
 ) {
@@ -91,7 +93,10 @@ fun PhasesComponent(
                                     }) {
                                     Checkbox(checked = !openPhases[j],
                                         onCheckedChange = { openPhases[j] = !it })
-                                    Text(text = stringArrayResource(id = R.array.phases)[j])
+
+                                    val phases = if (gameType == GameType.GAME_TYPE_FLIP.key) R.array.phasesFlip else R.array.phases
+
+                                    Text(text = stringArrayResource(id = phases )[j])
                                 }
                             }
                         }
@@ -118,5 +123,10 @@ fun dismiss(
 @Preview(device = Devices.NEXUS_5)
 @Composable
 fun PhasesComponentPreview() {
-    PhasesComponent(player = PlayerModel(1L, 1L, "Player1", listOf(PointHistoryItem(256L, 1L)), 256L, listOf(true, true, true, true, true, true, true, true, true, true)), closeDialog = {}, savePhasesOfPlayer = { _, _, _ ->})
+    PhasesComponent(
+        player = PlayerModel(1L, 1L, "Player1", listOf(PointHistoryItem(256L, 1L)), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
+        gameType = GameType.GAME_TYPE_FLIP.key,
+        closeDialog = {},
+        savePhasesOfPlayer = { _, _, _ ->}
+    )
 }

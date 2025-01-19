@@ -10,6 +10,16 @@
     <string name="phase8"><b>Round 8: </b>7 cards of one color</string>
     <string name="phase9"><b>Round 9: </b>1 set of 5 + 1 set of 2</string>
     <string name="phase10"><b>Round 10: </b>1 set of 5 + 1 set of 3</string>
+    <string name="flip_phase1"><b>Round 1: </b>2 color runs of 2</string>
+    <string name="flip_phase2"><b>Round 2: </b>A color run of 2 and a set of 2</string>
+    <string name="flip_phase3"><b>Round 3: </b>A color run of 2 and a set of 3</string>
+    <string name="flip_phase4"><b>Round 4: </b>A color run of 3 and a set of 2</string>
+    <string name="flip_phase5"><b>Round 5: </b>A color run of 4 and a set of 2</string>
+    <string name="flip_phase6"><b>Round 6: </b>2 sets of 3</string>
+    <string name="flip_phase7"><b>Round 7: </b>A color run of 3 and a set of 3</string>
+    <string name="flip_phase8"><b>Round 8: </b>A color run of 5 and a set of 2</string>
+    <string name="flip_phase9"><b>Round 9: </b>A color run of 2 and a set of 4</string>
+    <string name="flip_phase10"><b>Round 10: </b>A color run of 3 and 2 sets of 2</string>
     <string name="points">Points</string>
     <string name="addPlayer">Add Player</string>
     <string name="start">Start</string>
@@ -85,6 +95,7 @@
     <string name="deleted">Deleted</string>
     <string name="editValue">Edit Value</string>
     <string name="gameType">Game Type</string>
-    <string name="gameTypeDefault">Default</string>
+    <string name="gameTypeStandard">Standard</string>
     <string name="gameTypeFlip">Flip</string>
+    <string name="gameTypeNotFound">not found</string>
 </resources>

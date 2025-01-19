@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
+import com.tjEnterprises.phase10Counter.model.GameType
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
@@ -55,8 +56,8 @@ fun AddGameScreen(
 
     AddGameScreen(
         openDrawer = openDrawer,
-        addGame = { gameName, names ->
-            viewModel.addGame(gameName, names)
+        addGame = { gameName, gameType, names ->
+            viewModel.addGame(gameName, gameType, names)
         },
         newCreatedGameID = newCreatedGameID,
         tempPlayerNames = viewModel.tempPlayerNames,
@@ -64,8 +65,7 @@ fun AddGameScreen(
         removeTempPlayerName = { viewModel.removeTempPlayerName(it) },
         navigateToGame = navigateToGame,
         resetNewCreatedGameID = { viewModel.resetNewCreatedGameID() },
-        defaultGameType = stringResource(id = R.string.gameTypeDefault),
-        gameTypeOptions = listOf(stringResource(id = R.string.gameTypeDefault), stringResource(id = R.string.gameTypeFlip)),
+        defaultGameType = GameType.GAME_TYPE_STANDARD.key,
         updateChecker = { UpdateCheckerComponent(it) },
         modifier = modifier
     )
@@ -78,14 +78,13 @@ internal fun AddGameScreen(
     modifier: Modifier = Modifier,
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
-    addGame: (String, List<String>) -> Unit,
+    addGame: (String, String, List<String>) -> Unit,
     resetNewCreatedGameID: () -> Unit,
     newCreatedGameID: Long,
     dontChangeUiWideScreen: Boolean,
     tempPlayerNames: SnapshotStateList<String>,
     removeTempPlayerName: (Int) -> Unit,
     defaultGameType: String,
-    gameTypeOptions: List<String>,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
     var textPlayer by rememberSaveable { mutableStateOf("") }
@@ -94,6 +93,8 @@ internal fun AddGameScreen(
     val context = LocalContext.current
 
     var expandedGameDropdown by remember { mutableStateOf(false) }
+
+    val gameTypeOptions = GameType.entries.toTypedArray()
 
     // when the gameID is not -1L (default) the side effect will cause a navigation to the newly created game
     // there are no other circumstances, where newCreatedGameID will change its value from -1L
@@ -190,7 +191,7 @@ internal fun AddGameScreen(
                                 .padding(bottom = 8.dp)
                         ) {
                             OutlinedTextField(
-                                value = selectedGameType,
+                                value = GameType.fromKey(selectedGameType)?.let { stringResource(id = it.resourceId) } ?: Text(stringResource(id = R.string.gameTypeNotFound)).toString(),
                                 onValueChange = { },
                                 readOnly = true,
                                 label = { Text(stringResource(id = R.string.gameType)) },
@@ -206,11 +207,11 @@ internal fun AddGameScreen(
                                 expanded = expandedGameDropdown,
                                 onDismissRequest = { expandedGameDropdown = false }
                             ) {
-                                gameTypeOptions.forEach { item: String ->
+                                gameTypeOptions.forEach { item: GameType ->
                                     DropdownMenuItem(
-                                        text = { Text( text = item ) },
+                                        text = { Text( text = stringResource(id = item.resourceId)) },
                                         onClick = {
-                                            selectedGameType = item
+                                            selectedGameType = item.key
                                             expandedGameDropdown = false
                                         }
                                     )
@@ -251,7 +252,7 @@ internal fun AddGameScreen(
             Button(onClick = {
                 if (textGame.isNotBlank()) {
                     if (tempPlayerNames.size >= 2) {
-                        addGame(textGame, tempPlayerNames)
+                        addGame(textGame, selectedGameType ,tempPlayerNames)
                     } else {
                         Toast.makeText(
                             context,
@@ -311,13 +312,12 @@ fun AddGameScreenPreview() {
 
     AddGameScreen(openDrawer = { },
         navigateToGame = {},
-        addGame = { _, _ -> },
+        addGame = { _, _, _ -> },
         resetNewCreatedGameID = { },
         newCreatedGameID = -1L,
         dontChangeUiWideScreen = false,
         tempPlayerNames = tempPlayerNames,
         removeTempPlayerName = {},
-        defaultGameType = stringResource(id = R.string.gameTypeDefault),
-        gameTypeOptions = listOf(stringResource(id = R.string.gameTypeDefault), stringResource(id = R.string.gameTypeFlip)),
+        defaultGameType = GameType.GAME_TYPE_STANDARD.key,
         updateChecker = {})
 }
