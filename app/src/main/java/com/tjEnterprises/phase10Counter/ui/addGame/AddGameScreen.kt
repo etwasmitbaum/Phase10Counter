@@ -11,6 +11,12 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -58,12 +64,15 @@ fun AddGameScreen(
         removeTempPlayerName = { viewModel.removeTempPlayerName(it) },
         navigateToGame = navigateToGame,
         resetNewCreatedGameID = { viewModel.resetNewCreatedGameID() },
+        defaultGameType = stringResource(id = R.string.gameTypeDefault),
+        gameTypeOptions = listOf(stringResource(id = R.string.gameTypeDefault), stringResource(id = R.string.gameTypeFlip)),
         updateChecker = { UpdateCheckerComponent(it) },
         modifier = modifier
     )
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AddGameScreen(
     modifier: Modifier = Modifier,
@@ -75,11 +84,16 @@ internal fun AddGameScreen(
     dontChangeUiWideScreen: Boolean,
     tempPlayerNames: SnapshotStateList<String>,
     removeTempPlayerName: (Int) -> Unit,
+    defaultGameType: String,
+    gameTypeOptions: List<String>,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
     var textPlayer by rememberSaveable { mutableStateOf("") }
     var textGame by rememberSaveable { mutableStateOf("") }
+    var selectedGameType by rememberSaveable { mutableStateOf(defaultGameType) }
     val context = LocalContext.current
+
+    var expandedGameDropdown by remember { mutableStateOf(false) }
 
     // when the gameID is not -1L (default) the side effect will cause a navigation to the newly created game
     // there are no other circumstances, where newCreatedGameID will change its value from -1L
@@ -88,7 +102,9 @@ internal fun AddGameScreen(
             resetNewCreatedGameID()     // reset gameId, else will be stuck in endless in navigating to new game
             textGame = ""
             textPlayer = ""
+            selectedGameType = defaultGameType
             tempPlayerNames.clear()
+            expandedGameDropdown = false
             navigateToGame(NavigationDestination.GAMESCREEN + "/" + newCreatedGameID)
         })
     }
@@ -165,6 +181,45 @@ internal fun AddGameScreen(
                                 .padding(bottom = 8.dp)
 
                         )
+
+                        ExposedDropdownMenuBox(
+                            expanded = expandedGameDropdown,
+                            onExpandedChange = { expandedGameDropdown = it },
+                            modifier = Modifier
+                                .widthIn(1.dp, 150.dp)
+                                .padding(bottom = 8.dp)
+                        ) {
+                            OutlinedTextField(
+                                value = selectedGameType,
+                                onValueChange = { },
+                                readOnly = true,
+                                label = { Text(stringResource(id = R.string.gameType)) },
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedGameDropdown)
+                                },
+                                modifier = Modifier
+                                    .menuAnchor(MenuAnchorType.SecondaryEditable, enabled = true)
+                                    .fillMaxWidth()
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = expandedGameDropdown,
+                                onDismissRequest = { expandedGameDropdown = false }
+                            ) {
+                                gameTypeOptions.forEach { item: String ->
+                                    DropdownMenuItem(
+                                        text = { Text( text = item ) },
+                                        onClick = {
+                                            selectedGameType = item
+                                            expandedGameDropdown = false
+                                        }
+                                    )
+                                }
+
+                            }
+
+                        }
+
                         TextField(value = textPlayer,
                             onValueChange = { textPlayer = it },
                             label = { Text(stringResource(id = R.string.playerName)) },
@@ -252,6 +307,8 @@ fun AddGameScreenPreview() {
             "Plaaaaaaaaaaaaaaaaayyyyyyyyyyyyyyyyeeeeee"
         )
     }
+
+
     AddGameScreen(openDrawer = { },
         navigateToGame = {},
         addGame = { _, _ -> },
@@ -260,5 +317,7 @@ fun AddGameScreenPreview() {
         dontChangeUiWideScreen = false,
         tempPlayerNames = tempPlayerNames,
         removeTempPlayerName = {},
+        defaultGameType = stringResource(id = R.string.gameTypeDefault),
+        gameTypeOptions = listOf(stringResource(id = R.string.gameTypeDefault), stringResource(id = R.string.gameTypeFlip)),
         updateChecker = {})
 }

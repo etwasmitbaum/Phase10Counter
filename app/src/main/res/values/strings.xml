@@ -84,4 +84,7 @@
     <string name="onlyNumbersAreAllows">Only numbers are allowed</string>
     <string name="deleted">Deleted</string>
     <string name="editValue">Edit Value</string>
+    <string name="gameType">Game Type</string>
+    <string name="gameTypeDefault">Default</string>
+    <string name="gameTypeFlip">Flip</string>
 </resources>
