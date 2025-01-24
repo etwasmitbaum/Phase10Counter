@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableFloatState
@@ -178,7 +179,13 @@ internal fun SettingsScreen(
 
             // Auto check for Updates only for GitHub and Debug builds
             if (BuildConfig.BUILD_TYPE != "release") {
-                SettingsSwitch(title = { Text(text = stringResource(id = R.string.autoCheckForUpdates)) },
+                HorizontalDivider()
+                SettingsSwitch(title = {
+                    Text(
+                        text = stringResource(id = R.string.autoCheckForUpdates),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                },
                     state = settings.checkForUpdates,
                     onCheckedChange = { newValue -> updateCheckForUpdates(newValue) },
                     icon = {
@@ -194,7 +201,12 @@ internal fun SettingsScreen(
 
             // Enable Dynamic Colors (Android 12+)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                SettingsSwitch(title = { Text(text = stringResource(id = R.string.enableDynamicColors)) },
+                SettingsSwitch(title = {
+                    Text(
+                        text = stringResource(id = R.string.enableDynamicColors),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                },
                     subtitle = {
                         Text(
                             text = stringResource(id = R.string.useSystemColors)
@@ -213,7 +225,12 @@ internal fun SettingsScreen(
 
             // Use System Theme (Android 10+)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                SettingsSwitch(title = { Text(text = stringResource(id = R.string.followSystemTheme)) },
+                SettingsSwitch(title = {
+                    Text(
+                        text = stringResource(id = R.string.followSystemTheme),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                },
                     state = settings.useSystemTheme,
                     onCheckedChange = { newValue -> updateUseSystemTheme(newValue) },
                     icon = {
@@ -226,7 +243,12 @@ internal fun SettingsScreen(
             }
 
             // Use Dark Theme
-            SettingsSwitch(title = { Text(text = stringResource(id = R.string.darkTheme)) },
+            SettingsSwitch(title = {
+                Text(
+                    text = stringResource(id = R.string.darkTheme),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
                 state = settings.useDarkTheme,
                 onCheckedChange = { newValue -> updateUseDarkTheme(newValue) },
                 enabled = !settings.useSystemTheme,
@@ -242,7 +264,12 @@ internal fun SettingsScreen(
             HorizontalDivider()
 
             // Force don't Change Ui on Wide Screen
-            SettingsSwitch(title = { Text(text = stringResource(id = R.string.dontChangeUiOnWideScreen)) },
+            SettingsSwitch(title = {
+                Text(
+                    text = stringResource(id = R.string.dontChangeUiOnWideScreen),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
                 state = settings.dontChangeUiOnWideScreen,
                 onCheckedChange = { newValue -> updateDontChangeUiWideScreen(newValue) },
                 icon = {
@@ -257,7 +284,12 @@ internal fun SettingsScreen(
 
             // Backup Game
             val fileName = stringResource(id = R.string.backupFileName)
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.backupGames)) },
+            SettingsMenuLink(title = {
+                Text(
+                    text = stringResource(id = R.string.backupGames),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Clear,
@@ -276,7 +308,12 @@ internal fun SettingsScreen(
             }
 
             // Restore games from backup file
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.restoreGames)) },
+            SettingsMenuLink(title = {
+                Text(
+                    text = stringResource(id = R.string.restoreGames),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
                 subtitle = {
                     Text(
                         text = stringResource(id = R.string.thisWillOverwriteAllExistingData) + "\n" + stringResource(
