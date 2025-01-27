@@ -24,11 +24,13 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Update
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import kotlinx.coroutines.flow.Flow
 
 @Entity
 data class Game(
-    @ColumnInfo("name") val name: String
+    @ColumnInfo("name") val name: String,
+    @ColumnInfo("gameType", defaultValue = GameType.DEFAULT_GAMETYPE_KEY) val gameType: String = GameType.DEFAULT_GAMETYPE_KEY
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("game_id")

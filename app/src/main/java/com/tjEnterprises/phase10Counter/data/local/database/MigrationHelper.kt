@@ -5,19 +5,16 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.tjEnterprises.phase10Counter.data.legacy.GlobalDataDatabase
 import com.tjEnterprises.phase10Counter.data.legacy.GlobalHighscores
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import java.util.Date
 
-class MigrationHelper {
-    companion object {
-        val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(db: SupportSQLiteDatabase) {
-                try {
-                    db.execSQL("CREATE TABLE `Highscores` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `playerName` TEXT NOT NULL, `punkte` INTEGER NOT NULL, `date` INTEGER NOT NULL)")
-                } catch (_: Exception) {
-                }
-                db.execSQL("ALTER TABLE PlayerData ADD COLUMN gameWon INTEGER NOT NULL DEFAULT false")
-            }
+object Migration1To2 : Migration(startVersion = 1, endVersion = 2) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        try {
+            db.execSQL("CREATE TABLE `Highscores` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `playerName` TEXT NOT NULL, `punkte` INTEGER NOT NULL, `date` INTEGER NOT NULL)")
+        } catch (_: Exception) {
         }
+        db.execSQL("ALTER TABLE PlayerData ADD COLUMN gameWon INTEGER NOT NULL DEFAULT false")
     }
 }
 
@@ -183,4 +180,12 @@ class Migration3To4(private val context: Context) : Migration(startVersion = 3, 
             }
         }
     }
+}
+
+object Migration4To5 : Migration(startVersion = 4, endVersion = 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        val defaultGameType = GameType.DEFAULT_GAMETYPE_KEY
+        db.execSQL("ALTER TABLE Game ADD COLUMN gameType TEXT NOT NULL DEFAULT '$defaultGameType'" )
+    }
+
 }
