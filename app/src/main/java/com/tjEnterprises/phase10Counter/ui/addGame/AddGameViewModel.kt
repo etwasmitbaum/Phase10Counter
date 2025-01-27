@@ -3,6 +3,7 @@ package com.tjEnterprises.phase10Counter.ui.addGame
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
 import com.tjEnterprises.phase10Counter.data.local.repositories.SettingsRepository
@@ -45,7 +46,7 @@ class AddGameViewModel @Inject constructor(
         _newCreatedGameId.value = -1
     }
 
-    fun addGame(gameName: String, gameType: String, playerNames: List<String>){
+    fun addGame(gameName: String, gameType: GameType.Type, playerNames: List<String>){
         viewModelScope.launch (Dispatchers.IO) {
             val newGameId = databaseRepository.insertGame(gameName, gameType)
             for(i in playerNames.indices.reversed()){

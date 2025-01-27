@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
-import com.tjEnterprises.phase10Counter.model.GameType
 import com.tjEnterprises.phase10Counter.ui.SelectGameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
@@ -123,7 +123,7 @@ internal fun SelectGame(
 fun SelectGamePreview() {
     SelectGame(dontChangeUiWideScreen = false, games = listOf(
         GameModel(
-            1L, "Game 1", GameType.GAME_TYPE_FLIP.key,0L, 0L,
+            1L, "Game 1", GameType.Flip,0L, 0L,
             listOf(
                 PlayerModel(
                     1L,
@@ -149,7 +149,7 @@ fun SelectGamePreview() {
                 )
             ),
         ), GameModel(
-            2L, "Game 2", GameType.GAME_TYPE_STANDARD.key,0L, 0L,
+            2L, "Game 2", GameType.Standard,0L, 0L,
             listOf(
                 PlayerModel(
                     1L,
@@ -175,7 +175,7 @@ fun SelectGamePreview() {
                 )
             ),
         ), GameModel(
-            3L, "Game 3", GameType.GAME_TYPE_STANDARD.key,0L, 0L,
+            3L, "Game 3", GameType.Standard,0L, 0L,
             listOf(
                 PlayerModel(
                     1L,

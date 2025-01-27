@@ -40,9 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
-import com.tjEnterprises.phase10Counter.model.GameType
 import com.tjEnterprises.phase10Counter.ui.GameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import kotlinx.coroutines.launch
@@ -111,7 +111,7 @@ fun GameScreen(
 internal fun GameScreen(
     players: List<PlayerModel>,
     gameTitle: String,
-    gameType: String,
+    gameType: GameType.Type,
     dontChangeUiWideScreen: Boolean,
     openDrawer: () -> Unit,
     addPointHistoryEntry: (Long, Long, Long) -> Unit,
@@ -121,7 +121,7 @@ internal fun GameScreen(
     modifier: Modifier = Modifier
 ) {
 
-    val gameTypeString = GameType.fromKey(gameType)?.let { stringResource(id = it.resourceId) } ?: Text(stringResource(id = R.string.gameTypeNotFound)).toString()
+    val gameTypeString = stringResource(id = gameType.resourceId)
 
     DefaultScaffoldNavigation(title = "$gameTitle($gameTypeString)",
         openDrawer = openDrawer,
@@ -210,7 +210,7 @@ fun GameScreenPreview() {
         ),
         openDrawer = {},
         gameTitle = "Game 1",
-        gameType = GameType.GAME_TYPE_STANDARD.key,
+        gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
         dontChangeUiWideScreen = false, deletePointHistoryItem = {},

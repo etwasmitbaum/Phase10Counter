@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
-import com.tjEnterprises.phase10Counter.model.GameType
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 
 @Composable
@@ -97,7 +97,7 @@ fun GamePreviewComponent(
                     .clip(shape = RoundedCornerShape(30)) // Clip for rounded corner ripple#
                     .clickable { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) })
 
-            val gameTypeString = GameType.fromKey(game.gameType)?.let { stringResource(id = it.resourceId) } ?: Text(stringResource(id = R.string.gameTypeNotFound)).toString()
+            val gameTypeString = stringResource(id = game.gameType.resourceId)
 
             Text(text = "${stringResource(id = R.string.gameType)} : $gameTypeString")
 
@@ -183,7 +183,7 @@ fun GamePreviewComponent(
 @Composable
 fun GamePreviewComponentPreview(expand: Boolean = false) {
     GamePreviewComponent(game = GameModel(
-        1L, "Game 1", GameType.GAME_TYPE_STANDARD.key,0L, 0L,
+        1L, "Game 1", GameType.defaultGameType,0L, 0L,
         listOf(
             PlayerModel(
                 1L,
@@ -216,7 +216,7 @@ fun GamePreviewComponentPreview(expand: Boolean = false) {
 @Composable
 fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
     GamePreviewComponent(game = GameModel(
-        1L, "VeryLongGameNameINeedToTest", GameType.GAME_TYPE_FLIP.key ,0L, 0L,
+        1L, "VeryLongGameNameINeedToTest", GameType.Flip ,0L, 0L,
         listOf(
             PlayerModel(
                 1L,

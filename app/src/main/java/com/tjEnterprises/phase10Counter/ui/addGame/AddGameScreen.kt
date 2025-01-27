@@ -39,7 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.model.GameType
+import com.tjEnterprises.phase10Counter.data.local.database.Game
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
@@ -65,7 +66,7 @@ fun AddGameScreen(
         removeTempPlayerName = { viewModel.removeTempPlayerName(it) },
         navigateToGame = navigateToGame,
         resetNewCreatedGameID = { viewModel.resetNewCreatedGameID() },
-        defaultGameType = GameType.GAME_TYPE_STANDARD.key,
+        defaultGameType = GameType.defaultGameType,
         updateChecker = { UpdateCheckerComponent(it) },
         modifier = modifier
     )
@@ -78,23 +79,22 @@ internal fun AddGameScreen(
     modifier: Modifier = Modifier,
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
-    addGame: (String, String, List<String>) -> Unit,
+    addGame: (String, GameType.Type, List<String>) -> Unit,
     resetNewCreatedGameID: () -> Unit,
     newCreatedGameID: Long,
     dontChangeUiWideScreen: Boolean,
     tempPlayerNames: SnapshotStateList<String>,
     removeTempPlayerName: (Int) -> Unit,
-    defaultGameType: String,
+    defaultGameType: GameType.Type,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
     var textPlayer by rememberSaveable { mutableStateOf("") }
     var textGame by rememberSaveable { mutableStateOf("") }
-    var selectedGameType by rememberSaveable { mutableStateOf(defaultGameType) }
+    //var selectedGameType by rememberSaveable { mutableStateOf(defaultGameType) } // TODO Find fix for: MutableState containing Standard cannot be saved using the current SaveableStateRegistry. The default implementation only supports types which can be stored inside the Bundle. Please consider implementing a custom Saver for this class and pass it as a stateSaver parameter to rememberSaveable().
+    var selectedGameType = defaultGameType
     val context = LocalContext.current
 
     var expandedGameDropdown by remember { mutableStateOf(false) }
-
-    val gameTypeOptions = GameType.entries.toTypedArray()
 
     // when the gameID is not -1L (default) the side effect will cause a navigation to the newly created game
     // there are no other circumstances, where newCreatedGameID will change its value from -1L
@@ -190,8 +190,7 @@ internal fun AddGameScreen(
                                 .widthIn(1.dp, 150.dp)
                                 .padding(bottom = 8.dp)
                         ) {
-                            OutlinedTextField(
-                                value = GameType.fromKey(selectedGameType)?.let { stringResource(id = it.resourceId) } ?: Text(stringResource(id = R.string.gameTypeNotFound)).toString(),
+                            OutlinedTextField(value = stringResource(id = selectedGameType.resourceId),
                                 onValueChange = { },
                                 readOnly = true,
                                 label = { Text(stringResource(id = R.string.gameType)) },
@@ -199,22 +198,20 @@ internal fun AddGameScreen(
                                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedGameDropdown)
                                 },
                                 modifier = Modifier
-                                    .menuAnchor(MenuAnchorType.SecondaryEditable, enabled = true)
+                                    .menuAnchor(
+                                        MenuAnchorType.SecondaryEditable, enabled = true
+                                    )
                                     .fillMaxWidth()
                             )
 
-                            ExposedDropdownMenu(
-                                expanded = expandedGameDropdown,
-                                onDismissRequest = { expandedGameDropdown = false }
-                            ) {
-                                gameTypeOptions.forEach { item: GameType ->
-                                    DropdownMenuItem(
-                                        text = { Text( text = stringResource(id = item.resourceId)) },
+                            ExposedDropdownMenu(expanded = expandedGameDropdown,
+                                onDismissRequest = { expandedGameDropdown = false }) {
+                                GameType.availableGameTypes.forEach { item: GameType.Type ->
+                                    DropdownMenuItem(text = { Text(text = stringResource(id = item.resourceId)) },
                                         onClick = {
-                                            selectedGameType = item.key
+                                            selectedGameType = item
                                             expandedGameDropdown = false
-                                        }
-                                    )
+                                        })
                                 }
 
                             }
@@ -252,7 +249,7 @@ internal fun AddGameScreen(
             Button(onClick = {
                 if (textGame.isNotBlank()) {
                     if (tempPlayerNames.size >= 2) {
-                        addGame(textGame, selectedGameType ,tempPlayerNames)
+                        addGame(textGame, selectedGameType, tempPlayerNames)
                     } else {
                         Toast.makeText(
                             context,
@@ -318,6 +315,6 @@ fun AddGameScreenPreview() {
         dontChangeUiWideScreen = false,
         tempPlayerNames = tempPlayerNames,
         removeTempPlayerName = {},
-        defaultGameType = GameType.GAME_TYPE_STANDARD.key,
+        defaultGameType = GameType.defaultGameType,
         updateChecker = {})
 }
