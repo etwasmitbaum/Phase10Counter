@@ -38,6 +38,7 @@ import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.ui.SettingsUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
+import com.tjEnterprises.phase10Counter.ui.theme.P10SettingsColor
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -178,7 +179,13 @@ internal fun SettingsScreen(
 
             // Auto check for Updates only for GitHub and Debug builds
             if (BuildConfig.BUILD_TYPE != "release") {
-                SettingsSwitch(title = { Text(text = stringResource(id = R.string.autoCheckForUpdates)) },
+                HorizontalDivider()
+                SettingsSwitch(
+                    title = {
+                        Text(
+                            text = stringResource(id = R.string.autoCheckForUpdates)
+                        )
+                    },
                     state = settings.checkForUpdates,
                     onCheckedChange = { newValue -> updateCheckForUpdates(newValue) },
                     icon = {
@@ -187,14 +194,21 @@ internal fun SettingsScreen(
                             contentDescription = null,
                             modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                         )
-                    })
+                    },
+                    colors = P10SettingsColor.colors()
+                )
             }
 
             HorizontalDivider()
 
             // Enable Dynamic Colors (Android 12+)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                SettingsSwitch(title = { Text(text = stringResource(id = R.string.enableDynamicColors)) },
+                SettingsSwitch(
+                    title = {
+                        Text(
+                            text = stringResource(id = R.string.enableDynamicColors),
+                        )
+                    },
                     subtitle = {
                         Text(
                             text = stringResource(id = R.string.useSystemColors)
@@ -208,12 +222,19 @@ internal fun SettingsScreen(
                             contentDescription = null,
                             modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                         )
-                    })
+                    },
+                    colors = P10SettingsColor.colors()
+                )
             }
 
             // Use System Theme (Android 10+)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                SettingsSwitch(title = { Text(text = stringResource(id = R.string.followSystemTheme)) },
+                SettingsSwitch(
+                    title = {
+                        Text(
+                            text = stringResource(id = R.string.followSystemTheme),
+                        )
+                    },
                     state = settings.useSystemTheme,
                     onCheckedChange = { newValue -> updateUseSystemTheme(newValue) },
                     icon = {
@@ -222,11 +243,18 @@ internal fun SettingsScreen(
                             contentDescription = null,
                             modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                         )
-                    })
+                    },
+                    colors = P10SettingsColor.colors()
+                )
             }
 
             // Use Dark Theme
-            SettingsSwitch(title = { Text(text = stringResource(id = R.string.darkTheme)) },
+            SettingsSwitch(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.darkTheme),
+                    )
+                },
                 state = settings.useDarkTheme,
                 onCheckedChange = { newValue -> updateUseDarkTheme(newValue) },
                 enabled = !settings.useSystemTheme,
@@ -237,12 +265,19 @@ internal fun SettingsScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                })
+                },
+                colors = P10SettingsColor.colors()
+            )
 
             HorizontalDivider()
 
             // Force don't Change Ui on Wide Screen
-            SettingsSwitch(title = { Text(text = stringResource(id = R.string.dontChangeUiOnWideScreen)) },
+            SettingsSwitch(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.dontChangeUiOnWideScreen),
+                    )
+                },
                 state = settings.dontChangeUiOnWideScreen,
                 onCheckedChange = { newValue -> updateDontChangeUiWideScreen(newValue) },
                 icon = {
@@ -251,20 +286,26 @@ internal fun SettingsScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                })
+                },
+                colors = P10SettingsColor.colors()
+            )
 
             HorizontalDivider()
 
             // Backup Game
             val fileName = stringResource(id = R.string.backupFileName)
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.backupGames)) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = null,
-                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
-                    )
-                }) {
+            SettingsMenuLink(title = {
+                Text(
+                    text = stringResource(id = R.string.backupGames),
+                )
+            }, icon = {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = null,
+                    modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                )
+            }, colors = P10SettingsColor.colors()
+            ) {
                 val intent =
                     Intent(Intent.ACTION_CREATE_DOCUMENT).setType("application/octet-stream")
                         .putExtra(
@@ -276,21 +317,24 @@ internal fun SettingsScreen(
             }
 
             // Restore games from backup file
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.restoreGames)) },
-                subtitle = {
-                    Text(
-                        text = stringResource(id = R.string.thisWillOverwriteAllExistingData) + "\n" + stringResource(
-                            id = R.string.appRestartMayBeRequired
-                        )
+            SettingsMenuLink(title = {
+                Text(
+                    text = stringResource(id = R.string.restoreGames)
+                )
+            }, subtitle = {
+                Text(
+                    text = stringResource(id = R.string.thisWillOverwriteAllExistingData) + "\n" + stringResource(
+                        id = R.string.appRestartMayBeRequired
                     )
-                },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = null,
-                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
-                    )
-                }) {
+                )
+            }, icon = {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = null,
+                    modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                )
+            }, colors = P10SettingsColor.colors()
+            ) {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).setType("application/octet-stream")
                 restoreARL.launch(intent)
             }

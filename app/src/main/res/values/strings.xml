@@ -97,5 +97,5 @@
     <string name="gameType">Game Type</string>
     <string name="gameTypeStandard">Standard</string>
     <string name="gameTypeFlip">Flip</string>
-    <string name="gameTypeNotFound">not found</string>
+    <string name="gameTypeMasters">Masters</string>
 </resources>

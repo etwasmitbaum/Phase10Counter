@@ -23,6 +23,7 @@ import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.tjEnterprises.phase10Counter.BuildConfig
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
+import com.tjEnterprises.phase10Counter.ui.theme.P10SettingsColor
 
 @Composable
 fun AboutScreen(
@@ -77,7 +78,7 @@ fun AboutScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                }) {
+                }, colors = P10SettingsColor.colors()) {
                 uriHandler.openUri("https://github.com/etwasmitbaum/Phase10Counter")
             }
             HorizontalDivider()
@@ -102,7 +103,7 @@ fun AboutScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                }) {
+                }, colors = P10SettingsColor.colors()) {
                 navigateToAppLicence()
             }
             HorizontalDivider()
@@ -125,7 +126,7 @@ fun AboutScreen(
                         )
                     }
 
-                }) {
+                }, colors = P10SettingsColor.colors()) {
                 navigateToAboutLibraries()
             }
             HorizontalDivider()
@@ -139,7 +140,7 @@ fun AboutScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                }) {}
+                }, colors = P10SettingsColor.colors()) {}
             HorizontalDivider()
         }
     }

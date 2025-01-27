@@ -85,4 +85,7 @@
     <string name="onlyNumbersAreAllows">Es sind nur Zahlen erlaubt</string>
     <string name="deleted">Gelöscht</string>
     <string name="editValue">Wert ändern</string>
+    <string name="gameTypeStandard">Standard</string>
+    <string name="gameTypeFlip">Flip</string>
+    <string name="gameTypeMasters">Masters</string>
 </resources>

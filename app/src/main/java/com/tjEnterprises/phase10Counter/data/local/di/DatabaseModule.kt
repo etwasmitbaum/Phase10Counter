@@ -22,10 +22,10 @@ import androidx.room.RoomDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
 import com.tjEnterprises.phase10Counter.data.local.database.GameDao
 import com.tjEnterprises.phase10Counter.data.local.database.HighscoreDao
+import com.tjEnterprises.phase10Counter.data.local.database.Migration1To2
 import com.tjEnterprises.phase10Counter.data.local.database.Migration2To3
 import com.tjEnterprises.phase10Counter.data.local.database.Migration3To4
 import com.tjEnterprises.phase10Counter.data.local.database.Migration4To5
-import com.tjEnterprises.phase10Counter.data.local.database.MigrationHelper
 import com.tjEnterprises.phase10Counter.data.local.database.PhasesDao
 import com.tjEnterprises.phase10Counter.data.local.database.PlayerDao
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
@@ -71,10 +71,10 @@ class DatabaseModule {
         return Room.databaseBuilder(
             appContext, AppDatabase::class.java, AppDatabase.getName()
         ).addMigrations(
-            MigrationHelper.MIGRATION_1_2,
+            Migration1To2,
             Migration2To3(context = appContext),
             Migration3To4(context = appContext),
-            Migration4To5()
+            Migration4To5
         ).setJournalMode(
             RoomDatabase.JournalMode.TRUNCATE // set to TRUNCATE, so all is always stored in a single file to easier make backups
         ).build()

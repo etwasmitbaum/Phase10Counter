@@ -2,18 +2,20 @@ package com.tjEnterprises.phase10Counter.ui.database
 
 import android.content.Context
 import android.database.Cursor
+import android.util.Log
 import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
-import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tjEnterprises.phase10Counter.data.legacy.GlobalDataDatabase
 import com.tjEnterprises.phase10Counter.data.legacy.GlobalHighscores
 import com.tjEnterprises.phase10Counter.data.local.database.AppDatabase
+import com.tjEnterprises.phase10Counter.data.local.database.Migration1To2
 import com.tjEnterprises.phase10Counter.data.local.database.Migration2To3
 import com.tjEnterprises.phase10Counter.data.local.database.Migration3To4
-import com.tjEnterprises.phase10Counter.data.local.database.MigrationHelper
+import com.tjEnterprises.phase10Counter.data.local.database.Migration4To5
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Rule
@@ -21,6 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 import java.util.Date
+import java.util.concurrent.Executors
 
 @Suppress("VARIABLE_WITH_REDUNDANT_INITIALIZER")
 @RunWith(AndroidJUnit4::class)
@@ -29,9 +32,7 @@ class MigrationTest {
 
     @get:Rule
     val helper: MigrationTestHelper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        AppDatabase::class.java.canonicalName,
-        FrameworkSQLiteOpenHelperFactory()
+        InstrumentationRegistry.getInstrumentation(), AppDatabase::class.java
     )
 
     @Test
@@ -50,7 +51,12 @@ class MigrationTest {
             InstrumentationRegistry.getInstrumentation().targetContext,
             AppDatabase::class.java,
             TEST_DB
-        ).addMigrations(MigrationHelper.MIGRATION_1_2, Migration2To3(context = context), Migration3To4(context = context)).build().apply {
+        ).addMigrations(
+            Migration1To2,
+            Migration2To3(context = context),
+            Migration3To4(context = context),
+            Migration4To5
+        ).build().apply {
             openHelper.writableDatabase.close()
         }
     }
@@ -147,16 +153,79 @@ class MigrationTest {
         val playersCursor = db.query("SELECT * FROM Player ORDER BY player_id ASC")
         val highScoreCursor = db.query("SELECT * FROM Highscore ORDER BY id ASC")
         val gameCursor = db.query("SELECT * FROM Game ORDER BY game_id ASC")
-        val pointHistoryCursor = db.query("SELECT * FROM PointHistory ORDER BY player_id ASC, pointId ASC")
+        val pointHistoryCursor =
+            db.query("SELECT * FROM PointHistory ORDER BY player_id ASC, pointId ASC")
         val phasesCursor = db.query("SELECT * FROM Phases ORDER BY player_id ASC, phase ASC")
 
         verifyDataMigration3To4(
-            playersCursor,
-            highScoreCursor,
-            gameCursor,
-            pointHistoryCursor,
-            phasesCursor
+            playersCursor, highScoreCursor, gameCursor, pointHistoryCursor, phasesCursor
         )
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun migrate4To5WithoutData() {
+        var db = helper.createDatabase(TEST_DB, 4).apply {
+            // You can't use DAO classes because they expect the latest schema.
+            // Prepare for the next version.
+            close()
+        }
+
+        db = helper.runMigrationsAndValidate(
+            TEST_DB, 5, true, Migration4To5
+        )
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun migrate4To5WithData() {
+        var db = helper.createDatabase(TEST_DB, 4).apply {
+            execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 1', 1, 1737702738256, 1737902738256)")
+            execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 2', 2, 1737702738257, 1737902738257)")
+            execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 3', 13847, 1737702738258, 1737902738258)")
+            close()
+        }
+
+        db = helper.runMigrationsAndValidate(
+            TEST_DB, 5, true, Migration4To5
+        )
+
+        val gameCursor = db.query("SELECT * FROM Game ORDER BY game_id ASC")
+
+        verifyDataMigration4To5(gameCursor)
+    }
+
+    private fun verifyDataMigration4To5(gameCursor: Cursor) {
+        gameCursor.moveToFirst()
+
+        val g1Name = gameCursor.getString(gameCursor.getColumnIndexOrThrow("name"))
+        val g1created = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("timestampCreated"))
+        val g1modified = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("timestampModified"))
+        val g1type = gameCursor.getString(gameCursor.getColumnIndexOrThrow("gameType"))
+        assertEquals(g1Name, "Game 1")
+        assertEquals(g1created, 1737702738256)
+        assertEquals(g1modified, 1737902738256)
+        assertEquals(g1type, GameType.DEFAULT_GAMETYPE_KEY)
+
+        gameCursor.moveToNext()
+        val g2Name = gameCursor.getString(gameCursor.getColumnIndexOrThrow("name"))
+        val g2created = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("timestampCreated"))
+        val g2modified = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("timestampModified"))
+        val g2type = gameCursor.getString(gameCursor.getColumnIndexOrThrow("gameType"))
+        assertEquals(g2Name, "Game 2")
+        assertEquals(g2created, 1737702738257)
+        assertEquals(g2modified, 1737902738257)
+        assertEquals(g2type, GameType.DEFAULT_GAMETYPE_KEY)
+
+        gameCursor.moveToNext()
+        val g3Name = gameCursor.getString(gameCursor.getColumnIndexOrThrow("name"))
+        val g3created = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("timestampCreated"))
+        val g3modified = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("timestampModified"))
+        val g3type = gameCursor.getString(gameCursor.getColumnIndexOrThrow("gameType"))
+        assertEquals(g3Name, "Game 3")
+        assertEquals(g3created, 1737702738258)
+        assertEquals(g3modified, 1737902738258)
+        assertEquals(g3type, GameType.DEFAULT_GAMETYPE_KEY)
     }
 
     private fun verifyDataMigration3To4(
@@ -225,7 +294,7 @@ class MigrationTest {
         assertNotEquals(0L, g1Modified)
         assertNotEquals(null, g1Created)
         assertNotEquals(null, g1Created)
-        if(gameCursor.moveToNext()){
+        if (gameCursor.moveToNext()) {
             // This should not happen with 1 Game added through migration
             assertEquals(1, 2)
         }
@@ -234,9 +303,12 @@ class MigrationTest {
         // PointHistory of Player 1
         pointHistoryCursor.moveToFirst()
         val ph1Point = pointHistoryCursor.getInt(pointHistoryCursor.getColumnIndexOrThrow("point"))
-        val ph1PlayerId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
-        val ph1GameId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
-        val ph1TimeCreated = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph1PlayerId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
+        val ph1GameId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph1TimeCreated =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
         assertEquals(128, ph1Point)
         assertEquals(1, ph1PlayerId)
         assertNotEquals(0L, ph1TimeCreated)
@@ -244,9 +316,12 @@ class MigrationTest {
 
         pointHistoryCursor.moveToNext()
         val ph2Point = pointHistoryCursor.getInt(pointHistoryCursor.getColumnIndexOrThrow("point"))
-        val ph2PlayerId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
-        val ph2GameId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
-        val ph2TimeCreated = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph2PlayerId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
+        val ph2GameId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph2TimeCreated =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
         assertEquals(64, ph2Point)
         assertEquals(1, ph2PlayerId)
         assertNotEquals(0L, ph2TimeCreated)
@@ -254,9 +329,12 @@ class MigrationTest {
 
         pointHistoryCursor.moveToNext()
         val ph3Point = pointHistoryCursor.getInt(pointHistoryCursor.getColumnIndexOrThrow("point"))
-        val ph3PlayerId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
-        val ph3GameId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
-        val ph3TimeCreated = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph3PlayerId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
+        val ph3GameId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph3TimeCreated =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
         assertEquals(64, ph3Point)
         assertEquals(1, ph3PlayerId)
         assertNotEquals(0L, ph3TimeCreated)
@@ -271,9 +349,12 @@ class MigrationTest {
         // PointHistory of Player 2
         pointHistoryCursor.moveToNext()
         val ph4Point = pointHistoryCursor.getInt(pointHistoryCursor.getColumnIndexOrThrow("point"))
-        val ph4PlayerId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
-        val ph4GameId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
-        val ph4TimeCreated = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph4PlayerId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
+        val ph4GameId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph4TimeCreated =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
         assertEquals(256 + 128, ph4Point)
         assertEquals(2, ph4PlayerId)
         assertNotEquals(0L, ph4TimeCreated)
@@ -281,9 +362,12 @@ class MigrationTest {
 
         pointHistoryCursor.moveToNext()
         val ph5Point = pointHistoryCursor.getInt(pointHistoryCursor.getColumnIndexOrThrow("point"))
-        val ph5PlayerId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
-        val ph5GameId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
-        val ph5TimeCreated = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph5PlayerId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
+        val ph5GameId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph5TimeCreated =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
         assertEquals(128, ph5Point)
         assertEquals(2, ph5PlayerId)
         assertNotEquals(0L, ph5TimeCreated)
@@ -294,9 +378,12 @@ class MigrationTest {
         // PointHistory of Player 3
         pointHistoryCursor.moveToNext()
         val ph6Point = pointHistoryCursor.getInt(pointHistoryCursor.getColumnIndexOrThrow("point"))
-        val ph6PlayerId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
-        val ph6GameId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
-        val ph6TimeCreated = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph6PlayerId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
+        val ph6GameId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph6TimeCreated =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
         assertEquals(512, ph6Point)
         assertEquals(3, ph6PlayerId)
         assertNotEquals(0L, ph6TimeCreated)
@@ -304,9 +391,12 @@ class MigrationTest {
 
         pointHistoryCursor.moveToNext()
         val ph7Point = pointHistoryCursor.getInt(pointHistoryCursor.getColumnIndexOrThrow("point"))
-        val ph7PlayerId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
-        val ph7GameId = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
-        val ph7TimeCreated = pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph7PlayerId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("player_id"))
+        val ph7GameId =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
+        val ph7TimeCreated =
+            pointHistoryCursor.getLong(pointHistoryCursor.getColumnIndexOrThrow("game_id"))
         assertEquals(256, ph7Point)
         assertEquals(3, ph7PlayerId)
         assertNotEquals(0L, ph7TimeCreated)
@@ -314,7 +404,7 @@ class MigrationTest {
 
         assertEquals(768, ph6Point + ph7Point)
 
-        if (pointHistoryCursor.moveToNext()){
+        if (pointHistoryCursor.moveToNext()) {
             // This should not happen with 7 PointHistories
             assertEquals(1, 2)
         }
@@ -336,12 +426,13 @@ class MigrationTest {
         val psGameIdP1 = mutableListOf<Long>()
         val psNrP1 = mutableListOf<Int>()
         val psTimestampP1 = mutableListOf<Long>()
-        for (i in 0..9){
+        for (i in 0..9) {
             val open = phasesCursor.getInt(phasesCursor.getColumnIndexOrThrow("open"))
             val playerId = phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("player_id"))
             val gameId = phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("game_id"))
             val nr = phasesCursor.getInt(phasesCursor.getColumnIndexOrThrow("phase"))
-            val timeStamp = phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("timestampModified"))
+            val timeStamp =
+                phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("timestampModified"))
             psOpenP1.add(open == 1)
             psPlayerIdP1.add(playerId)
             psGameIdP1.add(gameId)
@@ -362,12 +453,13 @@ class MigrationTest {
         val psGameIdP2 = mutableListOf<Long>()
         val psNrP2 = mutableListOf<Int>()
         val psTimestampP2 = mutableListOf<Long>()
-        for (i in 0..9){
+        for (i in 0..9) {
             val open = phasesCursor.getInt(phasesCursor.getColumnIndexOrThrow("open"))
             val playerId = phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("player_id"))
             val gameId = phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("game_id"))
             val nr = phasesCursor.getInt(phasesCursor.getColumnIndexOrThrow("phase"))
-            val timeStamp = phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("timestampModified"))
+            val timeStamp =
+                phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("timestampModified"))
             psOpenP2.add(open == 1)
             psPlayerIdP2.add(playerId)
             psGameIdP2.add(gameId)
@@ -377,7 +469,9 @@ class MigrationTest {
             phasesCursor.moveToNext()
         }
 
-        assertEquals(listOf(false, true, true, false, false, false, false, true, true , true), psOpenP2)
+        assertEquals(
+            listOf(false, true, true, false, false, false, false, true, true, true), psOpenP2
+        )
         assertEquals(listOf(2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L), psPlayerIdP2)
         assertEquals(listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), psNrP2)
         assertEquals(false, psTimestampP2.contains(0L))
@@ -388,12 +482,13 @@ class MigrationTest {
         val psGameIdP3 = mutableListOf<Long>()
         val psNrP3 = mutableListOf<Int>()
         val psTimestampP3 = mutableListOf<Long>()
-        for (i in 0..9){
+        for (i in 0..9) {
             val open = phasesCursor.getInt(phasesCursor.getColumnIndexOrThrow("open"))
             val playerId = phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("player_id"))
             val gameId = phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("game_id"))
             val nr = phasesCursor.getInt(phasesCursor.getColumnIndexOrThrow("phase"))
-            val timeStamp = phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("timestampModified"))
+            val timeStamp =
+                phasesCursor.getLong(phasesCursor.getColumnIndexOrThrow("timestampModified"))
             psOpenP3.add(open == 1)
             psPlayerIdP3.add(playerId)
             psGameIdP3.add(gameId)
@@ -413,9 +508,7 @@ class MigrationTest {
     }
 
     private fun verifyDataMigration2To3(
-        playersCursor: Cursor,
-        highscoreCursor: Cursor,
-        globalHighscores: GlobalDataDatabase
+        playersCursor: Cursor, highscoreCursor: Cursor, globalHighscores: GlobalDataDatabase
     ) {
         // Verify Player data
         playersCursor.moveToFirst()
