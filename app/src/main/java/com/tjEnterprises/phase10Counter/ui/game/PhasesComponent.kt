@@ -97,7 +97,7 @@ fun PhasesComponent(
                                     val phases = when (gameType) {
                                         GameType.Standard -> R.array.phases
                                         GameType.Flip -> R.array.phasesFlip
-                                        GameType.Masters -> R.array.phases // TODO add masters phases
+                                        GameType.Masters -> R.array.phasesMasters
                                         else -> R.array.phases // TODO Show error
                                     }
 

@@ -26,4 +26,17 @@
         <item>@string/flip_phase9</item>
         <item>@string/flip_phase10</item>
     </string-array>
+    <string-array
+        name="phasesMasters">
+        <item>@string/masters_phase1</item>
+        <item>@string/masters_phase2</item>
+        <item>@string/masters_phase3</item>
+        <item>@string/masters_phase4</item>
+        <item>@string/masters_phase5</item>
+        <item>@string/masters_phase6</item>
+        <item>@string/masters_phase7</item>
+        <item>@string/masters_phase8</item>
+        <item>@string/masters_phase9</item>
+        <item>@string/masters_phase10</item>
+    </string-array>
 </resources>

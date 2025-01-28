@@ -20,6 +20,16 @@
     <string name="flip_phase8"><b>Round 8: </b>A color run of 5 and a set of 2</string>
     <string name="flip_phase9"><b>Round 9: </b>A color run of 2 and a set of 4</string>
     <string name="flip_phase10"><b>Round 10: </b>A color run of 3 and 2 sets of 2</string>
+    <string name="masters_phase1"><b>Round 1: </b>Two sets of 3 cards (e.g., 3 of the same number)</string>
+    <string name="masters_phase2"><b>Round 2: </b>One set of 3 cards + one set of 3 cards (e.g., 3 of the same number)</string>
+    <string name="masters_phase3"><b>Round 3: </b>One set of 3 cards + a run of 4 cards</string>
+    <string name="masters_phase4"><b>Round 4: </b>Two sets of 3 cards</string>
+    <string name="masters_phase5"><b>Round 5: </b>One set of 3 cards + a run of 4 cards</string>
+    <string name="masters_phase6"><b>Round 6: </b>A run of 9 cards</string>
+    <string name="masters_phase7"><b>Round 7: </b>A run of 8 cards</string>
+    <string name="masters_phase8"><b>Round 8: </b>One set of 3 cards + a run of 4 cards</string>
+    <string name="masters_phase9"><b>Round 9: </b>Two sets of 4 cards</string>
+    <string name="masters_phase10"><b>Round 10: </b>A run of 7 cards</string>
     <string name="points">Points</string>
     <string name="addPlayer">Add Player</string>
     <string name="start">Start</string>
