@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
@@ -95,6 +96,10 @@ fun GamePreviewComponent(
                     .padding(horizontal = 12.dp, vertical = 4.dp)
                     .clip(shape = RoundedCornerShape(30)) // Clip for rounded corner ripple#
                     .clickable { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) })
+
+            val gameTypeString = stringResource(id = game.gameType.resourceId)
+
+            Text(text = "${stringResource(id = R.string.gameType)} : $gameTypeString")
 
             // Print player names in expanded version or small
             if (detailsExpanded) {
@@ -178,7 +183,7 @@ fun GamePreviewComponent(
 @Composable
 fun GamePreviewComponentPreview(expand: Boolean = false) {
     GamePreviewComponent(game = GameModel(
-        1L, "Game 1", 0L, 0L,
+        1L, "Game 1", GameType.defaultGameType,0L, 0L,
         listOf(
             PlayerModel(
                 1L,
@@ -211,7 +216,7 @@ fun GamePreviewComponentPreview(expand: Boolean = false) {
 @Composable
 fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
     GamePreviewComponent(game = GameModel(
-        1L, "VeryLongGameNameINeedToTest", 0L, 0L,
+        1L, "VeryLongGameNameINeedToTest", GameType.Flip ,0L, 0L,
         listOf(
             PlayerModel(
                 1L,

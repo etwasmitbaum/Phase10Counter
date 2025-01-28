@@ -21,6 +21,7 @@ import com.tjEnterprises.phase10Counter.data.local.database.Highscore
 import com.tjEnterprises.phase10Counter.data.local.database.Phases
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
@@ -96,7 +97,7 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun insertGame(gameName: String): Long {
+    override suspend fun insertGame(gameName: String, gameType: GameType.Type): Long {
         TODO("Not yet implemented")
     }
 

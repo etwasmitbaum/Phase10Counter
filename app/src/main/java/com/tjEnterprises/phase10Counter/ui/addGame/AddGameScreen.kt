@@ -11,6 +11,12 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -33,6 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
+import com.tjEnterprises.phase10Counter.data.local.database.Game
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 import com.tjEnterprises.phase10Counter.ui.updateChecker.UpdateCheckerComponent
@@ -49,8 +57,8 @@ fun AddGameScreen(
 
     AddGameScreen(
         openDrawer = openDrawer,
-        addGame = { gameName, names ->
-            viewModel.addGame(gameName, names)
+        addGame = { gameName, gameType, names ->
+            viewModel.addGame(gameName, gameType, names)
         },
         newCreatedGameID = newCreatedGameID,
         tempPlayerNames = viewModel.tempPlayerNames,
@@ -58,28 +66,35 @@ fun AddGameScreen(
         removeTempPlayerName = { viewModel.removeTempPlayerName(it) },
         navigateToGame = navigateToGame,
         resetNewCreatedGameID = { viewModel.resetNewCreatedGameID() },
+        defaultGameType = GameType.defaultGameType,
         updateChecker = { UpdateCheckerComponent(it) },
         modifier = modifier
     )
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AddGameScreen(
     modifier: Modifier = Modifier,
     openDrawer: () -> Unit,
     navigateToGame: (String) -> Unit,
-    addGame: (String, List<String>) -> Unit,
+    addGame: (String, GameType.Type, List<String>) -> Unit,
     resetNewCreatedGameID: () -> Unit,
     newCreatedGameID: Long,
     dontChangeUiWideScreen: Boolean,
     tempPlayerNames: SnapshotStateList<String>,
     removeTempPlayerName: (Int) -> Unit,
+    defaultGameType: GameType.Type,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
     var textPlayer by rememberSaveable { mutableStateOf("") }
     var textGame by rememberSaveable { mutableStateOf("") }
+    //var selectedGameType by rememberSaveable { mutableStateOf(defaultGameType) } // TODO Find fix for: MutableState containing Standard cannot be saved using the current SaveableStateRegistry. The default implementation only supports types which can be stored inside the Bundle. Please consider implementing a custom Saver for this class and pass it as a stateSaver parameter to rememberSaveable().
+    var selectedGameType = defaultGameType
     val context = LocalContext.current
+
+    var expandedGameDropdown by remember { mutableStateOf(false) }
 
     // when the gameID is not -1L (default) the side effect will cause a navigation to the newly created game
     // there are no other circumstances, where newCreatedGameID will change its value from -1L
@@ -88,7 +103,9 @@ internal fun AddGameScreen(
             resetNewCreatedGameID()     // reset gameId, else will be stuck in endless in navigating to new game
             textGame = ""
             textPlayer = ""
+            selectedGameType = defaultGameType
             tempPlayerNames.clear()
+            expandedGameDropdown = false
             navigateToGame(NavigationDestination.GAMESCREEN + "/" + newCreatedGameID)
         })
     }
@@ -165,6 +182,42 @@ internal fun AddGameScreen(
                                 .padding(bottom = 8.dp)
 
                         )
+
+                        ExposedDropdownMenuBox(
+                            expanded = expandedGameDropdown,
+                            onExpandedChange = { expandedGameDropdown = it },
+                            modifier = Modifier
+                                .widthIn(1.dp, 150.dp)
+                                .padding(bottom = 8.dp)
+                        ) {
+                            OutlinedTextField(value = stringResource(id = selectedGameType.resourceId),
+                                onValueChange = { },
+                                readOnly = true,
+                                label = { Text(stringResource(id = R.string.gameType)) },
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedGameDropdown)
+                                },
+                                modifier = Modifier
+                                    .menuAnchor(
+                                        MenuAnchorType.SecondaryEditable, enabled = true
+                                    )
+                                    .fillMaxWidth()
+                            )
+
+                            ExposedDropdownMenu(expanded = expandedGameDropdown,
+                                onDismissRequest = { expandedGameDropdown = false }) {
+                                GameType.availableGameTypes.forEach { item: GameType.Type ->
+                                    DropdownMenuItem(text = { Text(text = stringResource(id = item.resourceId)) },
+                                        onClick = {
+                                            selectedGameType = item
+                                            expandedGameDropdown = false
+                                        })
+                                }
+
+                            }
+
+                        }
+
                         TextField(value = textPlayer,
                             onValueChange = { textPlayer = it },
                             label = { Text(stringResource(id = R.string.playerName)) },
@@ -196,7 +249,7 @@ internal fun AddGameScreen(
             Button(onClick = {
                 if (textGame.isNotBlank()) {
                     if (tempPlayerNames.size >= 2) {
-                        addGame(textGame, tempPlayerNames)
+                        addGame(textGame, selectedGameType, tempPlayerNames)
                     } else {
                         Toast.makeText(
                             context,
@@ -252,13 +305,16 @@ fun AddGameScreenPreview() {
             "Plaaaaaaaaaaaaaaaaayyyyyyyyyyyyyyyyeeeeee"
         )
     }
+
+
     AddGameScreen(openDrawer = { },
         navigateToGame = {},
-        addGame = { _, _ -> },
+        addGame = { _, _, _ -> },
         resetNewCreatedGameID = { },
         newCreatedGameID = -1L,
         dontChangeUiWideScreen = false,
         tempPlayerNames = tempPlayerNames,
         removeTempPlayerName = {},
+        defaultGameType = GameType.defaultGameType,
         updateChecker = {})
 }

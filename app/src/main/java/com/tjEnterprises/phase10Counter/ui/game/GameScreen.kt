@@ -28,6 +28,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.ui.GameUiState
@@ -69,6 +71,7 @@ fun GameScreen(
             GameScreen(
                 players = games.players,
                 gameTitle = games.name,
+                gameType = games.gameType,
                 openDrawer = openDrawer,
                 addPointHistoryEntry = { point, pointGameId, playerId ->
                     viewModel.addPointHistoryEntry(
@@ -108,6 +111,7 @@ fun GameScreen(
 internal fun GameScreen(
     players: List<PlayerModel>,
     gameTitle: String,
+    gameType: GameType.Type,
     dontChangeUiWideScreen: Boolean,
     openDrawer: () -> Unit,
     addPointHistoryEntry: (Long, Long, Long) -> Unit,
@@ -117,7 +121,9 @@ internal fun GameScreen(
     modifier: Modifier = Modifier
 ) {
 
-    DefaultScaffoldNavigation(title = gameTitle,
+    val gameTypeString = stringResource(id = gameType.resourceId)
+
+    DefaultScaffoldNavigation(title = "$gameTitle($gameTypeString)",
         openDrawer = openDrawer,
         dontChangeUiWideScreen = dontChangeUiWideScreen,
         content = { scaffoldModifier ->
@@ -137,6 +143,7 @@ internal fun GameScreen(
             ) {
                 itemsIndexed(items = players) { idx, player ->
                     OnePlayerView(player = player,
+                        gameType = gameType,
                         modifier = Modifier
                             .padding(8.dp)
                             .padding(bottom = 8.dp)
@@ -203,6 +210,7 @@ fun GameScreenPreview() {
         ),
         openDrawer = {},
         gameTitle = "Game 1",
+        gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
         dontChangeUiWideScreen = false, deletePointHistoryItem = {},

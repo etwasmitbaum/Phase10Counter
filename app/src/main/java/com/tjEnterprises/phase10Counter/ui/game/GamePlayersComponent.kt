@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import com.tjEnterprises.phase10Counter.R
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 
@@ -33,6 +34,7 @@ import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 fun OnePlayerView(
     modifier: Modifier = Modifier,
     player: PlayerModel,
+    gameType: GameType.Type,
     savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
     addPointHistoryEntry: (Long, Long, Long) -> Unit,
     deletePointHistoryItem: (PointHistoryItem) -> Unit,
@@ -51,6 +53,7 @@ fun OnePlayerView(
         openDialog.value -> {
             PhasesComponent(
                 player = player,
+                gameType = gameType,
                 closeDialog = { openDialog.value = false },
                 savePhasesOfPlayer = savePhasesOfPlayer
             )
@@ -136,6 +139,7 @@ fun OnePlayerPreview() {
         2560L,
         listOf(true, true, true, true, true, true, true, true, true, true)
     ),
+        gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
         scrollToNextPosition = {},
@@ -154,6 +158,7 @@ fun OnePlayerPreview2() {
         2560L,
         listOf(false, false, false, false, false, false, false, false, false, false)
     ),
+        gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
         scrollToNextPosition = {},
