@@ -98,7 +98,7 @@ fun PhasesComponent(
                                         GameType.Standard -> R.array.phases
                                         GameType.Flip -> R.array.phasesFlip
                                         GameType.Masters -> R.array.phasesMasters
-                                        else -> R.array.phases // TODO Show error
+                                        else -> R.array.phases // I choose not to display an error. It will default to the standard phases. The error will be displayed as the game type "invalid"
                                     }
 
                                     Text(text = stringArrayResource(id = phases )[j])

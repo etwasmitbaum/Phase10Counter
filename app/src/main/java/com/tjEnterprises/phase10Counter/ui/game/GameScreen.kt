@@ -123,7 +123,7 @@ internal fun GameScreen(
 
     val gameTypeString = stringResource(id = gameType.resourceId)
 
-    DefaultScaffoldNavigation(title = "$gameTitle($gameTypeString)",
+    DefaultScaffoldNavigation(title = "$gameTitle ($gameTypeString)",
         openDrawer = openDrawer,
         dontChangeUiWideScreen = dontChangeUiWideScreen,
         content = { scaffoldModifier ->
@@ -209,7 +209,7 @@ fun GameScreenPreview() {
             )
         ),
         openDrawer = {},
-        gameTitle = "Game 1",
+        gameTitle = "Game 1 With Very Long Name",
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },

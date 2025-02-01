@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phase1"><b>Runde 1: </b>Zwei Drillinge</string>
+    <string name="phase2"><b>Runde 2: </b>Ein Drilling + eine Viererfolge</string>
+    <string name="phase3"><b>Runde 3: </b>Ein Vierling + eine Viererfolge</string>
+    <string name="phase4"><b>Runde 4: </b>Eine Siebenerfolge</string>
+    <string name="phase5"><b>Runde 5: </b>Eine Achterfolge</string>
+    <string name="phase6"><b>Runde 6: </b>Eine Neunerfolge</string>
+    <string name="phase7"><b>Runde 7: </b>Zwei Vierlinge</string>
+    <string name="phase8"><b>Runde 8: </b>Sieben Karten einer Farbe</string>
+    <string name="phase9"><b>Runde 9: </b>Ein Fünfling + ein Zwilling</string>
+    <string name="phase10"><b>Runde 10: </b>Ein Fünfling + ein Drilling</string>
+    <string name="flip_phase1"><b>Runde 1: </b>Zwei Farbfolgen aus 2 Karten</string>
+    <string name="flip_phase2"><b>Runde 2: </b>Eine Farbfolge aus 2 Karten und ein Satz aus 2 Karten</string>
+    <string name="flip_phase3"><b>Runde 3: </b>Eine Farbfolge aus 2 Karten und ein Satz aus 3 Karten</string>
+    <string name="flip_phase4"><b>Runde 4: </b>Eine Farbfolge aus 3 Karten und ein Satz aus 2 Karten</string>
+    <string name="flip_phase5"><b>Runde 5: </b>Eine Farbfolge aus 4 Karten und ein Satz aus 2 Karten</string>
+    <string name="flip_phase6"><b>Runde 6: </b>Zwei Sätze aus je 3 Karten</string>
+    <string name="flip_phase7"><b>Runde 7: </b>Eine Farbfolge aus 3 Karten und ein Satz aus 3 Karten</string>
+    <string name="flip_phase8"><b>Runde 8: </b>Eine Farbfolge aus 5 Karten und ein Satz aus 2 Karten</string>
+    <string name="flip_phase9"><b>Runde 9: </b>Eine Farbfolge aus 2 Karten und ein Satz aus 4 Karten</string>
+    <string name="flip_phase10"><b>Runde 10: </b>Eine Farbfolge aus 3 Karten und zwei Sätze aus je 2 Karten</string>
+    <string name="masters_phase1"><b>Runde 1: </b>Vier Zwillinge</string>
+    <string name="masters_phase2"><b>Runde 2: </b>Sechs Karten einer Farbe</string>
+    <string name="masters_phase3"><b>Runde 3: </b>Ein Vierling + eine Viererfolge</string>
+    <string name="masters_phase4"><b>Runde 4: </b>Eine Achterfolge</string>
+    <string name="masters_phase5"><b>Runde 5: </b>Sieben Karten einer Farbe</string>
+    <string name="masters_phase6"><b>Runde 6: </b>Eine Neunerfolge</string>
+    <string name="masters_phase7"><b>Runde 7: </b>Zwei Vierlinge</string>
+    <string name="masters_phase8"><b>Runde 8: </b>Eine Viererfolge einer Farbe + ein Drilling</string>
+    <string name="masters_phase9"><b>Runde 9: </b>Ein Fünfling + ein Drilling</string>
+    <string name="masters_phase10"><b>Runde 10: </b>Ein Fünfling + eine Dreierfolge einer Farbe</string>
+</resources>

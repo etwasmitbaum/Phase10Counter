@@ -93,13 +93,13 @@ fun GamePreviewComponent(
                 text = game.name,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 4.dp)
+                    .padding(horizontal = 12.dp)
+                    .padding(top = 4.dp)
                     .clip(shape = RoundedCornerShape(30)) // Clip for rounded corner ripple#
                     .clickable { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) })
 
             val gameTypeString = stringResource(id = game.gameType.resourceId)
-
-            Text(text = "${stringResource(id = R.string.gameType)} : $gameTypeString")
+            Text(text = "${stringResource(id = R.string.gameType)}: $gameTypeString", modifier = Modifier.padding(bottom = 4.dp))
 
             // Print player names in expanded version or small
             if (detailsExpanded) {
