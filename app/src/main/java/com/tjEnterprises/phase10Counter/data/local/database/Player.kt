@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.Flow
 data class Player(
     @ColumnInfo("game_id") val gameID: Long,
     @ColumnInfo("name") val name: String,
+    @ColumnInfo("show_marker", defaultValue = "0") val showMarker: Boolean = false,
     @PrimaryKey(autoGenerate = true) @ColumnInfo("player_id") val playerId: Long = 0
 ) {}
 

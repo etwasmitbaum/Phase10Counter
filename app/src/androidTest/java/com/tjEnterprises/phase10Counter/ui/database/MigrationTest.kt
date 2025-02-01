@@ -183,6 +183,10 @@ class MigrationTest {
             execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 1', 1, 1737702738256, 1737902738256)")
             execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 2', 2, 1737702738257, 1737902738257)")
             execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 3', 13847, 1737702738258, 1737902738258)")
+
+            execSQL("INSERT INTO player (player_id, game_id, name) VALUES (1, 1, 'Player 1')")
+            execSQL("INSERT INTO player (player_id, game_id, name) VALUES (2, 1, 'Player 2')")
+            execSQL("INSERT INTO player (player_id, game_id, name) VALUES (3, 1, 'Player 3')")
             close()
         }
 
@@ -191,13 +195,13 @@ class MigrationTest {
         )
 
         val gameCursor = db.query("SELECT * FROM Game ORDER BY game_id ASC")
+        val playerCursor = db.query("SELECT * FROM Player ORDER BY game_id ASC")
 
-        verifyDataMigration4To5(gameCursor)
+        verifyDataMigration4To5(gameCursor, playerCursor)
     }
 
-    private fun verifyDataMigration4To5(gameCursor: Cursor) {
+    private fun verifyDataMigration4To5(gameCursor: Cursor, playerCursor: Cursor) {
         gameCursor.moveToFirst()
-
         val g1Name = gameCursor.getString(gameCursor.getColumnIndexOrThrow("name"))
         val g1created = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("timestampCreated"))
         val g1modified = gameCursor.getLong(gameCursor.getColumnIndexOrThrow("timestampModified"))
@@ -226,6 +230,36 @@ class MigrationTest {
         assertEquals(g3created, 1737702738258)
         assertEquals(g3modified, 1737902738258)
         assertEquals(g3type, GameType.DEFAULT_GAMETYPE_KEY)
+
+        playerCursor.moveToFirst()
+        val p1PlayerId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("player_id"))
+        val p1PlayerGameId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("game_id"))
+        val p1PlayerName = playerCursor.getString(playerCursor.getColumnIndexOrThrow("name"))
+        val p1PlayerMarker = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("show_marker"))
+        assertEquals(p1PlayerId, 1)
+        assertEquals(p1PlayerGameId, 1)
+        assertEquals(p1PlayerName, "Player 1")
+        assertEquals(p1PlayerMarker, 0)
+
+        playerCursor.moveToNext()
+        val p2PlayerId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("player_id"))
+        val p2PlayerGameId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("game_id"))
+        val p2PlayerName = playerCursor.getString(playerCursor.getColumnIndexOrThrow("name"))
+        val p2PlayerMarker = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("show_marker"))
+        assertEquals(p2PlayerId, 2)
+        assertEquals(p2PlayerGameId, 1)
+        assertEquals(p2PlayerName, "Player 2")
+        assertEquals(p2PlayerMarker, 0)
+
+        playerCursor.moveToNext()
+        val p3PlayerId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("player_id"))
+        val p3PlayerGameId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("game_id"))
+        val p3PlayerName = playerCursor.getString(playerCursor.getColumnIndexOrThrow("name"))
+        val p3PlayerMarker = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("show_marker"))
+        assertEquals(p3PlayerId, 3)
+        assertEquals(p3PlayerGameId, 1)
+        assertEquals(p3PlayerName, "Player 3")
+        assertEquals(p3PlayerMarker, 0)
     }
 
     private fun verifyDataMigration3To4(

@@ -131,21 +131,24 @@ fun SelectGamePreview() {
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = false
                 ), PlayerModel(
                     1L,
                     1L,
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = true
                 ), PlayerModel(
                     1L,
                     1L,
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = false
                 )
             ),
         ), GameModel(
@@ -157,21 +160,24 @@ fun SelectGamePreview() {
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = false
                 ), PlayerModel(
                     1L,
                     2L,
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = true
                 ), PlayerModel(
                     1L,
                     2L,
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = false
                 )
             ),
         ), GameModel(
@@ -183,21 +189,24 @@ fun SelectGamePreview() {
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = false
                 ), PlayerModel(
                     1L,
                     3L,
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    true
                 ), PlayerModel(
                     1L,
                     3L,
                     "Player1",
                     listOf(PointHistoryItem(256L, 1L)),
                     256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true)
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = false
                 )
             ),
         )

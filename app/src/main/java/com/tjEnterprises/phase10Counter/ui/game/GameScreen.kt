@@ -28,7 +28,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -86,6 +85,7 @@ fun GameScreen(
                 dontChangeUiWideScreen = dontChangeUiWideScreen,
                 deletePointHistoryItem = { viewModel.deletePointHistoryEntry(it) },
                 updatePointHistoryItem = { viewModel.updatePointHistoryEntry(it) },
+                updateShowPlayerMarker = { playerId, showMarker -> viewModel.updateShowPlayerMarker(playerId, showMarker) },
                 modifier = modifier
             )
         }
@@ -114,10 +114,11 @@ internal fun GameScreen(
     gameType: GameType.Type,
     dontChangeUiWideScreen: Boolean,
     openDrawer: () -> Unit,
-    addPointHistoryEntry: (Long, Long, Long) -> Unit,
-    savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
+    addPointHistoryEntry: (point: Long, pointGameId: Long, playerId: Long) -> Unit,
+    savePhasesOfPlayer: (playerId: Long, gameId: Long, openPhases: List<Boolean>) -> Unit,
     deletePointHistoryItem: (PointHistoryItem) -> Unit,
     updatePointHistoryItem: (PointHistoryItem) -> Unit,
+    updateShowPlayerMarker: (playerId: Long, showPlayerMarker: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -142,7 +143,8 @@ internal fun GameScreen(
                 columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(400.dp)
             ) {
                 itemsIndexed(items = players) { idx, player ->
-                    OnePlayerView(player = player,
+                    OnePlayerView(
+                        player = player,
                         gameType = gameType,
                         modifier = Modifier
                             .padding(8.dp)
@@ -156,7 +158,9 @@ internal fun GameScreen(
                             coroutineScope.launch {
                                 gridState.animateScrollToItem(if (idx > 1) idx - 1 else 0)
                             }
-                        })
+                        },
+                        updateShowPlayerMarker = updateShowPlayerMarker
+                    )
                 }
 
                 // add some padding at the bottom
@@ -191,21 +195,32 @@ fun GameScreenPreview() {
                 "Player1",
                 listOf(PointHistoryItem(256L, 1)),
                 256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
+                listOf(true, true, true, true, true, true, true, true, true, true),
+                showMarker = false
             ), PlayerModel(
                 2L,
                 1L,
-                "Player2",
+                "Player2 has a very very ver very very very very very very long name",
                 listOf(PointHistoryItem(256L, 1)),
                 256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
+                listOf(true, true, true, true, true, true, true, true, true, true),
+                showMarker = true
             ), PlayerModel(
                 3L,
                 1L,
                 "Player3",
                 listOf(PointHistoryItem(256L, 1)),
                 256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
+                listOf(true, true, true, true, true, true, true, true, true, true),
+                showMarker = false
+            ), PlayerModel(
+                4L,
+                1L,
+                "Player4 has a very very ver very very very very very very long name",
+                listOf(PointHistoryItem(256L, 1)),
+                256L,
+                listOf(true, true, true, true, true, true, true, true, true, true),
+                showMarker = false
             )
         ),
         openDrawer = {},
@@ -215,5 +230,6 @@ fun GameScreenPreview() {
         savePhasesOfPlayer = { _, _, _ -> },
         dontChangeUiWideScreen = false, deletePointHistoryItem = {},
         updatePointHistoryItem = {},
+        updateShowPlayerMarker = {_, _ ->}
     )
 }

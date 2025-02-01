@@ -6,5 +6,6 @@ data class PlayerModel(
     val name: String,
     val pointHistory: List<PointHistoryItem>,
     val pointSum: Long,
-    val phasesOpen: List<Boolean>
+    val phasesOpen: List<Boolean>,
+    val showMarker: Boolean
 )

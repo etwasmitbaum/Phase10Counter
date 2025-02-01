@@ -129,7 +129,15 @@ fun dismiss(
 @Composable
 fun PhasesComponentPreview() {
     PhasesComponent(
-        player = PlayerModel(1L, 1L, "Player1", listOf(PointHistoryItem(256L, 1L)), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
+        player = PlayerModel(
+            1L,
+            1L,
+            "Player1",
+            listOf(PointHistoryItem(256L, 1L)),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = false
+        ),
         gameType = GameType.defaultGameType,
         closeDialog = {},
         savePhasesOfPlayer = { _, _, _ ->}

@@ -191,21 +191,24 @@ fun GamePreviewComponentPreview(expand: Boolean = false) {
                 "Player12345",
                 listOf(PointHistoryItem(256L, 1L)),
                 256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
+                listOf(true, true, true, true, true, true, true, true, true, true),
+                showMarker = false
             ), PlayerModel(
                 2L,
                 1L,
                 "P2",
                 listOf(PointHistoryItem(256L, 1L)),
                 256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
+                listOf(true, true, true, true, true, true, true, true, true, true),
+                showMarker = true
             ), PlayerModel(
                 3L,
                 1L,
                 "Player3",
                 listOf(PointHistoryItem(256L, 1L)),
                 256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
+                listOf(true, true, true, true, true, true, true, true, true, true),
+                showMarker = false
             )
         ),
     ), navigateToGame = {}, deleteGame = {}, resetGame = {}, expand = expand
@@ -224,14 +227,16 @@ fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
                 "VeryLongPlayerINeedToTestIDon'tKnowHowLongThisShouldBe",
                 listOf(PointHistoryItem(256L, 1L)),
                 256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
+                listOf(true, true, true, true, true, true, true, true, true, true),
+                showMarker = false
             ), PlayerModel(
                 2L,
                 1L,
                 "VeryLongPlayerINeedToTestIDon'tKnowHowLongThisShouldBe2",
                 listOf(PointHistoryItem(256L, 1L)),
                 256L,
-                listOf(true, true, true, true, true, true, true, true, true, true)
+                listOf(true, true, true, true, true, true, true, true, true, true),
+                showMarker = true
             )
         ),
     ), navigateToGame = {}, deleteGame = {}, resetGame = {}, expand = expand

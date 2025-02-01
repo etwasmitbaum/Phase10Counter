@@ -18,6 +18,8 @@ package com.tjEnterprises.phase10Counter.ui.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tjEnterprises.phase10Counter.data.local.database.Player
+import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
@@ -81,6 +83,19 @@ class GameViewModel @Inject constructor(
     fun savePlayerPhases(playerId: Long, gameId: Long, openPhases: List<Boolean>) {
         viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.updatePlayerPhases(playerId, gameId, openPhases)
+        }
+    }
+
+    fun updateShowPlayerMarker(playerId: Long, showPlayerMarker: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val player = databaseRepository.getPlayerById(playerId)
+            val updatedPlayer = Player(
+                gameID = player.gameId,
+                name = player.name,
+                showMarker = showPlayerMarker,
+                playerId = player.playerId
+            )
+            databaseRepository.updatePlayer(updatedPlayer)
         }
     }
 }

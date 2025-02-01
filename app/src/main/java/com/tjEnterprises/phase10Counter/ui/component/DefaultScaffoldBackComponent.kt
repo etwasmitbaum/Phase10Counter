@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,7 +41,12 @@ fun DefaultScaffoldBack(
         Scaffold(topBar = {
             if (!landscapeMaxHeightLow || dontChangeUiWideScreen) {
                 CenterAlignedTopAppBar(
-                    title = { Text(text = title) },
+                    title = {
+                        // Limit to one line, so too long titles won't wrap
+                        Text(
+                            text = title, overflow = TextOverflow.Ellipsis, maxLines = 1
+                        )
+                    },
                     navigationIcon = {
                         IconButton(onClick = navigateOneBack) {
                             Icon(
@@ -87,6 +93,15 @@ fun DefaultScaffoldBack(
 @Composable
 fun DefaultScaffoldBackPreview() {
     DefaultScaffoldBack(title = "Title", navigateOneBack = {}, dontChangeUiWideScreen = false) {
+        Text(text = "Content", fontSize = 24.sp, modifier = it)
+    }
+}
+
+@Preview(showBackground = true, widthDp = 400, heightDp = 600)
+@Preview(showBackground = true, widthDp = 600, heightDp = 250)
+@Composable
+fun DefaultScaffoldBackLongTitlePreview() {
+    DefaultScaffoldBack(title = "Title which is very long, so long that it probably wont be displayed", navigateOneBack = {}, dontChangeUiWideScreen = false) {
         Text(text = "Content", fontSize = 24.sp, modifier = it)
     }
 }

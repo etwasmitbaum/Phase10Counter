@@ -1,11 +1,19 @@
 package com.tjEnterprises.phase10Counter.ui.game
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.MailOutline
+import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -35,10 +43,11 @@ fun OnePlayerView(
     modifier: Modifier = Modifier,
     player: PlayerModel,
     gameType: GameType.Type,
-    savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
-    addPointHistoryEntry: (Long, Long, Long) -> Unit,
+    addPointHistoryEntry: (point: Long, pointGameId: Long, playerId: Long) -> Unit,
+    savePhasesOfPlayer: (playerId: Long, gameId: Long, openPhases: List<Boolean>) -> Unit,
     deletePointHistoryItem: (PointHistoryItem) -> Unit,
     updatePointHistoryItem: (PointHistoryItem) -> Unit,
+    updateShowPlayerMarker: (playerId: Long, showPlayerMarker: Boolean) -> Unit,
     scrollToNextPosition: () -> Unit
 ) {
     var text by rememberSaveable() {
@@ -63,13 +72,27 @@ fun OnePlayerView(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier
     ) {
-        Text(
-            text = player.name,
-            fontSize = 16.sp,
+
+        Row(verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(bottom = 8.dp)
-                .widthIn(min = 0.dp, max = 400.dp)
-        )
+                .clickable { updateShowPlayerMarker(player.playerId, !player.showMarker) }) {
+            if (player.showMarker) {
+                Icon(
+                    imageVector = Icons.Outlined.PlayArrow,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(end = 6.dp)
+                )
+            }
+
+            Text(
+                text = player.name,
+                fontSize = 16.sp,
+                modifier = Modifier.widthIn(min = 0.dp, max = 400.dp)
+            )
+        }
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -137,14 +160,38 @@ fun OnePlayerPreview() {
         "Player1",
         listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
         2560L,
-        listOf(true, true, true, true, true, true, true, true, true, true)
+        listOf(true, true, true, true, true, true, true, true, true, true),
+        showMarker = false
     ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
         scrollToNextPosition = {},
         deletePointHistoryItem = {},
-        updatePointHistoryItem = {})
+        updatePointHistoryItem = {},
+        updateShowPlayerMarker = { _, _ -> })
+}
+
+@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 350)
+@Composable
+fun OnePlayerWithMarkerPreview() {
+    OnePlayerView(player = PlayerModel(
+        1L,
+        1L,
+        "Player1",
+        listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
+        2560L,
+        listOf(true, true, true, true, true, true, true, true, true, true),
+        showMarker = true
+    ),
+        gameType = GameType.defaultGameType,
+        addPointHistoryEntry = { _, _, _ -> },
+        savePhasesOfPlayer = { _, _, _ -> },
+        scrollToNextPosition = {},
+        deletePointHistoryItem = {},
+        updatePointHistoryItem = {},
+        updateShowPlayerMarker = { _, _ -> })
 }
 
 @Preview(showBackground = true)
@@ -156,12 +203,14 @@ fun OnePlayerPreview2() {
         "Player1",
         listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
         2560L,
-        listOf(false, false, false, false, false, false, false, false, false, false)
+        listOf(false, false, false, false, false, false, false, false, false, false),
+        showMarker = false
     ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
         scrollToNextPosition = {},
         deletePointHistoryItem = {},
-        updatePointHistoryItem = {})
+        updatePointHistoryItem = {},
+        updateShowPlayerMarker = { _, _ -> })
 }
