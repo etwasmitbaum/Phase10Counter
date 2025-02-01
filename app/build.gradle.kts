@@ -40,7 +40,9 @@ android {
             useSupportLibrary = true
         }
 
-        resourceConfigurations.addAll(arrayOf("en", "de", "pl"))
+        androidResources {
+            localeFilters += arrayOf("en", "de", "pl")
+        }
 
         // Enable room auto-migrations
         ksp {
@@ -54,6 +56,9 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+        }
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
