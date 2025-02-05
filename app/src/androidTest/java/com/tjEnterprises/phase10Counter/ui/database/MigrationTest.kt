@@ -2,7 +2,6 @@ package com.tjEnterprises.phase10Counter.ui.database
 
 import android.content.Context
 import android.database.Cursor
-import android.util.Log
 import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.test.core.app.ApplicationProvider
@@ -23,7 +22,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 import java.util.Date
-import java.util.concurrent.Executors
 
 @Suppress("VARIABLE_WITH_REDUNDANT_INITIALIZER")
 @RunWith(AndroidJUnit4::class)

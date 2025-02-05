@@ -18,9 +18,7 @@ package com.tjEnterprises.phase10Counter.data.di
 
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
-import com.tjEnterprises.phase10Counter.data.local.database.Phases
 import com.tjEnterprises.phase10Counter.data.local.database.Player
-import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel

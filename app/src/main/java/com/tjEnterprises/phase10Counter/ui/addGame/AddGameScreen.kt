@@ -94,8 +94,7 @@ internal fun AddGameScreenBase(
         mutableStateOf(
             defaultGameType
         )
-    } // TODO Find fix for: MutableState containing Standard cannot be saved using the current SaveableStateRegistry. The default implementation only supports types which can be stored inside the Bundle. Please consider implementing a custom Saver for this class and pass it as a stateSaver parameter to rememberSaveable().
-    val context = LocalContext.current
+    }
     var expandedGameDropdown by remember { mutableStateOf(false) }
 
     // when the gameID is not -1L (default) the side effect will cause a navigation to the newly created game
@@ -271,7 +270,7 @@ internal fun AddGameScreenLandscape(
     val context = LocalContext.current
 
     // wrap max width column to center the ConstraintLayout
-    Column (modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         ConstraintLayout {
             val (gameTextField, gameDropdown, playerTextField, addPlayerButton, startButton) = createRefs()
 
@@ -285,18 +284,17 @@ internal fun AddGameScreenLandscape(
                 ),
                 modifier = Modifier
                     .constrainAs(gameTextField) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
+                        top.linkTo(parent.top, 8.dp)
+                        start.linkTo(parent.start, 8.dp)
                     }
-                    .widthIn(1.dp, 150.dp)
-                    .padding(horizontal = 8.dp))
+                    .widthIn(1.dp, 150.dp))
 
             GameDropDownMenu(expandedGameDropdown = expandedGameDropdown,
                 onExpandedGameDropdownChanged = onExpandedGameDropdownChanged,
                 selectedGameType = selectedGameType,
                 onSelectedGameTypeChanged = onSelectedGameTypeChanged,
                 modifier = Modifier.constrainAs(gameDropdown) {
-                    top.linkTo(gameTextField.bottom)
+                    top.linkTo(gameTextField.bottom, 4.dp)
                     start.linkTo(gameTextField.start)
                     end.linkTo(gameTextField.end)
                 })
@@ -318,7 +316,7 @@ internal fun AddGameScreenLandscape(
                     .constrainAs(playerTextField) {
                         top.linkTo(gameTextField.top)
                         bottom.linkTo(gameTextField.bottom)
-                        start.linkTo(gameTextField.end)
+                        start.linkTo(gameTextField.end, 8.dp)
                     }
                     .widthIn(1.dp, 150.dp))
 
@@ -329,13 +327,12 @@ internal fun AddGameScreenLandscape(
                 }
             },
                 content = { Text(text = stringResource(id = R.string.addPlayer)) },
-                modifier = Modifier
-                    .constrainAs(addPlayerButton) {
+                modifier = Modifier.constrainAs(addPlayerButton) {
                         top.linkTo(playerTextField.top)
                         bottom.linkTo(playerTextField.bottom)
-                        start.linkTo(playerTextField.end)
-                    }
-                    .padding(horizontal = 8.dp))
+                        start.linkTo(playerTextField.end, 8.dp)
+                        end.linkTo(parent.end, 8.dp)
+                    })
 
             // Start game
             Button(onClick = {
@@ -351,9 +348,7 @@ internal fun AddGameScreenLandscape(
                     }
                 } else {
                     Toast.makeText(
-                        context,
-                        context.getString(R.string.gameMustHaveAName),
-                        Toast.LENGTH_SHORT
+                        context, context.getString(R.string.gameMustHaveAName), Toast.LENGTH_SHORT
                     ).show()
                 }
 
@@ -377,7 +372,7 @@ internal fun GameDropDownMenu(
     onExpandedGameDropdownChanged: (Boolean) -> Unit,
     selectedGameType: GameType.Type,
     onSelectedGameTypeChanged: (GameType.Type) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ExposedDropdownMenuBox(
         expanded = expandedGameDropdown,

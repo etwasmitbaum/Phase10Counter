@@ -5,9 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
@@ -15,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
@@ -123,18 +128,35 @@ fun PointHistoryDropDown(
                     )
                 }
 
-                Text(text = item.point.toString(),
-                    style = TextStyle(fontSize = 16.sp),
+                Row(verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .defaultMinSize(minWidth = 65.dp)
-                        .clip(shape = RoundedCornerShape(50))
                         .clickable { showEditDeleteDialog.value = true }
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 6.dp),
-                    textAlign = TextAlign.Center)
+                        .height(IntrinsicSize.Min)) {
+                    Text(
+                        text = item.point.toString(),
+                        style = TextStyle(fontSize = 16.sp),
+                        modifier = Modifier
+                            .clip(shape = RoundedCornerShape(50))
+                            .padding(start = 8.dp, end = 4.dp)
+                            .weight(1f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    // Wrap box around so IntrinsicSize.Min gets the text height, as max height
+                    Box(modifier = Modifier.fillMaxHeight().aspectRatio(1f)) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = null,
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                    }
+
+                }
+
+
                 // don't place a divider at the bottom
                 if (idx != lastElement) {
-                    HorizontalDivider()
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 6.dp))
                 }
             }
 

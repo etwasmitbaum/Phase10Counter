@@ -19,7 +19,6 @@ package com.tjEnterprises.phase10Counter.ui.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tjEnterprises.phase10Counter.data.local.database.Player
-import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository

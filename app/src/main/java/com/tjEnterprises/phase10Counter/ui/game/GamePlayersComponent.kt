@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material.icons.outlined.PlayArrow
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -89,7 +86,7 @@ fun OnePlayerView(
             Text(
                 text = player.name,
                 fontSize = 16.sp,
-                modifier = Modifier.widthIn(min = 0.dp, max = 400.dp)
+                modifier = Modifier.widthIn(min = 0.dp, max = 360.dp)
             )
         }
 
