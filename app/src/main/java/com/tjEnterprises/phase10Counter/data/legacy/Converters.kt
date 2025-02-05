@@ -4,7 +4,8 @@ import androidx.room.TypeConverter
 import java.util.Date
 
 /**
- * Converter class for converting different types of timestamps.
+ * Class with several type converter methods for converting different types of timestamps.
+ * Used for saving timestamps in database.
  */
 class Converters {
     /**
@@ -14,6 +15,7 @@ class Converters {
      * @param value number of milliseconds to convert into date object
      * @return date object representing same timestamp as number of milliseconds
      */
+    @Deprecated(message = "Deprecated, should only be used for backwards compatibility.")
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
         return value?.let { Date(it) }
@@ -26,6 +28,7 @@ class Converters {
      * @param date the Date object to be converted into number of milliseconds
      * @return number of milliseconds representing the Date object or null if Date object is null
      */
+    @Deprecated(message = "Deprecated, should only be used for backwards compatibility.")
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
         return date?.time
