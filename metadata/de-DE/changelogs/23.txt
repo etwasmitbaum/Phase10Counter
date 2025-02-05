@@ -1,0 +1,2 @@
+- NEU: Unterstützung für die Standardphasen von den Flip und Masters Varianten hinzugefügt.
+- Kleine UI-Anpassungen

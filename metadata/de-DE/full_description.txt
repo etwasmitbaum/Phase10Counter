@@ -10,3 +10,4 @@ Features:
 - Design für Smartphones und Tablets
 - Speichere Highscores
 - Importiere/Exportiere die Daten
+- Flip und Masters Phasen

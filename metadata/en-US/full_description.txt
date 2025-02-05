@@ -10,3 +10,4 @@ Features:
 - UI for Phone and Tablet
 - Keep track of High Scores
 - Import/Export your data
+- Phases for Flip and Masters
