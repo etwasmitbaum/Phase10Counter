@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,23 +38,29 @@ fun DefaultScaffoldNavigation(
         */
         val landscapeMaxHeightLow = maxHeight <= 375.dp
 
-        Scaffold(topBar = {
-            if (!landscapeMaxHeightLow || dontChangeUiWideScreen) {
-                CenterAlignedTopAppBar(
-                    title = { Text(text = title) },
-                    navigationIcon = {
-                        IconButton(onClick = openDrawer) {
-                            Icon(
-                                imageVector = Icons.Filled.Menu,
-                                contentDescription = stringResource(
-                                    id = R.string.menu
-                                )
+        Scaffold(
+            topBar = {
+                if (!landscapeMaxHeightLow || dontChangeUiWideScreen) {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            // Limit to one line, so too long titles won't wrap
+                            Text(
+                                text = title, overflow = TextOverflow.Ellipsis, maxLines = 1
                             )
-                        }
-                    },
-                )
-            }
-        }, contentWindowInsets = WindowInsets.safeDrawing
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = openDrawer) {
+                                Icon(
+                                    imageVector = Icons.Filled.Menu,
+                                    contentDescription = stringResource(
+                                        id = R.string.menu
+                                    )
+                                )
+                            }
+                        },
+                    )
+                }
+            }, contentWindowInsets = WindowInsets.safeDrawing
         ) { innerPadding ->
             if (landscapeMaxHeightLow && !dontChangeUiWideScreen) {
                 Box(
@@ -87,6 +94,19 @@ fun DefaultScaffoldNavigation(
 @Composable
 fun DefaultScaffoldPreview() {
     DefaultScaffoldNavigation(title = "Title", openDrawer = { }, dontChangeUiWideScreen = false) {
+        Text(text = "Content", fontSize = 24.sp, modifier = it)
+    }
+}
+
+@Preview(showBackground = true, widthDp = 400, heightDp = 600)
+@Preview(showBackground = true, widthDp = 600, heightDp = 250)
+@Composable
+fun DefaultScaffoldLongTitlePreview() {
+    DefaultScaffoldNavigation(
+        title = "Title which is very long, so long that it probably wont be displayed",
+        openDrawer = { },
+        dontChangeUiWideScreen = false
+    ) {
         Text(text = "Content", fontSize = 24.sp, modifier = it)
     }
 }

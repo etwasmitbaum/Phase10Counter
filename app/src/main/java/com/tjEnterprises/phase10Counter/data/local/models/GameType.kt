@@ -1,5 +1,6 @@
 package com.tjEnterprises.phase10Counter.data.local.models
 
+import androidx.compose.runtime.saveable.Saver
 import com.tjEnterprises.phase10Counter.R
 
 
@@ -13,6 +14,17 @@ object GameType {
 
     // This value hold all possible GameTypes in a single array
     val availableGameTypes = arrayOf(Standard, Flip, Masters)
+
+    // This is a custom saver, to use rememberSaveable() with this type this data type
+    val GameTypeSaver = Saver<Type, String>(save = { it.key}, restore = {
+        when (it) {
+            Standard.key -> Standard
+            Flip.key -> Flip
+            Masters.key -> Masters
+            Invalid.key -> Invalid
+            else -> Invalid
+        }
+    })
 
     fun getGameTypeByKey(key: String): GameType.Type {
         val type = when (key) {
@@ -46,7 +58,7 @@ object GameType {
 
     data object Invalid : Type {
         override val key = "INVALID"
-        override val resourceId: Int = -1
+        override val resourceId: Int = R.string.gameTypeInvalid
     }
 
 }

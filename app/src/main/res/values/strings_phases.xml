@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phase1"><b>Round 1: </b>2 sets of 3</string>
+    <string name="phase2"><b>Round 2: </b>1 set of 3 + 1 run of 4</string>
+    <string name="phase3"><b>Round 3: </b>1 set of 4 + 1 run of 4</string>
+    <string name="phase4"><b>Round 4: </b>1 run of 7</string>
+    <string name="phase5"><b>Round 5: </b>1 run of 8</string>
+    <string name="phase6"><b>Round 6: </b>1 run of 9</string>
+    <string name="phase7"><b>Round 7: </b>2 sets of 4</string>
+    <string name="phase8"><b>Round 8: </b>7 cards of one color</string>
+    <string name="phase9"><b>Round 9: </b>1 set of 5 + 1 set of 2</string>
+    <string name="phase10"><b>Round 10: </b>1 set of 5 + 1 set of 3</string>
+    <string name="flip_phase1"><b>Round 1: </b>2 color runs of 2</string>
+    <string name="flip_phase2"><b>Round 2: </b>A color run of 2 and a set of 2</string>
+    <string name="flip_phase3"><b>Round 3: </b>A color run of 2 and a set of 3</string>
+    <string name="flip_phase4"><b>Round 4: </b>A color run of 3 and a set of 2</string>
+    <string name="flip_phase5"><b>Round 5: </b>A color run of 4 and a set of 2</string>
+    <string name="flip_phase6"><b>Round 6: </b>2 sets of 3</string>
+    <string name="flip_phase7"><b>Round 7: </b>A color run of 3 and a set of 3</string>
+    <string name="flip_phase8"><b>Round 8: </b>A color run of 5 and a set of 2</string>
+    <string name="flip_phase9"><b>Round 9: </b>A color run of 2 and a set of 4</string>
+    <string name="flip_phase10"><b>Round 10: </b>A color run of 3 and 2 sets of 2</string>
+    <string name="masters_phase1"><b>Round 1: </b>Four Pairs</string>
+    <string name="masters_phase2"><b>Round 2: </b>Six Cards of One Color</string>
+    <string name="masters_phase3"><b>Round 3: </b>One Four-of-a-Kind + a Run of Four Cards</string>
+    <string name="masters_phase4"><b>Round 4: </b>A Run of Eight Cards</string>
+    <string name="masters_phase5"><b>Round 5: </b>Seven Cards of One Color</string>
+    <string name="masters_phase6"><b>Round 6: </b>A Run of Nine Cards</string>
+    <string name="masters_phase7"><b>Round 7: </b>Two Four-of-a-Kinds</string>
+    <string name="masters_phase8"><b>Round 8: </b>A Run of Four Cards of One Color + a Three-of-a-Kind</string>
+    <string name="masters_phase9"><b>Round 9: </b>One Five-of-a-Kind + a Three-of-a-Kind</string>
+    <string name="masters_phase10"><b>Round 10: </b>One Five-of-a-Kind + a Run of Three Cards of One Color</string>
+</resources>

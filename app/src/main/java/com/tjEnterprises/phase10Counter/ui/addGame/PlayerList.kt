@@ -31,6 +31,7 @@ internal fun PlayersList(
     tempPlayerNames: SnapshotStateList<String>,
     removeTempPlayerName: (Int) -> Unit
 ) {
+    // TODO Make this use adaptive grid cells
     LazyColumn(
         modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {

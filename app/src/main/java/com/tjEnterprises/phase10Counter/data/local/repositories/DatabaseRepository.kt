@@ -41,10 +41,12 @@ interface DatabaseRepository {
     suspend fun insertPlayer(playerName: String, gameId: Long): Long
     fun getPlayersFlowFromGame(gameId: Long): Flow<List<PlayerModel>>
     suspend fun getPlayersFromGame(gameId: Long): List<PlayerModel>
+    suspend fun getPlayerById(playerId: Long): PlayerModel
+    suspend fun updatePlayer(player: Player)
     suspend fun deletePlayer(playerId: Long)
 
     suspend fun updatePlayerPhases(playerId: Long, gameId: Long, openPhases: List<Boolean>)
-    suspend fun getPhasesOfPlayer(playerId: Long): List<Phases>
+    suspend fun getPhasesOfPlayer(playerId: Long): List<Boolean>
 
     fun getGameFlowFromId(gameId: Long): Flow<GameModel>
     suspend fun getGameFromId(gameId: Long): GameModel
@@ -53,9 +55,8 @@ interface DatabaseRepository {
     suspend fun deleteGame(gameId: Long)
     suspend fun updateGameModifiedTimestamp(gameId: Long)
 
-    fun getPointHistoryOfGameAsFlow(gameId: Long): Flow<List<PointHistory>>
     suspend fun getGamesCount(): Long
-    suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistory>
+    suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistoryItem>
     suspend fun insertPointHistory(point: Long, gameId: Long, playerId: Long)
     suspend fun updatePointHistoryEntry(pointHistoryItem: PointHistoryItem)
     suspend fun deletePointHistoryOfPlayer(playerId: Long)
@@ -108,7 +109,8 @@ interface DatabaseRepository {
                             name = player.name,
                             pointHistory = pointHistoryPlayer,
                             pointSum = pointSum,
-                            phasesOpen = phasesOpen
+                            phasesOpen = phasesOpen,
+                            showMarker = player.showMarker,
                         )
                     )
                 }
@@ -153,7 +155,8 @@ interface DatabaseRepository {
                             player.name,
                             pointHistoryPlayer,
                             pointSum,
-                            phasesOpen
+                            phasesOpen,
+                            player.showMarker
                         )
                     )
                 }
@@ -176,10 +179,6 @@ interface DatabaseRepository {
                 }
 
                 val phases = getPhasesOfPlayer(playerId = player.playerId)
-                val phasesOfPlayerOpen: MutableList<Boolean> = mutableListOf()
-                phases.forEach { phase ->
-                    phasesOfPlayerOpen.add(phase.open)
-                }
 
                 playerModels.add(
                     PlayerModel(
@@ -188,12 +187,31 @@ interface DatabaseRepository {
                         name = player.name,
                         pointHistory = pointHistoryPlayer,
                         pointSum = sum,
-                        phasesOpen = phasesOfPlayerOpen
-                )
+                        phasesOpen = phases,
+                        showMarker = player.showMarker
+                    )
                 )
             }
 
             return playerModels
+        }
+
+        override suspend fun getPlayerById(playerId: Long): PlayerModel {
+            val player = playerDao.getPlayerFromId(playerId)
+            val pointHistory = getPointHistoryOfPlayer(playerId)
+            return PlayerModel(
+                playerId = player.playerId,
+                gameId = player.gameID,
+                name = player.name,
+                pointHistory = pointHistory,
+                pointSum = pointHistory.sumOf { it.point },
+                phasesOpen = getPhasesOfPlayer(playerId),
+                showMarker = player.showMarker
+            )
+        }
+
+        override suspend fun updatePlayer(player: Player) {
+            playerDao.updatePlayer(player)
         }
 
         override suspend fun deletePlayer(playerId: Long) {
@@ -218,8 +236,13 @@ interface DatabaseRepository {
             }
         }
 
-        override suspend fun getPhasesOfPlayer(playerId: Long): List<Phases> {
-            return phasesDao.getPhasesOfPlayer(playerId)
+        override suspend fun getPhasesOfPlayer(playerId: Long): List<Boolean> {
+            val phases = phasesDao.getPhasesOfPlayer(playerId)
+            val phasesOfPlayerOpen: MutableList<Boolean> = mutableListOf()
+            phases.forEach { phase ->
+                phasesOfPlayerOpen.add(phase.open)
+            }
+            return phasesOfPlayerOpen
         }
 
         override fun getGameFlowFromId(gameId: Long): Flow<GameModel> {
@@ -277,16 +300,17 @@ interface DatabaseRepository {
             gameDao.updateGame(game)
         }
 
-        override fun getPointHistoryOfGameAsFlow(gameId: Long): Flow<List<PointHistory>> {
-            return pointHistoryDao.getPointHistoryOfGame(gameId)
-        }
-
         override suspend fun getGamesCount(): Long {
             return gameDao.getGamesCount()
         }
 
-        override suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistory> {
-            return pointHistoryDao.getPointHistoryOfPlayer(playerId)
+        override suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistoryItem> {
+            val pointHistory = pointHistoryDao.getPointHistoryOfPlayer(playerId)
+            val pointHistoryItemList = mutableListOf<PointHistoryItem>()
+            pointHistory.forEach { entry ->
+                pointHistoryItemList.add(PointHistoryItem(point = entry.point, pointId = entry.pointId))
+            }
+            return pointHistoryItemList
         }
 
         override suspend fun insertPointHistory(point: Long, gameId: Long, playerId: Long) {

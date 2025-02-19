@@ -1,0 +1,2 @@
+- NEW: Added support for Flip and Masters default phases
+- Minor UI adjustments

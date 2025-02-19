@@ -32,15 +32,17 @@ android {
         applicationId = "com.tjEnterprises.phase10Counter"
         minSdk = 21
         targetSdk = 35
-        versionCode = 22
-        versionName = "3.1.1"
+        versionCode = 23
+        versionName = "3.2.0"
 
         testInstrumentationRunner = "com.tjEnterprises.phase10Counter.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
 
-        resourceConfigurations.addAll(arrayOf("en", "de", "pl"))
+        androidResources {
+            localeFilters += arrayOf("en", "de", "pl")
+        }
 
         // Enable room auto-migrations
         ksp {
@@ -54,6 +56,9 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+        }
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -93,6 +98,7 @@ dependencies {
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)
+    implementation(libs.androidx.constraintlayout.compose)
 
     // Core Android dependencies
     implementation(libs.androidx.core.ktx)

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phase1"><b>Runda 1: </b>2 zestawy po 3</string>
+    <string name="phase2"><b>Runda 2: </b>1 zestaw po 3 + 1 runda z 4</string>
+    <string name="phase3"><b>Runda 3: </b>1 zestaw po 4 + 1 runda z 4</string>
+    <string name="phase4"><b>Runda 4: </b>1 runda z 7</string>
+    <string name="phase5"><b>Runda 5: </b>1 runda z 8</string>
+    <string name="phase6"><b>Runda 6: </b>1 runda z 9</string>
+    <string name="phase7"><b>Runda 7: </b>2 zestawy po 4</string>
+    <string name="phase8"><b>Runda 8: </b>7 kart jednego koloru</string>
+    <string name="phase9"><b>Runda 9: </b>1 zestaw po 5 + 1 zestaw po 2</string>
+    <string name="phase10"><b>Runda 10: </b>1 zestaw po 5 + 1 zestaw po 3</string>
+    <string name="flip_phase1"><b>Runda 1: </b>2 kolory w sekwencji po 2 karty</string>
+    <string name="flip_phase2"><b>Runda 2: </b>Jedna kolorowa sekwencja po 2 karty i zestaw 2 kart</string>
+    <string name="flip_phase3"><b>Runda 3: </b>Jedna kolorowa sekwencja po 2 karty i zestaw 3 kart</string>
+    <string name="flip_phase4"><b>Runda 4: </b>Jedna kolorowa sekwencja po 3 karty i zestaw 2 kart</string>
+    <string name="flip_phase5"><b>Runda 5: </b>Jedna kolorowa sekwencja po 4 karty i zestaw 2 kart</string>
+    <string name="flip_phase6"><b>Runda 6: </b>2 zestawy po 3 karty</string>
+    <string name="flip_phase7"><b>Runda 7: </b>Jedna kolorowa sekwencja po 3 karty i zestaw 3 kart</string>
+    <string name="flip_phase8"><b>Runda 8: </b>Jedna kolorowa sekwencja po 5 kart i zestaw 2 kart</string>
+    <string name="flip_phase9"><b>Runda 9: </b>Jedna kolorowa sekwencja po 2 karty i zestaw 4 kart</string>
+    <string name="flip_phase10"><b>Runda 10: </b>Jedna kolorowa sekwencja po 3 karty i 2 zestawy po 2 karty</string>
+    <string name="masters_phase1"><b>Runda 1: </b>Cztery pary</string>
+    <string name="masters_phase2"><b>Runda 2: </b>Sześć kart w jednym kolorze</string>
+    <string name="masters_phase3"><b>Runda 3: </b>Jedna czwórka + jedna sekwencja czterech kart</string>
+    <string name="masters_phase4"><b>Runda 4: </b>Sekwencja ośmiu kart</string>
+    <string name="masters_phase5"><b>Runda 5: </b>Siedem kart w jednym kolorze</string>
+    <string name="masters_phase6"><b>Runda 6: </b>Sekwencja dziewięciu kart</string>
+    <string name="masters_phase7"><b>Runda 7: </b>Twoje 2 czwórki</string>
+    <string name="masters_phase8"><b>Runda 8: </b>Jedna sekwencja czterech kart w jednym kolorze + jeden drilling</string>
+    <string name="masters_phase9"><b>Runda 9: </b>Jedna piątka + jeden drilling</string>
+    <string name="masters_phase10"><b>Runda 10: </b>Jedna piątka + sekwencja trzech kart w jednym kolorze</string>
+
+</resources>

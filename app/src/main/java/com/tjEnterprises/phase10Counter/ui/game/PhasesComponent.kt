@@ -98,7 +98,7 @@ fun PhasesComponent(
                                         GameType.Standard -> R.array.phases
                                         GameType.Flip -> R.array.phasesFlip
                                         GameType.Masters -> R.array.phasesMasters
-                                        else -> R.array.phases // TODO Show error
+                                        else -> R.array.phases // I choose not to display an error. It will default to the standard phases. The error will be displayed as the game type "invalid"
                                     }
 
                                     Text(text = stringArrayResource(id = phases )[j])
@@ -129,7 +129,15 @@ fun dismiss(
 @Composable
 fun PhasesComponentPreview() {
     PhasesComponent(
-        player = PlayerModel(1L, 1L, "Player1", listOf(PointHistoryItem(256L, 1L)), 256L, listOf(true, true, true, true, true, true, true, true, true, true)),
+        player = PlayerModel(
+            1L,
+            1L,
+            "Player1",
+            listOf(PointHistoryItem(256L, 1L)),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = false
+        ),
         gameType = GameType.defaultGameType,
         closeDialog = {},
         savePhasesOfPlayer = { _, _, _ ->}

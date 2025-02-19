@@ -18,8 +18,7 @@ package com.tjEnterprises.phase10Counter.data.di
 
 import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
-import com.tjEnterprises.phase10Counter.data.local.database.Phases
-import com.tjEnterprises.phase10Counter.data.local.database.PointHistory
+import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
@@ -73,6 +72,14 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun getPlayerById(playerId: Long): PlayerModel {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updatePlayer(player: Player) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun deletePlayer(playerId: Long) {
         TODO("Not yet implemented")
     }
@@ -85,7 +92,7 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPhasesOfPlayer(playerId: Long): List<Phases> {
+    override suspend fun getPhasesOfPlayer(playerId: Long): List<Boolean> {
         TODO("Not yet implemented")
     }
 
@@ -113,15 +120,11 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getPointHistoryOfGameAsFlow(gameId: Long): Flow<List<PointHistory>> {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun getGamesCount(): Long {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistory> {
+    override suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistoryItem> {
         TODO("Not yet implemented")
     }
 

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "b6281e5f19f6ffdccf4fcb778a8aeac6",
+    "identityHash": "3facfafa9c8edea90a00057dd2736dfb",
     "entities": [
       {
         "tableName": "Game",
@@ -51,7 +51,7 @@
       },
       {
         "tableName": "Player",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `player_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`game_id`) REFERENCES `Game`(`game_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `show_marker` INTEGER NOT NULL DEFAULT 0, `player_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`game_id`) REFERENCES `Game`(`game_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "gameID",
@@ -64,6 +64,13 @@
             "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "showMarker",
+            "columnName": "show_marker",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "playerId",
@@ -319,7 +326,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b6281e5f19f6ffdccf4fcb778a8aeac6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3facfafa9c8edea90a00057dd2736dfb')"
     ]
   }
 }
