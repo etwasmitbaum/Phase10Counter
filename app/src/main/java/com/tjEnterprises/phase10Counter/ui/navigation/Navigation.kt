@@ -102,8 +102,8 @@ fun NavGraphBuilder.selectGameGraph(openDrawer: () -> Unit, navigationActions: N
             }
             GameScreen(
                 gameId = gameId,
-                openDrawer = openDrawer,
-                navigateToGameSelect = { navigationActions.navigateToGameSelect() })
+                openDrawer = openDrawer
+            )
         }
     }
 }

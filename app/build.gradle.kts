@@ -38,7 +38,7 @@ android {
     defaultConfig {
         applicationId = "com.tjEnterprises.phase10Counter"
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 23
         versionName = "3.2.0"
 
