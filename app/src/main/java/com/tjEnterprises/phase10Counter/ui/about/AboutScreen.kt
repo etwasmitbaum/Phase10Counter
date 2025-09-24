@@ -1,5 +1,6 @@
 package com.tjEnterprises.phase10Counter.ui.about
 
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll

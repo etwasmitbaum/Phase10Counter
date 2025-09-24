@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 /*
  * Copyright (C) 2022 The Android Open Source Project
  *
@@ -14,7 +16,6 @@
  * limitations under the License.
  */
 
-@Suppress("DSL_SCOPE_VIOLATION") // Remove when fixed https://youtrack.jetbrains.com/issue/KTIJ-19369
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -24,13 +25,19 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+    }
+}
+
 android {
     namespace = "com.tjEnterprises.phase10Counter"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.tjEnterprises.phase10Counter"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         versionCode = 23
         versionName = "3.2.0"
@@ -74,10 +81,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         compose = true
         aidl = false
@@ -104,6 +107,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.material.icons.extended)
 
     // Hilt Dependency Injection
     implementation(libs.hilt.android)
@@ -153,7 +157,7 @@ dependencies {
     implementation(libs.composeSettings.ui.extended)
     implementation(libs.composeSettings.ui)
 
-    // AboutLibraries https://github.com/mikepenz/AboutLibraries
+    // AboutLibraries -> https://github.com/mikepenz/AboutLibraries
     implementation(libs.aboutlibraries.compose)
 
     // Retrofit for networking
