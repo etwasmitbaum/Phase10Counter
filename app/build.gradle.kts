@@ -51,10 +51,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        androidResources {
-            localeFilters += arrayOf("en", "de", "pl")
-        }
     }
 
     buildTypes {
