@@ -56,12 +56,12 @@ import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 
 @Composable
 fun PointHistoryDropDown(
+    modifier: Modifier = Modifier,
     pointHistory: List<PointHistoryItem>,
     sumOfPoints: Long,
     defaultExpanded: Boolean = false,
     deletePointHistoryItem: (PointHistoryItem) -> Unit,
     updatePointHistoryItem: (PointHistoryItem) -> Unit,
-    modifier: Modifier = Modifier
 ) {
 
     // state of the menu
@@ -70,7 +70,8 @@ fun PointHistoryDropDown(
     }
 
 
-    Row(verticalAlignment = Alignment.CenterVertically,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
         modifier = modifier.clickable(
             interactionSource = remember { MutableInteractionSource() }, indication = null
@@ -128,7 +129,8 @@ fun PointHistoryDropDown(
                     )
                 }
 
-                Row(verticalAlignment = Alignment.CenterVertically,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .clickable { showEditDeleteDialog.value = true }
                         .height(IntrinsicSize.Min)) {
@@ -143,7 +145,11 @@ fun PointHistoryDropDown(
                     )
 
                     // Wrap box around so IntrinsicSize.Min gets the text height, as max height
-                    Box(modifier = Modifier.fillMaxHeight().aspectRatio(1f)) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(1f)
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.Edit,
                             contentDescription = null,
@@ -184,7 +190,8 @@ fun EditDeletePointHistoryDialog(
     }, title = {
         Text(text = stringResource(id = R.string.editValue))
     }, text = {
-        TextField(value = text,
+        TextField(
+            value = text,
             onValueChange = { text = it },
             label = { Text(stringResource(id = R.string.points)) },
             maxLines = 1,
@@ -245,12 +252,13 @@ fun EditDeletePointHistoryDialog(
 @Preview(showBackground = true, widthDp = 200, heightDp = 400)
 @Composable
 fun PointHistoryDropDownPreview() {
-    PointHistoryDropDown(pointHistory = listOf(
-        PointHistoryItem(70L, 1L),
-        PointHistoryItem(720L, 2L),
-        PointHistoryItem(10L, 3L),
-        PointHistoryItem(98L, 4L)
-    ), sumOfPoints = 790L, deletePointHistoryItem = {}, updatePointHistoryItem = {})
+    PointHistoryDropDown(
+        pointHistory = listOf(
+            PointHistoryItem(70L, 1L),
+            PointHistoryItem(720L, 2L),
+            PointHistoryItem(10L, 3L),
+            PointHistoryItem(98L, 4L)
+        ), sumOfPoints = 790L, deletePointHistoryItem = {}, updatePointHistoryItem = {})
 }
 
 @Preview(showBackground = true)
@@ -259,7 +267,8 @@ fun EditDeletePointHistoryDialogPreview() {
     val show = rememberSaveable {
         mutableStateOf(true)
     }
-    EditDeletePointHistoryDialog(showDialog = show,
+    EditDeletePointHistoryDialog(
+        showDialog = show,
         pointHistoryItem = PointHistoryItem(45L, 1L),
         deletePointHistoryItem = {},
         updatePointHistoryItem = {})
