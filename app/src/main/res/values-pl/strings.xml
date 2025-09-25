@@ -79,4 +79,5 @@
     <string name="gameTypeFlip">Flip</string>
     <string name="gameTypeMasters">Masters</string>
     <string name="gameTypeInvalid">Nieprawidłowy wariant gry</string>
+    <string name="openSourceLicenseTitle">Licencje open source</string>
 </resources>
