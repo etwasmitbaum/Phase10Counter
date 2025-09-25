@@ -22,13 +22,14 @@ hilt = "2.57.1"
 junit = "4.13.2"
 kotlin = "2.2.20"
 ksp = "2.2.20-2.0.3"
-latestAboutLibsRelease = "11.4.0"
+aboutLibraries = "12.2.4"
 loggingInterceptor = "5.1.0"
 retrofit = "3.0.0"
 roomTesting = "2.8.1"
 
 [libraries]
-aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "latestAboutLibsRelease" }
+aboutlibraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutLibraries" }
+aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -74,6 +75,6 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 hilt-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "latestAboutLibsRelease" }
+aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "androidxRoom" }

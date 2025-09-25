@@ -155,6 +155,7 @@ dependencies {
     implementation(libs.composeSettings.ui)
 
     // AboutLibraries -> https://github.com/mikepenz/AboutLibraries
+    implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose)
 
     // Retrofit for networking
