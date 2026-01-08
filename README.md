@@ -21,7 +21,7 @@ Or get the latest APK from the [Releases Section](https://github.com/etwasmitbau
 
 # Important
 This was programmed as a side project. I am not any kind of professional developer or IT guy. This was just fun for me.
-The Source Code is half english half german and probably contains several war crimes since I did not put more effort into that, than it needed to fulfill the purpose of tracking a Phase10 game.
+The Source Code is half english half german and probably contains several _moments of confusion_ since I put enough effort into it as I see fit.
 
 # Big thanks
 Big thanks to [@rafi0101](https://github.com/rafi0101) for his [Android-Room-Database-Backup](https://github.com/rafi0101/Android-Room-Database-Backup) project. I used and slightly modfied his code for this app (before Version 3.0).
@@ -30,6 +30,9 @@ Big thanks to [@fz72](https://github.com/fz72) for his help on this project.
 
 # Copyright notice and Attribution
 This App uses the Architecture Template from here: https://github.com/android/architecture-templates/tree/base which is Licensed under the Apache License 2.0.
+
+# Building
+Clone the repo, open it with Android Studio and build it!
 
 # Pictures
 
