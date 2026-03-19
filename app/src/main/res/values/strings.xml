@@ -41,6 +41,7 @@
     <string name="hideDetails">Hide details</string>
     <string name="delete">Delete</string>
     <string name="reset">Reset</string>
+    <string name="edit">Edit</string>
     <string name="confirm">Confirm</string>
     <string name="enableDynamicColors">Dynamic Colors</string>
     <string name="useSystemColors">Use system colors</string>
