@@ -45,6 +45,7 @@ import com.tjEnterprises.phase10Counter.ui.navigation.NavigationDestination
 @Composable
 fun GamePreviewComponent(
     game: GameModel,
+    navigateToEditGame: (String) -> Unit,
     navigateToGame: (String) -> Unit,
     deleteGame: (Long) -> Unit,
     resetGame: (Long) -> Unit,
@@ -161,7 +162,7 @@ fun GamePreviewComponent(
                         )
                     }
 
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { navigateToEditGame(NavigationDestination.EDIT_GAME + "/" + game.gameId) }) {
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = stringResource(
@@ -221,7 +222,7 @@ fun GamePreviewComponentPreview(expand: Boolean = false) {
                 showMarker = false
             )
         ),
-    ), navigateToGame = {}, deleteGame = {}, resetGame = {}, expand = expand
+    ), navigateToEditGame = {}, navigateToGame = {}, deleteGame = {}, resetGame = {}, expand = expand
     )
 }
 
@@ -249,7 +250,7 @@ fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
                 showMarker = true
             )
         ),
-    ), navigateToGame = {}, deleteGame = {}, resetGame = {}, expand = expand
+    ), navigateToEditGame = {}, navigateToGame = {}, deleteGame = {}, resetGame = {}, expand = expand
     )
 }
 
