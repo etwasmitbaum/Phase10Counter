@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
@@ -156,6 +157,15 @@ fun GamePreviewComponent(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = stringResource(
                                 id = R.string.reset
+                            )
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = stringResource(
+                                id = R.string.edit
                             )
                         )
                     }
