@@ -42,6 +42,7 @@
     <string name="delete">Delete</string>
     <string name="reset">Reset</string>
     <string name="edit">Edit</string>
+    <string name="editPlayerName">Edit the player name</string>
     <string name="confirm">Confirm</string>
     <string name="enableDynamicColors">Dynamic Colors</string>
     <string name="useSystemColors">Use system colors</string>
