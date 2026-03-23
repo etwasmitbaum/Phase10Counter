@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -46,6 +47,7 @@ fun EditPlayerComponent(
     deletePointHistoryItem: (PointHistoryItem) -> Unit,
     updatePointHistoryItem: (PointHistoryItem) -> Unit,
     updatePlayer: (Player) -> Unit,
+    deletePlayer: (playerId: Long) -> Unit,
     scrollToNextPosition: () -> Unit
     ) {
     var pointsText by rememberSaveable {
@@ -99,8 +101,7 @@ fun EditPlayerComponent(
             IconButton(onClick = { openEditPlayerNameDialog.value = true }) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = null,
-                    modifier = Modifier.padding(6.dp)
+                    contentDescription = null
                 )
             }
         }
@@ -138,6 +139,12 @@ fun EditPlayerComponent(
                 updatePointHistoryItem = updatePointHistoryItem,
                 modifier = Modifier.padding(start = 12.dp)
             )
+            IconButton(onClick = { deletePlayer(player.playerId) }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = null
+                )
+            }
         }
 
         var phasesString = ""
@@ -179,6 +186,7 @@ fun EditPlayerComponentPreview() {
         scrollToNextPosition = {},
         deletePointHistoryItem = {},
         updatePointHistoryItem = {},
-        updatePlayer = {}
+        updatePlayer = {},
+        deletePlayer = {}
     )
 }
