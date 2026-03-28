@@ -79,4 +79,10 @@ class EditGameViewModel @Inject constructor(
             databaseRepository.updatePlayerPhases(playerId, gameId, openPhases)
         }
     }
+
+    fun updateGameName(gameId: Long, gameName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            databaseRepository.updateGameName(gameId, gameName)
+        }
+    }
 }
