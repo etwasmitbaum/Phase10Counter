@@ -215,7 +215,7 @@ interface DatabaseRepository {
         }
 
         override suspend fun deletePlayer(playerId: Long) {
-            playerDao.deletePlayer(playerDao.getPlayerFromId(playerId = playerId))
+            playerDao.deletePlayer(playerId = playerId)
         }
 
         override suspend fun updatePlayerPhases(
