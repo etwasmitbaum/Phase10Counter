@@ -54,6 +54,7 @@ interface DatabaseRepository {
     suspend fun deleteGame(game: Game)
     suspend fun deleteGame(gameId: Long)
     suspend fun updateGameModifiedTimestamp(gameId: Long)
+    suspend fun updateGameName(gameId: Long, gameName: String)
 
     suspend fun getGamesCount(): Long
     suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistoryItem>
@@ -298,6 +299,10 @@ interface DatabaseRepository {
             val game = gameDao.getGameFromId(gameId)
             game.timestampModified = System.currentTimeMillis()
             gameDao.updateGame(game)
+        }
+
+        override suspend fun updateGameName(gameId: Long, gameName: String) {
+            gameDao.updateGameName(gameId, gameName)
         }
 
         override suspend fun getGamesCount(): Long {
