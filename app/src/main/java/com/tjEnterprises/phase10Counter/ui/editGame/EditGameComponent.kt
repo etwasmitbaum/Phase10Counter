@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
@@ -51,9 +53,10 @@ fun EditGameComponent(
         modifier = modifier
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                Text(text = game.name)
-                IconButton(onClick = {}) {
+            Row(horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(modifier = Modifier.padding(start = 5.dp), text = game.name)
+                IconButton(onClick = { openEditNameDialog.value = true }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = null
