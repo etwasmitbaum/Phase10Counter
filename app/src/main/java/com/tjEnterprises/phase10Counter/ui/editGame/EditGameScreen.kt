@@ -228,8 +228,16 @@ fun AddPlayerDialog(
                 Text(text = stringResource(id = R.string.confirm))
             }
         },
-        dismissButton = {},
-        title = {},
+        dismissButton = {
+            TextButton(onClick = {
+                closeDialog()
+            }) {
+                Text(text = stringResource(id = R.string.cancel))
+            }
+        },
+        title = {
+            Text(text = stringResource(id = R.string.playerName))
+        },
         text = {
             TextField(
                 value = newPlayerName.value,
