@@ -1,17 +1,25 @@
 package com.tjEnterprises.phase10Counter.ui.editGame
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -28,17 +36,19 @@ import com.tjEnterprises.phase10Counter.R
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.GameType
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditGameComponent(
     modifier: Modifier = Modifier,
     game: GameModel,
-    updateGameName: (Long, String) -> Unit
+    updateGameName: (Long, String) -> Unit,
+    updateGameType: (Long, GameType.Type) -> Unit
 ) {
-    val gameTypeString = stringResource(id = game.gameType.resourceId)
-
     val openEditNameDialog = remember {
         mutableStateOf(false)
     }
+
+    val openGameTypeDropdownMenu = remember { mutableStateOf(false) }
 
     if (openEditNameDialog.value) {
         EditGameNameDialog(
@@ -61,6 +71,45 @@ fun EditGameComponent(
                         imageVector = Icons.Default.Edit,
                         contentDescription = null
                     )
+                }
+            }
+
+            ExposedDropdownMenuBox(
+                expanded = openGameTypeDropdownMenu.value,
+                onExpandedChange = { openGameTypeDropdownMenu.value = it },
+                modifier = Modifier
+                    .padding(5.dp)
+                    .then(modifier)
+                    .widthIn(1.dp, 150.dp)
+            ) {
+                OutlinedTextField(
+                    value = stringResource(id = game.gameType.resourceId),
+                    onValueChange = {
+
+                    },
+                    readOnly = true,
+                    label = { Text(stringResource(id = R.string.gameType)) },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = openGameTypeDropdownMenu.value)
+                    },
+                    modifier = Modifier
+                        .menuAnchor(
+                            ExposedDropdownMenuAnchorType.SecondaryEditable, enabled = true
+                        )
+                        .fillMaxWidth()
+                )
+
+                ExposedDropdownMenu(
+                    expanded = openGameTypeDropdownMenu.value,
+                    onDismissRequest = { openGameTypeDropdownMenu.value = false }
+                ) {
+                    GameType.availableGameTypes.forEach { item: GameType.Type ->
+                        DropdownMenuItem(text = { Text(text = stringResource(id = item.resourceId)) },
+                            onClick = {
+                                openGameTypeDropdownMenu.value = false
+                                updateGameType(game.gameId, item)
+                            })
+                    }
                 }
             }
         }
@@ -123,6 +172,7 @@ fun EditGameComponentPreview() {
             modified = 1,
             players = listOf()
         ),
-        updateGameName = {_,_ ->}
+        updateGameName = {_,_ ->},
+        updateGameType = {_,_ ->}
     )
 }

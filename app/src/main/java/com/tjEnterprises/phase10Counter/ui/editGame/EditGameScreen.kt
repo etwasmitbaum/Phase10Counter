@@ -90,6 +90,9 @@ fun EditGameScreen(
                 updateGameName = { gameId: Long, gameName: String ->
                     viewModel.updateGameName(gameId, gameName)
                 },
+                updateGameType = { gameId: Long, gameType: GameType.Type ->
+                    viewModel.updateGameType(gameId, gameType)
+                },
                 modifier = modifier
             )
         }
@@ -124,6 +127,7 @@ internal fun EditGameScreen(
     updatePlayer: (Player) -> Unit,
     deletePlayer: (Long) -> Unit,
     updateGameName: (gameId: Long, gameName: String) -> Unit,
+    updateGameType: (gameId: Long, gameType: GameType.Type) -> Unit,
     modifier: Modifier = Modifier
 ) {
     DefaultScaffoldNavigation(
@@ -157,7 +161,8 @@ internal fun EditGameScreen(
 
                 EditGameComponent(
                     game = game,
-                    updateGameName = updateGameName
+                    updateGameName = updateGameName,
+                    updateGameType = updateGameType
                 )
 
                 LazyVerticalGrid(
@@ -270,6 +275,7 @@ fun EditGameScreenPreview() {
         insertPlayer = {_,_->},
         updatePlayer = {},
         deletePlayer = {},
-        updateGameName = {_,_->}
+        updateGameName = {_,_->},
+        updateGameType = {_,_ ->}
     )
 }

@@ -66,6 +66,9 @@ interface GameDao {
     @Query("UPDATE Game SET name = (:gameName) WHERE game_id = (:gameId)")
     suspend fun updateGameName(gameId: Long, gameName: String)
 
+    @Query("UPDATE Game SET gameType = (:gameType) WHERE game_id = (:gameId)")
+    suspend fun updateGameType(gameId: Long, gameType: String)
+
     @Delete
     suspend fun deleteGame(game: Game)
 }

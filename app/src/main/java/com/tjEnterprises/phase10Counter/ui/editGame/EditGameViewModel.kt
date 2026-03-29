@@ -3,6 +3,7 @@ package com.tjEnterprises.phase10Counter.ui.editGame
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tjEnterprises.phase10Counter.data.local.database.Player
+import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 import com.tjEnterprises.phase10Counter.data.local.repositories.DatabaseRepository
@@ -89,6 +90,12 @@ class EditGameViewModel @Inject constructor(
     fun updateGameName(gameId: Long, gameName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.updateGameName(gameId, gameName)
+        }
+    }
+
+    fun updateGameType(gameId: Long, gameType: GameType.Type) {
+        viewModelScope.launch(Dispatchers.IO) {
+            databaseRepository.updateGameType(gameId, gameType)
         }
     }
 }

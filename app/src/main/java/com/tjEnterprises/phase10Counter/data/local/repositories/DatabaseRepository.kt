@@ -55,6 +55,7 @@ interface DatabaseRepository {
     suspend fun deleteGame(gameId: Long)
     suspend fun updateGameModifiedTimestamp(gameId: Long)
     suspend fun updateGameName(gameId: Long, gameName: String)
+    suspend fun updateGameType(gameId: Long, gameType: GameType.Type)
 
     suspend fun getGamesCount(): Long
     suspend fun getPointHistoryOfPlayer(playerId: Long): List<PointHistoryItem>
@@ -303,6 +304,10 @@ interface DatabaseRepository {
 
         override suspend fun updateGameName(gameId: Long, gameName: String) {
             gameDao.updateGameName(gameId, gameName)
+        }
+
+        override suspend fun updateGameType(gameId: Long, gameType: GameType.Type) {
+            gameDao.updateGameType(gameId, gameType.key)
         }
 
         override suspend fun getGamesCount(): Long {
