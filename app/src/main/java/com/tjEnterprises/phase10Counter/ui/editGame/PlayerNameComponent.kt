@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,7 +26,7 @@ fun PlayerNameComponent(
     closeDialog: () -> Unit,
     updatePlayer: (Player) -> Unit
 ) {
-    var playerName = rememberSaveable { player.name }
+    var playerName = rememberSaveable { mutableStateOf(player.name) }
 
     AlertDialog(
         modifier = modifier
@@ -38,7 +39,7 @@ fun PlayerNameComponent(
         ),
         onDismissRequest = {
             dismiss(
-                newPlayerName = playerName,
+                newPlayerName = playerName.value,
                 player = player,
                 updatePlayer = updatePlayer,
                 closeDialog = closeDialog
@@ -47,7 +48,7 @@ fun PlayerNameComponent(
         confirmButton = {
             TextButton(onClick = {
                 dismiss(
-                    newPlayerName = playerName,
+                    newPlayerName = playerName.value,
                     player = player,
                     updatePlayer = updatePlayer,
                     closeDialog = closeDialog
@@ -60,8 +61,8 @@ fun PlayerNameComponent(
         title = { Text(text = stringResource(id = R.string.editPlayerName)) },
         text = {
             TextField(
-                value = playerName,
-                onValueChange = { playerName = it },
+                value = playerName.value,
+                onValueChange = { playerName.value = it },
                 singleLine = true
             )
         }
