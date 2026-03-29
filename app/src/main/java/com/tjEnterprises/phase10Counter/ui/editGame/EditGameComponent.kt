@@ -55,7 +55,7 @@ fun EditGameComponent(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Row(horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically) {
-                Text(modifier = Modifier.padding(start = 5.dp), text = game.name)
+                Text(modifier = Modifier.padding(start = 5.dp), text = stringResource(id = R.string.gameName) + ": " + game.name)
                 IconButton(onClick = { openEditNameDialog.value = true }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
@@ -93,7 +93,13 @@ fun EditGameNameDialog(
                 Text(text = stringResource(id = R.string.confirm))
             }
         },
-        dismissButton = {},
+        dismissButton = {
+            TextButton(onClick = {
+                closeDialog()
+            }) {
+                Text(text = stringResource(id = R.string.cancel))
+            }
+        },
         title = {},
         text = {
             TextField(
