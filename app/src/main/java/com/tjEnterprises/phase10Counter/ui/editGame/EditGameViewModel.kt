@@ -62,6 +62,12 @@ class EditGameViewModel @Inject constructor(
         }
     }
 
+    fun insertPlayer(playerName: String, gameId: Long) {
+        viewModelScope.launch {
+            databaseRepository.insertPlayer(playerName, gameId)
+        }
+    }
+
     fun updatePlayer(player: Player) {
         viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.updatePlayer(player)
