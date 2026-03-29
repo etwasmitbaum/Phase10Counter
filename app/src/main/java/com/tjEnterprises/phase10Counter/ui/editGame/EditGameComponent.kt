@@ -60,10 +60,14 @@ fun EditGameComponent(
     }
 
     OutlinedCard(
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Row(horizontalArrangement = Arrangement.SpaceEvenly,
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row(horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(modifier = Modifier.padding(start = 5.dp), text = stringResource(id = R.string.gameName) + ": " + game.name)
                 IconButton(onClick = { openEditNameDialog.value = true }) {
@@ -80,7 +84,7 @@ fun EditGameComponent(
                 modifier = Modifier
                     .padding(5.dp)
                     .then(modifier)
-                    .widthIn(1.dp, 150.dp)
+                    .widthIn(1.dp, 150.dp),
             ) {
                 OutlinedTextField(
                     value = stringResource(id = game.gameType.resourceId),

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -160,6 +161,7 @@ internal fun EditGameScreen(
             ) {
 
                 EditGameComponent(
+                    modifier = Modifier.padding(8.dp),
                     game = game,
                     updateGameName = updateGameName,
                     updateGameType = updateGameType
@@ -177,7 +179,6 @@ internal fun EditGameScreen(
                             gameType = game.gameType,
                             modifier = Modifier
                                 .padding(8.dp)
-                                .padding(bottom = 8.dp)
                                 .fillMaxWidth(),
                             addPointHistoryEntry = addPointHistoryEntry,
                             savePhasesOfPlayer = savePhasesOfPlayer,
@@ -194,9 +195,11 @@ internal fun EditGameScreen(
                     }
                 }
 
-                IconButton(onClick = {
-                    openAddPlayerDialog.value = true
-                }) {
+                IconButton(
+                    onClick = {
+                        openAddPlayerDialog.value = true
+                              }
+                    ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = null
