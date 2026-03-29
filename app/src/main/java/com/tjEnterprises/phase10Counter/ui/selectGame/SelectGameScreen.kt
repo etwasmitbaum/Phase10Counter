@@ -33,6 +33,7 @@ fun SelectGame(
     modifier: Modifier = Modifier,
     viewModel: SelectGameViewModel = hiltViewModel(),
     openDrawer: () -> Unit,
+    navigateToEditGame: (String) -> Unit,
     navigateToGame: (String) -> Unit
 ) {
     val gamesUiState by viewModel.selectGameUiState.collectAsState()
@@ -44,6 +45,7 @@ fun SelectGame(
                 games = (gamesUiState as SelectGameUiState.SelectGameSuccess).games,
                 openDrawer = openDrawer,
                 dontChangeUiWideScreen = (gamesUiState as SelectGameUiState.SelectGameSuccess).settings.dontChangeUiOnWideScreen,
+                navigateToEditGame = navigateToEditGame,
                 navigateToGame = navigateToGame,
                 resetGame = { viewModel.resetGameWithData(it) },
                 deleteGame = { viewModel.deleteGameWithData(it) },
@@ -73,6 +75,7 @@ internal fun SelectGame(
     dontChangeUiWideScreen: Boolean,
     games: List<GameModel>,
     openDrawer: () -> Unit,
+    navigateToEditGame: (String) -> Unit,
     navigateToGame: (String) -> Unit,
     resetGame: (Long) -> Unit,
     deleteGame: (Long) -> Unit,
@@ -92,6 +95,7 @@ internal fun SelectGame(
                     items(games, key = { game -> game.gameId }) { game ->
                         GamePreviewComponent(
                             game = game,
+                            navigateToEditGame = navigateToEditGame,
                             navigateToGame = navigateToGame,
                             deleteGame = deleteGame,
                             resetGame = resetGame,
@@ -210,7 +214,7 @@ fun SelectGamePreview() {
                 )
             ),
         )
-    ), openDrawer = {}, navigateToGame = {}, resetGame = {}, deleteGame = {})
+    ), openDrawer = {}, navigateToEditGame = {}, navigateToGame = {}, resetGame = {}, deleteGame = {})
 }
 
 @Preview(showBackground = true, widthDp = 400, heightDp = 500)
@@ -218,6 +222,7 @@ fun SelectGamePreview() {
 fun SelectGamePreviewWithNoGames() {
     SelectGame(dontChangeUiWideScreen = false, games = listOf(),
         openDrawer = {},
+        navigateToEditGame = {},
         navigateToGame = {},
         resetGame = {},
         deleteGame = {})

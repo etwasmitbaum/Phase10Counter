@@ -30,6 +30,7 @@ import com.tjEnterprises.phase10Counter.ui.about.AboutScreen
 import com.tjEnterprises.phase10Counter.ui.about.AppLicenceScreen
 import com.tjEnterprises.phase10Counter.ui.addGame.AddGameScreen
 import com.tjEnterprises.phase10Counter.ui.component.AboutLibrariesComponent
+import com.tjEnterprises.phase10Counter.ui.editGame.EditGameScreen
 import com.tjEnterprises.phase10Counter.ui.game.GameScreen
 import com.tjEnterprises.phase10Counter.ui.highscores.Highscores
 import com.tjEnterprises.phase10Counter.ui.selectGame.SelectGame
@@ -88,7 +89,7 @@ fun NavGraphBuilder.selectGameGraph(openDrawer: () -> Unit, navigationActions: N
     ) {
 
         composable(NavigationDestination.SELECT_GAME) {
-            SelectGame(openDrawer = openDrawer, navigateToGame = navigationActions.navigateToGame)
+            SelectGame(openDrawer = openDrawer, navigateToEditGame = navigationActions.navigateToGameEditScreen, navigateToGame = navigationActions.navigateToGame)
         }
 
         composable(
@@ -101,6 +102,21 @@ fun NavGraphBuilder.selectGameGraph(openDrawer: () -> Unit, navigationActions: N
                 gameId = 1L
             }
             GameScreen(
+                gameId = gameId,
+                openDrawer = openDrawer
+            )
+        }
+
+        composable(
+            route = "${NavigationDestination.EDIT_GAME}/{gameId}",
+            arguments = listOf(navArgument("gameId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            var gameId =backStackEntry.arguments?.getLong("gameId") ?: 1
+            // getLong returns 0L if key is not mapped
+            if (gameId == 0L) {
+                gameId = 1L
+            }
+            EditGameScreen(
                 gameId = gameId,
                 openDrawer = openDrawer
             )

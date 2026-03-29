@@ -51,6 +51,6 @@ interface PlayerDao {
     @Insert
     suspend fun insertPlayer(player: Player): Long
 
-    @Delete
-    suspend fun deletePlayer(player: Player)
+    @Query("DELETE FROM Player WHERE player_id IS (:playerId)")
+    suspend fun deletePlayer(playerId: Long)
 }

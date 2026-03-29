@@ -120,6 +120,17 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun updateGameName(gameId: Long, gameName: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateGameType(
+        gameId: Long,
+        gameType: GameType.Type
+    ) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getGamesCount(): Long {
         TODO("Not yet implemented")
     }

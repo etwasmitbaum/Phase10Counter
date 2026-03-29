@@ -44,10 +44,8 @@ import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.ui.GameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import kotlinx.coroutines.launch
-import javax.inject.Singleton
 
 @Composable
-@Singleton
 fun GameScreen(
     modifier: Modifier = Modifier,
     gameId: Long,

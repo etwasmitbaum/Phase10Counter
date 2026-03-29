@@ -24,6 +24,13 @@ class NavigationActions(navController: NavHostController) {
         }
     }
 
+    val navigateToGameEditScreen: (String) -> Unit = {route ->
+        navController.navigate(route) {
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
     val navigateToAddGameScreen: () -> Unit = {
         navController.navigate(NavigationDestination.ADD_GAMESCREEN) {
             popUpTo(navController.graph.findStartDestination().id) {
