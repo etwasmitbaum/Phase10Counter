@@ -57,7 +57,13 @@ fun PlayerNameComponent(
                 Text(text = stringResource(id = R.string.confirm))
             }
         },
-        dismissButton = {},
+        dismissButton = {
+            TextButton(onClick = {
+                closeDialog()
+            }) {
+                Text(text = stringResource(id = R.string.cancel))
+            }
+        },
         title = { Text(text = stringResource(id = R.string.editPlayerName)) },
         text = {
             TextField(
