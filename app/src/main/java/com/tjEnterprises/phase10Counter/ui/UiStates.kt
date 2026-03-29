@@ -10,6 +10,12 @@ sealed interface SelectGameUiState {
     data class SelectGameSuccess(val games: List<GameModel>, val settings: SettingsModel) : SelectGameUiState
 }
 
+sealed interface EditGameUiState {
+    object EditGameLoading: EditGameUiState
+    data class EditGameError(val throwable: Throwable): EditGameUiState
+    data class EditGameSuccess(val game: GameModel): EditGameUiState
+}
+
 sealed interface GameUiState {
     object GameLoading : GameUiState
     data class GameError(val throwable: Throwable) : GameUiState
