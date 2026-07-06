@@ -38,12 +38,12 @@ room {
 
 android {
     namespace = "com.tjEnterprises.phase10Counter"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.tjEnterprises.phase10Counter"
         minSdk = 23
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 24
         versionName = "3.3.0"
 

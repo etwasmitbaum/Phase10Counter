@@ -1,17 +1,15 @@
 package com.tjEnterprises.phase10Counter.ui.theme
 
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ListItemColors
 import androidx.compose.runtime.Composable
-import com.alorma.compose.settings.ui.base.internal.SettingsTileColors
-import com.alorma.compose.settings.ui.base.internal.SettingsTileDefaults
+import com.alorma.compose.settings.ui.SettingsTileDefaults
 
 class P10SettingsColor {
 
     companion object {
         @Composable
-        fun colors(): SettingsTileColors {
-            val colors =
-                SettingsTileDefaults.colors(titleColor = MaterialTheme.colorScheme.onSurface)
+        fun colors(): ListItemColors {
+            val colors = SettingsTileDefaults.colors()
             return colors
         }
     }

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.mikepenz.aboutlibraries.ui.compose.android.rememberLibraries
+import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.tjEnterprises.phase10Counter.R
 
@@ -15,14 +15,10 @@ fun AboutLibrariesComponent(navigateOneBack: () -> Unit) {
         title = stringResource(id = R.string.openSourceLicenseTitle), navigateOneBack = navigateOneBack
     ) { scaffoldModifier ->
 
-        val libraries by rememberLibraries(R.raw.aboutlibraries)
+        val libraries by produceLibraries(R.raw.aboutlibraries)
         LibrariesContainer(
             libraries,
             scaffoldModifier.fillMaxSize(),
-            showAuthor = true,
-            showLicenseBadges = true,
-            showVersion = true,
-            showDescription = true
         )
     }
 }

@@ -80,3 +80,4 @@ app/github_release/
 app/production.jks
 app/production.properties
 /.kotlin
+/gradle/gradle-daemon-jvm.properties
