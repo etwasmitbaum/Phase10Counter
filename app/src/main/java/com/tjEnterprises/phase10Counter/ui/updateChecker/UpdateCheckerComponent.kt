@@ -59,7 +59,8 @@ internal fun UpdateCheckerComponent(modifier: Modifier, versionNumber: Int) {
                 if (!enableOnClick) {
                     append(text)
                 }
-                withLink(LinkAnnotation.Url(url = "https://github.com/etwasmitbaum/Phase10Counter/releases/latest/download/Phase10Counter.apk"),
+                withLink(
+                    LinkAnnotation.Url(url = "https://github.com/etwasmitbaum/Phase10Counter/releases/latest/download/Phase10Counter.apk"),
                     block = { if (enableOnClick) append(text) })
             }, modifier = modifier.fillMaxWidth(), style = TextStyle(
                 textAlign = TextAlign.Center,

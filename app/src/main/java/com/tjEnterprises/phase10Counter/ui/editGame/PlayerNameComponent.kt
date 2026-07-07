@@ -26,7 +26,7 @@ fun PlayerNameComponent(
     closeDialog: () -> Unit,
     updatePlayer: (Player) -> Unit
 ) {
-    var playerName = rememberSaveable { mutableStateOf(player.name) }
+    val playerName = rememberSaveable { mutableStateOf(player.name) }
 
     AlertDialog(
         modifier = modifier
@@ -82,12 +82,14 @@ internal fun dismiss(
     closeDialog: () -> Unit
 ) {
     if (player.name != newPlayerName) {
-        updatePlayer(Player(
-            gameID = player.gameId,
-            name = newPlayerName,
-            showMarker = player.showMarker,
-            playerId = player.playerId
-        ))
+        updatePlayer(
+            Player(
+                gameID = player.gameId,
+                name = newPlayerName,
+                showMarker = player.showMarker,
+                playerId = player.playerId
+            )
+        )
     }
 
     closeDialog()

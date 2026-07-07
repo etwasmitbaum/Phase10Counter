@@ -13,13 +13,15 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class AboutScreenViewModel @Inject constructor(settingsRepository: SettingsRepositoryImpl) : ViewModel() {
+class AboutScreenViewModel @Inject constructor(settingsRepository: SettingsRepositoryImpl) :
+    ViewModel() {
     private val _defaultDontChangeUiWideScreen = SettingsModel().dontChangeUiOnWideScreen
-    val dontChangeUiWideScreen: StateFlow<Boolean> = settingsRepository.settingsModelFlow.map { settings ->
-        settings.dontChangeUiOnWideScreen
-    }.catch { _defaultDontChangeUiWideScreen }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = _defaultDontChangeUiWideScreen
-    )
+    val dontChangeUiWideScreen: StateFlow<Boolean> =
+        settingsRepository.settingsModelFlow.map { settings ->
+            settings.dontChangeUiOnWideScreen
+        }.catch { _defaultDontChangeUiWideScreen }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = _defaultDontChangeUiWideScreen
+        )
 }

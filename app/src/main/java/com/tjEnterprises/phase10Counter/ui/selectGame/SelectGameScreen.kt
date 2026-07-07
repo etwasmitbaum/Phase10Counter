@@ -81,16 +81,21 @@ internal fun SelectGame(
     deleteGame: (Long) -> Unit,
     updateChecker: @Composable (Modifier) -> Unit = {}
 ) {
-    DefaultScaffoldNavigation(title = title, openDrawer = openDrawer, dontChangeUiWideScreen = dontChangeUiWideScreen) { scaffoldModifier ->
+    DefaultScaffoldNavigation(
+        title = title,
+        openDrawer = openDrawer,
+        dontChangeUiWideScreen = dontChangeUiWideScreen
+    ) { scaffoldModifier ->
         Column(modifier = scaffoldModifier) {
             updateChecker(Modifier.padding(top = 8.dp))
 
-            LazyVerticalGrid(modifier = Modifier
-                .then(modifier)
-                .fillMaxSize(),
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .then(modifier)
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalArrangement = Arrangement.Center,
-                columns = if(dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(330.dp),
+                columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(330.dp),
                 content = {
                     items(games, key = { game -> game.gameId }) { game ->
                         GamePreviewComponent(
@@ -125,102 +130,110 @@ internal fun SelectGame(
 @Preview(showBackground = true, widthDp = 800, heightDp = 300)
 @Composable
 fun SelectGamePreview() {
-    SelectGame(dontChangeUiWideScreen = false, games = listOf(
-        GameModel(
-            1L, "Game 1", GameType.Flip,0L, 0L,
-            listOf(
-                PlayerModel(
-                    1L,
-                    1L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true),
-                    showMarker = false
-                ), PlayerModel(
-                    1L,
-                    1L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true),
-                    showMarker = true
-                ), PlayerModel(
-                    1L,
-                    1L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true),
-                    showMarker = false
-                )
-            ),
-        ), GameModel(
-            2L, "Game 2", GameType.Standard,0L, 0L,
-            listOf(
-                PlayerModel(
-                    1L,
-                    2L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true),
-                    showMarker = false
-                ), PlayerModel(
-                    1L,
-                    2L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true),
-                    showMarker = true
-                ), PlayerModel(
-                    1L,
-                    2L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true),
-                    showMarker = false
-                )
-            ),
-        ), GameModel(
-            3L, "Game 3", GameType.Standard,0L, 0L,
-            listOf(
-                PlayerModel(
-                    1L,
-                    3L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true),
-                    showMarker = false
-                ), PlayerModel(
-                    1L,
-                    3L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true),
-                    true
-                ), PlayerModel(
-                    1L,
-                    3L,
-                    "Player1",
-                    listOf(PointHistoryItem(256L, 1L)),
-                    256L,
-                    listOf(true, true, true, true, true, true, true, true, true, true),
-                    showMarker = false
-                )
-            ),
-        )
-    ), openDrawer = {}, navigateToEditGame = {}, navigateToGame = {}, resetGame = {}, deleteGame = {})
+    SelectGame(
+        dontChangeUiWideScreen = false,
+        games = listOf(
+            GameModel(
+                1L, "Game 1", GameType.Flip, 0L, 0L,
+                listOf(
+                    PlayerModel(
+                        1L,
+                        1L,
+                        "Player1",
+                        listOf(PointHistoryItem(256L, 1L)),
+                        256L,
+                        listOf(true, true, true, true, true, true, true, true, true, true),
+                        showMarker = false
+                    ), PlayerModel(
+                        1L,
+                        1L,
+                        "Player1",
+                        listOf(PointHistoryItem(256L, 1L)),
+                        256L,
+                        listOf(true, true, true, true, true, true, true, true, true, true),
+                        showMarker = true
+                    ), PlayerModel(
+                        1L,
+                        1L,
+                        "Player1",
+                        listOf(PointHistoryItem(256L, 1L)),
+                        256L,
+                        listOf(true, true, true, true, true, true, true, true, true, true),
+                        showMarker = false
+                    )
+                ),
+            ), GameModel(
+                2L, "Game 2", GameType.Standard, 0L, 0L,
+                listOf(
+                    PlayerModel(
+                        1L,
+                        2L,
+                        "Player1",
+                        listOf(PointHistoryItem(256L, 1L)),
+                        256L,
+                        listOf(true, true, true, true, true, true, true, true, true, true),
+                        showMarker = false
+                    ), PlayerModel(
+                        1L,
+                        2L,
+                        "Player1",
+                        listOf(PointHistoryItem(256L, 1L)),
+                        256L,
+                        listOf(true, true, true, true, true, true, true, true, true, true),
+                        showMarker = true
+                    ), PlayerModel(
+                        1L,
+                        2L,
+                        "Player1",
+                        listOf(PointHistoryItem(256L, 1L)),
+                        256L,
+                        listOf(true, true, true, true, true, true, true, true, true, true),
+                        showMarker = false
+                    )
+                ),
+            ), GameModel(
+                3L, "Game 3", GameType.Standard, 0L, 0L,
+                listOf(
+                    PlayerModel(
+                        1L,
+                        3L,
+                        "Player1",
+                        listOf(PointHistoryItem(256L, 1L)),
+                        256L,
+                        listOf(true, true, true, true, true, true, true, true, true, true),
+                        showMarker = false
+                    ), PlayerModel(
+                        1L,
+                        3L,
+                        "Player1",
+                        listOf(PointHistoryItem(256L, 1L)),
+                        256L,
+                        listOf(true, true, true, true, true, true, true, true, true, true),
+                        true
+                    ), PlayerModel(
+                        1L,
+                        3L,
+                        "Player1",
+                        listOf(PointHistoryItem(256L, 1L)),
+                        256L,
+                        listOf(true, true, true, true, true, true, true, true, true, true),
+                        showMarker = false
+                    )
+                ),
+            )
+        ),
+        openDrawer = {},
+        navigateToEditGame = {},
+        navigateToGame = {},
+        resetGame = {},
+        deleteGame = {})
 }
 
 @Preview(showBackground = true, widthDp = 400, heightDp = 500)
 @Composable
 fun SelectGamePreviewWithNoGames() {
-    SelectGame(dontChangeUiWideScreen = false, games = listOf(),
+    SelectGame(
+        dontChangeUiWideScreen = false, games = listOf(),
         openDrawer = {},
         navigateToEditGame = {},
         navigateToGame = {},

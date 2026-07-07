@@ -11,8 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AppBaseScreenViewModel @Inject constructor(databaseRepository: DefaultDatabaseRepository) : ViewModel() {
-    private val _gamesCount = MutableStateFlow<Long>(-1L)
+class AppBaseScreenViewModel @Inject constructor(databaseRepository: DefaultDatabaseRepository) :
+    ViewModel() {
+    private val _gamesCount = MutableStateFlow(-1L)
     val gamesCount: StateFlow<Long> = _gamesCount
 
     init {

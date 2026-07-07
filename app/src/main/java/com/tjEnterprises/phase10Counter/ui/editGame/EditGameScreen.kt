@@ -1,6 +1,5 @@
 package com.tjEnterprises.phase10Counter.ui.editGame
 
-import android.app.AlertDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +15,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -34,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.tjEnterprises.phase10Counter.R
-import com.tjEnterprises.phase10Counter.data.local.database.Game
 import com.tjEnterprises.phase10Counter.data.local.database.Player
 import com.tjEnterprises.phase10Counter.data.local.models.GameModel
 import com.tjEnterprises.phase10Counter.data.local.models.GameType
@@ -50,7 +47,7 @@ fun EditGameScreen(
     gameId: Long,
     viewModel: EditGameViewModel = hiltViewModel(),
     openDrawer: () -> Unit
-){
+) {
     val dontChangeUiWideScreen by viewModel.dontChangeUiWideScreen.collectAsState()
     val editGameUiState by viewModel.editGameUiState.collectAsState()
     viewModel.setGameFromId(gameId)
@@ -153,10 +150,11 @@ internal fun EditGameScreen(
             val gridState = rememberLazyGridState()
             val coroutineScope = rememberCoroutineScope()
 
-            Column(modifier = scaffoldModifier
-                .then(modifier)
-                .padding(bottom = 4.dp)
-                .fillMaxSize(),
+            Column(
+                modifier = scaffoldModifier
+                    .then(modifier)
+                    .padding(bottom = 4.dp)
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -171,7 +169,9 @@ internal fun EditGameScreen(
                     state = gridState,
                     horizontalArrangement = Arrangement.Center,
                     verticalArrangement = Arrangement.Center,
-                    columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(400.dp)
+                    columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(
+                        400.dp
+                    )
                 ) {
                     itemsIndexed(items = players) { idx, player ->
                         EditPlayerComponent(
@@ -198,8 +198,8 @@ internal fun EditGameScreen(
                 IconButton(
                     onClick = {
                         openAddPlayerDialog.value = true
-                              }
-                    ) {
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = null
@@ -271,14 +271,14 @@ fun EditGameScreenPreview() {
         ),
         dontChangeUiWideScreen = false,
         openDrawer = {},
-        addPointHistoryEntry = {_,_,_ ->},
-        savePhasesOfPlayer = {_,_,_ ->},
+        addPointHistoryEntry = { _, _, _ -> },
+        savePhasesOfPlayer = { _, _, _ -> },
         deletePointHistoryItem = {},
         updatePointHistoryItem = {},
-        insertPlayer = {_,_->},
+        insertPlayer = { _, _ -> },
         updatePlayer = {},
         deletePlayer = {},
-        updateGameName = {_,_->},
-        updateGameType = {_,_ ->}
+        updateGameName = { _, _ -> },
+        updateGameType = { _, _ -> }
     )
 }

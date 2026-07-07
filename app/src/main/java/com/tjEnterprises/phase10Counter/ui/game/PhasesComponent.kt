@@ -44,9 +44,10 @@ fun PhasesComponent(
         openPhases.add(it)
     }
 
-    AlertDialog(modifier = modifier
-        .fillMaxWidth(0.85f)
-        .wrapContentSize(),
+    AlertDialog(
+        modifier = modifier
+            .fillMaxWidth(0.85f)
+            .wrapContentSize(),
         properties = DialogProperties(
             usePlatformDefaultWidth = false, dismissOnBackPress = true, dismissOnClickOutside = true
         ),
@@ -74,24 +75,27 @@ fun PhasesComponent(
         dismissButton = {},
         title = { Text(text = stringResource(id = R.string.phasesOf) + " " + player.name) },
         text = {
-            LazyVerticalGrid(modifier = Modifier.wrapContentSize(),
+            LazyVerticalGrid(
+                modifier = Modifier.wrapContentSize(),
                 columns = GridCells.Adaptive(200.dp),
                 content = {
-                /*
-                * This LazyVerticalGrid contains only two items, the first 5 phases and the last 5.
-                * This way the LazyVerticalGrid will split the phases in either one consecutive block
-                * or two block next to each other.
-                * Each block count up from top to bottom.
-                */
+                    /*
+                    * This LazyVerticalGrid contains only two items, the first 5 phases and the last 5.
+                    * This way the LazyVerticalGrid will split the phases in either one consecutive block
+                    * or two block next to each other.
+                    * Each block count up from top to bottom.
+                    */
                     items(2) { partIdx ->
                         Column(verticalArrangement = Arrangement.SpaceEvenly) {
                             for (i in 0..<5) {
                                 val j = i + 5 * (partIdx)
-                                Row(verticalAlignment = Alignment.CenterVertically,
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.clickable {
                                         openPhases[j] = !openPhases[j]
                                     }) {
-                                    Checkbox(checked = !openPhases[j],
+                                    Checkbox(
+                                        checked = !openPhases[j],
                                         onCheckedChange = { openPhases[j] = !it })
 
                                     val phases = when (gameType) {
@@ -101,7 +105,7 @@ fun PhasesComponent(
                                         else -> R.array.phases // I choose not to display an error. It will default to the standard phases. The error will be displayed as the game type "invalid"
                                     }
 
-                                    Text(text = stringArrayResource(id = phases )[j])
+                                    Text(text = stringArrayResource(id = phases)[j])
                                 }
                             }
                         }
@@ -140,6 +144,6 @@ fun PhasesComponentPreview() {
         ),
         gameType = GameType.defaultGameType,
         closeDialog = {},
-        savePhasesOfPlayer = { _, _, _ ->}
+        savePhasesOfPlayer = { _, _, _ -> }
     )
 }

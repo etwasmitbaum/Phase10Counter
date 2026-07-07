@@ -42,13 +42,14 @@ class GameViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _defaultDontChangeUiWideScreen = SettingsModel().dontChangeUiOnWideScreen
-    val dontChangeUiWideScreen: StateFlow<Boolean> = settingsRepository.settingsModelFlow.map { settings ->
-        settings.dontChangeUiOnWideScreen
-    }.catch { _defaultDontChangeUiWideScreen }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = _defaultDontChangeUiWideScreen
-    )
+    val dontChangeUiWideScreen: StateFlow<Boolean> =
+        settingsRepository.settingsModelFlow.map { settings ->
+            settings.dontChangeUiOnWideScreen
+        }.catch { _defaultDontChangeUiWideScreen }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = _defaultDontChangeUiWideScreen
+        )
 
     private val _gameUiState = MutableStateFlow<GameUiState>(GameUiState.GameLoading)
     val gameUiState: StateFlow<GameUiState> = _gameUiState
@@ -63,7 +64,11 @@ class GameViewModel @Inject constructor(
 
     fun addPointHistoryEntry(point: Long, gameId: Long, playerId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            databaseRepository.insertPointHistory(point = point, gameId = gameId, playerId = playerId)
+            databaseRepository.insertPointHistory(
+                point = point,
+                gameId = gameId,
+                playerId = playerId
+            )
         }
     }
 

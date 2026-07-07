@@ -54,7 +54,8 @@ fun SettingsScreen(
 
     when (settingsUiState) {
         is SettingsUiState.SettingsSuccess -> {
-            SettingsScreen(modifier = modifier,
+            SettingsScreen(
+                modifier = modifier,
                 settings = (settingsUiState as SettingsUiState.SettingsSuccess).settings,
                 openDrawer = openDrawer,
                 updateCheckForUpdates = { viewModel.updateCheckForUpdates(it) },
@@ -294,7 +295,8 @@ internal fun SettingsScreen(
 
             // Backup Game
             val fileName = stringResource(id = R.string.backupFileName)
-            SettingsMenuLink(title = {
+            SettingsMenuLink(
+                title = {
                 Text(
                     text = stringResource(id = R.string.backupGames),
                 )
@@ -317,7 +319,8 @@ internal fun SettingsScreen(
             }
 
             // Restore games from backup file
-            SettingsMenuLink(title = {
+            SettingsMenuLink(
+                title = {
                 Text(
                     text = stringResource(id = R.string.restoreGames)
                 )
@@ -349,7 +352,8 @@ internal fun SettingsScreen(
 @Preview(showBackground = true, locale = "DE")
 @Composable
 fun SettingsScreenPreview() {
-    SettingsScreen(modifier = Modifier,
+    SettingsScreen(
+        modifier = Modifier,
         settings = SettingsModel(useSystemTheme = false, useDarkTheme = true),
         openDrawer = {},
         updateCheckForUpdates = {},

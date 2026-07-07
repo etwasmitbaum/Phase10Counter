@@ -74,7 +74,8 @@ internal fun AppLicenceScreen(
 @Preview(showBackground = true, widthDp = 500, heightDp = 200)
 @Composable
 fun AppLicenceScreenPreview() {
-    AppLicenceScreen(modifier = Modifier,
+    AppLicenceScreen(
+        modifier = Modifier,
         licence = "bla bla bla",
         title = stringResource(id = R.string.app_license),
         navigateOneBack = {})

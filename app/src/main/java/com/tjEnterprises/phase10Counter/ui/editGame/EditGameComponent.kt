@@ -1,6 +1,5 @@
 package com.tjEnterprises.phase10Counter.ui.editGame
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -67,9 +66,14 @@ fun EditGameComponent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Row(horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(modifier = Modifier.padding(start = 5.dp), text = stringResource(id = R.string.gameName) + ": " + game.name)
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier.padding(start = 5.dp),
+                    text = stringResource(id = R.string.gameName) + ": " + game.name
+                )
                 IconButton(onClick = { openEditNameDialog.value = true }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
@@ -108,7 +112,8 @@ fun EditGameComponent(
                     onDismissRequest = { openGameTypeDropdownMenu.value = false }
                 ) {
                     GameType.availableGameTypes.forEach { item: GameType.Type ->
-                        DropdownMenuItem(text = { Text(text = stringResource(id = item.resourceId)) },
+                        DropdownMenuItem(
+                            text = { Text(text = stringResource(id = item.resourceId)) },
                             onClick = {
                                 openGameTypeDropdownMenu.value = false
                                 updateGameType(game.gameId, item)
@@ -176,7 +181,7 @@ fun EditGameComponentPreview() {
             modified = 1,
             players = listOf()
         ),
-        updateGameName = {_,_ ->},
-        updateGameType = {_,_ ->}
+        updateGameName = { _, _ -> },
+        updateGameType = { _, _ -> }
     )
 }

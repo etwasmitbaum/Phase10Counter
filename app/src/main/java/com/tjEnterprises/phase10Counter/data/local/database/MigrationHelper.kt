@@ -185,7 +185,7 @@ class Migration3To4(private val context: Context) : Migration(startVersion = 3, 
 object Migration4To5 : Migration(startVersion = 4, endVersion = 5) {
     override fun migrate(db: SupportSQLiteDatabase) {
         val defaultGameType = GameType.DEFAULT_GAMETYPE_KEY
-        db.execSQL("ALTER TABLE Game ADD COLUMN gameType TEXT NOT NULL DEFAULT '$defaultGameType'" )
+        db.execSQL("ALTER TABLE Game ADD COLUMN gameType TEXT NOT NULL DEFAULT '$defaultGameType'")
         db.execSQL("ALTER TABLE Player ADD COLUMN show_marker INTEGER NOT NULL DEFAULT 0")
     }
 

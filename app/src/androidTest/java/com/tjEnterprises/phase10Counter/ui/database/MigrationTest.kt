@@ -26,7 +26,7 @@ import java.util.Date
 @Suppress("VARIABLE_WITH_REDUNDANT_INITIALIZER")
 @RunWith(AndroidJUnit4::class)
 class MigrationTest {
-    private val TEST_DB = "migration-test"
+    private val TESTDB = "migration-test"
 
     @get:Rule
     val helper: MigrationTestHelper = MigrationTestHelper(
@@ -39,7 +39,7 @@ class MigrationTest {
         val context: Context = ApplicationProvider.getApplicationContext()
 
         // Create earliest version of the database.
-        helper.createDatabase(TEST_DB, 1).apply {
+        helper.createDatabase(TESTDB, 1).apply {
             close()
         }
 
@@ -48,7 +48,7 @@ class MigrationTest {
         Room.databaseBuilder(
             InstrumentationRegistry.getInstrumentation().targetContext,
             AppDatabase::class.java,
-            TEST_DB
+            TESTDB
         ).addMigrations(
             Migration1To2,
             Migration2To3(context = context),
@@ -65,13 +65,13 @@ class MigrationTest {
     fun migrate2To3WithoutData() {
         val context: Context = ApplicationProvider.getApplicationContext()
 
-        var db = helper.createDatabase(TEST_DB, 2).apply {
+        var db = helper.createDatabase(TESTDB, 2).apply {
             // You can't use DAO classes because they expect the latest schema.
             // Prepare for the next version.
             close()
         }
 
-        db = helper.runMigrationsAndValidate(TEST_DB, 3, true, Migration2To3(context = context))
+        db = helper.runMigrationsAndValidate(TESTDB, 3, true, Migration2To3(context = context))
     }
 
     @Test
@@ -79,7 +79,7 @@ class MigrationTest {
     fun migrate2To3WithData() {
         val context: Context = ApplicationProvider.getApplicationContext()
 
-        var db = helper.createDatabase(TEST_DB, 2).apply {
+        var db = helper.createDatabase(TESTDB, 2).apply {
             // You can't use DAO classes because they expect the latest schema.
             execSQL("INSERT INTO PlayerData VALUES (1, 'Player 1', 256, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10', 0)")
             execSQL("INSERT INTO PlayerData VALUES (2, 'Player 2', 512, '1, 2, 3, 8, 9, 10', 0)")
@@ -92,7 +92,7 @@ class MigrationTest {
             close()
         }
 
-        db = helper.runMigrationsAndValidate(TEST_DB, 3, true, Migration2To3(context = context))
+        db = helper.runMigrationsAndValidate(TESTDB, 3, true, Migration2To3(context = context))
         val playersCursor = db.query("SELECT * FROM PlayerData ORDER BY id ASC")
         val highScoreCursor = db.query("SELECT * FROM Highscores ORDER BY id ASC")
 
@@ -105,14 +105,14 @@ class MigrationTest {
     @Throws(IOException::class)
     fun migrate3To4WithoutData() {
         val context: Context = ApplicationProvider.getApplicationContext()
-        var db = helper.createDatabase(TEST_DB, 3).apply {
+        var db = helper.createDatabase(TESTDB, 3).apply {
             // You can't use DAO classes because they expect the latest schema.
             // Prepare for the next version.
             close()
         }
 
         db = helper.runMigrationsAndValidate(
-            TEST_DB, 4, true, Migration3To4(context = context)
+            TESTDB, 4, true, Migration3To4(context = context)
         )
     }
 
@@ -122,7 +122,7 @@ class MigrationTest {
         val context: Context = ApplicationProvider.getApplicationContext()
         val globalHighscores = GlobalDataDatabase.getInstance(context)
 
-        var db = helper.createDatabase(TEST_DB, 3).apply {
+        var db = helper.createDatabase(TESTDB, 3).apply {
             // You can't use DAO classes because they expect the latest schema.
             execSQL("INSERT INTO PlayerData (id, name, punkte, phasen, gameWon) VALUES (1, 'Player 1', 256, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10', 0)")
             execSQL("INSERT INTO PlayerData (id, name, punkte, phasen, gameWon) VALUES (2, 'Player 2', 512, '2, 3, 8, 9, 10', 0)")
@@ -146,7 +146,7 @@ class MigrationTest {
         }
 
         db = helper.runMigrationsAndValidate(
-            TEST_DB, 4, true, Migration3To4(context = context)
+            TESTDB, 4, true, Migration3To4(context = context)
         )
         val playersCursor = db.query("SELECT * FROM Player ORDER BY player_id ASC")
         val highScoreCursor = db.query("SELECT * FROM Highscore ORDER BY id ASC")
@@ -163,21 +163,21 @@ class MigrationTest {
     @Test
     @Throws(IOException::class)
     fun migrate4To5WithoutData() {
-        var db = helper.createDatabase(TEST_DB, 4).apply {
+        var db = helper.createDatabase(TESTDB, 4).apply {
             // You can't use DAO classes because they expect the latest schema.
             // Prepare for the next version.
             close()
         }
 
         db = helper.runMigrationsAndValidate(
-            TEST_DB, 5, true, Migration4To5
+            TESTDB, 5, true, Migration4To5
         )
     }
 
     @Test
     @Throws(IOException::class)
     fun migrate4To5WithData() {
-        var db = helper.createDatabase(TEST_DB, 4).apply {
+        var db = helper.createDatabase(TESTDB, 4).apply {
             execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 1', 1, 1737702738256, 1737902738256)")
             execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 2', 2, 1737702738257, 1737902738257)")
             execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 3', 13847, 1737702738258, 1737902738258)")
@@ -189,7 +189,7 @@ class MigrationTest {
         }
 
         db = helper.runMigrationsAndValidate(
-            TEST_DB, 5, true, Migration4To5
+            TESTDB, 5, true, Migration4To5
         )
 
         val gameCursor = db.query("SELECT * FROM Game ORDER BY game_id ASC")

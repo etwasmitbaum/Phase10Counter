@@ -63,12 +63,14 @@ fun GamePreviewComponent(
     // Open Dialog when needed
     when {
         openDeleteGameDialog.value -> {
-            DeleteGameDialog(showDialog = openDeleteGameDialog,
+            DeleteGameDialog(
+                showDialog = openDeleteGameDialog,
                 deleteGame = { deleteGame(game.gameId) })
         }
 
         openResetGameDialog.value -> {
-            ResetGameDialog(showDialog = openResetGameDialog,
+            ResetGameDialog(
+                showDialog = openResetGameDialog,
                 resetGame = { resetGame(game.gameId) })
         }
     }
@@ -87,11 +89,12 @@ fun GamePreviewComponent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(style = TextStyle(
-                textAlign = TextAlign.Center,
-                fontSize = 30.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
+            Text(
+                style = TextStyle(
+                    textAlign = TextAlign.Center,
+                    fontSize = 30.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
                 text = game.name,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -101,7 +104,10 @@ fun GamePreviewComponent(
                     .clickable { navigateToGame(NavigationDestination.GAMESCREEN + "/" + game.gameId) })
 
             val gameTypeString = stringResource(id = game.gameType.resourceId)
-            Text(text = "${stringResource(id = R.string.gameType)}: $gameTypeString", modifier = Modifier.padding(bottom = 4.dp))
+            Text(
+                text = "${stringResource(id = R.string.gameType)}: $gameTypeString",
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
 
             // Print player names in expanded version or small
             if (detailsExpanded) {
@@ -125,9 +131,10 @@ fun GamePreviewComponent(
             }
 
 
-            Text(text = if (detailsExpanded) stringResource(id = R.string.hideDetails) else stringResource(
-                id = R.string.showDetails
-            ),
+            Text(
+                text = if (detailsExpanded) stringResource(id = R.string.hideDetails) else stringResource(
+                    id = R.string.showDetails
+                ),
                 style = TextStyle(
                     textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.primary
                 ),
@@ -141,7 +148,9 @@ fun GamePreviewComponent(
             // When expanded show buttons, to delete, reset or start a game
             if (detailsExpanded) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().offset(y = (-4).dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset(y = (-4).dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -193,8 +202,9 @@ fun GamePreviewComponent(
 @Preview(showBackground = true, widthDp = 500)
 @Composable
 fun GamePreviewComponentPreview(expand: Boolean = false) {
-    GamePreviewComponent(game = GameModel(
-        1L, "Game 1", GameType.defaultGameType,0L, 0L,
+    GamePreviewComponent(
+        game = GameModel(
+        1L, "Game 1", GameType.defaultGameType, 0L, 0L,
         listOf(
             PlayerModel(
                 1L,
@@ -222,15 +232,21 @@ fun GamePreviewComponentPreview(expand: Boolean = false) {
                 showMarker = false
             )
         ),
-    ), navigateToEditGame = {}, navigateToGame = {}, deleteGame = {}, resetGame = {}, expand = expand
+    ),
+        navigateToEditGame = {},
+        navigateToGame = {},
+        deleteGame = {},
+        resetGame = {},
+        expand = expand
     )
 }
 
 @Preview(showBackground = true, heightDp = 300)
 @Composable
 fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
-    GamePreviewComponent(game = GameModel(
-        1L, "VeryLongGameNameINeedToTest", GameType.Flip ,0L, 0L,
+    GamePreviewComponent(
+        game = GameModel(
+        1L, "VeryLongGameNameINeedToTest", GameType.Flip, 0L, 0L,
         listOf(
             PlayerModel(
                 1L,
@@ -250,7 +266,12 @@ fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
                 showMarker = true
             )
         ),
-    ), navigateToEditGame = {}, navigateToGame = {}, deleteGame = {}, resetGame = {}, expand = expand
+    ),
+        navigateToEditGame = {},
+        navigateToGame = {},
+        deleteGame = {},
+        resetGame = {},
+        expand = expand
     )
 }
 

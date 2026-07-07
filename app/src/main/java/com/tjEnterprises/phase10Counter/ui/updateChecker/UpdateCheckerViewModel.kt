@@ -33,10 +33,10 @@ class UpdateCheckerViewModel @Inject constructor(
     )
 
     private val _versionNumber =
-        MutableStateFlow<Int>(UpdateCheckerCodes.NO_RESPONSE)
+        MutableStateFlow(UpdateCheckerCodes.NO_RESPONSE)
     val versionNumber: StateFlow<Int> = _versionNumber
 
-    fun loadVersionNumber(){
+    fun loadVersionNumber() {
         viewModelScope.launch {
             // Try 3 times, in case there is some unexpected trouble
             for (i in 0..2) {

@@ -103,7 +103,7 @@ internal fun Highscores(
             }
 
 
-            items(highscores, key = {highscore -> highscore.id}) { highscore ->
+            items(highscores, key = { highscore -> highscore.id }) { highscore ->
                 HighscoreComponent(highscore = highscore)
             }
 
@@ -160,7 +160,10 @@ fun HighscoresPreview() {
 @Composable
 fun HighscoresPreviewNoScores() {
     Highscores(
-        modifier = Modifier, dontChangeUiWideScreen = false, title = stringResource(id = R.string.highscores), highscores = listOf()
+        modifier = Modifier,
+        dontChangeUiWideScreen = false,
+        title = stringResource(id = R.string.highscores),
+        highscores = listOf()
     ) {
 
     }

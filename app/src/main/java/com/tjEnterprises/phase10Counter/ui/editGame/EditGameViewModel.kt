@@ -24,17 +24,19 @@ import javax.inject.Inject
 class EditGameViewModel @Inject constructor(
     private val databaseRepository: DatabaseRepository,
     private val settingsRepository: SettingsRepository
-): ViewModel() {
+) : ViewModel() {
     private val _defaultDontChangeUiWideScreen = SettingsModel().dontChangeUiOnWideScreen
-    val dontChangeUiWideScreen: StateFlow<Boolean> = settingsRepository.settingsModelFlow.map { settings ->
-        settings.dontChangeUiOnWideScreen
-    }.catch { _defaultDontChangeUiWideScreen }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = _defaultDontChangeUiWideScreen
-    )
+    val dontChangeUiWideScreen: StateFlow<Boolean> =
+        settingsRepository.settingsModelFlow.map { settings ->
+            settings.dontChangeUiOnWideScreen
+        }.catch { _defaultDontChangeUiWideScreen }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = _defaultDontChangeUiWideScreen
+        )
 
-    private val _editGameUiState = MutableStateFlow<EditGameUiState>(EditGameUiState.EditGameLoading)
+    private val _editGameUiState =
+        MutableStateFlow<EditGameUiState>(EditGameUiState.EditGameLoading)
     val editGameUiState: StateFlow<EditGameUiState> = _editGameUiState
 
     fun setGameFromId(gameId: Long) {
@@ -47,7 +49,11 @@ class EditGameViewModel @Inject constructor(
 
     fun addPointHistoryEntry(point: Long, gameId: Long, playerId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            databaseRepository.insertPointHistory(point = point, gameId = gameId, playerId = playerId)
+            databaseRepository.insertPointHistory(
+                point = point,
+                gameId = gameId,
+                playerId = playerId
+            )
         }
     }
 

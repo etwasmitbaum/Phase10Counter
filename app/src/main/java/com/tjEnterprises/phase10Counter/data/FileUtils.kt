@@ -37,7 +37,8 @@ class FileUtils {
                     // display progress
                     bytesReadTotal += bytesRead
                     if (sourceFileSize != null) {
-                        progress.floatValue = ((bytesReadTotal.toFloat() / sourceFileSize.toFloat()) * 100)
+                        progress.floatValue =
+                            ((bytesReadTotal.toFloat() / sourceFileSize.toFloat()) * 100)
                     } else {
                         return false
                     }

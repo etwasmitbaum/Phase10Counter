@@ -17,7 +17,7 @@ class UpdateCheckerModule {
 
     @Provides
     @Singleton
-    fun provideLatestReleaseService() : GetLatestReleaseService {
+    fun provideLatestReleaseService(): GetLatestReleaseService {
         // Only for debugging retrofit
         /*
         val loggingInterceptor = HttpLoggingInterceptor().apply {

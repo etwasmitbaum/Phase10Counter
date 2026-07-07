@@ -180,6 +180,8 @@ fun EditDeletePointHistoryDialog(
 ) {
 
     val context = LocalContext.current
+    val onlyNumbersAreAllows = stringResource(id = R.string.onlyNumbersAreAllows)
+    val deleted = stringResource(id = R.string.deleted)
 
     var text by rememberSaveable {
         mutableStateOf(pointHistoryItem.point.toString())
@@ -210,7 +212,7 @@ fun EditDeletePointHistoryDialog(
             showDialog.value = false
         } else {
             Toast.makeText(
-                context, context.getString(R.string.onlyNumbersAreAllows), Toast.LENGTH_SHORT
+                context, onlyNumbersAreAllows, Toast.LENGTH_SHORT
             ).show()
         }
 
@@ -225,7 +227,7 @@ fun EditDeletePointHistoryDialog(
                 showDialog.value = false
             } else {
                 Toast.makeText(
-                    context, context.getString(R.string.onlyNumbersAreAllows), Toast.LENGTH_SHORT
+                    context, onlyNumbersAreAllows, Toast.LENGTH_SHORT
                 ).show()
             }
         }) {
@@ -238,7 +240,7 @@ fun EditDeletePointHistoryDialog(
             showDialog.value = false
             Toast.makeText(
                 context,
-                context.getString(R.string.deleted) + ": " + pointHistoryItem.point.toString(),
+                deleted + ": " + pointHistoryItem.point.toString(),
                 Toast.LENGTH_SHORT
             ).show()
         }) {

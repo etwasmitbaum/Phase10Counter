@@ -7,10 +7,10 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 fun CopyDialog(progress: Float, showDialog: MutableState<Boolean>) {
-    if (progress >= 1f){
+    if (progress >= 1f) {
         showDialog.value = false
     }
-    Dialog(onDismissRequest = {  }) {
+    Dialog(onDismissRequest = { }) {
         LinearProgressIndicator(
             progress = { progress },
         )

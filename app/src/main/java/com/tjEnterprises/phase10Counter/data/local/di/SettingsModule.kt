@@ -27,8 +27,9 @@ class SettingsModule {
     @Singleton
     @Provides
     fun provideSettingsDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create(corruptionHandler = ReplaceFileCorruptionHandler(
-            produceNewData = { emptyPreferences() }),
+        return PreferenceDataStoreFactory.create(
+            corruptionHandler = ReplaceFileCorruptionHandler(
+                produceNewData = { emptyPreferences() }),
             migrations = listOf(SharedPreferencesMigration(appContext, settingsName)),
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             produceFile = { appContext.preferencesDataStoreFile(settingsName) })

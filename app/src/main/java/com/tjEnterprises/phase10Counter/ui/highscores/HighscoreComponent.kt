@@ -10,17 +10,17 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tjEnterprises.phase10Counter.data.local.database.Highscore
 import java.text.SimpleDateFormat
-import java.util.Locale
 
 @Composable
-fun HighscoreComponent(modifier: Modifier = Modifier, highscore: Highscore){
+fun HighscoreComponent(modifier: Modifier = Modifier, highscore: Highscore) {
 
-    val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+    val sdf = SimpleDateFormat("dd MMM yyyy", LocalLocale.current.platformLocale)
     val topBotPadding = 4.dp
 
     HorizontalDivider()

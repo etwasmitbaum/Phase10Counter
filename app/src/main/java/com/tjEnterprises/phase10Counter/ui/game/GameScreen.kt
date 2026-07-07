@@ -32,7 +32,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -77,7 +77,12 @@ fun GameScreen(
                 dontChangeUiWideScreen = dontChangeUiWideScreen,
                 deletePointHistoryItem = { viewModel.deletePointHistoryEntry(it) },
                 updatePointHistoryItem = { viewModel.updatePointHistoryEntry(it) },
-                updateShowPlayerMarker = { playerId, showMarker -> viewModel.updateShowPlayerMarker(playerId, showMarker) },
+                updateShowPlayerMarker = { playerId, showMarker ->
+                    viewModel.updateShowPlayerMarker(
+                        playerId,
+                        showMarker
+                    )
+                },
                 modifier = modifier
             )
         }
@@ -116,7 +121,8 @@ internal fun GameScreen(
 
     val gameTypeString = stringResource(id = gameType.resourceId)
 
-    DefaultScaffoldNavigation(title = "$gameTitle ($gameTypeString)",
+    DefaultScaffoldNavigation(
+        title = "$gameTitle ($gameTypeString)",
         openDrawer = openDrawer,
         dontChangeUiWideScreen = dontChangeUiWideScreen,
         content = { scaffoldModifier ->
@@ -160,7 +166,7 @@ internal fun GameScreen(
                     Spacer(
                         modifier = Modifier
                             .height(
-                                LocalConfiguration.current.screenHeightDp.dp.div(
+                                LocalWindowInfo.current.containerSize.height.dp.div(
                                     3
                                 )
                             )
@@ -222,6 +228,6 @@ fun GameScreenPreview() {
         savePhasesOfPlayer = { _, _, _ -> },
         dontChangeUiWideScreen = false, deletePointHistoryItem = {},
         updatePointHistoryItem = {},
-        updateShowPlayerMarker = {_, _ ->}
+        updateShowPlayerMarker = { _, _ -> }
     )
 }

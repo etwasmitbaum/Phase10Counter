@@ -23,7 +23,7 @@ import androidx.room.RoomDatabase
     entities = [Game::class, Player::class, PointHistory::class, Highscore::class, Phases::class],
     version = 5,
     exportSchema = true
-    )
+)
 
 abstract class AppDatabase : RoomDatabase() {
     abstract fun GameDao(): GameDao
@@ -33,7 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun HighscoreDao(): HighscoreDao
 
     companion object {
-        fun getName(): String{
+        fun getName(): String {
             return "Database"
         }
     }

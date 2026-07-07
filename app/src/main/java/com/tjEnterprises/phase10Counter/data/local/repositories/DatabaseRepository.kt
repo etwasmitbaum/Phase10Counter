@@ -116,7 +116,16 @@ interface DatabaseRepository {
                         )
                     )
                 }
-                gameModels.add(GameModel(gameId, gameName, gameGameType, gameCreated, gameModified, playerModels))
+                gameModels.add(
+                    GameModel(
+                        gameId,
+                        gameName,
+                        gameGameType,
+                        gameCreated,
+                        gameModified,
+                        playerModels
+                    )
+                )
             }
             gameModels
         }
@@ -176,7 +185,12 @@ interface DatabaseRepository {
                 val pointHistoryPlayer: MutableList<PointHistoryItem> = mutableListOf()
                 var sum = 0L
                 pointHistory.forEach { pointHistoryEntry ->
-                    pointHistoryPlayer.add(PointHistoryItem(pointHistoryEntry.point, pointHistoryEntry.pointId))
+                    pointHistoryPlayer.add(
+                        PointHistoryItem(
+                            pointHistoryEntry.point,
+                            pointHistoryEntry.pointId
+                        )
+                    )
                     sum += pointHistoryEntry.point
                 }
 
@@ -248,28 +262,28 @@ interface DatabaseRepository {
         }
 
         override fun getGameFlowFromId(gameId: Long): Flow<GameModel> {
-                val gameModel: Flow<GameModel> = combine(
-                    gameDao.getGameFromIdAsFlow(gameId),
-                    getPlayersFlowFromGame(gameId)
-                ) { game, playersFromGame ->
-                    // if you reset the game and then quickly delete it,
-                    // a nullPointerException is thrown
-                    try {
-                        val gameModels = GameModel(
-                            gameId = gameId,
-                            name = game.name,
-                            gameType = GameType.getGameTypeByKey(game.gameType),
-                            created = game.timestampCreated,
-                            modified = game.timestampModified,
-                            players = playersFromGame
-                        )
-                        gameModels
-                    } catch (npe: NullPointerException){
-                        npe.printStackTrace()
-                        GameModel(-1L, "Error Game", GameType.defaultGameType, 0L, 0L, emptyList())
-                    }
+            val gameModel: Flow<GameModel> = combine(
+                gameDao.getGameFromIdAsFlow(gameId),
+                getPlayersFlowFromGame(gameId)
+            ) { game, playersFromGame ->
+                // if you reset the game and then quickly delete it,
+                // a nullPointerException is thrown
+                try {
+                    val gameModels = GameModel(
+                        gameId = gameId,
+                        name = game.name,
+                        gameType = GameType.getGameTypeByKey(game.gameType),
+                        created = game.timestampCreated,
+                        modified = game.timestampModified,
+                        players = playersFromGame
+                    )
+                    gameModels
+                } catch (npe: NullPointerException) {
+                    npe.printStackTrace()
+                    GameModel(-1L, "Error Game", GameType.defaultGameType, 0L, 0L, emptyList())
                 }
-                return gameModel
+            }
+            return gameModel
         }
 
         override suspend fun getGameFromId(gameId: Long): GameModel {
@@ -318,7 +332,12 @@ interface DatabaseRepository {
             val pointHistory = pointHistoryDao.getPointHistoryOfPlayer(playerId)
             val pointHistoryItemList = mutableListOf<PointHistoryItem>()
             pointHistory.forEach { entry ->
-                pointHistoryItemList.add(PointHistoryItem(point = entry.point, pointId = entry.pointId))
+                pointHistoryItemList.add(
+                    PointHistoryItem(
+                        point = entry.point,
+                        pointId = entry.pointId
+                    )
+                )
             }
             return pointHistoryItemList
         }
@@ -350,7 +369,13 @@ interface DatabaseRepository {
 
         override suspend fun insertHighscore(playerName: String, point: Long, timeStamp: Long) {
             if (timeStamp != -1L) {
-                highscoreDao.insertHighscore(Highscore(playerName = playerName, points = point, timestamp = timeStamp))
+                highscoreDao.insertHighscore(
+                    Highscore(
+                        playerName = playerName,
+                        points = point,
+                        timestamp = timeStamp
+                    )
+                )
             } else {
                 highscoreDao.insertHighscore(Highscore(playerName = playerName, points = point))
             }

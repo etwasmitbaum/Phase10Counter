@@ -34,7 +34,7 @@ import dagger.hilt.testing.TestInstallIn
 interface FakeDataModule {
 
     @Binds
-    abstract fun bindRepository(
+    fun bindRepository(
         fakeRepository: FakeDatabaseRepository
     ): DatabaseRepository
 
@@ -42,6 +42,6 @@ interface FakeDataModule {
     fun bindsSettingsRepository(settingsRepository: SettingsRepository.SettingsRepositoryImpl): SettingsRepository
 
     @Binds
-    fun bindsUpdateCheckerRepository(updateCheckerRepository: UpdateCheckerRepository.UpdateCheckerRepositoryImpl) : UpdateCheckerRepository
+    fun bindsUpdateCheckerRepository(updateCheckerRepository: UpdateCheckerRepository.UpdateCheckerRepositoryImpl): UpdateCheckerRepository
 
 }

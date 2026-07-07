@@ -90,7 +90,8 @@ internal fun AppBaseScreen(
             })
 
             // Select Game
-            NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.title_selectGame)) },
+            NavigationDrawerItem(
+                label = { Text(text = stringResource(id = R.string.title_selectGame)) },
                 selected = currentRoute == NavigationDestination.SELECT_GAME,
                 onClick = {
                     navigationActions.navigateToGameSelect()
@@ -99,7 +100,8 @@ internal fun AppBaseScreen(
             HorizontalDivider()
 
             // Highscores
-            NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.highscores)) },
+            NavigationDrawerItem(
+                label = { Text(text = stringResource(id = R.string.highscores)) },
                 selected = currentRoute == NavigationDestination.HIGHSCORES,
                 onClick = {
                     navigationActions.navigateToHighscores()
@@ -112,7 +114,8 @@ internal fun AppBaseScreen(
             HorizontalDivider()
 
             // Settings
-            NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.settings)) },
+            NavigationDrawerItem(
+                label = { Text(text = stringResource(id = R.string.settings)) },
                 selected = currentRoute == NavigationDestination.SETTINGS,
                 icon = {
                     Icon(
@@ -129,7 +132,8 @@ internal fun AppBaseScreen(
             HorizontalDivider()
 
             // About Screen
-            NavigationDrawerItem(label = { Text(text = stringResource(id = R.string.about)) },
+            NavigationDrawerItem(
+                label = { Text(text = stringResource(id = R.string.about)) },
                 selected = currentRoute == NavigationDestination.ABOUT_SCREEN,
                 icon = {
                     Icon(

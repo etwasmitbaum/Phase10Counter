@@ -17,14 +17,14 @@ class NavigationActions(navController: NavHostController) {
         }
     }
 
-    val navigateToGame: (String) -> Unit = {route ->
+    val navigateToGame: (String) -> Unit = { route ->
         navController.navigate(route) {
             launchSingleTop = true
             restoreState = true
         }
     }
 
-    val navigateToGameEditScreen: (String) -> Unit = {route ->
+    val navigateToGameEditScreen: (String) -> Unit = { route ->
         navController.navigate(route) {
             launchSingleTop = true
             restoreState = true

@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                 // need to determine the theme using a ViewModel, so it is not possible here
                 enableEdgeToEdge(
                     statusBarStyle = if (darkTheme) SystemBarStyle.dark(0)
-                        else SystemBarStyle.light(0, 0)
+                    else SystemBarStyle.light(0, 0)
                 )
             }) {
                 Surface(

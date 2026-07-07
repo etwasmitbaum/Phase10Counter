@@ -12,7 +12,8 @@ import com.tjEnterprises.phase10Counter.R
 @Composable
 fun AboutLibrariesComponent(navigateOneBack: () -> Unit) {
     DefaultScaffoldBack(
-        title = stringResource(id = R.string.openSourceLicenseTitle), navigateOneBack = navigateOneBack
+        title = stringResource(id = R.string.openSourceLicenseTitle),
+        navigateOneBack = navigateOneBack
     ) { scaffoldModifier ->
 
         val libraries by produceLibraries(R.raw.aboutlibraries)

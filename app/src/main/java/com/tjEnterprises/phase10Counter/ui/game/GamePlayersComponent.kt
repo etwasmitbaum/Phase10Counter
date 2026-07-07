@@ -47,7 +47,7 @@ fun OnePlayerView(
     updateShowPlayerMarker: (playerId: Long, showPlayerMarker: Boolean) -> Unit,
     scrollToNextPosition: () -> Unit
 ) {
-    var text by rememberSaveable() {
+    var text by rememberSaveable {
         mutableStateOf("")
     }
 
@@ -70,7 +70,8 @@ fun OnePlayerView(
         horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier
     ) {
 
-        Row(verticalAlignment = Alignment.CenterVertically,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(bottom = 8.dp)
                 .clickable { updateShowPlayerMarker(player.playerId, !player.showMarker) }) {
@@ -96,7 +97,8 @@ fun OnePlayerView(
             Button(onClick = { openDialog.value = true }, modifier = Modifier.padding(end = 8.dp)) {
                 Text(text = stringResource(id = R.string.phases))
             }
-            TextField(value = text,
+            TextField(
+                value = text,
                 onValueChange = { text = it },
                 label = { Text(stringResource(id = R.string.points)) },
                 maxLines = 1,
@@ -151,15 +153,16 @@ fun OnePlayerView(
 @Preview(showBackground = true, widthDp = 350, locale = "pl")
 @Composable
 fun OnePlayerPreview() {
-    OnePlayerView(player = PlayerModel(
-        1L,
-        1L,
-        "Player1",
-        listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
-        2560L,
-        listOf(true, true, true, true, true, true, true, true, true, true),
-        showMarker = false
-    ),
+    OnePlayerView(
+        player = PlayerModel(
+            1L,
+            1L,
+            "Player1",
+            listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
+            2560L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = false
+        ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
@@ -173,15 +176,16 @@ fun OnePlayerPreview() {
 @Preview(showBackground = true, widthDp = 350)
 @Composable
 fun OnePlayerWithMarkerPreview() {
-    OnePlayerView(player = PlayerModel(
-        1L,
-        1L,
-        "Player1",
-        listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
-        2560L,
-        listOf(true, true, true, true, true, true, true, true, true, true),
-        showMarker = true
-    ),
+    OnePlayerView(
+        player = PlayerModel(
+            1L,
+            1L,
+            "Player1",
+            listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
+            2560L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = true
+        ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
@@ -194,15 +198,16 @@ fun OnePlayerWithMarkerPreview() {
 @Preview(showBackground = true)
 @Composable
 fun OnePlayerPreview2() {
-    OnePlayerView(player = PlayerModel(
-        1L,
-        1L,
-        "Player1",
-        listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
-        2560L,
-        listOf(false, false, false, false, false, false, false, false, false, false),
-        showMarker = false
-    ),
+    OnePlayerView(
+        player = PlayerModel(
+            1L,
+            1L,
+            "Player1",
+            listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
+            2560L,
+            listOf(false, false, false, false, false, false, false, false, false, false),
+            showMarker = false
+        ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },

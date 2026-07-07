@@ -33,7 +33,7 @@
     <string name="gameName">Game name</string>
     <string name="playerName">Player name</string>
     <string name="deletePlayer">Delete Player</string>
-    <string name="closeNavigationDrawer">Close Navigationdrawer</string>
+    <string name="closeNavigationDrawer">Close Navigation drawer</string>
     <string name="title_selectGame">Select Game</string>
     <string name="menu">Menu</string>
     <string name="showPointHistory">Show point history</string>

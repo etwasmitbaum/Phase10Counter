@@ -30,7 +30,10 @@ import kotlinx.coroutines.flow.Flow
 @Entity
 data class Game(
     @ColumnInfo("name") val name: String,
-    @ColumnInfo("gameType", defaultValue = GameType.DEFAULT_GAMETYPE_KEY) val gameType: String = GameType.DEFAULT_GAMETYPE_KEY
+    @ColumnInfo(
+        "gameType",
+        defaultValue = GameType.DEFAULT_GAMETYPE_KEY
+    ) val gameType: String = GameType.DEFAULT_GAMETYPE_KEY
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("game_id")

@@ -101,7 +101,11 @@ fun DefaultScaffoldBackPreview() {
 @Preview(showBackground = true, widthDp = 600, heightDp = 250)
 @Composable
 fun DefaultScaffoldBackLongTitlePreview() {
-    DefaultScaffoldBack(title = "Title which is very long, so long that it probably wont be displayed", navigateOneBack = {}, dontChangeUiWideScreen = false) {
+    DefaultScaffoldBack(
+        title = "Title which is very long, so long that it probably wont be displayed",
+        navigateOneBack = {},
+        dontChangeUiWideScreen = false
+    ) {
         Text(text = "Content", fontSize = 24.sp, modifier = it)
     }
 }

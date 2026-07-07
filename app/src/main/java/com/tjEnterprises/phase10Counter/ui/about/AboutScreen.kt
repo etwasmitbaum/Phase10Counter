@@ -27,7 +27,10 @@ import com.tjEnterprises.phase10Counter.ui.theme.P10SettingsColor
 
 @Composable
 fun AboutScreen(
-    openDrawer: () -> Unit, navigateToAboutLibraries: () -> Unit, navigateToAppLicence: () -> Unit, viewModel: AboutScreenViewModel = hiltViewModel()
+    openDrawer: () -> Unit,
+    navigateToAboutLibraries: () -> Unit,
+    navigateToAppLicence: () -> Unit,
+    viewModel: AboutScreenViewModel = hiltViewModel()
 ) {
     val dontChangeUiWideScreen by viewModel.dontChangeUiWideScreen.collectAsState()
 
@@ -59,7 +62,8 @@ fun AboutScreen(
         Column(modifier = scaffoldModifier.verticalScroll(scrollState)) {
 
             // Open Link to GitHub
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.githubRepository)) },
+            SettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.githubRepository)) },
                 subtitle = { Text(text = "https://github.com/etwasmitbaum/Phase10Counter") },
                 action = {
                     IconButton(onClick = { uriHandler.openUri("https://github.com/etwasmitbaum/Phase10Counter") }) {
@@ -78,13 +82,15 @@ fun AboutScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                }, colors = P10SettingsColor.colors()) {
+                }, colors = P10SettingsColor.colors()
+            ) {
                 uriHandler.openUri("https://github.com/etwasmitbaum/Phase10Counter")
             }
             HorizontalDivider()
 
             // App Licence
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.app_license)) },
+            SettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.app_license)) },
                 subtitle = { Text(text = stringResource(id = R.string.GPLv3License)) },
                 action = {
                     IconButton(onClick = { navigateToAppLicence() }) {
@@ -103,13 +109,15 @@ fun AboutScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                }, colors = P10SettingsColor.colors()) {
+                }, colors = P10SettingsColor.colors()
+            ) {
                 navigateToAppLicence()
             }
             HorizontalDivider()
 
             // Show all opensource licences
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.allOpenSourceLicenses)) },
+            SettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.allOpenSourceLicenses)) },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Clear,
@@ -126,13 +134,15 @@ fun AboutScreen(
                         )
                     }
 
-                }, colors = P10SettingsColor.colors()) {
+                }, colors = P10SettingsColor.colors()
+            ) {
                 navigateToAboutLibraries()
             }
             HorizontalDivider()
 
             // App Version
-            SettingsMenuLink(title = { Text(text = stringResource(id = R.string.version)) },
+            SettingsMenuLink(
+                title = { Text(text = stringResource(id = R.string.version)) },
                 subtitle = { Text(text = BuildConfig.VERSION_NAME) },
                 icon = {
                     Icon(
@@ -140,7 +150,8 @@ fun AboutScreen(
                         contentDescription = null,
                         modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
                     )
-                }, colors = P10SettingsColor.colors()) {}
+                }, colors = P10SettingsColor.colors()
+            ) {}
             HorizontalDivider()
         }
     }
@@ -149,5 +160,10 @@ fun AboutScreen(
 @Preview(showBackground = true)
 @Composable
 fun AboutScreenPreview() {
-    AboutScreen(openDrawer = {}, navigateToAboutLibraries = {}, navigateToAppLicence = {}, dontChangeUiWideScreen = false)
+    AboutScreen(
+        openDrawer = {},
+        navigateToAboutLibraries = {},
+        navigateToAppLicence = {},
+        dontChangeUiWideScreen = false
+    )
 }

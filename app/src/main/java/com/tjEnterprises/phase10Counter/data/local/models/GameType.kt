@@ -16,7 +16,7 @@ object GameType {
     val availableGameTypes = arrayOf(Standard, Flip, Masters)
 
     // This is a custom saver, to use rememberSaveable() with this type this data type
-    val GameTypeSaver = Saver<Type, String>(save = { it.key}, restore = {
+    val GameTypeSaver = Saver<Type, String>(save = { it.key }, restore = {
         when (it) {
             Standard.key -> Standard
             Flip.key -> Flip
@@ -26,7 +26,7 @@ object GameType {
         }
     })
 
-    fun getGameTypeByKey(key: String): GameType.Type {
+    fun getGameTypeByKey(key: String): Type {
         val type = when (key) {
             Standard.key -> Standard
             Flip.key -> Flip

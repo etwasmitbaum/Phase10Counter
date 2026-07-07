@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.tjEnterprises.phase10Counter.R
 
 @Composable
-fun DeleteGameDialog (showDialog: MutableState<Boolean>, deleteGame: () -> Unit) {
+fun DeleteGameDialog(showDialog: MutableState<Boolean>, deleteGame: () -> Unit) {
     AlertDialog(
         icon = {
             Icon(Icons.Default.Info, contentDescription = null)
@@ -53,7 +53,7 @@ fun DeleteGameDialog (showDialog: MutableState<Boolean>, deleteGame: () -> Unit)
 }
 
 @Composable
-fun ResetGameDialog (showDialog: MutableState<Boolean>, resetGame: () -> Unit) {
+fun ResetGameDialog(showDialog: MutableState<Boolean>, resetGame: () -> Unit) {
     AlertDialog(
         icon = {
             Icon(Icons.Default.Info, contentDescription = null)

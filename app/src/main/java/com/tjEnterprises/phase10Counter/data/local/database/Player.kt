@@ -2,7 +2,6 @@ package com.tjEnterprises.phase10Counter.data.local.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -26,7 +25,7 @@ data class Player(
     @ColumnInfo("name") val name: String,
     @ColumnInfo("show_marker", defaultValue = "0") val showMarker: Boolean = false,
     @PrimaryKey(autoGenerate = true) @ColumnInfo("player_id") val playerId: Long = 0
-) {}
+)
 
 @Dao
 interface PlayerDao {

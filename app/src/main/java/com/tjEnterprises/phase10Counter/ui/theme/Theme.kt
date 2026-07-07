@@ -108,7 +108,9 @@ private val darkScheme = darkColorScheme(
 
 @Composable
 fun Phase10CounterTheme(
-    viewModel: ThemeViewModel = hiltViewModel(), ligma: (Boolean) -> Unit, content: @Composable () -> Unit
+    viewModel: ThemeViewModel = hiltViewModel(),
+    ligma: (Boolean) -> Unit,
+    content: @Composable () -> Unit
 ) {
 
     val settingsUiState by viewModel.settingsUiState.collectAsState()
@@ -116,7 +118,8 @@ fun Phase10CounterTheme(
     when (settingsUiState) {
         is SettingsUiState.SettingsSuccess -> {
             val settings = (settingsUiState as SettingsUiState.SettingsSuccess)
-            val darkTheme = (isSystemInDarkTheme() && settings.settings.useSystemTheme) || settings.settings.useDarkTheme
+            val darkTheme =
+                (isSystemInDarkTheme() && settings.settings.useSystemTheme) || settings.settings.useDarkTheme
             ligma(darkTheme)
             AppTheme(
                 dynamicColor = settings.settings.useDynamicColors,
@@ -143,6 +146,7 @@ internal fun AppTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
+
         darkTheme -> darkScheme
         else -> lightScheme
     }

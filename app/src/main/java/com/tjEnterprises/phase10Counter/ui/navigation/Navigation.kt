@@ -62,21 +62,24 @@ fun MainNavigation(
             SettingsScreen(openDrawer = openDrawer)
         }
 
-        composable(route = NavigationDestination.ABOUT_LIBRARIES){
-            AboutLibrariesComponent (navigateOneBack = navigationActions.navigateOneBack)
+        composable(route = NavigationDestination.ABOUT_LIBRARIES) {
+            AboutLibrariesComponent(navigateOneBack = navigationActions.navigateOneBack)
         }
 
-        composable(route = NavigationDestination.HIGHSCORES){
-            Highscores (openDrawer = openDrawer)
+        composable(route = NavigationDestination.HIGHSCORES) {
+            Highscores(openDrawer = openDrawer)
         }
 
-        composable(route = NavigationDestination.ABOUT_SCREEN){
-            AboutScreen (openDrawer = openDrawer, navigateToAboutLibraries = navigationActions.navigateToAboutLibraries,
-                navigateToAppLicence = navigationActions.navigateToAppLicence)
+        composable(route = NavigationDestination.ABOUT_SCREEN) {
+            AboutScreen(
+                openDrawer = openDrawer,
+                navigateToAboutLibraries = navigationActions.navigateToAboutLibraries,
+                navigateToAppLicence = navigationActions.navigateToAppLicence
+            )
         }
 
-        composable(route = NavigationDestination.APP_LICENCE){
-            AppLicenceScreen (navigateOneBack = navigationActions.navigateOneBack)
+        composable(route = NavigationDestination.APP_LICENCE) {
+            AppLicenceScreen(navigateOneBack = navigationActions.navigateOneBack)
         }
     }
 }
@@ -89,7 +92,11 @@ fun NavGraphBuilder.selectGameGraph(openDrawer: () -> Unit, navigationActions: N
     ) {
 
         composable(NavigationDestination.SELECT_GAME) {
-            SelectGame(openDrawer = openDrawer, navigateToEditGame = navigationActions.navigateToGameEditScreen, navigateToGame = navigationActions.navigateToGame)
+            SelectGame(
+                openDrawer = openDrawer,
+                navigateToEditGame = navigationActions.navigateToGameEditScreen,
+                navigateToGame = navigationActions.navigateToGame
+            )
         }
 
         composable(
@@ -111,7 +118,7 @@ fun NavGraphBuilder.selectGameGraph(openDrawer: () -> Unit, navigationActions: N
             route = "${NavigationDestination.EDIT_GAME}/{gameId}",
             arguments = listOf(navArgument("gameId") { type = NavType.LongType })
         ) { backStackEntry ->
-            var gameId =backStackEntry.arguments?.getLong("gameId") ?: 1
+            var gameId = backStackEntry.arguments?.getLong("gameId") ?: 1
             // getLong returns 0L if key is not mapped
             if (gameId == 0L) {
                 gameId = 1L

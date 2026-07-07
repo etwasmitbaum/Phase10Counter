@@ -50,7 +50,7 @@ fun EditPlayerComponent(
     updatePlayer: (Player) -> Unit,
     deletePlayer: (playerId: Long) -> Unit,
     scrollToNextPosition: () -> Unit
-    ) {
+) {
     var pointsText by rememberSaveable {
         mutableStateOf("")
     }
@@ -111,10 +111,14 @@ fun EditPlayerComponent(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Button(onClick = { openEditPhaseDialog.value = true }, modifier = Modifier.padding(end = 8.dp)) {
+                Button(
+                    onClick = { openEditPhaseDialog.value = true },
+                    modifier = Modifier.padding(end = 8.dp)
+                ) {
                     Text(text = stringResource(id = R.string.phases))
                 }
-                TextField(value = pointsText,
+                TextField(
+                    value = pointsText,
                     onValueChange = { pointsText = it },
                     label = { Text(stringResource(id = R.string.points)) },
                     maxLines = 1,
@@ -126,7 +130,11 @@ fun EditPlayerComponent(
                         .widthIn(1.dp, 128.dp)
                         .onFocusChanged {
                             if (!it.isFocused && pointsText.isNotBlank() && pointsText.isDigitsOnly()) {
-                                addPointHistoryEntry(pointsText.toLong(), player.gameId, player.playerId)
+                                addPointHistoryEntry(
+                                    pointsText.toLong(),
+                                    player.gameId,
+                                    player.playerId
+                                )
                                 pointsText = ""
                             }
                             if (it.isFocused) {

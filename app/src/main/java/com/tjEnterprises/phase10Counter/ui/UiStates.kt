@@ -7,13 +7,14 @@ import com.tjEnterprises.phase10Counter.data.local.models.SettingsModel
 sealed interface SelectGameUiState {
     object SelectGameLoading : SelectGameUiState
     data class SelectGameError(val throwable: Throwable) : SelectGameUiState
-    data class SelectGameSuccess(val games: List<GameModel>, val settings: SettingsModel) : SelectGameUiState
+    data class SelectGameSuccess(val games: List<GameModel>, val settings: SettingsModel) :
+        SelectGameUiState
 }
 
 sealed interface EditGameUiState {
-    object EditGameLoading: EditGameUiState
-    data class EditGameError(val throwable: Throwable): EditGameUiState
-    data class EditGameSuccess(val game: GameModel): EditGameUiState
+    object EditGameLoading : EditGameUiState
+    data class EditGameError(val throwable: Throwable) : EditGameUiState
+    data class EditGameSuccess(val game: GameModel) : EditGameUiState
 }
 
 sealed interface GameUiState {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array
-        name="phases">
+    <string-array name="phases">
         <item>@string/phase1</item>
         <item>@string/phase2</item>
         <item>@string/phase3</item>
@@ -13,8 +12,7 @@
         <item>@string/phase9</item>
         <item>@string/phase10</item>
     </string-array>
-    <string-array
-        name="phasesFlip">
+    <string-array name="phasesFlip">
         <item>@string/flip_phase1</item>
         <item>@string/flip_phase2</item>
         <item>@string/flip_phase3</item>
@@ -26,8 +24,7 @@
         <item>@string/flip_phase9</item>
         <item>@string/flip_phase10</item>
     </string-array>
-    <string-array
-        name="phasesMasters">
+    <string-array name="phasesMasters">
         <item>@string/masters_phase1</item>
         <item>@string/masters_phase2</item>
         <item>@string/masters_phase3</item>

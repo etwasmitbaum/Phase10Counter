@@ -25,31 +25,32 @@ class AddGameViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _defaultDontChangeUiWideScreen = SettingsModel().dontChangeUiOnWideScreen
-    val dontChangeUiWideScreen: StateFlow<Boolean> = settingsRepository.settingsModelFlow.map { settings ->
-        settings.dontChangeUiOnWideScreen
-    }.catch { _defaultDontChangeUiWideScreen }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = _defaultDontChangeUiWideScreen
-    )
+    val dontChangeUiWideScreen: StateFlow<Boolean> =
+        settingsRepository.settingsModelFlow.map { settings ->
+            settings.dontChangeUiOnWideScreen
+        }.catch { _defaultDontChangeUiWideScreen }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = _defaultDontChangeUiWideScreen
+        )
 
     private val _newCreatedGameId = MutableStateFlow(-1L)
     val newCreatedGameId: StateFlow<Long> = _newCreatedGameId
 
     val tempPlayerNames = mutableStateListOf<String>()
 
-    fun removeTempPlayerName(idx: Int){
+    fun removeTempPlayerName(idx: Int) {
         tempPlayerNames.removeAt(idx)
     }
 
-    fun resetNewCreatedGameID (){
+    fun resetNewCreatedGameID() {
         _newCreatedGameId.value = -1
     }
 
-    fun addGame(gameName: String, gameType: GameType.Type, playerNames: List<String>){
-        viewModelScope.launch (Dispatchers.IO) {
+    fun addGame(gameName: String, gameType: GameType.Type, playerNames: List<String>) {
+        viewModelScope.launch(Dispatchers.IO) {
             val newGameId = databaseRepository.insertGame(gameName, gameType)
-            for(i in playerNames.indices.reversed()){
+            for (i in playerNames.indices.reversed()) {
                 databaseRepository.insertPlayer(playerName = playerNames[i], gameId = newGameId)
             }
             _newCreatedGameId.value = newGameId

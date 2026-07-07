@@ -12,9 +12,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -180,11 +180,14 @@ internal fun AddGameScreenPortrait(
 ) {
 
     val context = LocalContext.current
+    val atLeast2PlayersRequired = stringResource(id = R.string.atLeast2PlayersRequired)
+    val gameMustHaveAName = stringResource(id = R.string.gameMustHaveAName)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()
     ) {
-        TextField(value = textGame,
+        TextField(
+            value = textGame,
             onValueChange = { onTextGameChange(it) },
             label = { Text(stringResource(id = R.string.gameName)) },
             maxLines = 1,
@@ -205,7 +208,8 @@ internal fun AddGameScreenPortrait(
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        TextField(value = textPlayer,
+        TextField(
+            value = textPlayer,
             onValueChange = { onTextPlayerChanged(it) },
             label = { Text(stringResource(id = R.string.playerName)) },
             maxLines = 1,
@@ -237,13 +241,13 @@ internal fun AddGameScreenPortrait(
                 } else {
                     Toast.makeText(
                         context,
-                        context.getString(R.string.atLeast2PlayersRequired),
+                        atLeast2PlayersRequired,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             } else {
                 Toast.makeText(
-                    context, context.getString(R.string.gameMustHaveAName), Toast.LENGTH_SHORT
+                    context, gameMustHaveAName, Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -268,13 +272,16 @@ internal fun AddGameScreenLandscape(
 ) {
 
     val context = LocalContext.current
+    val atLeast2PlayersRequired = stringResource(id = R.string.atLeast2PlayersRequired)
+    val gameMustHaveAName = stringResource(id = R.string.gameMustHaveAName)
 
     // wrap max width column to center the ConstraintLayout
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         ConstraintLayout {
             val (gameTextField, gameDropdown, playerTextField, addPlayerButton, startButton) = createRefs()
 
-            TextField(value = textGame,
+            TextField(
+                value = textGame,
                 onValueChange = { onTextGameChange(it) },
                 label = { Text(stringResource(id = R.string.gameName)) },
                 maxLines = 1,
@@ -289,7 +296,8 @@ internal fun AddGameScreenLandscape(
                     }
                     .widthIn(1.dp, 150.dp))
 
-            GameDropDownMenu(expandedGameDropdown = expandedGameDropdown,
+            GameDropDownMenu(
+                expandedGameDropdown = expandedGameDropdown,
                 onExpandedGameDropdownChanged = onExpandedGameDropdownChanged,
                 selectedGameType = selectedGameType,
                 onSelectedGameTypeChanged = onSelectedGameTypeChanged,
@@ -299,7 +307,8 @@ internal fun AddGameScreenLandscape(
                     end.linkTo(gameTextField.end)
                 })
 
-            TextField(value = textPlayer,
+            TextField(
+                value = textPlayer,
                 onValueChange = { onTextPlayerChanged(it) },
                 label = { Text(stringResource(id = R.string.playerName)) },
                 maxLines = 1,
@@ -321,18 +330,19 @@ internal fun AddGameScreenLandscape(
                     .widthIn(1.dp, 150.dp))
 
             // Add player
-            Button(onClick = {
-                if (addPlayerToList(textPlayer, tempPlayerNames, context)) {
-                    onTextPlayerChanged("")
-                }
-            },
+            Button(
+                onClick = {
+                    if (addPlayerToList(textPlayer, tempPlayerNames, context)) {
+                        onTextPlayerChanged("")
+                    }
+                },
                 content = { Text(text = stringResource(id = R.string.addPlayer)) },
                 modifier = Modifier.constrainAs(addPlayerButton) {
-                        top.linkTo(playerTextField.top)
-                        bottom.linkTo(playerTextField.bottom)
-                        start.linkTo(playerTextField.end, 8.dp)
-                        end.linkTo(parent.end, 8.dp)
-                    })
+                    top.linkTo(playerTextField.top)
+                    bottom.linkTo(playerTextField.bottom)
+                    start.linkTo(playerTextField.end, 8.dp)
+                    end.linkTo(parent.end, 8.dp)
+                })
 
             // Start game
             Button(onClick = {
@@ -342,13 +352,13 @@ internal fun AddGameScreenLandscape(
                     } else {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.atLeast2PlayersRequired),
+                            atLeast2PlayersRequired,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 } else {
                     Toast.makeText(
-                        context, context.getString(R.string.gameMustHaveAName), Toast.LENGTH_SHORT
+                        context, gameMustHaveAName, Toast.LENGTH_SHORT
                     ).show()
                 }
 
@@ -397,10 +407,12 @@ internal fun GameDropDownMenu(
                 .fillMaxWidth()
         )
 
-        ExposedDropdownMenu(expanded = expandedGameDropdown,
+        ExposedDropdownMenu(
+            expanded = expandedGameDropdown,
             onDismissRequest = { onExpandedGameDropdownChanged(false) }) {
             GameType.availableGameTypes.forEach { item: GameType.Type ->
-                DropdownMenuItem(text = { Text(text = stringResource(id = item.resourceId)) },
+                DropdownMenuItem(
+                    text = { Text(text = stringResource(id = item.resourceId)) },
                     onClick = {
                         onSelectedGameTypeChanged(item)
                         onExpandedGameDropdownChanged(false)
@@ -432,7 +444,7 @@ fun addPlayerToList(
 fun AddGameScreenPreview() {
     // gotta test very long names
     val tempPlayerNames = remember {
-        mutableStateListOf<String>(
+        mutableStateListOf(
             "Player 1",
             "Player 2",
             "Player 3",
@@ -441,7 +453,8 @@ fun AddGameScreenPreview() {
         )
     }
 
-    AddGameScreenBase(openDrawer = { },
+    AddGameScreenBase(
+        openDrawer = { },
         navigateToGame = {},
         addGame = { _, _, _ -> },
         resetNewCreatedGameID = { },

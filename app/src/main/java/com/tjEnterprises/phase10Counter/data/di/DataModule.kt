@@ -52,7 +52,7 @@ interface DataModule {
 
     @Singleton
     @Binds
-    fun bindsUpdateCheckerRepository(updateCheckerRepository: UpdateCheckerRepository.UpdateCheckerRepositoryImpl) : UpdateCheckerRepository
+    fun bindsUpdateCheckerRepository(updateCheckerRepository: UpdateCheckerRepository.UpdateCheckerRepositoryImpl): UpdateCheckerRepository
 }
 
 class FakeDatabaseRepository @Inject constructor(
@@ -164,7 +164,7 @@ class FakeDatabaseRepository @Inject constructor(
     }
 }
 
-class fakeSettingsRepository @Inject constructor() : SettingsRepository {
+class FakeSettingsRepository @Inject constructor() : SettingsRepository {
     override val settingsModelFlow: Flow<SettingsModel> = flowOf()
     override suspend fun updateCheckForUpdates(checkForUpdates: Boolean) {
         TODO("Not yet implemented")
