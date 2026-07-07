@@ -18,18 +18,11 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.gradle)
     alias(libs.plugins.ksp)
     alias(libs.plugins.aboutlibraries)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.room)
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_17
-    }
 }
 
 room {
@@ -82,7 +75,6 @@ android {
         compose = true
         aidl = false
         buildConfig = true
-        renderScript = false
         shaders = false
     }
 
@@ -112,9 +104,6 @@ dependencies {
     // Hilt and instrumented tests.
     androidTestImplementation(libs.hilt.android.testing)
     ksp(libs.hilt.android.compiler)
-    // Hilt and Robolectric tests.
-    testImplementation(libs.hilt.android.testing)
-    kspTest(libs.hilt.android.compiler)
 
     // Room Tests
     androidTestImplementation(libs.androidx.room.testing)
