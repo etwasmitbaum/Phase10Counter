@@ -1,8 +1,7 @@
 package com.tjEnterprises.phase10Counter.ui.editGame
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -14,7 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -24,7 +23,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -97,15 +95,13 @@ fun EditGameScreen(
 
         is EditGameUiState.EditGameLoading -> {
             DefaultScaffoldNavigation(
-                title = stringResource(id = R.string.gameScreenLoading),
-                openDrawer = openDrawer
+                title = stringResource(id = R.string.gameScreenLoading), openDrawer = openDrawer
             ) { }
         }
 
         is EditGameUiState.EditGameError -> {
             DefaultScaffoldNavigation(
-                title = stringResource(id = R.string.gameScreenError),
-                openDrawer = openDrawer
+                title = stringResource(id = R.string.gameScreenError), openDrawer = openDrawer
             ) { }
         }
     }
@@ -143,76 +139,74 @@ internal fun EditGameScreen(
                     closeDialog = { openAddPlayerDialog.value = false },
                     insertNewPlayer = { playerName ->
                         insertPlayer(playerName, game.gameId)
-                    }
-                )
+                    })
             }
 
             val gridState = rememberLazyGridState()
             val coroutineScope = rememberCoroutineScope()
 
-            Column(
-                modifier = scaffoldModifier
-                    .then(modifier)
-                    .padding(bottom = 4.dp)
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            LazyVerticalGrid(
+                modifier = scaffoldModifier.then(modifier),
+                state = gridState,
+                horizontalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center,
+                contentPadding = PaddingValues(bottom = 200.dp),
+                columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(
+                    400.dp
+                )
             ) {
 
-                EditGameComponent(
-                    modifier = Modifier.padding(8.dp),
-                    game = game,
-                    updateGameName = updateGameName,
-                    updateGameType = updateGameType
-                )
-
-                LazyVerticalGrid(
-                    state = gridState,
-                    horizontalArrangement = Arrangement.Center,
-                    verticalArrangement = Arrangement.Center,
-                    columns = if (dontChangeUiWideScreen) GridCells.Fixed(1) else GridCells.Adaptive(
-                        400.dp
+                item {
+                    EditGameComponent(
+                        modifier = Modifier.padding(8.dp),
+                        game = game,
+                        updateGameName = updateGameName,
+                        updateGameType = updateGameType
                     )
-                ) {
-                    itemsIndexed(items = players) { idx, player ->
-                        EditPlayerComponent(
-                            player = player,
-                            gameType = game.gameType,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .fillMaxWidth(),
-                            addPointHistoryEntry = addPointHistoryEntry,
-                            savePhasesOfPlayer = savePhasesOfPlayer,
-                            deletePointHistoryItem = deletePointHistoryItem,
-                            updatePointHistoryItem = updatePointHistoryItem,
-                            scrollToNextPosition = {
-                                coroutineScope.launch {
-                                    gridState.animateScrollToItem(if (idx > 1) idx - 1 else 0)
-                                }
-                            },
-                            updatePlayer = updatePlayer,
-                            deletePlayer = deletePlayer
+                }
+
+                itemsIndexed(items = players) { idx, player ->
+                    EditPlayerComponent(
+                        player = player,
+                        gameType = game.gameType,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        addPointHistoryEntry = addPointHistoryEntry,
+                        savePhasesOfPlayer = savePhasesOfPlayer,
+                        deletePointHistoryItem = deletePointHistoryItem,
+                        updatePointHistoryItem = updatePointHistoryItem,
+                        scrollToNextPosition = {
+                            coroutineScope.launch {
+                                gridState.animateScrollToItem(if (idx > 1) idx - 1 else 0)
+                            }
+                        },
+                        updatePlayer = updatePlayer,
+                        deletePlayer = deletePlayer
+                    )
+                }
+
+                item {
+                    OutlinedIconButton(
+                        modifier = Modifier.wrapContentSize(),
+                        onClick = {
+                            openAddPlayerDialog.value = true
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(id = R.string.addPlayer),
                         )
                     }
                 }
 
-                IconButton(
-                    onClick = {
-                        openAddPlayerDialog.value = true
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null
-                    )
-                }
             }
+
         })
 }
 
 @Composable
 fun AddPlayerDialog(
-    closeDialog: () -> Unit,
-    insertNewPlayer: (playerName: String) -> Unit
+    closeDialog: () -> Unit, insertNewPlayer: (playerName: String) -> Unit
 ) {
     val newPlayerName = remember {
         mutableStateOf("")
@@ -252,22 +246,59 @@ fun AddPlayerDialog(
                 onValueChange = { newPlayerName.value = it },
                 singleLine = true
             )
-        }
-    )
+        })
 }
 
-@Preview
+@Preview(showBackground = true, locale = "EN")
+@Preview(showBackground = true, locale = "DE")
+@Preview(showBackground = true, widthDp = 900, heightDp = 400)
+@Preview(showBackground = true, heightDp = 1000)
 @Composable
 fun EditGameScreenPreview() {
+    val players = listOf(
+        PlayerModel(
+            1L,
+            1L,
+            "Player1",
+            listOf(PointHistoryItem(256L, 1)),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = false
+        ), PlayerModel(
+            2L,
+            1L,
+            "Player2 has a very very ver very very very very very very long name",
+            listOf(PointHistoryItem(256L, 1)),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = true
+        ), PlayerModel(
+            3L,
+            1L,
+            "Player3",
+            listOf(PointHistoryItem(256L, 1)),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = false
+        ), PlayerModel(
+            4L,
+            1L,
+            "Player4 has a very very ver very very very very very very long name",
+            listOf(PointHistoryItem(256L, 1)),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = false
+        )
+    )
     EditGameScreen(
-        players = listOf(),
+        players = players,
         game = GameModel(
             gameId = 0,
             name = "TestGame",
             gameType = GameType.Standard,
             created = 0L,
             modified = 0L,
-            players = listOf()
+            players = players
         ),
         dontChangeUiWideScreen = false,
         openDrawer = {},
@@ -279,6 +310,5 @@ fun EditGameScreenPreview() {
         updatePlayer = {},
         deletePlayer = {},
         updateGameName = { _, _ -> },
-        updateGameType = { _, _ -> }
-    )
+        updateGameType = { _, _ -> })
 }

@@ -97,10 +97,13 @@ fun EditPlayerComponent(
                 Text(
                     text = player.name,
                     fontSize = 16.sp,
-                    modifier = Modifier.widthIn(min = 0.dp, max = 360.dp)
+                    modifier = Modifier.weight(1f, fill = false)
                 )
 
-                IconButton(onClick = { openEditPlayerNameDialog.value = true }) {
+                IconButton(
+                    onClick = { openEditPlayerNameDialog.value = true },
+                    modifier = Modifier
+                ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = null
@@ -128,6 +131,7 @@ fun EditPlayerComponent(
                     ),
                     modifier = Modifier
                         .widthIn(1.dp, 128.dp)
+                        .weight(1f, fill = false)
                         .onFocusChanged {
                             if (!it.isFocused && pointsText.isNotBlank() && pointsText.isDigitsOnly()) {
                                 addPointHistoryEntry(
@@ -179,6 +183,7 @@ fun EditPlayerComponent(
 }
 
 @Preview(showBackground = true, widthDp = 350)
+@Preview(showBackground = true, widthDp = 350, locale = "DE")
 @Composable
 fun EditPlayerComponentPreview() {
     EditPlayerComponent(
@@ -188,6 +193,31 @@ fun EditPlayerComponentPreview() {
             "Player1",
             listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
             2560L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = true
+        ),
+        gameType = GameType.defaultGameType,
+        addPointHistoryEntry = { _, _, _ -> },
+        savePhasesOfPlayer = { _, _, _ -> },
+        scrollToNextPosition = {},
+        deletePointHistoryItem = {},
+        updatePointHistoryItem = {},
+        updatePlayer = {},
+        deletePlayer = {}
+    )
+}
+
+@Preview(showBackground = true, widthDp = 350)
+@Preview(showBackground = true, widthDp = 350, locale = "DE")
+@Composable
+fun EditPlayerComponentLongNamePreview() {
+    EditPlayerComponent(
+        player = PlayerModel(
+            1L,
+            1L,
+            "Player1 with very very very very very very very long name",
+            listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
+            2560000000L,
             listOf(true, true, true, true, true, true, true, true, true, true),
             showMarker = true
         ),

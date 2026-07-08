@@ -108,6 +108,7 @@ fun OnePlayerView(
                 ),
                 modifier = Modifier
                     .widthIn(1.dp, 128.dp)
+                    .weight(1f, fill = false)
                     .onFocusChanged {
                         if (!it.isFocused && text.isNotBlank() && text.isDigitsOnly()) {
                             addPointHistoryEntry(text.toLong(), player.gameId, player.playerId)
@@ -148,7 +149,7 @@ fun OnePlayerView(
 
 // Previews
 @Preview(showBackground = true)
-@Preview(showBackground = true, widthDp = 350)
+@Preview(showBackground = true, widthDp = 800)
 @Preview(showBackground = true, widthDp = 350, locale = "de")
 @Preview(showBackground = true, widthDp = 350, locale = "pl")
 @Composable

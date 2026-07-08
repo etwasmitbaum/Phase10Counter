@@ -297,16 +297,16 @@ internal fun SettingsScreen(
             val fileName = stringResource(id = R.string.backupFileName)
             SettingsMenuLink(
                 title = {
-                Text(
-                    text = stringResource(id = R.string.backupGames),
-                )
-            }, icon = {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = null,
-                    modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
-                )
-            }, colors = P10SettingsColor.colors()
+                    Text(
+                        text = stringResource(id = R.string.backupGames),
+                    )
+                }, icon = {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null,
+                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                    )
+                }, colors = P10SettingsColor.colors()
             ) {
                 val intent =
                     Intent(Intent.ACTION_CREATE_DOCUMENT).setType("application/octet-stream")
@@ -321,22 +321,22 @@ internal fun SettingsScreen(
             // Restore games from backup file
             SettingsMenuLink(
                 title = {
-                Text(
-                    text = stringResource(id = R.string.restoreGames)
-                )
-            }, subtitle = {
-                Text(
-                    text = stringResource(id = R.string.thisWillOverwriteAllExistingData) + "\n" + stringResource(
-                        id = R.string.appRestartMayBeRequired
+                    Text(
+                        text = stringResource(id = R.string.restoreGames)
                     )
-                )
-            }, icon = {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = null,
-                    modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
-                )
-            }, colors = P10SettingsColor.colors()
+                }, subtitle = {
+                    Text(
+                        text = stringResource(id = R.string.thisWillOverwriteAllExistingData) + "\n" + stringResource(
+                            id = R.string.appRestartMayBeRequired
+                        )
+                    )
+                }, icon = {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null,
+                        modifier = Modifier.alpha(0f)   // make icon transparent so it is in line with the other settings
+                    )
+                }, colors = P10SettingsColor.colors()
             ) {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).setType("application/octet-stream")
                 restoreARL.launch(intent)

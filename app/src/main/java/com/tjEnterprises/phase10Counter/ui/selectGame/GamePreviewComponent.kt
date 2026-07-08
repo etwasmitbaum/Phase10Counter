@@ -204,35 +204,35 @@ fun GamePreviewComponent(
 fun GamePreviewComponentPreview(expand: Boolean = false) {
     GamePreviewComponent(
         game = GameModel(
-        1L, "Game 1", GameType.defaultGameType, 0L, 0L,
-        listOf(
-            PlayerModel(
-                1L,
-                1L,
-                "Player12345",
-                listOf(PointHistoryItem(256L, 1L)),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true),
-                showMarker = false
-            ), PlayerModel(
-                2L,
-                1L,
-                "P2",
-                listOf(PointHistoryItem(256L, 1L)),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true),
-                showMarker = true
-            ), PlayerModel(
-                3L,
-                1L,
-                "Player3",
-                listOf(PointHistoryItem(256L, 1L)),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true),
-                showMarker = false
-            )
+            1L, "Game 1", GameType.defaultGameType, 0L, 0L,
+            listOf(
+                PlayerModel(
+                    1L,
+                    1L,
+                    "Player12345",
+                    listOf(PointHistoryItem(256L, 1L)),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = false
+                ), PlayerModel(
+                    2L,
+                    1L,
+                    "P2",
+                    listOf(PointHistoryItem(256L, 1L)),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = true
+                ), PlayerModel(
+                    3L,
+                    1L,
+                    "Player3",
+                    listOf(PointHistoryItem(256L, 1L)),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = false
+                )
+            ),
         ),
-    ),
         navigateToEditGame = {},
         navigateToGame = {},
         deleteGame = {},
@@ -246,27 +246,27 @@ fun GamePreviewComponentPreview(expand: Boolean = false) {
 fun GamePreviewComponentPreviewWithVeryLongNames(expand: Boolean = false) {
     GamePreviewComponent(
         game = GameModel(
-        1L, "VeryLongGameNameINeedToTest", GameType.Flip, 0L, 0L,
-        listOf(
-            PlayerModel(
-                1L,
-                1L,
-                "VeryLongPlayerINeedToTestIDon'tKnowHowLongThisShouldBe",
-                listOf(PointHistoryItem(256L, 1L)),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true),
-                showMarker = false
-            ), PlayerModel(
-                2L,
-                1L,
-                "VeryLongPlayerINeedToTestIDon'tKnowHowLongThisShouldBe2",
-                listOf(PointHistoryItem(256L, 1L)),
-                256L,
-                listOf(true, true, true, true, true, true, true, true, true, true),
-                showMarker = true
-            )
+            1L, "VeryLongGameNameINeedToTest", GameType.Flip, 0L, 0L,
+            listOf(
+                PlayerModel(
+                    1L,
+                    1L,
+                    "VeryLongPlayerINeedToTestIDon'tKnowHowLongThisShouldBe",
+                    listOf(PointHistoryItem(256L, 1L)),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = false
+                ), PlayerModel(
+                    2L,
+                    1L,
+                    "VeryLongPlayerINeedToTestIDon'tKnowHowLongThisShouldBe2",
+                    listOf(PointHistoryItem(256L, 1L)),
+                    256L,
+                    listOf(true, true, true, true, true, true, true, true, true, true),
+                    showMarker = true
+                )
+            ),
         ),
-    ),
         navigateToEditGame = {},
         navigateToGame = {},
         deleteGame = {},

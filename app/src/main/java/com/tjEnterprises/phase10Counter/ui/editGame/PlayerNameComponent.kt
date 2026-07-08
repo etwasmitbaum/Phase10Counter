@@ -64,7 +64,7 @@ fun PlayerNameComponent(
                 Text(text = stringResource(id = R.string.cancel))
             }
         },
-        title = { Text(text = stringResource(id = R.string.editPlayerName)) },
+        title = { Text(text = stringResource(id = R.string.playerName)) },
         text = {
             TextField(
                 value = playerName.value,

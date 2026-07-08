@@ -71,8 +71,10 @@ fun EditGameComponent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    modifier = Modifier.padding(start = 5.dp),
-                    text = stringResource(id = R.string.gameName) + ": " + game.name
+                    modifier = Modifier
+                        .padding(start = 5.dp)
+                        .weight(1f, fill = false),
+                    text = game.name
                 )
                 IconButton(onClick = { openEditNameDialog.value = true }) {
                     Icon(
@@ -158,7 +160,7 @@ fun EditGameNameDialog(
                 Text(text = stringResource(id = R.string.cancel))
             }
         },
-        title = {},
+        title = { Text(text = stringResource(id = R.string.gameName)) },
         text = {
             TextField(
                 value = newGameName.value,
@@ -176,6 +178,23 @@ fun EditGameComponentPreview() {
         game = GameModel(
             gameId = 1,
             name = "TestGame",
+            gameType = GameType.Standard,
+            created = 1,
+            modified = 1,
+            players = listOf()
+        ),
+        updateGameName = { _, _ -> },
+        updateGameType = { _, _ -> }
+    )
+}
+
+@Composable
+@Preview
+fun EditGameComponentLongNamePreview() {
+    EditGameComponent(
+        game = GameModel(
+            gameId = 1,
+            name = "TestGame with very very very very very very very very long name",
             gameType = GameType.Standard,
             created = 1,
             modified = 1,

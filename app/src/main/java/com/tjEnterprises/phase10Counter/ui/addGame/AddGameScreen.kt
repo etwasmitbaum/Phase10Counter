@@ -438,6 +438,7 @@ fun addPlayerToList(
 }
 
 @Preview(showBackground = true, widthDp = 400)
+@Preview(showBackground = true, widthDp = 400, locale = "DE")
 @Preview(showBackground = true, widthDp = 650, heightDp = 500)
 @Preview(device = Devices.PIXEL_4A)
 @Composable

@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,8 +30,6 @@ import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 
 @Composable
-// well i know this is no mvvm here, but for this ONE fixed function it seems a bit overkill
-// to create a view-model
 fun PhasesComponent(
     modifier: Modifier = Modifier,
     player: PlayerModel,
@@ -73,7 +72,13 @@ fun PhasesComponent(
             }
         },
         dismissButton = {},
-        title = { Text(text = stringResource(id = R.string.phasesOf) + " " + player.name) },
+        title = {
+            Text(
+                text = stringResource(id = R.string.phasesOf) + " " + player.name,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
         text = {
             LazyVerticalGrid(
                 modifier = Modifier.wrapContentSize(),
@@ -127,8 +132,8 @@ fun dismiss(
 }
 
 
-@Preview(device = "spec:width=411dp,height=891dp")
-@Preview(device = "spec:width=1280dp,height=800dp,dpi=240")
+@Preview(widthDp = 411, heightDp = 891)
+@Preview(widthDp = 1280, heightDp = 800)
 @Preview(device = Devices.NEXUS_5)
 @Composable
 fun PhasesComponentPreview() {
@@ -137,6 +142,27 @@ fun PhasesComponentPreview() {
             1L,
             1L,
             "Player1",
+            listOf(PointHistoryItem(256L, 1L)),
+            256L,
+            listOf(true, true, true, true, true, true, true, true, true, true),
+            showMarker = false
+        ),
+        gameType = GameType.defaultGameType,
+        closeDialog = {},
+        savePhasesOfPlayer = { _, _, _ -> }
+    )
+}
+
+@Preview(widthDp = 411, heightDp = 891)
+@Preview(widthDp = 1280, heightDp = 800)
+@Preview(device = Devices.NEXUS_5)
+@Composable
+fun PhasesComponentLongNamePreview() {
+    PhasesComponent(
+        player = PlayerModel(
+            1L,
+            1L,
+            "Player1 with very very very very very very very very very very long name",
             listOf(PointHistoryItem(256L, 1L)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true),
