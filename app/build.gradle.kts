@@ -35,8 +35,8 @@ android {
         applicationId = "com.tjEnterprises.phase10Counter"
         minSdk = 23
         targetSdk = 37
-        versionCode = 24
-        versionName = "3.3.0"
+        versionCode = 25
+        versionName = "3.3.1"
 
         testInstrumentationRunner = "com.tjEnterprises.phase10Counter.HiltTestRunner"
         vectorDrawables {
