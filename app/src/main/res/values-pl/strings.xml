@@ -81,4 +81,5 @@
     <string name="gameTypeMasters">Masters</string>
     <string name="gameTypeInvalid">Nieprawidłowy wariant gry</string>
     <string name="openSourceLicenseTitle">Licencje open source</string>
+    <string name="editing_game">Gra polegająca na edycji</string>
 </resources>

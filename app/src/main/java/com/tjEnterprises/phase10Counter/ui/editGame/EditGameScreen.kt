@@ -36,6 +36,7 @@ import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.ui.EditGameUiState
+import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldBack
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import kotlinx.coroutines.launch
 
@@ -44,7 +45,7 @@ fun EditGameScreen(
     modifier: Modifier = Modifier,
     gameId: Long,
     viewModel: EditGameViewModel = hiltViewModel(),
-    openDrawer: () -> Unit
+    navigateOneBack: () -> Unit
 ) {
     val dontChangeUiWideScreen by viewModel.dontChangeUiWideScreen.collectAsState()
     val editGameUiState by viewModel.editGameUiState.collectAsState()
@@ -57,7 +58,7 @@ fun EditGameScreen(
                 players = game.players,
                 game = game,
                 dontChangeUiWideScreen = dontChangeUiWideScreen,
-                openDrawer = openDrawer,
+                navigateOneBack = navigateOneBack,
                 addPointHistoryEntry = { point: Long, pointGameId: Long, playerId: Long ->
                     viewModel.addPointHistoryEntry(
                         point = point, gameId = pointGameId, playerId = playerId
@@ -94,14 +95,14 @@ fun EditGameScreen(
         }
 
         is EditGameUiState.EditGameLoading -> {
-            DefaultScaffoldNavigation(
-                title = stringResource(id = R.string.gameScreenLoading), openDrawer = openDrawer
+            DefaultScaffoldBack(
+                title = stringResource(id = R.string.gameScreenLoading), navigateOneBack = navigateOneBack
             ) { }
         }
 
         is EditGameUiState.EditGameError -> {
-            DefaultScaffoldNavigation(
-                title = stringResource(id = R.string.gameScreenError), openDrawer = openDrawer
+            DefaultScaffoldBack(
+                title = stringResource(id = R.string.gameScreenError), navigateOneBack = navigateOneBack
             ) { }
         }
     }
@@ -112,7 +113,7 @@ internal fun EditGameScreen(
     players: List<PlayerModel>,
     game: GameModel,
     dontChangeUiWideScreen: Boolean,
-    openDrawer: () -> Unit,
+    navigateOneBack: () -> Unit,
     addPointHistoryEntry: (point: Long, pointGameId: Long, playerId: Long) -> Unit,
     savePhasesOfPlayer: (playerId: Long, gameId: Long, openPhases: List<Boolean>) -> Unit,
     deletePointHistoryItem: (PointHistoryItem) -> Unit,
@@ -124,9 +125,9 @@ internal fun EditGameScreen(
     updateGameType: (gameId: Long, gameType: GameType.Type) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    DefaultScaffoldNavigation(
-        title = "",
-        openDrawer = openDrawer,
+    DefaultScaffoldBack (
+        title = stringResource(R.string.editing_game),
+        navigateOneBack = navigateOneBack,
         dontChangeUiWideScreen = dontChangeUiWideScreen,
         content = { scaffoldModifier ->
 
@@ -251,6 +252,7 @@ fun AddPlayerDialog(
 
 @Preview(showBackground = true, locale = "EN")
 @Preview(showBackground = true, locale = "DE")
+@Preview(showBackground = true, locale = "PL")
 @Preview(showBackground = true, widthDp = 900, heightDp = 400)
 @Preview(showBackground = true, heightDp = 1000)
 @Composable
@@ -301,7 +303,7 @@ fun EditGameScreenPreview() {
             players = players
         ),
         dontChangeUiWideScreen = false,
-        openDrawer = {},
+        navigateOneBack = {},
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
         deletePointHistoryItem = {},

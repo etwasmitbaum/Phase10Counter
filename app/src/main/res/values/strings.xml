@@ -81,4 +81,5 @@
     <string name="gameTypeMasters">Masters</string>
     <string name="gameTypeInvalid">Invalid game variant</string>
     <string name="openSourceLicenseTitle">Open Source Licenses</string>
+    <string name="editing_game">Editing game</string>
 </resources>

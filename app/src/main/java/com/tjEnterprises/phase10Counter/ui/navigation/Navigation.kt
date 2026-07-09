@@ -125,7 +125,7 @@ fun NavGraphBuilder.selectGameGraph(openDrawer: () -> Unit, navigationActions: N
             }
             EditGameScreen(
                 gameId = gameId,
-                openDrawer = openDrawer
+                navigateOneBack = navigationActions.navigateOneBack
             )
         }
     }
