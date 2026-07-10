@@ -1,0 +1,3 @@
+- NEW: The displayed player order can now be changed
+- A warning will be displayed before deleting a player
+- Several minor UI changes and bug fixes

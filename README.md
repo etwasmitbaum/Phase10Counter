@@ -41,24 +41,24 @@ Clone the repo, open it with Android Studio and build it!
     <table>
 	    <tr>
     	    <td style="padding:10px">
-        	    <img src="/metadata/en-US/images/phoneScreenshots/1.png" width="256"/>
+        	    <img src="/metadata/en-US/images/phoneScreenshots/001.png" width="256"/>
       	    </td>
             <td style="padding:10px">
-            	<img src="/metadata/en-US/images/phoneScreenshots/2.png" width="256"/>
+            	<img src="/metadata/en-US/images/phoneScreenshots/002.png" width="256"/>
             </td>
             <td style="padding:10px">
-            	<img src="/metadata/en-US/images/phoneScreenshots/3.png" width="256"/>
+            	<img src="/metadata/en-US/images/phoneScreenshots/003.png" width="256"/>
             </td>
         </tr>
         <tr>
     	    <td style="padding:10px">
-        	    <img src="/metadata/en-US/images/phoneScreenshots/4.png" width="256"/>
+        	    <img src="/metadata/en-US/images/phoneScreenshots/004.png" width="256"/>
       	    </td>
             <td style="padding:10px">
-            	<img src="/metadata/en-US/images/phoneScreenshots/5.png" width="256"/>
+            	<img src="/metadata/en-US/images/phoneScreenshots/005.png" width="256"/>
             </td>
             <td style="padding:10px">
-            	<img src="/metadata/en-US/images/phoneScreenshots/6.png" width="256"/>
+            	<img src="/metadata/en-US/images/phoneScreenshots/101.png" width="256"/>
             </td>
         </tr>
     </table>
