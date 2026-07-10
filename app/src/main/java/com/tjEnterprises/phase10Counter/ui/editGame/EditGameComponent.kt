@@ -63,7 +63,9 @@ fun EditGameComponent(
     }
 
     OutlinedCard(
-        modifier = modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(modifier)
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -92,7 +94,6 @@ fun EditGameComponent(
                 onExpandedChange = { openGameTypeDropdownMenu.value = it },
                 modifier = Modifier
                     .padding(5.dp)
-                    .then(modifier)
                     .widthIn(1.dp, 150.dp),
             ) {
                 OutlinedTextField(
@@ -110,6 +111,7 @@ fun EditGameComponent(
                             ExposedDropdownMenuAnchorType.SecondaryEditable, enabled = true
                         )
                         .fillMaxWidth()
+                        .padding(4.dp)
                 )
 
                 ExposedDropdownMenu(

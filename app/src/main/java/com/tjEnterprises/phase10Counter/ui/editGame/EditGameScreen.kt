@@ -1,5 +1,6 @@
 package com.tjEnterprises.phase10Counter.ui.editGame
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -106,15 +108,13 @@ fun EditGameScreen(
 
         is EditGameUiState.EditGameLoading -> {
             DefaultScaffoldNavigation(
-                title = stringResource(id = R.string.gameScreenLoading),
-                openDrawer = openDrawer
+                title = stringResource(id = R.string.gameScreenLoading), openDrawer = openDrawer
             ) { }
         }
 
         is EditGameUiState.EditGameError -> {
             DefaultScaffoldNavigation(
-                title = stringResource(id = R.string.gameScreenError),
-                openDrawer = openDrawer
+                title = stringResource(id = R.string.gameScreenError), openDrawer = openDrawer
             ) { }
         }
     }
@@ -147,6 +147,9 @@ internal fun EditGameScreen(
             val openAddPlayerDialog = remember {
                 mutableStateOf(false)
             }
+            val showPlayerAddedToast = remember {
+                mutableStateOf(false)
+            }
 
             when {
                 openAddPlayerDialog.value -> {
@@ -154,8 +157,18 @@ internal fun EditGameScreen(
                         closeDialog = { openAddPlayerDialog.value = false },
                         insertNewPlayer = { playerName ->
                             insertPlayer(playerName, game.gameId)
-                        })
+                        },
+                        showPlayerAddedToast = { showPlayerAddedToast.value = true })
                 }
+
+                showPlayerAddedToast.value -> {
+                    Toast.makeText(
+                        LocalContext.current,
+                        stringResource(id = R.string.playerAdded),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             }
 
             val gridState = rememberLazyGridState()
@@ -163,7 +176,7 @@ internal fun EditGameScreen(
             val reorderableLazyGridState = rememberReorderableLazyGridState(gridState) { from, to ->
                 // subtract 1 since in scope of the full LazyVerticalGrid the players start at
                 // index 1. Index 0 is the EditGameComponent
-                changePlayerOrderFromTo(game.gameId, from.index - 1, to.index - 1)
+                changePlayerOrderFromTo(game.gameId, from.index - 2, to.index - 2)
             }
 
             LazyVerticalGrid(
@@ -179,11 +192,25 @@ internal fun EditGameScreen(
 
                 item {
                     EditGameComponent(
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .padding(bottom = 16.dp),
                         game = game,
                         updateGameName = updateGameName,
                         updateGameType = updateGameType
                     )
+                }
+
+                item {
+                    OutlinedIconButton(
+                        modifier = Modifier.wrapContentSize(), onClick = {
+                            openAddPlayerDialog.value = true
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(id = R.string.addPlayer),
+                        )
+                    }
                 }
 
                 items(items = players, key = { it.playerId }) { player ->
@@ -215,18 +242,6 @@ internal fun EditGameScreen(
                     }
                 }
 
-                item {
-                    OutlinedIconButton(
-                        modifier = Modifier.wrapContentSize(), onClick = {
-                            openAddPlayerDialog.value = true
-                        }) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(id = R.string.addPlayer),
-                        )
-                    }
-                }
-
             }
 
         })
@@ -234,12 +249,13 @@ internal fun EditGameScreen(
 
 @Composable
 fun AddPlayerDialog(
-    closeDialog: () -> Unit, insertNewPlayer: (playerName: String) -> Unit
+    closeDialog: () -> Unit,
+    insertNewPlayer: (playerName: String) -> Unit,
+    showPlayerAddedToast: () -> Unit
 ) {
     val newPlayerName = remember {
         mutableStateOf("")
     }
-
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
@@ -258,7 +274,11 @@ fun AddPlayerDialog(
         },
         confirmButton = {
             TextButton(onClick = {
-                insertNewPlayer(newPlayerName.value)
+                if (newPlayerName.value.isNotBlank()) {
+                    insertNewPlayer(newPlayerName.value)
+                    showPlayerAddedToast()
+                }
+
                 closeDialog()
             }) {
                 Text(text = stringResource(id = R.string.confirm))

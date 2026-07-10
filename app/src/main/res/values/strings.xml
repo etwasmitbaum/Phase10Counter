@@ -82,4 +82,5 @@
     <string name="gameTypeInvalid">Invalid game variant</string>
     <string name="openSourceLicenseTitle">Open Source Licenses</string>
     <string name="editing_game">Editing game</string>
+    <string name="playerAdded">Player added</string>
 </resources>
