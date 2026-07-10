@@ -167,6 +167,8 @@ internal fun EditGameScreen(
                         stringResource(id = R.string.playerAdded),
                         Toast.LENGTH_SHORT
                     ).show()
+
+                    showPlayerAddedToast.value = false
                 }
 
             }
