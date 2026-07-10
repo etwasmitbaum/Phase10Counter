@@ -67,6 +67,10 @@ fun EditPlayerComponent(
         mutableStateOf(false)
     }
 
+    val openDeletePlayerDialog = remember {
+        mutableStateOf(false)
+    }
+
     when {
         openEditPhaseDialog.value -> {
             PhasesComponent(
@@ -76,9 +80,7 @@ fun EditPlayerComponent(
                 savePhasesOfPlayer = savePhasesOfPlayer
             )
         }
-    }
 
-    when {
         openEditPlayerNameDialog.value -> {
             PlayerNameComponent(
                 player = player,
@@ -86,7 +88,17 @@ fun EditPlayerComponent(
                 updatePlayer = updatePlayer
             )
         }
+
+        openDeletePlayerDialog.value -> {
+            DeletePlayerDialog(
+                playerName = player.name,
+                closeDialog = { openDeletePlayerDialog.value = false },
+                deletePlayer = { deletePlayer(player.playerId) }
+            )
+        }
     }
+
+
 
     OutlinedCard(modifier = modifier) {
         Column(
@@ -95,7 +107,7 @@ fun EditPlayerComponent(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceAround,
                 modifier = Modifier
                     .padding(bottom = 8.dp)
                     .fillMaxWidth()
@@ -164,7 +176,7 @@ fun EditPlayerComponent(
                     updatePointHistoryItem = updatePointHistoryItem,
                     modifier = Modifier.padding(start = 12.dp)
                 )
-                IconButton(onClick = { deletePlayer(player.playerId) }) {
+                IconButton(onClick = { openDeletePlayerDialog.value = true }) {
                     Icon(
                         imageVector = Icons.Default.Delete, contentDescription = null
                     )
