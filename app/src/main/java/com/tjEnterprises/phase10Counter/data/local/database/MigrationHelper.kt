@@ -190,3 +190,19 @@ object Migration4To5 : Migration(startVersion = 4, endVersion = 5) {
     }
 
 }
+
+object Migration5To6 : Migration(startVersion = 5, endVersion = 6) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE Player ADD COLUMN order_index INTEGER NOT NULL DEFAULT 0")
+
+        val playersCursor = db.query("SELECT * FROM Player ORDER BY player_id ASC")
+
+        if (playersCursor.moveToFirst()) {
+            do {
+                val id = playersCursor.getInt(playersCursor.getColumnIndexOrThrow("player_id"))
+                db.execSQL("UPDATE Player SET order_index = $id WHERE player_id = $id")
+            } while (playersCursor.moveToNext())
+        }
+    }
+
+}

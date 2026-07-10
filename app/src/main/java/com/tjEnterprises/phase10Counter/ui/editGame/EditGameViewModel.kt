@@ -50,9 +50,7 @@ class EditGameViewModel @Inject constructor(
     fun addPointHistoryEntry(point: Long, gameId: Long, playerId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             databaseRepository.insertPointHistory(
-                point = point,
-                gameId = gameId,
-                playerId = playerId
+                point = point, gameId = gameId, playerId = playerId
             )
         }
     }

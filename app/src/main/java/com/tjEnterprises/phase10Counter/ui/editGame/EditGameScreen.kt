@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +50,10 @@ fun EditGameScreen(
 ) {
     val dontChangeUiWideScreen by viewModel.dontChangeUiWideScreen.collectAsState()
     val editGameUiState by viewModel.editGameUiState.collectAsState()
-    viewModel.setGameFromId(gameId)
+
+    LaunchedEffect(gameId) {
+        viewModel.setGameFromId(gameId)
+    }
 
     when (editGameUiState) {
         is EditGameUiState.EditGameSuccess -> {
@@ -96,13 +100,15 @@ fun EditGameScreen(
 
         is EditGameUiState.EditGameLoading -> {
             DefaultScaffoldBack(
-                title = stringResource(id = R.string.gameScreenLoading), navigateOneBack = navigateOneBack
+                title = stringResource(id = R.string.gameScreenLoading),
+                navigateOneBack = navigateOneBack
             ) { }
         }
 
         is EditGameUiState.EditGameError -> {
             DefaultScaffoldBack(
-                title = stringResource(id = R.string.gameScreenError), navigateOneBack = navigateOneBack
+                title = stringResource(id = R.string.gameScreenError),
+                navigateOneBack = navigateOneBack
             ) { }
         }
     }
@@ -125,7 +131,7 @@ internal fun EditGameScreen(
     updateGameType: (gameId: Long, gameType: GameType.Type) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    DefaultScaffoldBack (
+    DefaultScaffoldBack(
         title = stringResource(R.string.editing_game),
         navigateOneBack = navigateOneBack,
         dontChangeUiWideScreen = dontChangeUiWideScreen,
@@ -265,7 +271,8 @@ fun EditGameScreenPreview() {
             listOf(PointHistoryItem(256L, 1)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = false
+            showMarker = false,
+            orderIndex = 0
         ), PlayerModel(
             2L,
             1L,
@@ -273,7 +280,8 @@ fun EditGameScreenPreview() {
             listOf(PointHistoryItem(256L, 1)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = true
+            showMarker = true,
+            orderIndex = 0
         ), PlayerModel(
             3L,
             1L,
@@ -281,7 +289,8 @@ fun EditGameScreenPreview() {
             listOf(PointHistoryItem(256L, 1)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = false
+            showMarker = false,
+            orderIndex = 0
         ), PlayerModel(
             4L,
             1L,
@@ -289,7 +298,8 @@ fun EditGameScreenPreview() {
             listOf(PointHistoryItem(256L, 1)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = false
+            showMarker = false,
+            orderIndex = 0
         )
     )
     EditGameScreen(

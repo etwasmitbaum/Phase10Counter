@@ -87,7 +87,8 @@ internal fun dismiss(
                 gameID = player.gameId,
                 name = newPlayerName,
                 showMarker = player.showMarker,
-                playerId = player.playerId
+                playerId = player.playerId,
+                orderIndex = player.orderIndex
             )
         )
     }
@@ -106,7 +107,8 @@ fun PlayerNameComponentPreview() {
             listOf(PointHistoryItem(256L, 1L)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = false
+            showMarker = false,
+            orderIndex = 0
         ),
         closeDialog = {},
         updatePlayer = {}

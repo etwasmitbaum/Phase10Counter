@@ -162,7 +162,8 @@ fun OnePlayerPreview() {
             listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
             2560L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = false
+            showMarker = false,
+            orderIndex = 0
         ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
@@ -185,7 +186,8 @@ fun OnePlayerWithMarkerPreview() {
             listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
             2560L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = true
+            showMarker = true,
+            orderIndex = 0
         ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
@@ -207,7 +209,8 @@ fun OnePlayerPreview2() {
             listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
             2560L,
             listOf(false, false, false, false, false, false, false, false, false, false),
-            showMarker = false
+            showMarker = false,
+            orderIndex = 0
         ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },

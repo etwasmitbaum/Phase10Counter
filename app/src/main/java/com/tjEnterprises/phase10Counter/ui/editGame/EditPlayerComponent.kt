@@ -135,17 +135,14 @@ fun EditPlayerComponent(
                         .onFocusChanged {
                             if (!it.isFocused && pointsText.isNotBlank() && pointsText.isDigitsOnly()) {
                                 addPointHistoryEntry(
-                                    pointsText.toLong(),
-                                    player.gameId,
-                                    player.playerId
+                                    pointsText.toLong(), player.gameId, player.playerId
                                 )
                                 pointsText = ""
                             }
                             if (it.isFocused) {
                                 scrollToNextPosition()
                             }
-                        }
-                )
+                        })
                 PointHistoryDropDown(
                     pointHistory = player.pointHistory,
                     sumOfPoints = player.pointSum,
@@ -155,8 +152,7 @@ fun EditPlayerComponent(
                 )
                 IconButton(onClick = { deletePlayer(player.playerId) }) {
                     Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = null
+                        imageVector = Icons.Default.Delete, contentDescription = null
                     )
                 }
             }
@@ -194,7 +190,8 @@ fun EditPlayerComponentPreview() {
             listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
             2560L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = true
+            showMarker = true,
+            orderIndex = 0
         ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
@@ -203,8 +200,7 @@ fun EditPlayerComponentPreview() {
         deletePointHistoryItem = {},
         updatePointHistoryItem = {},
         updatePlayer = {},
-        deletePlayer = {}
-    )
+        deletePlayer = {})
 }
 
 @Preview(showBackground = true, widthDp = 350)
@@ -219,7 +215,8 @@ fun EditPlayerComponentLongNamePreview() {
             listOf(PointHistoryItem(256L, 1L), PointHistoryItem(254L, 2L)),
             2560000000L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = true
+            showMarker = true,
+            orderIndex = 0
         ),
         gameType = GameType.defaultGameType,
         addPointHistoryEntry = { _, _, _ -> },
@@ -228,6 +225,5 @@ fun EditPlayerComponentLongNamePreview() {
         deletePointHistoryItem = {},
         updatePointHistoryItem = {},
         updatePlayer = {},
-        deletePlayer = {}
-    )
+        deletePlayer = {})
 }

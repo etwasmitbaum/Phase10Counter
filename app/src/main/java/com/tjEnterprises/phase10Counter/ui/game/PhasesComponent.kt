@@ -145,7 +145,8 @@ fun PhasesComponentPreview() {
             listOf(PointHistoryItem(256L, 1L)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = false
+            showMarker = false,
+            orderIndex = 0
         ),
         gameType = GameType.defaultGameType,
         closeDialog = {},
@@ -166,7 +167,8 @@ fun PhasesComponentLongNamePreview() {
             listOf(PointHistoryItem(256L, 1L)),
             256L,
             listOf(true, true, true, true, true, true, true, true, true, true),
-            showMarker = false
+            showMarker = false,
+            orderIndex = 0
         ),
         gameType = GameType.defaultGameType,
         closeDialog = {},

@@ -14,6 +14,7 @@ import com.tjEnterprises.phase10Counter.data.local.database.Migration1To2
 import com.tjEnterprises.phase10Counter.data.local.database.Migration2To3
 import com.tjEnterprises.phase10Counter.data.local.database.Migration3To4
 import com.tjEnterprises.phase10Counter.data.local.database.Migration4To5
+import com.tjEnterprises.phase10Counter.data.local.database.Migration5To6
 import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -53,7 +54,8 @@ class MigrationTest {
             Migration1To2,
             Migration2To3(context = context),
             Migration3To4(context = context),
-            Migration4To5
+            Migration4To5,
+            Migration5To6
         ).build().apply {
             openHelper.writableDatabase.close()
         }
@@ -65,13 +67,13 @@ class MigrationTest {
     fun migrate2To3WithoutData() {
         val context: Context = ApplicationProvider.getApplicationContext()
 
-        var db = helper.createDatabase(TESTDB, 2).apply {
+        helper.createDatabase(TESTDB, 2).apply {
             // You can't use DAO classes because they expect the latest schema.
             // Prepare for the next version.
             close()
         }
 
-        db = helper.runMigrationsAndValidate(TESTDB, 3, true, Migration2To3(context = context))
+        val db = helper.runMigrationsAndValidate(TESTDB, 3, true, Migration2To3(context = context))
     }
 
     @Test
@@ -79,7 +81,7 @@ class MigrationTest {
     fun migrate2To3WithData() {
         val context: Context = ApplicationProvider.getApplicationContext()
 
-        var db = helper.createDatabase(TESTDB, 2).apply {
+        helper.createDatabase(TESTDB, 2).apply {
             // You can't use DAO classes because they expect the latest schema.
             execSQL("INSERT INTO PlayerData VALUES (1, 'Player 1', 256, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10', 0)")
             execSQL("INSERT INTO PlayerData VALUES (2, 'Player 2', 512, '1, 2, 3, 8, 9, 10', 0)")
@@ -92,7 +94,7 @@ class MigrationTest {
             close()
         }
 
-        db = helper.runMigrationsAndValidate(TESTDB, 3, true, Migration2To3(context = context))
+        val db = helper.runMigrationsAndValidate(TESTDB, 3, true, Migration2To3(context = context))
         val playersCursor = db.query("SELECT * FROM PlayerData ORDER BY id ASC")
         val highScoreCursor = db.query("SELECT * FROM Highscores ORDER BY id ASC")
 
@@ -105,13 +107,13 @@ class MigrationTest {
     @Throws(IOException::class)
     fun migrate3To4WithoutData() {
         val context: Context = ApplicationProvider.getApplicationContext()
-        var db = helper.createDatabase(TESTDB, 3).apply {
+        helper.createDatabase(TESTDB, 3).apply {
             // You can't use DAO classes because they expect the latest schema.
             // Prepare for the next version.
             close()
         }
 
-        db = helper.runMigrationsAndValidate(
+        val db = helper.runMigrationsAndValidate(
             TESTDB, 4, true, Migration3To4(context = context)
         )
     }
@@ -122,7 +124,7 @@ class MigrationTest {
         val context: Context = ApplicationProvider.getApplicationContext()
         val globalHighscores = GlobalDataDatabase.getInstance(context)
 
-        var db = helper.createDatabase(TESTDB, 3).apply {
+        helper.createDatabase(TESTDB, 3).apply {
             // You can't use DAO classes because they expect the latest schema.
             execSQL("INSERT INTO PlayerData (id, name, punkte, phasen, gameWon) VALUES (1, 'Player 1', 256, '1, 2, 3, 4, 5, 6, 7, 8, 9, 10', 0)")
             execSQL("INSERT INTO PlayerData (id, name, punkte, phasen, gameWon) VALUES (2, 'Player 2', 512, '2, 3, 8, 9, 10', 0)")
@@ -145,7 +147,7 @@ class MigrationTest {
             close()
         }
 
-        db = helper.runMigrationsAndValidate(
+        val db = helper.runMigrationsAndValidate(
             TESTDB, 4, true, Migration3To4(context = context)
         )
         val playersCursor = db.query("SELECT * FROM Player ORDER BY player_id ASC")
@@ -163,13 +165,13 @@ class MigrationTest {
     @Test
     @Throws(IOException::class)
     fun migrate4To5WithoutData() {
-        var db = helper.createDatabase(TESTDB, 4).apply {
+        helper.createDatabase(TESTDB, 4).apply {
             // You can't use DAO classes because they expect the latest schema.
             // Prepare for the next version.
             close()
         }
 
-        db = helper.runMigrationsAndValidate(
+        val db = helper.runMigrationsAndValidate(
             TESTDB, 5, true, Migration4To5
         )
     }
@@ -177,7 +179,7 @@ class MigrationTest {
     @Test
     @Throws(IOException::class)
     fun migrate4To5WithData() {
-        var db = helper.createDatabase(TESTDB, 4).apply {
+        helper.createDatabase(TESTDB, 4).apply {
             execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 1', 1, 1737702738256, 1737902738256)")
             execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 2', 2, 1737702738257, 1737902738257)")
             execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 3', 13847, 1737702738258, 1737902738258)")
@@ -188,7 +190,7 @@ class MigrationTest {
             close()
         }
 
-        db = helper.runMigrationsAndValidate(
+        val db = helper.runMigrationsAndValidate(
             TESTDB, 5, true, Migration4To5
         )
 
@@ -196,6 +198,81 @@ class MigrationTest {
         val playerCursor = db.query("SELECT * FROM Player ORDER BY game_id ASC")
 
         verifyDataMigration4To5(gameCursor, playerCursor)
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun migrate5To6WithoutData() {
+        helper.createDatabase(TESTDB, 5).apply {
+            // You can't use DAO classes because they expect the latest schema.
+            // Prepare for the next version.
+            close()
+        }
+
+        val db = helper.runMigrationsAndValidate(
+            TESTDB, 6, true, Migration5To6
+        )
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun migrate5To6WithData() {
+        helper.createDatabase(TESTDB, 5).apply {
+            execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 1', 1, 1737702738256, 1737902738256)")
+            execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified, gameType) VALUES ('Game 2', 2, 1737702738257, 1737902738257, 'Masters')")
+            execSQL("INSERT INTO Game (name, game_id, timestampCreated, timestampModified) VALUES ('Game 3', 13847, 1737702738258, 1737902738258)")
+
+            execSQL("INSERT INTO player (player_id, game_id, name, show_marker) VALUES (1, 1, 'Player 1', true)")
+            execSQL("INSERT INTO player (player_id, game_id, name) VALUES (2, 1, 'Player 2')")
+            execSQL("INSERT INTO player (player_id, game_id, name) VALUES (3, 1, 'Player 3')")
+            close()
+        }
+
+        val db = helper.runMigrationsAndValidate(
+            TESTDB, 6, true, Migration5To6
+        )
+
+        val playerCursor = db.query("SELECT * FROM Player ORDER BY order_index ASC")
+
+        verifyDataMigration5To6(playerCursor)
+    }
+
+    private fun verifyDataMigration5To6(playerCursor: Cursor) {
+        playerCursor.moveToFirst()
+        val p1PlayerId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("player_id"))
+        val p1PlayerGameId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("game_id"))
+        val p1PlayerName = playerCursor.getString(playerCursor.getColumnIndexOrThrow("name"))
+        val p1PlayerMarker = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("show_marker"))
+        val p1PlayerOrderIdx = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("order_index"))
+        assertEquals(p1PlayerId, 1)
+        assertEquals(p1PlayerGameId, 1)
+        assertEquals(p1PlayerName, "Player 1")
+        assertEquals(p1PlayerMarker, 1)
+        assertEquals(p1PlayerOrderIdx, 1)
+
+        playerCursor.moveToNext()
+        val p2PlayerId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("player_id"))
+        val p2PlayerGameId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("game_id"))
+        val p2PlayerName = playerCursor.getString(playerCursor.getColumnIndexOrThrow("name"))
+        val p2PlayerMarker = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("show_marker"))
+        val p2PlayerOrderIdx = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("order_index"))
+        assertEquals(p2PlayerId, 2)
+        assertEquals(p2PlayerGameId, 1)
+        assertEquals(p2PlayerName, "Player 2")
+        assertEquals(p2PlayerMarker, 0)
+        assertEquals(p2PlayerOrderIdx, 2)
+
+        playerCursor.moveToNext()
+        val p3PlayerId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("player_id"))
+        val p3PlayerGameId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("game_id"))
+        val p3PlayerName = playerCursor.getString(playerCursor.getColumnIndexOrThrow("name"))
+        val p3PlayerMarker = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("show_marker"))
+        val p3PlayerOrderIdx = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("order_index"))
+        assertEquals(p3PlayerId, 3)
+        assertEquals(p3PlayerGameId, 1)
+        assertEquals(p3PlayerName, "Player 3")
+        assertEquals(p3PlayerMarker, 0)
+        assertEquals(p3PlayerOrderIdx, 3)
     }
 
     private fun verifyDataMigration4To5(gameCursor: Cursor, playerCursor: Cursor) {

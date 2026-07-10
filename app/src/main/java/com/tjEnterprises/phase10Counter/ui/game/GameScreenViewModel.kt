@@ -97,7 +97,8 @@ class GameViewModel @Inject constructor(
                 gameID = player.gameId,
                 name = player.name,
                 showMarker = showPlayerMarker,
-                playerId = player.playerId
+                playerId = player.playerId,
+                orderIndex = player.orderIndex
             )
             databaseRepository.updatePlayer(updatedPlayer)
         }

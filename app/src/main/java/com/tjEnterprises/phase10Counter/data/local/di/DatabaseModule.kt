@@ -26,6 +26,7 @@ import com.tjEnterprises.phase10Counter.data.local.database.Migration1To2
 import com.tjEnterprises.phase10Counter.data.local.database.Migration2To3
 import com.tjEnterprises.phase10Counter.data.local.database.Migration3To4
 import com.tjEnterprises.phase10Counter.data.local.database.Migration4To5
+import com.tjEnterprises.phase10Counter.data.local.database.Migration5To6
 import com.tjEnterprises.phase10Counter.data.local.database.PhasesDao
 import com.tjEnterprises.phase10Counter.data.local.database.PlayerDao
 import com.tjEnterprises.phase10Counter.data.local.database.PointHistoryDao
@@ -74,7 +75,8 @@ class DatabaseModule {
             Migration1To2,
             Migration2To3(context = appContext),
             Migration3To4(context = appContext),
-            Migration4To5
+            Migration4To5,
+            Migration5To6
         ).setJournalMode(
             RoomDatabase.JournalMode.TRUNCATE // set to TRUNCATE, so all is always stored in a single file to easier make backups
         ).build()

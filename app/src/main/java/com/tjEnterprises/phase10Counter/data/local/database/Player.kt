@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.Flow
 )
 data class Player(
     @ColumnInfo("game_id") val gameID: Long,
+    @ColumnInfo("order_index") val orderIndex: Long,
     @ColumnInfo("name") val name: String,
     @ColumnInfo("show_marker", defaultValue = "0") val showMarker: Boolean = false,
     @PrimaryKey(autoGenerate = true) @ColumnInfo("player_id") val playerId: Long = 0
@@ -29,13 +30,13 @@ data class Player(
 
 @Dao
 interface PlayerDao {
-    @Query("SELECT * FROM Player ORDER BY player_id ASC")
+    @Query("SELECT * FROM Player ORDER BY order_index ASC")
     fun getAllPlayers(): Flow<List<Player>>
 
-    @Query("SELECT * FROM Player WHERE game_id IS (:gameID) ORDER BY player_id ASC")
+    @Query("SELECT * FROM Player WHERE game_id IS (:gameID) ORDER BY order_index ASC")
     fun getAllPlayersFromGameAsFlow(gameID: Long): Flow<List<Player>>
 
-    @Query("SELECT * FROM Player WHERE game_id IS (:gameID) ORDER BY player_id ASC")
+    @Query("SELECT * FROM Player WHERE game_id IS (:gameID) ORDER BY order_index ASC")
     fun getAllPlayersFromGame(gameID: Long): List<Player>
 
     @Query("SELECT * FROM Game WHERE game_id IS (:gameIDofPlayer)")
@@ -47,9 +48,15 @@ interface PlayerDao {
     @Update
     suspend fun updatePlayer(player: Player)
 
+    @Update
+    suspend fun updatePlayers(players: List<Player>)
+
     @Insert
     suspend fun insertPlayer(player: Player): Long
 
     @Query("DELETE FROM Player WHERE player_id IS (:playerId)")
     suspend fun deletePlayer(playerId: Long)
+
+    @Query("SELECT MAX(order_index) FROM Player")
+    suspend fun getMaxPlayerOrderIndex(): Long
 }

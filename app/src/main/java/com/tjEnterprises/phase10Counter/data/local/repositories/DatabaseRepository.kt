@@ -43,7 +43,9 @@ interface DatabaseRepository {
     suspend fun getPlayersFromGame(gameId: Long): List<PlayerModel>
     suspend fun getPlayerById(playerId: Long): PlayerModel
     suspend fun updatePlayer(player: Player)
+    suspend fun updatePlayers(players: List<Player>)
     suspend fun deletePlayer(playerId: Long)
+    suspend fun getMaxPlayerOrderIndex(): Long
 
     suspend fun updatePlayerPhases(playerId: Long, gameId: Long, openPhases: List<Boolean>)
     suspend fun getPhasesOfPlayer(playerId: Long): List<Boolean>
@@ -113,17 +115,13 @@ interface DatabaseRepository {
                             pointSum = pointSum,
                             phasesOpen = phasesOpen,
                             showMarker = player.showMarker,
+                            orderIndex = player.orderIndex
                         )
                     )
                 }
                 gameModels.add(
                     GameModel(
-                        gameId,
-                        gameName,
-                        gameGameType,
-                        gameCreated,
-                        gameModified,
-                        playerModels
+                        gameId, gameName, gameGameType, gameCreated, gameModified, playerModels
                     )
                 )
             }
@@ -133,7 +131,11 @@ interface DatabaseRepository {
         override val highscores = highscoreDao.getAllHighscores()
 
         override suspend fun insertPlayer(playerName: String, gameId: Long): Long {
-            val playerId = playerDao.insertPlayer(Player(gameID = gameId, name = playerName))
+            val playerId = playerDao.insertPlayer(
+                Player(
+                    gameID = gameId, name = playerName, orderIndex = getMaxPlayerOrderIndex() + 1
+                )
+            )
             insertPhasesForPlayer(playerId = playerId, gameId = gameId)
 
             return playerId
@@ -167,7 +169,8 @@ interface DatabaseRepository {
                             pointHistoryPlayer,
                             pointSum,
                             phasesOpen,
-                            player.showMarker
+                            player.showMarker,
+                            player.orderIndex
                         )
                     )
                 }
@@ -187,8 +190,7 @@ interface DatabaseRepository {
                 pointHistory.forEach { pointHistoryEntry ->
                     pointHistoryPlayer.add(
                         PointHistoryItem(
-                            pointHistoryEntry.point,
-                            pointHistoryEntry.pointId
+                            pointHistoryEntry.point, pointHistoryEntry.pointId
                         )
                     )
                     sum += pointHistoryEntry.point
@@ -204,7 +206,8 @@ interface DatabaseRepository {
                         pointHistory = pointHistoryPlayer,
                         pointSum = sum,
                         phasesOpen = phases,
-                        showMarker = player.showMarker
+                        showMarker = player.showMarker,
+                        orderIndex = player.orderIndex
                     )
                 )
             }
@@ -222,7 +225,8 @@ interface DatabaseRepository {
                 pointHistory = pointHistory,
                 pointSum = pointHistory.sumOf { it.point },
                 phasesOpen = getPhasesOfPlayer(playerId),
-                showMarker = player.showMarker
+                showMarker = player.showMarker,
+                orderIndex = player.orderIndex
             )
         }
 
@@ -230,8 +234,16 @@ interface DatabaseRepository {
             playerDao.updatePlayer(player)
         }
 
+        override suspend fun updatePlayers(players: List<Player>) {
+            playerDao.updatePlayers(players)
+        }
+
         override suspend fun deletePlayer(playerId: Long) {
             playerDao.deletePlayer(playerId = playerId)
+        }
+
+        override suspend fun getMaxPlayerOrderIndex(): Long {
+            return playerDao.getMaxPlayerOrderIndex()
         }
 
         override suspend fun updatePlayerPhases(
@@ -263,8 +275,7 @@ interface DatabaseRepository {
 
         override fun getGameFlowFromId(gameId: Long): Flow<GameModel> {
             val gameModel: Flow<GameModel> = combine(
-                gameDao.getGameFromIdAsFlow(gameId),
-                getPlayersFlowFromGame(gameId)
+                gameDao.getGameFromIdAsFlow(gameId), getPlayersFlowFromGame(gameId)
             ) { game, playersFromGame ->
                 // if you reset the game and then quickly delete it,
                 // a nullPointerException is thrown
@@ -334,8 +345,7 @@ interface DatabaseRepository {
             pointHistory.forEach { entry ->
                 pointHistoryItemList.add(
                     PointHistoryItem(
-                        point = entry.point,
-                        pointId = entry.pointId
+                        point = entry.point, pointId = entry.pointId
                     )
                 )
             }
@@ -371,9 +381,7 @@ interface DatabaseRepository {
             if (timeStamp != -1L) {
                 highscoreDao.insertHighscore(
                     Highscore(
-                        playerName = playerName,
-                        points = point,
-                        timestamp = timeStamp
+                        playerName = playerName, points = point, timestamp = timeStamp
                     )
                 )
             } else {

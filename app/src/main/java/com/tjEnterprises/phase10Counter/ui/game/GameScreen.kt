@@ -180,7 +180,8 @@ fun GameScreenPreview() {
                 listOf(PointHistoryItem(256L, 1)),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true),
-                showMarker = false
+                showMarker = false,
+                orderIndex = 0
             ), PlayerModel(
                 2L,
                 1L,
@@ -188,7 +189,8 @@ fun GameScreenPreview() {
                 listOf(PointHistoryItem(256L, 1)),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true),
-                showMarker = true
+                showMarker = true,
+                orderIndex = 0
             ), PlayerModel(
                 3L,
                 1L,
@@ -196,7 +198,8 @@ fun GameScreenPreview() {
                 listOf(PointHistoryItem(256L, 1)),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true),
-                showMarker = false
+                showMarker = false,
+                orderIndex = 0
             ), PlayerModel(
                 4L,
                 1L,
@@ -204,7 +207,8 @@ fun GameScreenPreview() {
                 listOf(PointHistoryItem(256L, 1)),
                 256L,
                 listOf(true, true, true, true, true, true, true, true, true, true),
-                showMarker = false
+                showMarker = false,
+                orderIndex = 0
             )
         ),
         openDrawer = {},

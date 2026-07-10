@@ -80,7 +80,15 @@ class FakeDatabaseRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun updatePlayers(players: List<Player>) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun deletePlayer(playerId: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getMaxPlayerOrderIndex(): Long {
         TODO("Not yet implemented")
     }
 
