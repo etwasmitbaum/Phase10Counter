@@ -151,4 +151,7 @@ dependencies {
     // Retrofit debugging
     implementation(libs.logging.interceptor)
     implementation(libs.converter.scalars)
+
+    // reorderable lists
+    implementation(libs.reorderable)
 }

@@ -1,12 +1,15 @@
 package com.tjEnterprises.phase10Counter.ui.editGame
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -41,6 +44,7 @@ import com.tjEnterprises.phase10Counter.ui.game.PointHistoryDropDown
 @Composable
 fun EditPlayerComponent(
     modifier: Modifier = Modifier,
+    dragHandleModifier: Modifier = Modifier,
     player: PlayerModel,
     gameType: GameType.Type,
     addPointHistoryEntry: (point: Long, gameId: Long, playerId: Long) -> Unit,
@@ -91,9 +95,19 @@ fun EditPlayerComponent(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .padding(bottom = 8.dp)
+                    .fillMaxWidth()
             ) {
+                IconButton(modifier = dragHandleModifier.padding(end = 8.dp), onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.DragHandle,
+                        contentDescription = null,
+
+                        )
+                }
+
                 Text(
                     text = player.name,
                     fontSize = 16.sp,
@@ -102,7 +116,7 @@ fun EditPlayerComponent(
 
                 IconButton(
                     onClick = { openEditPlayerNameDialog.value = true },
-                    modifier = Modifier
+                    modifier = Modifier.padding(start = 8.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,

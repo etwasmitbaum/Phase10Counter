@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -38,8 +38,9 @@ import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.ui.EditGameUiState
 import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldBack
-import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import kotlinx.coroutines.launch
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyGridState
 
 @Composable
 fun EditGameScreen(
@@ -94,6 +95,9 @@ fun EditGameScreen(
                 updateGameType = { gameId: Long, gameType: GameType.Type ->
                     viewModel.updateGameType(gameId, gameType)
                 },
+                changePlayerOrderFromTo = { gameId: Long, from: Int, to: Int ->
+                    viewModel.changePlayerOrderFromTo(gameId, from, to)
+                },
                 modifier = modifier
             )
         }
@@ -129,6 +133,7 @@ internal fun EditGameScreen(
     deletePlayer: (Long) -> Unit,
     updateGameName: (gameId: Long, gameName: String) -> Unit,
     updateGameType: (gameId: Long, gameType: GameType.Type) -> Unit,
+    changePlayerOrderFromTo: (gameId: Long, from: Int, to: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     DefaultScaffoldBack(
@@ -151,6 +156,11 @@ internal fun EditGameScreen(
 
             val gridState = rememberLazyGridState()
             val coroutineScope = rememberCoroutineScope()
+            val reorderableLazyGridState = rememberReorderableLazyGridState(gridState) { from, to ->
+                // subtract 1 since in scope of the full LazyVerticalGrid the players start at
+                // index 1. Index 0 is the EditGameComponent
+                changePlayerOrderFromTo(game.gameId, from.index - 1, to.index - 1)
+            }
 
             LazyVerticalGrid(
                 modifier = scaffoldModifier.then(modifier),
@@ -172,31 +182,38 @@ internal fun EditGameScreen(
                     )
                 }
 
-                itemsIndexed(items = players) { idx, player ->
-                    EditPlayerComponent(
-                        player = player,
-                        gameType = game.gameType,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                        addPointHistoryEntry = addPointHistoryEntry,
-                        savePhasesOfPlayer = savePhasesOfPlayer,
-                        deletePointHistoryItem = deletePointHistoryItem,
-                        updatePointHistoryItem = updatePointHistoryItem,
-                        scrollToNextPosition = {
-                            coroutineScope.launch {
-                                gridState.animateScrollToItem(if (idx > 1) idx - 1 else 0)
-                            }
-                        },
-                        updatePlayer = updatePlayer,
-                        deletePlayer = deletePlayer
-                    )
+                items(items = players, key = { it.playerId }) { player ->
+                    val idx = players.indexOf(player)
+                    ReorderableItem(reorderableLazyGridState, key = player.playerId) { isDragging ->
+                        // Keep for future, currently i don't think the elevation looks good
+                        // val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)
+
+                        EditPlayerComponent(
+                            player = player,
+                            gameType = game.gameType,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .fillMaxWidth(),
+                            dragHandleModifier = Modifier.draggableHandle(),
+                            addPointHistoryEntry = addPointHistoryEntry,
+                            savePhasesOfPlayer = savePhasesOfPlayer,
+                            deletePointHistoryItem = deletePointHistoryItem,
+                            updatePointHistoryItem = updatePointHistoryItem,
+                            scrollToNextPosition = {
+                                coroutineScope.launch {
+                                    gridState.animateScrollToItem(if (idx > 1) idx - 1 else 0)
+                                }
+                            },
+                            updatePlayer = updatePlayer,
+                            deletePlayer = deletePlayer
+                        )
+
+                    }
                 }
 
                 item {
                     OutlinedIconButton(
-                        modifier = Modifier.wrapContentSize(),
-                        onClick = {
+                        modifier = Modifier.wrapContentSize(), onClick = {
                             openAddPlayerDialog.value = true
                         }) {
                         Icon(
@@ -322,5 +339,6 @@ fun EditGameScreenPreview() {
         updatePlayer = {},
         deletePlayer = {},
         updateGameName = { _, _ -> },
-        updateGameType = { _, _ -> })
+        updateGameType = { _, _ -> },
+        changePlayerOrderFromTo = { _, _, _ -> })
 }

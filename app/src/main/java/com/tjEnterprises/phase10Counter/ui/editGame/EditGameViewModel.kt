@@ -102,4 +102,24 @@ class EditGameViewModel @Inject constructor(
             databaseRepository.updateGameType(gameId, gameType)
         }
     }
+
+    fun changePlayerOrderFromTo(gameId: Long, from: Int, to: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val players = databaseRepository.getPlayersFromGame(gameId).toMutableList()
+            val playerFrom = players.removeAt(from)
+            players.add(to, playerFrom)
+
+            val reorderedPlayers = players.mapIndexed { index, it ->
+                Player(
+                    playerId = it.playerId,
+                    gameID = it.gameId,
+                    name = it.name,
+                    showMarker = it.showMarker,
+                    orderIndex = index.toLong()
+                )
+            }
+
+            databaseRepository.updatePlayers(reorderedPlayers)
+        }
+    }
 }
