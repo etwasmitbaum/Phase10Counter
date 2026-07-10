@@ -23,11 +23,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
@@ -54,8 +59,7 @@ fun EditGameComponent(
             gameId = game.gameId,
             gameName = game.name,
             updateGameName = updateGameName,
-            closeDialog = { openEditNameDialog.value = false }
-        )
+            closeDialog = { openEditNameDialog.value = false })
     }
 
     OutlinedCard(
@@ -78,8 +82,7 @@ fun EditGameComponent(
                 )
                 IconButton(onClick = { openEditNameDialog.value = true }) {
                     Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = null
+                        imageVector = Icons.Default.Edit, contentDescription = null
                     )
                 }
             }
@@ -111,8 +114,7 @@ fun EditGameComponent(
 
                 ExposedDropdownMenu(
                     expanded = openGameTypeDropdownMenu.value,
-                    onDismissRequest = { openGameTypeDropdownMenu.value = false }
-                ) {
+                    onDismissRequest = { openGameTypeDropdownMenu.value = false }) {
                     GameType.availableGameTypes.forEach { item: GameType.Type ->
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = item.resourceId)) },
@@ -135,7 +137,18 @@ fun EditGameNameDialog(
     updateGameName: (Long, String) -> Unit,
     closeDialog: () -> Unit
 ) {
-    val newGameName = remember { mutableStateOf(gameName) }
+    val newGameName = remember {
+        mutableStateOf(
+            TextFieldValue(
+                gameName, TextRange(gameName.length)
+            )
+        )
+    }
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 
     AlertDialog(
         modifier = modifier
@@ -147,7 +160,9 @@ fun EditGameNameDialog(
         onDismissRequest = {},
         confirmButton = {
             TextButton(onClick = {
-                updateGameName(gameId, newGameName.value)
+                if (newGameName.value.text != gameName && newGameName.value.text.isNotBlank()) {
+                    updateGameName(gameId, newGameName.value.text)
+                }
                 closeDialog()
             }) {
                 Text(text = stringResource(id = R.string.confirm))
@@ -165,10 +180,10 @@ fun EditGameNameDialog(
             TextField(
                 value = newGameName.value,
                 onValueChange = { newGameName.value = it },
-                singleLine = true
+                singleLine = true,
+                modifier = Modifier.focusRequester(focusRequester)
             )
-        }
-    )
+        })
 }
 
 @Composable
@@ -182,10 +197,7 @@ fun EditGameComponentPreview() {
             created = 1,
             modified = 1,
             players = listOf()
-        ),
-        updateGameName = { _, _ -> },
-        updateGameType = { _, _ -> }
-    )
+        ), updateGameName = { _, _ -> }, updateGameType = { _, _ -> })
 }
 
 @Composable
@@ -199,8 +211,5 @@ fun EditGameComponentLongNamePreview() {
             created = 1,
             modified = 1,
             players = listOf()
-        ),
-        updateGameName = { _, _ -> },
-        updateGameType = { _, _ -> }
-    )
+        ), updateGameName = { _, _ -> }, updateGameType = { _, _ -> })
 }

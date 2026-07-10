@@ -7,10 +7,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.DialogProperties
@@ -26,7 +32,19 @@ fun PlayerNameComponent(
     closeDialog: () -> Unit,
     updatePlayer: (Player) -> Unit
 ) {
-    val playerName = rememberSaveable { mutableStateOf(player.name) }
+    val playerName = rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(
+            TextFieldValue(
+                text = player.name,
+                selection = TextRange(player.name.length)
+            )
+        )
+    }
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 
     AlertDialog(
         modifier = modifier
@@ -37,22 +55,21 @@ fun PlayerNameComponent(
             dismissOnBackPress = true,
             dismissOnClickOutside = true
         ),
-        onDismissRequest = {
-            dismiss(
-                newPlayerName = playerName.value,
-                player = player,
-                updatePlayer = updatePlayer,
-                closeDialog = closeDialog
-            )
-        },
+        onDismissRequest = { closeDialog() },
         confirmButton = {
             TextButton(onClick = {
-                dismiss(
-                    newPlayerName = playerName.value,
-                    player = player,
-                    updatePlayer = updatePlayer,
-                    closeDialog = closeDialog
-                )
+                if (player.name != playerName.value.text && playerName.value.text.isNotBlank()) {
+                    updatePlayer(
+                        Player(
+                            gameID = player.gameId,
+                            name = playerName.value.text,
+                            showMarker = player.showMarker,
+                            playerId = player.playerId,
+                            orderIndex = player.orderIndex
+                        )
+                    )
+                }
+                closeDialog()
             }) {
                 Text(text = stringResource(id = R.string.confirm))
             }
@@ -69,32 +86,13 @@ fun PlayerNameComponent(
             TextField(
                 value = playerName.value,
                 onValueChange = { playerName.value = it },
-                singleLine = true
+                singleLine = true,
+                modifier = Modifier.focusRequester(focusRequester)
             )
         }
     )
 }
 
-internal fun dismiss(
-    newPlayerName: String,
-    player: PlayerModel,
-    updatePlayer: (Player) -> Unit,
-    closeDialog: () -> Unit
-) {
-    if (player.name != newPlayerName) {
-        updatePlayer(
-            Player(
-                gameID = player.gameId,
-                name = newPlayerName,
-                showMarker = player.showMarker,
-                playerId = player.playerId,
-                orderIndex = player.orderIndex
-            )
-        )
-    }
-
-    closeDialog()
-}
 
 @Preview(device = Devices.NEXUS_5)
 @Composable

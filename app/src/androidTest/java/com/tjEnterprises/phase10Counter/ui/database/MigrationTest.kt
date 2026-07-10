@@ -243,7 +243,8 @@ class MigrationTest {
         val p1PlayerGameId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("game_id"))
         val p1PlayerName = playerCursor.getString(playerCursor.getColumnIndexOrThrow("name"))
         val p1PlayerMarker = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("show_marker"))
-        val p1PlayerOrderIdx = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("order_index"))
+        val p1PlayerOrderIdx =
+            playerCursor.getInt(playerCursor.getColumnIndexOrThrow("order_index"))
         assertEquals(p1PlayerId, 1)
         assertEquals(p1PlayerGameId, 1)
         assertEquals(p1PlayerName, "Player 1")
@@ -255,7 +256,8 @@ class MigrationTest {
         val p2PlayerGameId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("game_id"))
         val p2PlayerName = playerCursor.getString(playerCursor.getColumnIndexOrThrow("name"))
         val p2PlayerMarker = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("show_marker"))
-        val p2PlayerOrderIdx = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("order_index"))
+        val p2PlayerOrderIdx =
+            playerCursor.getInt(playerCursor.getColumnIndexOrThrow("order_index"))
         assertEquals(p2PlayerId, 2)
         assertEquals(p2PlayerGameId, 1)
         assertEquals(p2PlayerName, "Player 2")
@@ -267,7 +269,8 @@ class MigrationTest {
         val p3PlayerGameId = playerCursor.getLong(playerCursor.getColumnIndexOrThrow("game_id"))
         val p3PlayerName = playerCursor.getString(playerCursor.getColumnIndexOrThrow("name"))
         val p3PlayerMarker = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("show_marker"))
-        val p3PlayerOrderIdx = playerCursor.getInt(playerCursor.getColumnIndexOrThrow("order_index"))
+        val p3PlayerOrderIdx =
+            playerCursor.getInt(playerCursor.getColumnIndexOrThrow("order_index"))
         assertEquals(p3PlayerId, 3)
         assertEquals(p3PlayerGameId, 1)
         assertEquals(p3PlayerName, "Player 3")

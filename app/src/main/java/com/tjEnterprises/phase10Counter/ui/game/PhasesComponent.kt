@@ -126,7 +126,6 @@ fun dismiss(
     savePhasesOfPlayer: (Long, Long, List<Boolean>) -> Unit,
     closeDialog: () -> Unit
 ) {
-
     savePhasesOfPlayer(player.playerId, player.gameId, openPhases)
     closeDialog()
 }

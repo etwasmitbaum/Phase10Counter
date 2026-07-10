@@ -25,6 +25,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,7 +39,7 @@ import com.tjEnterprises.phase10Counter.data.local.models.GameType
 import com.tjEnterprises.phase10Counter.data.local.models.PlayerModel
 import com.tjEnterprises.phase10Counter.data.local.models.PointHistoryItem
 import com.tjEnterprises.phase10Counter.ui.EditGameUiState
-import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldBack
+import com.tjEnterprises.phase10Counter.ui.component.DefaultScaffoldNavigation
 import kotlinx.coroutines.launch
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyGridState
@@ -47,7 +49,7 @@ fun EditGameScreen(
     modifier: Modifier = Modifier,
     gameId: Long,
     viewModel: EditGameViewModel = hiltViewModel(),
-    navigateOneBack: () -> Unit
+    openDrawer: () -> Unit
 ) {
     val dontChangeUiWideScreen by viewModel.dontChangeUiWideScreen.collectAsState()
     val editGameUiState by viewModel.editGameUiState.collectAsState()
@@ -63,7 +65,7 @@ fun EditGameScreen(
                 players = game.players,
                 game = game,
                 dontChangeUiWideScreen = dontChangeUiWideScreen,
-                navigateOneBack = navigateOneBack,
+                openDrawer = openDrawer,
                 addPointHistoryEntry = { point: Long, pointGameId: Long, playerId: Long ->
                     viewModel.addPointHistoryEntry(
                         point = point, gameId = pointGameId, playerId = playerId
@@ -103,16 +105,16 @@ fun EditGameScreen(
         }
 
         is EditGameUiState.EditGameLoading -> {
-            DefaultScaffoldBack(
+            DefaultScaffoldNavigation(
                 title = stringResource(id = R.string.gameScreenLoading),
-                navigateOneBack = navigateOneBack
+                openDrawer = openDrawer
             ) { }
         }
 
         is EditGameUiState.EditGameError -> {
-            DefaultScaffoldBack(
+            DefaultScaffoldNavigation(
                 title = stringResource(id = R.string.gameScreenError),
-                navigateOneBack = navigateOneBack
+                openDrawer = openDrawer
             ) { }
         }
     }
@@ -123,7 +125,7 @@ internal fun EditGameScreen(
     players: List<PlayerModel>,
     game: GameModel,
     dontChangeUiWideScreen: Boolean,
-    navigateOneBack: () -> Unit,
+    openDrawer: () -> Unit,
     addPointHistoryEntry: (point: Long, pointGameId: Long, playerId: Long) -> Unit,
     savePhasesOfPlayer: (playerId: Long, gameId: Long, openPhases: List<Boolean>) -> Unit,
     deletePointHistoryItem: (PointHistoryItem) -> Unit,
@@ -136,9 +138,9 @@ internal fun EditGameScreen(
     changePlayerOrderFromTo: (gameId: Long, from: Int, to: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    DefaultScaffoldBack(
+    DefaultScaffoldNavigation(
         title = stringResource(R.string.editing_game),
-        navigateOneBack = navigateOneBack,
+        openDrawer = openDrawer,
         dontChangeUiWideScreen = dontChangeUiWideScreen,
         content = { scaffoldModifier ->
 
@@ -146,12 +148,14 @@ internal fun EditGameScreen(
                 mutableStateOf(false)
             }
 
-            if (openAddPlayerDialog.value) {
-                AddPlayerDialog(
-                    closeDialog = { openAddPlayerDialog.value = false },
-                    insertNewPlayer = { playerName ->
-                        insertPlayer(playerName, game.gameId)
-                    })
+            when {
+                openAddPlayerDialog.value -> {
+                    AddPlayerDialog(
+                        closeDialog = { openAddPlayerDialog.value = false },
+                        insertNewPlayer = { playerName ->
+                            insertPlayer(playerName, game.gameId)
+                        })
+                }
             }
 
             val gridState = rememberLazyGridState()
@@ -236,6 +240,12 @@ fun AddPlayerDialog(
         mutableStateOf("")
     }
 
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
     AlertDialog(
         modifier = Modifier
             .fillMaxWidth(0.85f)
@@ -268,7 +278,8 @@ fun AddPlayerDialog(
             TextField(
                 value = newPlayerName.value,
                 onValueChange = { newPlayerName.value = it },
-                singleLine = true
+                singleLine = true,
+                modifier = Modifier.focusRequester(focusRequester)
             )
         })
 }
@@ -330,7 +341,7 @@ fun EditGameScreenPreview() {
             players = players
         ),
         dontChangeUiWideScreen = false,
-        navigateOneBack = {},
+        openDrawer = {},
         addPointHistoryEntry = { _, _, _ -> },
         savePhasesOfPlayer = { _, _, _ -> },
         deletePointHistoryItem = {},
