@@ -1,0 +1,3 @@
+- NEU: Die angezeigte Spielerreihenfolge kann jetzt geändert werden
+- Es wird eine Warnung angezeigt, bevor Spieler gelöscht werden
+- Verschiedene Designänderungen und Fehlerbehebungen
